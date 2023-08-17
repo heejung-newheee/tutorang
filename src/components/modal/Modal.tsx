@@ -1,8 +1,19 @@
 import * as S from './Modal.styled';
-import React from 'react';
+import { ReactNode } from 'react';
+import ModalPortal from './ModalPortal';
 
-const Modal = () => {
-  return <div>Modal</div>;
+export type ModalProps = {
+  children: ReactNode;
+  isOpen: boolean;
+  closeModal: () => void;
+};
+
+const Modal = ({ children, isOpen, closeModal }: ModalProps) => {
+  const handleClose = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+    closeModal();
+  };
+  return <ModalPortal>{isOpen ? <S.Overlay onClick={handleClose}>{children}</S.Overlay> : null}</ModalPortal>;
 };
 
 export default Modal;
