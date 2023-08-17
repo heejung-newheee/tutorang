@@ -36,6 +36,13 @@ ${reset}
     a:link, a:focus, a:active, a:visited, a:hover  {
         color: inherit
     }
+    a{
+        cursor: pointer;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
 `;
 
 export default GlobalStyles;
