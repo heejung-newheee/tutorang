@@ -4,3 +4,5 @@ export { default as Layout } from './common/layout/Layout';
 export { default as Modal } from './modal/Modal';
 export * from './modal/Modal';
 export { default as Dialog } from './dialog/Dialog';
+export { default as Alert } from './dialog/alert/Alert';
+export { default as Confirm } from './dialog/confirm/Confirm';
