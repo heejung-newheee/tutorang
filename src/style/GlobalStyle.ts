@@ -18,11 +18,10 @@ ${reset}
         margin: 0;
         padding: 0;
         border: 0;
-        font-size: 10px;
         vertical-align: baseline;
     }
     body{
-        line-height: 1;
+        line-height: 1.4;
         font-family: 'Noto Sans KR', sans-serif;
     }
     ol, ul{
