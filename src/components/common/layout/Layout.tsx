@@ -1,10 +1,13 @@
 import React from 'react';
+import * as S from './Layout.styled';
+import { Outlet } from 'react-router-dom';
 
-type LayoutProps = {
-  children: React.ReactNode;
-};
-const Layout = ({ children }: LayoutProps) => {
-  return <div>{children}</div>;
+const Layout = () => {
+  return (
+    <S.LayoutContainer>
+      <Outlet />
+    </S.LayoutContainer>
+  );
 };
 
 export default Layout;
