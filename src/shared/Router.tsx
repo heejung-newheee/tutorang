@@ -1,8 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Layout } from '../components';
+import { Layout, SignInForm, SignUpForm } from '../components';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
-import { Detail, List, Main, Mypage, SignInForm, SignUpForm } from '../pages';
-import AuthMain from '../pages/AuthMain';
+import { AuthMain, Detail, List, Main, Mypage } from '../pages';
 
 const Router = () => {
   return (
