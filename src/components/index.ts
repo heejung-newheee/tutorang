@@ -5,4 +5,8 @@ export { default as Modal } from './modal/Modal';
 export * from './modal/Modal';
 export { default as Alert } from './dialog/alert/Alert';
 export { default as Confirm } from './dialog/confirm/Confirm';
+export { default as Report } from './dialog/report/Report';
 export { default as UserInfo } from './userInfo/UserInfo';
+export { default as SignInForm } from './Form/SignInForm/SignInForm';
+export { default as SignUpForm } from './Form/SignUpForm/SignUpForm';
+export { default as Button } from './button/Button';

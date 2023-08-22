@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchData, fetchLike, fetchTutor, fetchReview } from '../api/user';
 import { useParams } from 'react-router-dom';
-import { Alert, Confirm } from '../components';
+import { Alert, Report } from '../components';
 import { useModal, useReviewAverage } from '../hooks';
 
 const Detail = () => {
@@ -57,7 +57,7 @@ const Detail = () => {
         })}
 
         <Modal isOpen={isOpen} closeModal={closeModal}>
-          <Confirm closeModal={closeModal} />
+          <Report closeModal={closeModal} />
         </Modal>
         <button onClick={openModal}>신고하기</button>
 
