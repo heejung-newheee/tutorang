@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchData, fetchLike, fetchTutor, fetchReview } from '../api/user';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
 
 const Detail = () => {
   const { id } = useParams();
