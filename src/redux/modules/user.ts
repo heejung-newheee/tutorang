@@ -1,15 +1,23 @@
-// import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-// import { Tables } from '../../supabase/database.types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { Tables } from '../../supabase/database.types';
 
-// const initialState: Tables<'profiles'>[] = [];
+interface UserState {
+  user: Tables<'profiles'> | null;
+}
 
-// const userSlice = createSlice({
-//   name: 'userList',
-//   initialState,
-//   reducers: {
-//     patchUser: (state, action) => {},
-//   },
-// });
+const initialState: UserState = {
+  user: null,
+};
 
-// export default userSlice.reducer;
-// export const { patchUser } = userSlice.actions;
+const userSlice = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    setUser: (state, action: PayloadAction<Tables<'profiles'> | null>) => {
+      state.user = action.payload;
+    },
+  },
+});
+
+export default userSlice.reducer;
+export const { setUser } = userSlice.actions;

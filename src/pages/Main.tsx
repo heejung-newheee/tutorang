@@ -41,7 +41,7 @@ const Main = () => {
       {user?.map((user) => {
         return (
           <div key={user.id}>
-            <Link to={`detail/${user.id}`}>{user.name}</Link>
+            <Link to={`detail/${user.id}`}>{user.username}</Link>
           </div>
         );
       })}

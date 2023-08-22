@@ -1,39 +1,35 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetchBoard, fetchLike, fetchReview, fetchTutor, fetchUser } from '../../api/user';
+import { fetchData } from '../../api/user';
 import * as S from './UserInfo.styled';
 import supabase from '../../supabase';
 import { Tables } from '../../supabase/database.types';
+import TutorInfo from '../tutorInfo/TutorInfo';
+import StudentInfo from '../studentInfo/StudentInfo';
 // import { User } from '@supabase/supabase-js';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/config/configStore';
 
-interface UserInfo {
-  avatar_url: string | null;
-  birth: string | null;
-  deleted_at: string | null;
-  email: string | null;
-  gender: string | null;
-  id: string;
-  language_level: string | null;
-  location1: string | null;
-  location2: string | null;
-  role: string | null;
-  updated_at: string | null;
-  username: string | null;
-}
 const UserInfo = () => {
-  const { data, isLoading, isError } = useQuery(['profiles'], fetchUser);
-  const [user, setUser] = useState<UserInfo | null>();
+  const { data, isLoading, isError } = useQuery(['profiles'], fetchData);
 
-  const getUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    setUser(user);
-  };
+  const [loginSupaUser, setUser] = useState<Tables<'profiles'> | null>();
 
-  useEffect(() => {
-    getUser();
-  }, []);
+  // const getUser = async () => {
+  //   const {
+  //     data: { user },
+  //   } = await supabase.auth.getUser();
+  //   setUser(user);
+  // };
+  // console.log('fetchUser', loginSupaUser);
+
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
+  const user = useSelector((state: RootState) => {
+    return state.user;
+  });
+  console.log('loginUser', user);
 
   if (isLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
@@ -41,7 +37,7 @@ const UserInfo = () => {
   if (isError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
-  if (!user) {
+  if (!loginSupaUser) {
     return <div>글 없음</div>;
   }
 
@@ -70,17 +66,18 @@ const UserInfo = () => {
         <div>내 정보</div>
         <button>내정보 수정</button>
         <S.ProfileBox>
-          <img src={user.avatar_url ?? ''} alt="" />
+          <img src={loginSupaUser.avatar_url ?? ''} alt="" />
         </S.ProfileBox>
         <S.UserName>
-          {user.name}
-          <span> {user.role}</span>
+          {loginSupaUser.username}
+          <span> {loginSupaUser.role}</span>
         </S.UserName>
         <div>
-          지역 : {user.location_1} | {user.location_2}
+          지역 : {loginSupaUser.location1} | {loginSupaUser.location2}
         </div>
         <S.StudyInfoBox>
           <div>
+            {/* 매칭 후 데이터 불러와야함 */}
             <p>완료된 수업</p>
             <p>X개</p>
           </div>
@@ -93,6 +90,9 @@ const UserInfo = () => {
             <p>X개</p>
           </div>
         </S.StudyInfoBox>
+
+        <TutorInfo />
+        {/* <StudentInfo /> */}
       </S.MypageContainer>
     </>
   );

@@ -1,8 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router-dom';
 import supabase from '../supabase';
+import { setUser } from '../redux/modules/user';
+import { Tables } from '../supabase/database.types';
+import store from '../redux/config/configStore';
+import { fetchData } from '../api/user';
+import { useQuery } from '@tanstack/react-query';
 
 const AuthMain = () => {
+  const dispatch = useDispatch();
   const [isSignIn, setIsSignIn] = useState(true);
   const navigate = useNavigate();
 
@@ -10,13 +17,20 @@ const AuthMain = () => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
     console.log('getUser', user);
     if (user !== null) return navigate('/');
     if (user === null) setIsSignIn(false);
   };
 
+  // 전체 유저 정보 가져오기
+  const { data, isLoading, isError } = useQuery(['profiles'], fetchData);
+
+  const loginUser = data?.find(() => {});
+
   useEffect(() => {
     checkSignInUser();
+    // dispatch(setUser(user));
   }, []);
 
   if (isSignIn) return <div>loading</div>;

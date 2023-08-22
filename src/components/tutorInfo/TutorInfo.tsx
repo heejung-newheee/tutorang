@@ -3,7 +3,7 @@ import { fetchReview, fetchTutor } from '../../api/user';
 import { Tables } from '../../supabase/database.types';
 import * as S from './TutorInfo.styled';
 
-const TutorInfo = (user: Tables<'profiles'>[]) => {
+const TutorInfo = () => {
   const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor'], fetchTutor);
   const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], fetchReview);
 
