@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const NavContainer = styled.div`
@@ -31,13 +32,29 @@ export const NavLogoImg = styled.img`
   height: 20px;
 `;
 
-export const NextLogo = styled.span<{ $selectedMenu: boolean }>`
+export const NavLinkSt = styled(NavLink)`
+  color: white;
+  margin: 10px;
+  &:link,
+  &:focus,
+  &:active,
+  &:visited,
+  &:hover {
+    color: white;
+    opacity: 0.7;
+  }
+  &.active {
+    color: red;
+  }
+`;
+
+export const NextLogo = styled.span`
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 10px;
-  opacity: ${(props) => (props.$selectedMenu ? 1 : 0.6)};
+  opacity: 0.7;
 
   &:hover {
     opacity: 1;

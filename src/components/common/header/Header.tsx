@@ -1,27 +1,33 @@
-import { useState } from 'react';
 import * as Styled from './Header.styled';
+import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-type HEADERMENU = string[];
+type HEADERMENU = { title: string; path: string }[];
 
-const HeaderMenu: HEADERMENU = ['Home', '튜텨찾기'];
+const HeaderMenu: HEADERMENU = [
+  { title: 'Home', path: '/' },
+  { title: '튜텨찾기', path: '/list' },
+];
 
 const Header = () => {
-  const [selectedMenu, setSelectedMenu] = useState('Home');
+  const navigate = useNavigate();
 
-  const handleSelectedMenu = (item: string) => {
-    setSelectedMenu(item);
+  const handleHome = () => {
+    navigate('/');
   };
+
+  // style={({ isActive }) => (isActive ? { color: 'red' } : {})}
   return (
     <>
       <Styled.NavContainer>
         <Styled.WidthLimitContainer>
           <Styled.LogoWrap>
             {/* <Styled.NavLogoImg src="" alt="로고"></Styled.NavLogoImg>  */}
-            <div>Logo</div>
-            {HeaderMenu.map((item) => (
-              <Styled.NextLogo $selectedMenu={selectedMenu === item ? true : false}>
-                <span onClick={() => handleSelectedMenu(item)}>{item}</span>
-              </Styled.NextLogo>
+            <div onClick={handleHome}>Logo</div>
+            {HeaderMenu.map((item, index) => (
+              // <Styled.NextLogo key={index}>
+              <Styled.NavLinkSt to={item.path}>{item.title}</Styled.NavLinkSt>
+              // </Styled.NextLogo>
             ))}
           </Styled.LogoWrap>
 
