@@ -2,7 +2,7 @@ import supabase from '../supabase';
 
 export const fetchUser = async ({ queryKey }: { queryKey: string[] }) => {
   const [_, user] = queryKey;
-  const res = await supabase.from('user').select('*');
+  const res = await supabase.from('profiles').select('*');
   return res.data;
 };
 
