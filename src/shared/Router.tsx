@@ -11,7 +11,7 @@ const Router = () => {
         <Route element={<GlobalLayout />}>
           <Route path="/" element={<Main />} />
           <Route element={<Layout />}>
-            <Route path="/detail" element={<Detail />} />
+            <Route path="/detail/:id" element={<Detail />} />
             <Route path="/mypage" element={<Mypage />} />
             <Route element={<AuthMain />}>
               <Route path="/signin" element={<SignInForm />} />
