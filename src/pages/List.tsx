@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import supabase from '../supabase';
 
@@ -44,6 +44,7 @@ const List = () => {
     try {
       const { data, error } = await supabase.from('tutor_info').select('*').range(0, 1).match({ user_id: 'fd32cf82-7866-4d4c-90fc-3539ef165556', price: 20000 });
       console.log(data);
+      console.log(error);
     } catch (error) {
       console.log(error);
     }
