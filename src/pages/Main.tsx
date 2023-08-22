@@ -1,5 +1,3 @@
-import { useModal } from '../hooks';
-import { Alert, Confirm } from '../components';
 import { useQuery } from '@tanstack/react-query';
 import { fetchData } from '../api/user';
 import { Link } from 'react-router-dom';
@@ -7,7 +5,6 @@ import { useEffect } from 'react';
 import supabase from '../supabase';
 
 const Main = () => {
-  const { Modal, isOpen, openModal, closeModal } = useModal();
   const { data: profiles, isLoading: profilesLoading, isError: profilesError } = useQuery(['profiles'], fetchData);
 
   const signOut = async () => {
@@ -48,11 +45,6 @@ const Main = () => {
           );
         })}
       </section>
-
-      <Modal isOpen={isOpen} closeModal={closeModal}>
-        <Alert closeModal={closeModal} />
-      </Modal>
-      <button onClick={openModal}>열기</button>
 
       <div>
         <h1>Main</h1>

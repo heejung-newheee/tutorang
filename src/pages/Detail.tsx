@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchData, fetchLike, fetchTutor, fetchReview } from '../api/user';
 import { useParams } from 'react-router-dom';
+import { Alert, Confirm } from '../components';
+import { useModal, useReviewAverage } from '../hooks';
 
 const Detail = () => {
   const { id } = useParams();
@@ -13,21 +15,13 @@ const Detail = () => {
   const filteredUser = profiles?.filter((profiles) => profiles.id === id);
   const filteredTutor = tutor?.filter((tutor) => tutor.user_id === id);
   const filteredReview = review?.filter((review) => review.user_id === id);
-  const allReviewRating = filteredReview?.map((review) => Number(review.rating));
+  const reviewRatings = filteredReview?.map((review) => review.rating);
+  const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
-  const reviewAverage = () => {
-    if (filteredReview?.length === 0) {
-      return 0;
-    }
+  // 모달
+  const { Modal, isOpen, openModal, closeModal } = useModal();
 
-    let sumReviewRating: number = 0;
-
-    allReviewRating?.forEach((reviewRating): Number => {
-      return (sumReviewRating += reviewRating);
-    });
-
-    return Number(sumReviewRating) / Number(allReviewRating?.length);
-  };
+  const reviewAverage = useReviewAverage(filteredReviewRatings);
 
   if (profilesLoading || likeLoading || tutorLoading || reviewLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
@@ -48,27 +42,32 @@ const Detail = () => {
                 <span>{user.username}</span>
               </div>
               <div>
-                지역 : {user.location1} | {user.location2}
+                활동 지역 : {user.location1} | {user.location2}
               </div>
             </div>
           );
         })}
         {filteredTutor?.map((tutor) => {
           return (
-            <div key={tutor.id}>
+            <div key={tutor.user_id}>
               <p>{tutor.class_info}</p>
               <p>{tutor.price}(30분)</p>
             </div>
           );
         })}
-        <div>신고하기</div>
+
+        <Modal isOpen={isOpen} closeModal={closeModal}>
+          <Confirm closeModal={closeModal} />
+        </Modal>
+        <button onClick={openModal}>신고하기</button>
+
         {/* <div>튜터의 스킬/장점/성격</div> */}
       </section>
 
       {/* 튜터 overview */}
       <section>
         <ul>
-          <li>리뷰 평점 : {reviewAverage()}</li>
+          <li>리뷰 평점 : {reviewAverage}</li>
           <li>리뷰수 : {filteredReview?.length}</li>
           {/* <li>매칭수 : </li> */}
         </ul>
