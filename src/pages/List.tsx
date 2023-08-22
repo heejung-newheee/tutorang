@@ -42,7 +42,7 @@ const List = () => {
 
   const getData = async () => {
     try {
-      const { data, error } = await supabase.from('tutor_info').select('*');
+      const { data, error } = await supabase.from('tutor_info').select('*').range(0, 1).match({ user_id: 'fd32cf82-7866-4d4c-90fc-3539ef165556', price: 20000 });
       console.log(data);
     } catch (error) {
       console.log(error);
