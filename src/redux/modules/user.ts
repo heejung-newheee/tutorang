@@ -4,7 +4,6 @@ import { Tables } from '../../supabase/database.types';
 interface UserState {
   user: Tables<'profiles'> | null;
 }
-
 const initialState: UserState = {
   user: null,
 };
@@ -13,7 +12,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<Tables<'profiles'> | null>) => {
+    setUser: (state, action: PayloadAction<Tables<'profiles'>>) => {
       state.user = action.payload;
     },
   },

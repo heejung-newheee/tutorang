@@ -1,7 +1,7 @@
 import supabase from '../supabase';
 
 export const fetchData = async ({ queryKey }: { queryKey: string[] }) => {
-  const [_, user] = queryKey;
+  const [_, profiles] = queryKey;
   const res = await supabase.from('profiles').select('*');
   return res.data;
 };
@@ -22,9 +22,4 @@ export const fetchTutor = async ({ queryKey }: { queryKey: string[] }) => {
   const [_, tutor] = queryKey;
   const res = await supabase.from('tutor_info').select('*');
   return res.data;
-};
-
-export const fetchBoard = async ({ queryKey }: { queryKey: string[] }) => {
-  const [_, board] = queryKey;
-  const res = await supabase.from('board').select('*');
 };

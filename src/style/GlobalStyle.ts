@@ -5,6 +5,10 @@ const GlobalStyles = createGlobalStyle`
 
 ${reset}
     // 적용시킬 css 입력
+    a{
+        text-decoration: none;
+        color: inherit;
+    }
     *{
         box-sizing: border-box;
     }    
@@ -34,6 +38,16 @@ ${reset}
         border: 0;
         background: transparent;
         cursor: pointer;
+    }
+    a:link, a:focus, a:active, a:visited, a:hover  {
+        color: inherit
+    }
+    a{
+        cursor: pointer;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 `;
 
