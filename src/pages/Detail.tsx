@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchData, fetchLike, fetchTutor, fetchReview } from '../api/user';
 import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Detail = () => {
   const { id } = useParams();
@@ -13,6 +14,21 @@ const Detail = () => {
   const filteredUser = profiles?.filter((profiles) => profiles.id === id);
   const filteredTutor = tutor?.filter((tutor) => tutor.user_id === id);
   const filteredReview = review?.filter((review) => review.user_id === id);
+  const allReviewRating = filteredReview?.map((review) => Number(review.rating));
+
+  const reviewAverage = () => {
+    if (filteredReview?.length === 0) {
+      return 0;
+    }
+
+    let sumReviewRating: number = 0;
+
+    allReviewRating?.forEach((reviewRating): Number => {
+      return (sumReviewRating += reviewRating);
+    });
+
+    return Number(sumReviewRating) / Number(allReviewRating?.length);
+  };
 
   if (profilesLoading || likeLoading || tutorLoading || reviewLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
@@ -53,7 +69,7 @@ const Detail = () => {
       {/* 튜터 overview */}
       <section>
         <ul>
-          {/* <li>리뷰 평점 : </li> */}
+          <li>리뷰 평점 : {reviewAverage()}</li>
           <li>리뷰수 : {filteredReview?.length}</li>
           {/* <li>매칭수 : </li> */}
         </ul>
