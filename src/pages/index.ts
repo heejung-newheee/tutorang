@@ -3,3 +3,4 @@ export { default as SignUpForm } from '../components/Form/SignUpForm/SignUpForm'
 export { default as Detail } from './Detail';
 export { default as Main } from './Main';
 export { default as Mypage } from './Mypage';
+export { default as List } from './List';

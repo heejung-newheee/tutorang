@@ -1,5 +1,4 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
-
 export interface Database {
   public: {
     Tables: {
@@ -209,5 +208,4 @@ export interface Database {
     };
   };
 }
-
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
