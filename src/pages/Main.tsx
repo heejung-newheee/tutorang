@@ -8,6 +8,7 @@ import { useModal } from '../hooks';
 import supabase from '../supabase';
 
 const Main = () => {
+  // 임시임.
   const [isFirstSocialUser, setIsFirstSocialUser] = useState(false);
   const { Modal, isOpen, openModal, closeModal } = useModal();
   const { data: user, isLoading: userLoading, isError: userError } = useQuery(['user'], fetchData);
@@ -22,8 +23,9 @@ const Main = () => {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+    if (user === null) return false;
     const checkingFirstSocialUser = user?.user_metadata.role;
-    if (checkingFirstSocialUser === undefined) setIsFirstSocialUser(true);
+    if (user !== null && checkingFirstSocialUser === undefined) setIsFirstSocialUser(true);
   };
 
   const changeIt = async () => {
