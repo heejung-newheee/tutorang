@@ -5,10 +5,7 @@ const GlobalStyles = createGlobalStyle`
 
 ${reset}
     // 적용시킬 css 입력
-    a{
-        text-decoration: none;
-        color: inherit;
-    }
+   
     *{
         box-sizing: border-box;
     }
@@ -35,11 +32,20 @@ ${reset}
         color: inherit
     }
     a{
+        text-decoration: none;
+        color: inherit;
         cursor: pointer;
 
         &:hover {
             cursor: pointer;
         }
+    }
+
+
+    textarea {
+        overflow: auto;
+        vertical-align: top;
+        resize: vertical;
     }
 `;
 

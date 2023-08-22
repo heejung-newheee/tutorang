@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getAllTutorCount, getBoard, getTutorMostReview, getTutors } from '../api/tutor';
+import { getAllTutorCount, getTutors } from '../api/tutor';
 import styled from 'styled-components';
 import { TTutorWithUser } from '../supabase/database.types';
 import { getAllReviewCount } from '../api/review';
