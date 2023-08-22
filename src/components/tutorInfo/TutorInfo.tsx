@@ -16,7 +16,7 @@ const TutorInfo = () => {
   const tutorInfo = tutor?.find((item) => {
     return user!.id === item.user_id;
   });
-  // const update = tutorInfo!.created_at.split('T')[0];
+  // const created = tutorInfo!.created_at.split('T')[0];
 
   if (tutorLoading || reviewLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
@@ -32,7 +32,7 @@ const TutorInfo = () => {
       <div>별점 : ⭐⭐⭐⭐ </div>
       <div>수업소개 : {tutorInfo!.class_info}</div>
       <div>시간당 : {tutorInfo!.price}원</div>
-      <div style={{ fontSize: '0.8rem', color: '#ggg' }}> 마지막 정보 업데이트 {tutorInfo?.update ? <span>{tutorInfo.update}</span> : <span></span>}</div>
+      {/* <div style={{ fontSize: '0.8rem', color: '#ggg' }}> 마지막 정보 업데이트 {tutorInfo?.update ? <span>{tutorInfo.update}</span> : <span>{created}</span>}</div> */}
       <div>
         수강생 후기
         <S.StudentList>
