@@ -27,5 +27,4 @@ export const fetchTutor = async ({ queryKey }: { queryKey: string[] }) => {
 export const fetchBoard = async ({ queryKey }: { queryKey: string[] }) => {
   const [_, board] = queryKey;
   const res = await supabase.from('board').select('*');
-  return res.data;
 };
