@@ -13,18 +13,54 @@ export const NavContainer = styled.div`
 
 export const WidthLimitContainer = styled.div`
   max-width: 1200px;
-  height: 60px;
+  height: 70px;
   padding: 0 10px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: saddlebrown;
+  position: relative;
+
+  @media only screen and (max-width: 730px) {
+    height: 50px;
+  }
 `;
 
 export const LogoWrap = styled.div`
   display: flex;
   align-items: center;
+
+  //임시
+  & > h1 {
+    font-weight: 900;
+    font-size: 20px;
+    color: white;
+    margin-right: 10px;
+  }
+  @media only screen and (max-width: 730px) {
+    display: none;
+  }
+`;
+export const Hamberger = styled.button`
+  display: none;
+
+  @media only screen and (max-width: 730px) {
+    display: flex;
+  }
+`;
+
+export const MiddleLogo = styled.div`
+  font-weight: 900;
+  font-size: 20px;
+  color: white;
+  display: none;
+  position: absolute;
+  left: 44%;
+
+  @media only screen and (max-width: 730px) {
+    display: flex;
+  }
 `;
 
 export const NavLogoImg = styled.img`
@@ -41,34 +77,18 @@ export const NavLinkSt = styled(NavLink)`
   &:visited,
   &:hover {
     color: white;
-    opacity: 0.7;
   }
   &.active {
     color: red;
   }
 `;
 
-export const NextLogo = styled.span`
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-  opacity: 0.7;
-
-  &:hover {
-    opacity: 1;
-  }
-
-  span {
-    margin: 0 5px;
-    cursor: pointer;
-    font-family: sans-serif;
-    font-size: 15px;
-  }
-`;
-
 export const LoginBtn = styled.div`
   cursor: pointer;
   color: white;
+
+  //임시
+  & > span {
+    margin-left: 10px;
+  }
 `;

@@ -16,23 +16,25 @@ const Header = () => {
     navigate('/');
   };
 
-  // style={({ isActive }) => (isActive ? { color: 'red' } : {})}
   return (
     <>
       <Styled.NavContainer>
         <Styled.WidthLimitContainer>
           <Styled.LogoWrap>
-            {/* <Styled.NavLogoImg src="" alt="로고"></Styled.NavLogoImg>  */}
-            <div onClick={handleHome}>Logo</div>
+            {/* <Styled.NavLogoImg src="" alt="logo"></Styled.NavLogoImg>  */}
+            <h1 onClick={handleHome}>Logo</h1>
             {HeaderMenu.map((item, index) => (
-              // <Styled.NextLogo key={index}>
-              <Styled.NavLinkSt to={item.path}>{item.title}</Styled.NavLinkSt>
-              // </Styled.NextLogo>
+              <Styled.NavLinkSt key={index} to={item.path}>
+                {item.title}
+              </Styled.NavLinkSt>
             ))}
           </Styled.LogoWrap>
-
+          {/* 미디어쿼리 */}
+          <Styled.Hamberger>=</Styled.Hamberger>
+          <Styled.MiddleLogo onClick={handleHome}>Logo</Styled.MiddleLogo>
+          {/* 미디어쿼리 */}
           <Styled.LoginBtn>
-            <span>LogIn / SingIn</span>
+            <NavLink to="/signin">로그인 | 회원가입</NavLink>
             <span>LogOut</span>
           </Styled.LoginBtn>
         </Styled.WidthLimitContainer>

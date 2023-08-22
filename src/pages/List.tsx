@@ -1,37 +1,89 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import supabase from '../supabase';
+
+const gender: string[] = ['전체', '여성', '남성'];
+const level: string[] = ['전체', '초급', '중급', '고급'];
+const isPossibleKorean: string[] = ['전체', '상', '중', '하'];
+const age: string[] = ['전체', '10대', '20대', '30대', '40대', '50대'];
+
+type FilterdObg = {
+  gender: string;
+  level: string;
+  isPossibleKorean: string;
+  age: string;
+  price: number;
+};
 
 const List = () => {
+  const [filterdObj, setFilterdObj] = useState<FilterdObg>({
+    gender: '전체',
+    level: '전체',
+    isPossibleKorean: '전체',
+    age: '전체',
+    price: 100000,
+  });
+
+  const handleFilterdObg = (item: string, categoty: string) => {
+    if (categoty === 'gender') {
+      setFilterdObj({ ...filterdObj, gender: item });
+    } else if (categoty === 'level') {
+      setFilterdObj({ ...filterdObj, level: item });
+    } else if (categoty === 'isPossibleKorean') {
+      setFilterdObj({ ...filterdObj, isPossibleKorean: item });
+    } else if (categoty === 'age') {
+      setFilterdObj({ ...filterdObj, age: item });
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      const { data, error } = await supabase.from('tutor_info').select('*');
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(filterdObj);
   return (
     <Container>
       <SelectBox>
         <InnerBox>
           <div>성별</div>
-          <button>전체</button>
-          <button>여성</button>
-          <button>남성</button>
+          {gender.map((item, index) => (
+            <button key={index} onClick={() => handleFilterdObg(item, 'gender')}>
+              {item}
+            </button>
+          ))}
         </InnerBox>
         <InnerBox>
           <div>난이도</div>
-          <button>전체</button>
-          <button>초급</button>
-          <button>중급</button>
-          <button>고급</button>
+          {level.map((item, index) => (
+            <button key={index} onClick={() => handleFilterdObg(item, 'level')}>
+              {item}
+            </button>
+          ))}
         </InnerBox>
         <InnerBox>
           <div> 한국어 가능</div>
-          <button>상</button>
-          <button>중</button>
-          <button>하</button>
+          {isPossibleKorean.map((item, index) => (
+            <button key={index} onClick={() => handleFilterdObg(item, 'isPossibleKorean')}>
+              {item}
+            </button>
+          ))}
         </InnerBox>
         <InnerBox>
           <div>연령대</div>
-          <button>전체</button>
-          <button>10대</button>
-          <button>20대</button>
-          <button>30대</button>
-          <button>40대</button>
-          <button>50대</button>
+          {age.map((item, index) => (
+            <button key={index} onClick={() => handleFilterdObg(item, 'age')}>
+              {' '}
+              {item}
+            </button>
+          ))}
         </InnerBox>
         <InnerPriceBox>
           <div>가격</div>
@@ -84,6 +136,7 @@ const SelectBox = styled.div`
   width: 100%;
   margin-top: 100px;
   height: auto;
+  border: 1px solid gray;
   /* background-color: aliceblue; */
 `;
 
