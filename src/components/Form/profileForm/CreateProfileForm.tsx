@@ -151,6 +151,8 @@ export default CreateProfileForm;
 
 // 임시 form 디자인
 const SForm = styled.form`
+  margin-top: 100px;
+
   display: flex;
   flex-direction: column;
   padding: 20px;

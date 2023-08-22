@@ -139,7 +139,9 @@ const SignUpForm = () => {
 };
 export default SignUpForm;
 
-const SContainer = styled.section``;
+const SContainer = styled.section`
+  margin-top: 100px;
+`;
 const SForm = styled.form`
   width: 400px;
   height: 500px;
