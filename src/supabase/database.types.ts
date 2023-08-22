@@ -1,4 +1,5 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+
 export interface Database {
   public: {
     Tables: {
@@ -28,7 +29,13 @@ export interface Database {
           {
             foreignKeyName: 'board_user_id_fkey';
             columns: ['user_id'];
-            referencedRelation: 'users';
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'board_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
             referencedColumns: ['id'];
           },
         ];
@@ -53,13 +60,25 @@ export interface Database {
           {
             foreignKeyName: 'like_liked_id_fkey';
             columns: ['liked_id'];
-            referencedRelation: 'users';
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'like_liked_id_fkey';
+            columns: ['liked_id'];
+            referencedRelation: 'most_review_tutor';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'like_user_id_fkey';
             columns: ['user_id'];
-            referencedRelation: 'users';
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'like_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
             referencedColumns: ['id'];
           },
         ];
@@ -148,13 +167,25 @@ export interface Database {
           {
             foreignKeyName: 'review_reviewed_id_fkey';
             columns: ['reviewed_id'];
-            referencedRelation: 'users';
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'review_reviewed_id_fkey';
+            columns: ['reviewed_id'];
+            referencedRelation: 'most_review_tutor';
             referencedColumns: ['id'];
           },
           {
             foreignKeyName: 'review_user_id_fkey';
             columns: ['user_id'];
-            referencedRelation: 'users';
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'review_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
             referencedColumns: ['id'];
           },
         ];
@@ -188,14 +219,34 @@ export interface Database {
           {
             foreignKeyName: 'tutor_info_user_id_fkey';
             columns: ['user_id'];
-            referencedRelation: 'users';
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'tutor_info_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
             referencedColumns: ['id'];
           },
         ];
       };
     };
     Views: {
-      [_ in never]: never;
+      most_review_tutor: {
+        Row: {
+          id: string | null;
+          review_count: number | null;
+          username: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'profiles_id_fkey';
+            columns: ['id'];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
     };
     Functions: {
       [_ in never]: never;
@@ -208,6 +259,7 @@ export interface Database {
     };
   };
 }
+
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 
 export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'class_info' | 'price'> & {

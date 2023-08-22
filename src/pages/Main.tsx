@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { getAllTutorCount, getTutors } from '../api/tutor';
+import { getAllTutorCount, getBoard, getTutorMostReview, getTutors } from '../api/tutor';
 import styled from 'styled-components';
 import { TTutorWithUser } from '../supabase/database.types';
 import { getAllReviewCount } from '../api/review';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
   const { isLoading, isError, data } = useQuery(['tutors'], () => getTutors());
@@ -67,7 +68,9 @@ const Main = () => {
                 <ReviewItemText>튜러랑 매칭 후 이용후기 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 </ReviewItemText>
                 <ReviewItemAuthor>박금별(25)</ReviewItemAuthor>
               </ReviewItemContent>
-              <ReviewItemImage src="https://picsum.photos/550/370?random=1"></ReviewItemImage>
+              <div>
+                <ReviewItemImage src="https://picsum.photos/550/370?random=1"></ReviewItemImage>
+              </div>
             </ReviewItem>
             <ReviewItem style={{ flexDirection: 'row-reverse' }}>
               <ReviewItemContent>
@@ -173,21 +176,24 @@ const ReviewItemAuthor = styled.span`
 `;
 
 const ReviewItemImage = styled.img`
-  height: 100%;
+  height: auto;
+  max-width: 100%;
 `;
 
 const TutorCard = ({ tutor }: { tutor: TTutorWithUser }) => {
   return (
     <TutorCardContainer key={tutor.id}>
-      <TutorCardImage src={tutor.profiles?.avatar_url ?? ''} alt={tutor.profiles?.username ?? 'profile image'} />
-      <TutorCardContent>
-        <TutorCardTitle>{tutor.profiles?.username}</TutorCardTitle>
-        {/* <p>지역1: {tutor.location_1}</p>
+      <Link to={`/detail/${tutor.profiles.id}`}>
+        <TutorCardImage src={tutor.profiles?.avatar_url ?? ''} alt={tutor.profiles?.username ?? 'profile image'} />
+        <TutorCardContent>
+          <TutorCardTitle>{tutor.profiles?.username}</TutorCardTitle>
+          {/* <p>지역1: {tutor.location_1}</p>
         <p>지역2: {tutor.location_2}</p> */}
-        <br />
-        {tutor.class_info}
-        <p>₩{tutor.price}~</p>
-      </TutorCardContent>
+          <br />
+          {tutor.class_info}
+          <p>₩{tutor.price}~</p>
+        </TutorCardContent>
+      </Link>
     </TutorCardContainer>
   );
 };
