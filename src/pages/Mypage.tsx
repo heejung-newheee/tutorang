@@ -1,10 +1,9 @@
-import React from 'react';
 import { UserInfo } from '../components';
 
 const Mypage = () => {
   return (
     <div>
-      <UserInfo />;
+      <UserInfo />
     </div>
   );
 };

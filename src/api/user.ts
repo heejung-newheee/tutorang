@@ -12,14 +12,14 @@ export const fetchLike = async ({ queryKey }: { queryKey: string[] }) => {
   return res.data;
 };
 
-export const fetchTutor = async ({ queryKey }: { queryKey: string[] }) => {
-  const [_, tutor] = queryKey;
-  const res = await supabase.from('tutor_info').select('*');
-  return res.data;
-};
-
 export const fetchReview = async ({ queryKey }: { queryKey: string[] }) => {
   const [_, review] = queryKey;
   const res = await supabase.from('review').select('*');
+  return res.data;
+};
+
+export const fetchTutor = async ({ queryKey }: { queryKey: string[] }) => {
+  const [_, tutor] = queryKey;
+  const res = await supabase.from('tutor_info').select('*');
   return res.data;
 };
