@@ -7,42 +7,28 @@ const level: string[] = ['전체', '초급', '중급', '고급'];
 const isPossibleKorean: string[] = ['전체', '상', '중', '하'];
 const age: string[] = ['전체', '10대', '20대', '30대', '40대', '50대'];
 
-type FilterdObg = {
-  gender: string;
-  level: string;
-  isPossibleKorean: string;
-  age: string;
-  price: number;
-};
-
 const List = () => {
-  const [filterdObj, setFilterdObj] = useState<FilterdObg>({
-    gender: '전체',
-    level: '전체',
-    isPossibleKorean: '전체',
-    age: '전체',
-    price: 100000,
-  });
+  const [filterdObj, setFilterdObj] = useState<any>({});
 
   const handleFilterdObg = (item: string, categoty: string) => {
     if (categoty === 'gender') {
-      setFilterdObj({ ...filterdObj, gender: item });
+      item === '전체' ? null : setFilterdObj({ ...filterdObj, gender: item });
     } else if (categoty === 'level') {
-      setFilterdObj({ ...filterdObj, level: item });
+      item === '전체' ? null : setFilterdObj({ ...filterdObj, level: item });
     } else if (categoty === 'isPossibleKorean') {
-      setFilterdObj({ ...filterdObj, isPossibleKorean: item });
+      item === '전체' ? null : setFilterdObj({ ...filterdObj, isPossibleKorean: item });
     } else if (categoty === 'age') {
-      setFilterdObj({ ...filterdObj, age: item });
+      item === '전체' ? null : setFilterdObj({ ...filterdObj, age: item });
     }
   };
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [filterdObj]);
 
   const getData = async () => {
     try {
-      const { data, error } = await supabase.from('tutor_info').select('*').range(0, 1).match({ user_id: 'fd32cf82-7866-4d4c-90fc-3539ef165556', price: 20000 });
+      const { data, error } = await supabase.from('tutor_info').select('*').range(0, 1).match(filterdObj);
       console.log(data);
       console.log(error);
     } catch (error) {
@@ -85,6 +71,10 @@ const List = () => {
               {item}
             </button>
           ))}
+        </InnerBox>
+        <InnerBox>
+          <div>지역</div>
+          <button>+</button>
         </InnerBox>
         <InnerPriceBox>
           <div>가격</div>
@@ -135,10 +125,10 @@ const Container = styled.div`
 
 const SelectBox = styled.div`
   width: 100%;
-  margin-top: 100px;
+  margin-top: 150px;
   height: auto;
-  border: 1px solid gray;
-  /* background-color: aliceblue; */
+  border-top: 10px solid rgb(237, 237, 237);
+  border-bottom: 10px solid rgb(237, 237, 237);
 `;
 
 const InnerBox = styled.div`
