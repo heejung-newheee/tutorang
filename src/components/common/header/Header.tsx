@@ -1,6 +1,6 @@
+import { NavLink, useNavigate } from 'react-router-dom';
+import supabase from '../../../supabase';
 import * as Styled from './Header.styled';
-import { useNavigate } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
 
 type HEADERMENU = { title: string; path: string }[];
 
@@ -14,6 +14,13 @@ const Header = () => {
 
   const handleHome = () => {
     navigate('/');
+  };
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) alert(error.message);
+    alert('로그아웃 되었습니다');
+    // 페이지 리로드가 필요하겠져?
   };
 
   return (
@@ -35,7 +42,7 @@ const Header = () => {
           {/* 미디어쿼리 */}
           <Styled.LoginBtn>
             <NavLink to="/signin">로그인 | 회원가입</NavLink>
-            <span>LogOut</span>
+            <span onClick={handleSignOut}>LogOut</span>
           </Styled.LoginBtn>
         </Styled.WidthLimitContainer>
       </Styled.NavContainer>
