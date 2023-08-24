@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchData, fetchLike, fetchTutor, fetchReview } from '../api/user';
 import { useParams } from 'react-router-dom';
-import { Alert, Report } from '../components';
-import { useModal, useReviewAverage } from '../hooks';
+import { useReviewAverage } from '../hooks';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../redux/modules';
 
 const Detail = () => {
   const { id } = useParams();
@@ -19,7 +20,12 @@ const Detail = () => {
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
   // 모달
-  const { Modal, isOpen, openModal, closeModal } = useModal();
+  // const { Modal, isOpen, openModal, closeModal } = useModal();
+  // redux type
+  const dispatch = useDispatch();
+  const handleOpen = () => {
+    dispatch(openModal('report'));
+  };
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
 
@@ -56,10 +62,11 @@ const Detail = () => {
           );
         })}
 
-        <Modal isOpen={isOpen} closeModal={closeModal}>
+        {/* <Modal isOpen={isOpen} closeModal={closeModal}>
           <Report closeModal={closeModal} />
         </Modal>
-        <button onClick={openModal}>신고하기</button>
+        <button onClick={openModal}>신고하기</button> */}
+        <button onClick={handleOpen}>신고하기</button>
 
         {/* <div>튜터의 스킬/장점/성격</div> */}
       </section>
