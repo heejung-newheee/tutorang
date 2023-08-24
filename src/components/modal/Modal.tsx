@@ -16,6 +16,7 @@ const Modal = ({ children, isOpen, closeModal }: ModalProps) => {
 
   const handleClose = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
+    // scrim 영역 클릭시 모달 닫히는 걸 원하지 않으실 경우 closModal()을 삭제해주세요.
     closeModal();
   };
 
