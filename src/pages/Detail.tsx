@@ -3,6 +3,9 @@ import { fetchData, fetchLike, fetchTutor, fetchReview } from '../api/user';
 import { useParams } from 'react-router-dom';
 import { Alert, Report } from '../components';
 import { useModal, useReviewAverage } from '../hooks';
+import { matchingRequest } from '../api/match';
+import { RootState } from '../redux/config/configStore';
+import { useSelector } from 'react-redux';
 
 const Detail = () => {
   const { id } = useParams();
@@ -18,6 +21,10 @@ const Detail = () => {
   const reviewRatings = filteredReview?.map((review) => review.rating);
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
+  const loginUser = useSelector((state: RootState) => state.user.user);
+  console.log(filteredUser);
+  console.log('리덕스 로그인사용자', loginUser);
+
   // 모달
   const { Modal, isOpen, openModal, closeModal } = useModal();
 
@@ -29,7 +36,6 @@ const Detail = () => {
   if (!tutor || !profiles || !like || profilesError || likeError || tutorError || reviewError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
-
   return (
     <>
       {/* 튜터데이터 */}
@@ -55,6 +61,13 @@ const Detail = () => {
             </div>
           );
         })}
+        <button
+          onClick={() => {
+            matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
+          }}
+        >
+          매칭 요청 버튼 !!!!!!!!!!
+        </button>
 
         <Modal isOpen={isOpen} closeModal={closeModal}>
           <Report closeModal={closeModal} />

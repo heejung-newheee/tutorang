@@ -11,6 +11,7 @@ const StudentInfo = () => {
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
   const { data: board, isLoading: boardLoading, isError: boardError } = useQuery(['board'], getBoard);
   const user = useSelector((state: RootState) => state.user.user);
+  console.log('studentInfo 로그인사용자', user);
 
   if (likeLoading || tutorLoading || boardLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
@@ -51,8 +52,9 @@ const StudentInfo = () => {
           .map((item: Tables<'board'>) => {
             return (
               <S.TutorItem key={item.id}>
-                {item.title}
-                {item.content}
+                <div>{item.title}</div>
+                <div>{item.content}</div>
+                <div>{item.created_at.split('T')[0]}</div>
               </S.TutorItem>
             );
           })}

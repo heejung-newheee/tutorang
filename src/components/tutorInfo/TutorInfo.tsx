@@ -9,6 +9,7 @@ const TutorInfo = () => {
   const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], fetchReview);
 
   const user = useSelector((state: RootState) => state.user.user);
+  console.log('tutorInfo 로그인사용자', user);
 
   const reviewData = review?.filter((item) => {
     return user!.id === item.reviewed_id;

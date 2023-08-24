@@ -1,6 +1,12 @@
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import * as Styled from './Header.styled';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import supabase from '../../../supabase';
+import { setUser } from '../../../redux/modules/user';
+import { fetchData } from '../../../api/user';
 
 type HEADERMENU = { title: string; path: string }[];
 
@@ -10,7 +16,31 @@ const HeaderMenu: HEADERMENU = [
 ];
 
 const Header = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
+  const [email, setEmail] = useState<string>();
+
+  // const dd = supabase.auth.onAuthStateChange((event, session) => {
+  //   console.log(event, session);
+  // });
+  const getUser = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    setEmail(user?.email);
+  };
+  const user = allUser?.find((item) => {
+    return item.email === email;
+  });
+
+  useEffect(() => {
+    getUser();
+    if (user) {
+      dispatch(setUser(user));
+    }
+  }, [user, dispatch]);
 
   const handleHome = () => {
     navigate('/');

@@ -5,36 +5,20 @@ import * as S from './UserInfo.styled';
 import supabase from '../../supabase';
 import TutorInfo from '../tutorInfo/TutorInfo';
 import StudentInfo from '../studentInfo/StudentInfo';
-
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../../redux/modules/user';
+import { RootState } from '../../redux/config/configStore';
 
 const UserInfo = () => {
-  const dispatch = useDispatch();
-  const { data, isLoading, isError } = useQuery(['profiles'], fetchData);
-  const [email, setEmail] = useState<string>();
+  // const { data, isLoading, isError } = useQuery(['profiles'], fetchData);
 
-  const getUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    setEmail(user?.email);
-  };
-  const user = data?.find((item) => {
-    return item.email === email;
-  });
+  const user = useSelector((state: RootState) => state.user.user);
+  console.log('UserInfo 로그인사용자', user);
 
-  useEffect(() => {
-    getUser();
-    if (user) {
-      dispatch(setUser(user));
-    }
-  }, [user, dispatch]);
-
-  if (isLoading) {
-    return <div>로딩중~~~~~~~~~~~</div>;
-  }
-  if (isError || !user) {
+  // if (isLoading) {
+  //   return <div>로딩중~~~~~~~~~~~</div>;
+  // }
+  if (!user) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
 
