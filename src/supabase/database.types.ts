@@ -1,4 +1,5 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+
 export interface Database {
   public: {
     Tables: {
@@ -39,6 +40,39 @@ export interface Database {
           },
         ];
       };
+      city: {
+        Row: {
+          id: number;
+          sido: string;
+          sigungu: string | null;
+        };
+        Insert: {
+          id?: number;
+          sido: string;
+          sigungu?: string | null;
+        };
+        Update: {
+          id?: number;
+          sido?: string;
+          sigungu?: string | null;
+        };
+        Relationships: [];
+      };
+      city2: {
+        Row: {
+          city: Json | null;
+          id: number;
+        };
+        Insert: {
+          city?: Json | null;
+          id?: number;
+        };
+        Update: {
+          city?: Json | null;
+          id?: number;
+        };
+        Relationships: [];
+      };
       like: {
         Row: {
           id: number;
@@ -76,6 +110,58 @@ export interface Database {
           },
           {
             foreignKeyName: 'like_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      matching: {
+        Row: {
+          created_at: string;
+          id: string;
+          matching: boolean | null;
+          status: string | null;
+          tutor_id: string | null;
+          user_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          matching?: boolean | null;
+          status?: string | null;
+          tutor_id?: string | null;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          matching?: boolean | null;
+          status?: string | null;
+          tutor_id?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'matching_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'matching_user_id_fkey';
             columns: ['user_id'];
             referencedRelation: 'most_review_tutor';
             referencedColumns: ['id'];
@@ -195,6 +281,7 @@ export interface Database {
           created_at: string;
           id: number;
           price: number | null;
+          tutor_name: string | null;
           update: string | null;
           user_id: string | null;
         };
@@ -203,6 +290,7 @@ export interface Database {
           created_at?: string;
           id?: number;
           price?: number | null;
+          tutor_name?: string | null;
           update?: string | null;
           user_id?: string | null;
         };
@@ -211,6 +299,7 @@ export interface Database {
           created_at?: string;
           id?: number;
           price?: number | null;
+          tutor_name?: string | null;
           update?: string | null;
           user_id?: string | null;
         };
@@ -258,6 +347,7 @@ export interface Database {
     };
   };
 }
+
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 
 export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'class_info' | 'price'> & {

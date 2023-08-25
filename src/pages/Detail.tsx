@@ -1,18 +1,20 @@
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/config/configStore';
 import { useQuery } from '@tanstack/react-query';
-import { fetchData, fetchLike, fetchTutor, fetchReview } from '../api/user';
 import { useParams } from 'react-router-dom';
 import { Alert, Report } from '../components';
 import { useModal, useReviewAverage } from '../hooks';
 import { matchingRequest } from '../api/match';
-import { RootState } from '../redux/config/configStore';
-import { useSelector } from 'react-redux';
+import { fetchData, fetchReview } from '../api/user';
+import { fetchLike } from '../api/like';
+import { fetchTutorAll } from '../api/tutor';
 
 const Detail = () => {
   const { id } = useParams();
 
   const { data: profiles, isLoading: profilesLoading, isError: profilesError } = useQuery(['profiles'], fetchData);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
-  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor'], fetchTutor);
+  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor'], fetchTutorAll);
   const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], fetchReview);
 
   const filteredUser = profiles?.filter((profiles) => profiles.id === id);
@@ -62,8 +64,14 @@ const Detail = () => {
           );
         })}
         <button
-          onClick={() => {
-            matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
+          onClick={async () => {
+            try {
+              await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
+              alert('신청완료');
+            } catch (error) {
+              console.error('매칭 요청 중 오류 발생:', error);
+              alert('매칭 요청 중 오류가 발생했습니다.');
+            }
           }}
         >
           매칭 요청 버튼 !!!!!!!!!!

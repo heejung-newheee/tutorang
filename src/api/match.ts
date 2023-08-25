@@ -1,9 +1,12 @@
 import supabase from '../supabase';
 
-export const matchingRequest = async ({ tutorId, userId }: { tutorId: string; userId: string }) => {
-  // 튜터 아이디를 인자로 받음! -> 요청 받는 사람 tutor_id : id
-  console.log(tutorId, userId);
+export const getMatchData = async () => {
+  const { data: matching, error } = await supabase.from('matching').select();
+  if (error) throw error;
+  return matching;
+};
 
+export const matchingRequest = async ({ tutorId, userId }: { tutorId: string; userId: string }) => {
   const { error } = await supabase
     .from('matching')
     .insert([
@@ -11,36 +14,24 @@ export const matchingRequest = async ({ tutorId, userId }: { tutorId: string; us
         user_id: userId,
         tutor_id: tutorId,
         matching: false,
-        process: 'request',
+        status: 'request',
       },
     ])
     .select();
   if (error) throw error;
+};
 
-  // const { data, error } = await supabase
-  // .from('matching')
-  // .update({ other_column: 'otherValue' })
-  // .match({ tutor_id: id });
-  // .select('process')
+export const matchingCancel = async (id: string) => {
+  const { error } = await supabase.from('matching').delete().eq('id', id);
+  if (error) throw error;
+};
 
-  // const { data: oldContents, error: olderror } = await supabase
-  //   .from('pins')
-  //   .select('contents')
-  //   .match({ plan_id: planId, date });
-  // const Arr = [];
-  // if (oldContents != null) {
-  //   Arr.push(...oldContents[0].contents, newContents);
-  // }
-  // const { data, error } = await supabase
-  //   .from('pins')
-  //   .update({ contents: Arr as Json[] })
-  //   .match({ plan_id: planId, date })
-  //   .select();
-  // if (data?.length !== 0) {
-  //   console.log('pins contents 추가됨', data);
-  // }
-  // if (error != null || olderror != null) {
-  //   console.log('olderror', olderror);
-  //   console.log(error);
-  // }
+export const matchingAccept = async (id: string) => {
+  const { data, error } = await supabase.from('matching').update({ status: 'complete' }).eq('id', id).select();
+  if (error) throw error;
+};
+
+export const matchingReject = async (id: string) => {
+  const { data, error } = await supabase.from('matching').update({ status: 'reject' }).eq('id', id).select();
+  if (error) throw error;
 };

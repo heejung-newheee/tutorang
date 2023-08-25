@@ -7,6 +7,8 @@ import { useQuery } from '@tanstack/react-query';
 import supabase from '../../../supabase';
 import { setUser } from '../../../redux/modules/user';
 import { fetchData } from '../../../api/user';
+import { getMatchData } from '../../../api/match';
+import { matchingList } from '../../../redux/modules/matching';
 
 type HEADERMENU = { title: string; path: string }[];
 
@@ -20,11 +22,12 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
+
+  const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
+  console.log('matchData', matchData);
+
   const [email, setEmail] = useState<string>();
 
-  // const dd = supabase.auth.onAuthStateChange((event, session) => {
-  //   console.log(event, session);
-  // });
   const getUser = async () => {
     const {
       data: { user },
@@ -40,12 +43,21 @@ const Header = () => {
     if (user) {
       dispatch(setUser(user));
     }
+    if (matchData) {
+      dispatch(matchingList(matchData));
+    }
   }, [user, dispatch]);
 
   const handleHome = () => {
     navigate('/');
   };
 
+  if (isLoading) {
+    return <div>로딩중~~~~~~~~~~~스피너~~</div>;
+  }
+  if (isError) {
+    return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
+  }
   return (
     <>
       <Styled.NavContainer>

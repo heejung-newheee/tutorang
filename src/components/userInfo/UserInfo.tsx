@@ -1,23 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchData } from '../../api/user';
 import * as S from './UserInfo.styled';
-import supabase from '../../supabase';
 import TutorInfo from '../tutorInfo/TutorInfo';
 import StudentInfo from '../studentInfo/StudentInfo';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../../redux/modules/user';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
+import { getMatchData } from '../../api/match';
+import { useQuery } from '@tanstack/react-query';
 
 const UserInfo = () => {
-  // const { data, isLoading, isError } = useQuery(['profiles'], fetchData);
-
   const user = useSelector((state: RootState) => state.user.user);
+  const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
   console.log('UserInfo 로그인사용자', user);
-
-  // if (isLoading) {
-  //   return <div>로딩중~~~~~~~~~~~</div>;
-  // }
+  console.log('matchData', matchData);
   if (!user) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
@@ -52,9 +45,14 @@ const UserInfo = () => {
             <p>X개</p>
           </div>
         </S.StudyInfoBox>
-
-        <TutorInfo />
-        <StudentInfo />
+        {matchData && matchData.length > 0 ? (
+          <>
+            <TutorInfo match={matchData[0]} />
+            <StudentInfo match={matchData[0]} />{' '}
+          </>
+        ) : (
+          <div>매칭 데이터가 없습니다.</div>
+        )}
       </S.MypageContainer>
     </>
   );
