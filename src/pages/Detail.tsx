@@ -8,10 +8,19 @@ import { fetchData, fetchReview } from '../api/user';
 import { fetchLike } from '../api/like';
 import { fetchTutorAll } from '../api/tutor';
 import { useDispatch } from 'react-redux';
-import { openModal } from '../redux/modules';
+import { openModal, setTargetId } from '../redux/modules';
+import { useEffect } from 'react';
 
 const Detail = () => {
+  const dispatch = useDispatch();
   const { id } = useParams();
+
+  // newReview에 사용할 targeId 업데이트
+  useEffect(() => {
+    if (id) {
+      dispatch(setTargetId(id));
+    }
+  }, [id]);
 
   const { data: profiles, isLoading: profilesLoading, isError: profilesError } = useQuery(['profiles'], fetchData);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
@@ -29,11 +38,11 @@ const Detail = () => {
   console.log('리덕스 로그인사용자', loginUser);
 
   // 모달
-  // const { Modal, isOpen, openModal, closeModal } = useModal();
-  // redux type
-  const dispatch = useDispatch();
   const handleOpen = () => {
     dispatch(openModal('report'));
+  };
+  const addReview = () => {
+    dispatch(openModal('review'));
   };
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
@@ -83,10 +92,6 @@ const Detail = () => {
           매칭 요청 버튼 !!!!!!!!!!
         </button>
 
-        {/* <Modal isOpen={isOpen} closeModal={closeModal}>
-          <Report closeModal={closeModal} />
-        </Modal>
-        <button onClick={openModal}>신고하기</button> */}
         <button onClick={handleOpen}>신고하기</button>
 
         {/* <div>튜터의 스킬/장점/성격</div> */}
@@ -103,7 +108,10 @@ const Detail = () => {
 
       {/* 튜터 리뷰 */}
       <section>
-        <h4>리뷰</h4>
+        <h4>
+          리뷰 <span>{filteredReview?.length}</span>
+        </h4>
+        <button onClick={addReview}>리뷰 남기기</button>
         <div>
           {filteredReview?.map((review) => {
             return (

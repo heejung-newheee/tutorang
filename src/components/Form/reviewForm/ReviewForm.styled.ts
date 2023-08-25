@@ -67,3 +67,7 @@ export const ButtonWrapper = styled.div`
     height: 80px;
   }
 `;
+
+export const StarList = styled.ul`
+  display: flex;
+`;
