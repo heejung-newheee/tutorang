@@ -4,7 +4,7 @@ import { ColorKey } from '../../style/theme/colors';
 
 type ButtonProps = {
   children: ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   variant: 'solid' | 'outline' | 'text' | 'textIcon';
   color: ColorKey;
   size: 'Large' | 'Medium' | 'Small';
