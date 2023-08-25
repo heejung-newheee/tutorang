@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/config/configStore';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useReviewAverage } from '../hooks';
 import { matchingRequest } from '../api/match';
@@ -10,6 +10,7 @@ import { fetchTutorAll } from '../api/tutor';
 import { useDispatch } from 'react-redux';
 import { openModal, setTargetId } from '../redux/modules';
 import { useEffect } from 'react';
+import { reviewDelete } from '../api/review';
 
 const Detail = () => {
   const dispatch = useDispatch();
@@ -29,13 +30,20 @@ const Detail = () => {
 
   const filteredUser = profiles?.filter((profiles) => profiles.id === id);
   const filteredTutor = tutor?.filter((tutor) => tutor.user_id === id);
-  const filteredReview = review?.filter((review) => review.user_id === id);
+  const filteredReview = review?.filter((review) => review.reviewed_id === id);
   const reviewRatings = filteredReview?.map((review) => review.rating);
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log(filteredUser);
   console.log('리덕스 로그인사용자', loginUser);
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(reviewDelete, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['review']);
+    },
+  });
 
   // 모달
   const handleOpen = () => {
@@ -43,6 +51,11 @@ const Detail = () => {
   };
   const addReview = () => {
     dispatch(openModal('review'));
+  };
+
+  // 리뷰 Delete
+  const handleReviewDelete = (id: number) => {
+    mutation.mutate(id);
   };
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
@@ -112,16 +125,29 @@ const Detail = () => {
           리뷰 <span>{filteredReview?.length}</span>
         </h4>
         <button onClick={addReview}>리뷰 남기기</button>
-        <div>
+        <ul>
           {filteredReview?.map((review) => {
             return (
-              <div key={review.id}>
+              <li key={review.id}>
                 <p>{review.title}</p>
                 <p>{review.content}</p>
-              </div>
+
+                {loginUser?.id === review.user_id ? (
+                  <div>
+                    <button>수정</button>
+                    <button
+                      onClick={() => {
+                        handleReviewDelete(review.id);
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                ) : null}
+              </li>
             );
           })}
-        </div>
+        </ul>
       </section>
     </>
   );

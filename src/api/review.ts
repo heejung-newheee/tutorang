@@ -7,7 +7,13 @@ export const getAllReviewCount = async () => {
   return count;
 };
 
+/** review create */
 export const reviewRequest = async (newReview: reviews) => {
   const { error } = await supabase.from('review').insert(newReview).select();
+  if (error) throw error;
+};
+
+export const reviewDelete = async (id: number) => {
+  const { error } = await supabase.from('review').delete().eq('id', id).select();
   if (error) throw error;
 };
