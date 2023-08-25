@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Alert, Report } from '../components';
-import { useModal, useReviewAverage } from '../hooks';
+import { useReviewAverage } from '../hooks';
 import { matchingRequest } from '../api/match';
 import { fetchData, fetchReview } from '../api/user';
 import { fetchLike } from '../api/like';
