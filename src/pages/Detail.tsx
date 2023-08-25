@@ -1,11 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchData, fetchLike, fetchTutor, fetchReview } from '../api/user';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Alert, Report } from '../components';
 import { useModal, useReviewAverage } from '../hooks';
+import { useEffect, useState } from 'react';
+import supabase from '../supabase';
+import { Session } from '@supabase/supabase-js';
+import sendbird from '../sendbird';
+import { GroupChannel, GroupChannelCreateParams } from '@sendbird/chat/groupChannel';
 
 const Detail = () => {
+  const [isLoading, setLoading] = useState(true);
+  const [session, setSession] = useState<Session | null>(null);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const { data: profiles, isLoading: profilesLoading, isError: profilesError } = useQuery(['profiles'], fetchData);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
@@ -18,12 +26,48 @@ const Detail = () => {
   const reviewRatings = filteredReview?.map((review) => review.rating);
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
+  const handleStartChat = async (targetId: string) => {
+    let user;
+    if (!(targetId && session)) return;
+    try {
+      user = await sendbird.connect(session.user.id);
+    } catch (err) {
+      console.error(err);
+    }
+    if (!user) return;
+    const params: GroupChannelCreateParams = {
+      invitedUserIds: [user.userId, targetId],
+      operatorUserIds: [user.userId, targetId],
+      isDistinct: true,
+    };
+    const channel: GroupChannel = await sendbird.groupChannel.createChannel(params);
+    try {
+      await sendbird.disconnect();
+    } catch (err) {
+      console.error(err);
+    }
+    if (channel) {
+      navigate(`/chat?channel_url=${channel.url}`);
+    }
+  };
+
   // 모달
   const { Modal, isOpen, openModal, closeModal } = useModal();
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
 
-  if (profilesLoading || likeLoading || tutorLoading || reviewLoading) {
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
+
+  if (profilesLoading || likeLoading || tutorLoading || reviewLoading || isLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
   }
   if (!tutor || !profiles || !like || profilesError || likeError || tutorError || reviewError) {
@@ -40,6 +84,7 @@ const Detail = () => {
               <div>
                 <img src={`${user.avatar_url}`} alt="프로필 이미지" />
                 <span>{user.username}</span>
+                {session && <button onClick={() => handleStartChat(user.id)}>대화시작하기</button>}
               </div>
               <div>
                 활동 지역 : {user.location1} | {user.location2}
