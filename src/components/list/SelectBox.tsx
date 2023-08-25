@@ -1,25 +1,28 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import { gender, level, isPossibleKorean, age } from './MobileModal';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { gender, level, isPossibleKorean, age, price } from './MobileModal';
 
 const obj: any = {
   gender,
   level,
   isPossibleKorean,
   age,
+  price,
 };
 
 type Props = {
   handleFilterdObg: (item: string, category: string) => void;
-  checkedcity: string;
-  checkedGunGu: string;
   openModal: () => void;
-  selectedArr: string[];
+  selectedArr: string[][];
   filterdObj: any;
   setFilterdObj: any;
+  genderArr: string[];
+  language_levelArr: string[];
+  setGenderArr: Dispatch<SetStateAction<string[]>>;
+  setSelectedArr: Dispatch<SetStateAction<any[]>>;
 };
 
-const SelectBox = ({ handleFilterdObg, openModal, selectedArr, filterdObj, setFilterdObj }: Props) => {
+const SelectBox = ({ handleFilterdObg, openModal, selectedArr, filterdObj, setFilterdObj, genderArr, setGenderArr, language_levelArr, setSelectedArr }: Props) => {
   const [filterdMenu, setfilterdMenu] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,58 +31,69 @@ const SelectBox = ({ handleFilterdObg, openModal, selectedArr, filterdObj, setFi
     setIsOpen((pre) => !pre);
   };
 
-  const DeleteFilterBar = (item: string) => {
-    const keysOfFilter = Object.keys(filterdObj);
+  const DeleteFilterBar = (item: string[]) => {
+    // if (genderArr.includes(item)) {
+    //   setGenderArr((pre) => pre.filter((i) => i !== item));
+    // }
+    console.log(
+      selectedArr.filter((i) => i[1] !== item[1]),
+      item,
+      'item',
+    );
 
-    let key = keysOfFilter.find((key) => filterdObj[key] === item);
-
-    switch (key) {
-      //성별
-      case 'gender':
-        delete filterdObj.gender;
-        setFilterdObj((pre: any) => (pre ? { ...pre } : null));
-        break;
-      //난이도
-      case 'level':
-        delete filterdObj.level;
-        setFilterdObj((pre: any) => (pre ? { ...pre } : null));
-        break;
-      //한국어 가능
-      case 'isPossibleKorean':
-        delete filterdObj.isPossibleKorean;
-        setFilterdObj((pre: any) => (pre ? { ...pre } : null));
-        break;
-      //나이
-      case 'age':
-        delete filterdObj.age;
-        setFilterdObj((pre: any) => (pre ? { ...pre } : null));
-        break;
-      //지역1
-      case 'location1':
-        delete filterdObj.location1;
-        delete filterdObj.location2;
-        setFilterdObj((pre: any) => (pre ? { ...pre } : null));
-        break;
-      //지역2
-      case 'location2':
-        delete filterdObj.location2;
-        setFilterdObj((pre: any) => (pre ? { ...pre } : null));
-        break;
-      //가격
-      case 'price':
-        delete filterdObj.price;
-        setFilterdObj((pre: any) => (pre ? { ...pre } : null));
-        break;
-
-      default:
-        break;
+    if (genderArr.includes(item[1])) {
+      setGenderArr((pre) => pre.filter((i) => i !== item[1]));
+      setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
     }
-    return setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+
+    // const keysOfFilter = Object.keys(filterdObj);
+    // let key = keysOfFilter.find((key) => filterdObj[key] === item);
+    // switch (key) {
+    //   //성별
+    //   case 'gender':
+    //     delete filterdObj.gender;
+    //     setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+    //     break;
+    //   //난이도
+    //   case 'level':
+    //     delete filterdObj.level;
+    //     setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+    //     break;
+    //   //한국어 가능
+    //   case 'isPossibleKorean':
+    //     delete filterdObj.isPossibleKorean;
+    //     setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+    //     break;
+    //   //나이
+    //   case 'age':
+    //     delete filterdObj.age;
+    //     setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+    //     break;
+    //   //지역1
+    //   case 'location1':
+    //     delete filterdObj.location1;
+    //     delete filterdObj.location2;
+    //     setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+    //     break;
+    //   //지역2
+    //   case 'location2':
+    //     delete filterdObj.location2;
+    //     setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+    //     break;
+    //   //가격
+    //   case 'price':
+    //     delete filterdObj.price;
+    //     setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+    //     break;
+    //   default:
+    //     break;
+    // }
+    // return setFilterdObj((pre: any) => (pre ? { ...pre } : null));
   };
   return (
     <>
       <FilterBox>
-        <InnerBox $isIn={filterdObj['gender'] ? true : false} onClick={() => handleHiddenBox('gender')}>
+        <InnerBox $isIn={!genderArr.includes('전체') && genderArr.length > 0 ? true : false} onClick={() => handleHiddenBox('gender')}>
           성별
           {isOpen === true && filterdMenu === 'gender' ? (
             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
@@ -91,7 +105,7 @@ const SelectBox = ({ handleFilterdObg, openModal, selectedArr, filterdObj, setFi
             </svg>
           )}
         </InnerBox>
-        <InnerBox $isIn={filterdObj['level'] ? true : false} onClick={() => handleHiddenBox('level')}>
+        <InnerBox $isIn={!language_levelArr.includes('전체') && language_levelArr.length > 0 ? true : false} onClick={() => handleHiddenBox('level')}>
           난이도
           {isOpen === true && filterdMenu === 'level' ? (
             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
@@ -145,21 +159,32 @@ const SelectBox = ({ handleFilterdObg, openModal, selectedArr, filterdObj, setFi
         </InnerBox>
       </FilterBox>
 
-      {isOpen ? (
+      {isOpen && filterdMenu !== 'price' ? (
         <InnerHidden>
           {obj[filterdMenu]?.map((item: string, index: number) => (
             <div key={index} onClick={() => handleFilterdObg(item, filterdMenu)}>
               ㅁ{item}
             </div>
           ))}
-          {filterdMenu === 'price' ? <div>asdasd</div> : null}
+          {/* {filterdMenu === 'price' ? <div>asdasd</div> : null} */}
+        </InnerHidden>
+      ) : null}
+
+      {isOpen && filterdMenu === 'price' ? (
+        <InnerHidden>
+          {obj[filterdMenu]?.map((item: string, index: number) => (
+            <div key={index} onClick={() => handleFilterdObg(item, filterdMenu)}>
+              ㅁ{'asdsad'}
+            </div>
+          ))}
+          {/* {filterdMenu === 'price' ? <div>asdasd</div> : null} */}
         </InnerHidden>
       ) : null}
 
       {selectedArr.length > 0 ? (
         <FilterBar>
           {selectedArr.map((item) => (
-            <div onClick={() => DeleteFilterBar(item)}> {item}X</div>
+            <div onClick={() => DeleteFilterBar(item)}> {item[1]}X</div>
           ))}
         </FilterBar>
       ) : null}
