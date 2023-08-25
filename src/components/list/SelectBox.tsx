@@ -34,23 +34,40 @@ const SelectBox = ({ handleFilterdObg, openModal, selectedArr, filterdObj, setFi
     let key = keysOfFilter.find((key) => filterdObj[key] === item);
 
     switch (key) {
+      //성별
       case 'gender':
         delete filterdObj.gender;
         setFilterdObj((pre: any) => (pre ? { ...pre } : null));
         break;
-
+      //난이도
       case 'level':
         delete filterdObj.level;
         setFilterdObj((pre: any) => (pre ? { ...pre } : null));
         break;
-
+      //한국어 가능
       case 'isPossibleKorean':
         delete filterdObj.isPossibleKorean;
         setFilterdObj((pre: any) => (pre ? { ...pre } : null));
         break;
-
+      //나이
       case 'age':
         delete filterdObj.age;
+        setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+        break;
+      //지역1
+      case 'location1':
+        delete filterdObj.location1;
+        delete filterdObj.location2;
+        setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+        break;
+      //지역2
+      case 'location2':
+        delete filterdObj.location2;
+        setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+        break;
+      //가격
+      case 'price':
+        delete filterdObj.price;
         setFilterdObj((pre: any) => (pre ? { ...pre } : null));
         break;
 

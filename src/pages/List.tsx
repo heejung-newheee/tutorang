@@ -90,8 +90,11 @@ const List = () => {
 
   const getData = async () => {
     try {
-      // const { data, error } = await supabase.from('tutor_info').select('*').range(0, 1).match(filterdObj);
-      // console.log(data);
+      // .range(0, 1)
+      // const { data, error } = await supabase.from('profiles').select('*').match(filterdObj);
+      const { data, error } = await supabase.from('profiles').select('*').in('location1', ['송파구', '서초구']);
+
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
