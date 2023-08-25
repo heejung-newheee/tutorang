@@ -7,54 +7,72 @@ import SelectBox from '../components/list/SelectBox';
 import CityModal from '../components/list/CityModal';
 
 const List = () => {
+  //유저가 선택한 목록{} - 검색 api 사용
   const [filterdObj, setFilterdObj] = useState<any>({});
   const { Modal, isOpen, openModal, closeModal } = useModal();
+  //시/군/구
   const [checkedcity, setCheckedCity] = useState<any>('전체');
   const [checkedGunGu, setCheckedGunGu] = useState<string>('');
+  //모달 시/군/구 드롭다운
   const [isDropdown, setisDropdown] = useState(false);
 
-  //
+  //유저가 선택한 목록[]
   const [selectedArr, setSelectedArr] = useState<string[]>([]);
 
   const handleFilterdObg = (item: string, categoty: string) => {
-    //성별
-    if (categoty === 'gender') {
-      if (item === '전체') {
-        delete filterdObj.gender;
-        return setFilterdObj(filterdObj);
-      } else {
-        return setFilterdObj({ ...filterdObj, gender: item });
-      }
-    }
+    switch (categoty) {
+      //성별
+      case 'gender':
+        if (item === '전체') {
+          delete filterdObj.gender;
+          setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+        } else {
+          setFilterdObj({ ...filterdObj, gender: item });
+        }
+        break;
 
-    //난이도
-    if (categoty === 'level') {
-      if (item === '전체') {
-        delete filterdObj.level;
-        return setFilterdObj(filterdObj);
-      } else {
-        return setFilterdObj({ ...filterdObj, level: item });
-      }
-    }
+      //난이도
+      case 'level':
+        if (item === '전체') {
+          delete filterdObj.level;
+          setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+        } else {
+          setFilterdObj({ ...filterdObj, level: item });
+        }
+        break;
 
-    //한국어 가능
-    if (categoty === 'isPossibleKorean') {
-      if (item === '전체') {
-        delete filterdObj.isPossibleKorean;
-        return setFilterdObj(filterdObj);
-      } else {
-        return setFilterdObj({ ...filterdObj, isPossibleKorean: item });
-      }
-    }
+      //한국어 가능
+      case 'isPossibleKorean':
+        if (item === '전체') {
+          delete filterdObj.isPossibleKorean;
+          setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+        } else {
+          setFilterdObj({ ...filterdObj, isPossibleKorean: item });
+        }
+        break;
 
-    //나이
-    if (categoty === 'age') {
-      if (item === '전체') {
-        delete filterdObj.age;
-        return setFilterdObj(filterdObj);
-      } else {
-        return setFilterdObj({ ...filterdObj, age: item });
-      }
+      //나이
+      case 'age':
+        if (item === '전체') {
+          delete filterdObj.age;
+          setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+        } else {
+          setFilterdObj({ ...filterdObj, age: item });
+        }
+        break;
+
+      //가격
+      case 'price':
+        if (item === '전체') {
+          delete filterdObj.price;
+          setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+        } else {
+          setFilterdObj({ ...filterdObj, price: item });
+        }
+        break;
+
+      default:
+        break;
     }
   };
 
@@ -110,7 +128,6 @@ const List = () => {
       //전체면 필터객체에서 삭제
       setFilterdObj((prevState: any) => {
         if (prevState) {
-          console.log('sfsdf');
           delete prevState.location2;
           return prevState;
         }
@@ -125,7 +142,7 @@ const List = () => {
   return (
     <Container>
       {/* 필터박스 */}
-      <SelectBox handleFilterdObg={handleFilterdObg} checkedcity={checkedcity} checkedGunGu={checkedGunGu} openModal={openModal} selectedArr={selectedArr} filterdObj={filterdObj} />
+      <SelectBox handleFilterdObg={handleFilterdObg} checkedcity={checkedcity} checkedGunGu={checkedGunGu} openModal={openModal} selectedArr={selectedArr} filterdObj={filterdObj} setFilterdObj={setFilterdObj} />
       {/* 강사 리스트 */}
       <TutorList>
         <TutorListCompo />
@@ -186,56 +203,4 @@ const InnerModal = styled.div`
   @media only screen and (max-width: 590px) {
     align-items: end;
   }
-`;
-
-const InnerModalBox = styled.div`
-  width: 60%;
-  height: 80%;
-  background-color: salmon;
-  overflow-y: scroll;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  & > input {
-    color: salmon;
-  }
-
-  @media only screen and (max-width: 590px) {
-    width: 100%;
-    height: 70%;
-  }
-`;
-
-const SiBox = styled.div`
-  @media only screen and (max-width: 890px) {
-    display: none;
-  }
-`;
-
-const SiGunGuCheckBox = styled.div`
-  display: none;
-
-  & > div {
-    padding: 10px 15px;
-    border: 1px solid #37507d;
-    border-radius: 7px;
-    margin-bottom: 10px;
-  }
-
-  @media only screen and (max-width: 890px) {
-    display: block;
-  }
-`;
-
-const HiddenDropMenu = styled.div`
-  padding: 10px 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid #37507d;
-  border-radius: 7px;
-  max-height: 200px;
-  overflow-y: scroll;
 `;
