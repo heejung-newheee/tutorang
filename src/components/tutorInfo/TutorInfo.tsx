@@ -8,9 +8,9 @@ import { Tables } from '../../supabase/database.types';
 import supabase from '../../supabase';
 import { matchingAccept, matchingReject } from '../../api/match';
 interface pageProps {
-  match: Tables<'matching'>;
+  match: Tables<'matching'>[];
 }
-const TutorInfo = (match: pageProps) => {
+const TutorInfo = ({ match }: pageProps) => {
   const queryClient = useQueryClient();
 
   const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor'], fetchTutorAll);
@@ -48,13 +48,10 @@ const TutorInfo = (match: pageProps) => {
     rejectMatchMutation.mutate(id);
   };
 
-  const matching = match.match || [];
-  // console.log(matching);
-
   // 받은 요청 내역
-  const matchingData = Array.isArray(matching) ? matching : [matching];
+  const matchingData = Array.isArray(match) ? match : [match];
   const matchList = matchingData.filter((item: Tables<'matching'>) => item.tutor_id === user!.id);
-  // console.log(matchList);
+  console.log(matchList);
 
   if (tutorLoading || reviewLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
@@ -88,8 +85,8 @@ const TutorInfo = (match: pageProps) => {
                     <div>아이디{item.id}</div>
                     <div>요청 상태{item.status}</div>
                     <div>날짜{item.created_at.split('T')[0]}</div>
-                    <div>튜터 이름</div>
-                    <div>지역</div>
+                    <div>튜터 이름 </div>
+                    <div>지역 --</div>
                     <button onClick={() => acceptMatch(item.id)}>요청 수락 버튼</button>
                     <button onClick={() => rejectMatch(item.id)}>요청 거절 버튼</button>
                   </div>
