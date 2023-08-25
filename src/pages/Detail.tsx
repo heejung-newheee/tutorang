@@ -8,6 +8,8 @@ import { matchingRequest } from '../api/match';
 import { fetchData, fetchReview } from '../api/user';
 import { fetchLike } from '../api/like';
 import { fetchTutorAll } from '../api/tutor';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../redux/modules';
 
 const Detail = () => {
   const { id } = useParams();
@@ -28,7 +30,12 @@ const Detail = () => {
   console.log('리덕스 로그인사용자', loginUser);
 
   // 모달
-  const { Modal, isOpen, openModal, closeModal } = useModal();
+  // const { Modal, isOpen, openModal, closeModal } = useModal();
+  // redux type
+  const dispatch = useDispatch();
+  const handleOpen = () => {
+    dispatch(openModal('report'));
+  };
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
 
@@ -77,10 +84,11 @@ const Detail = () => {
           매칭 요청 버튼 !!!!!!!!!!
         </button>
 
-        <Modal isOpen={isOpen} closeModal={closeModal}>
+        {/* <Modal isOpen={isOpen} closeModal={closeModal}>
           <Report closeModal={closeModal} />
         </Modal>
-        <button onClick={openModal}>신고하기</button>
+        <button onClick={openModal}>신고하기</button> */}
+        <button onClick={handleOpen}>신고하기</button>
 
         {/* <div>튜터의 스킬/장점/성격</div> */}
       </section>

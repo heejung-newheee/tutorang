@@ -1,28 +1,26 @@
+import { useDispatch } from 'react-redux';
 import * as S from './Alert.styled';
+import { closeModal } from '../../../redux/modules';
 
-type AlertProps = {
-  closeModal: () => void;
-  isOpen: boolean;
-};
+const Alert = () => {
+  const dispatch = useDispatch();
 
-const Alert = ({ isOpen, closeModal }: AlertProps) => {
+  const handleClose = () => {
+    dispatch(closeModal());
+  };
+
   return (
-    <>
-      {isOpen ? (
-        <S.Overlay>
-          <S.Container>
-            <S.Inner
-              onClick={(e: React.MouseEvent<HTMLElement>) => {
-                e.stopPropagation();
-              }}
-            >
-              <div>신고완료</div>
-              <button onClick={closeModal}>닫기</button>
-            </S.Inner>
-          </S.Container>
-        </S.Overlay>
-      ) : null}
-    </>
+    <S.Overlay>
+      <S.Container>
+        <S.Inner
+          onClick={(e: React.MouseEvent<HTMLElement>) => {
+            e.stopPropagation();
+          }}
+        >
+          <button onClick={handleClose}>닫기</button>
+        </S.Inner>
+      </S.Container>
+    </S.Overlay>
   );
 };
 

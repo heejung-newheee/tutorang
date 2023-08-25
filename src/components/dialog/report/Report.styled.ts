@@ -2,8 +2,11 @@ import styled from 'styled-components';
 import { colors } from '../../../style/theme/colors';
 
 export const Container = styled.div`
-  position: relative;
+  position: absolute;
   z-index: 99;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,6 +15,8 @@ export const Container = styled.div`
 `;
 
 export const Inner = styled.div`
+  position: relative;
+  z-index: 999;
   width: 100%;
   max-width: 600px;
   margin: 0 32px;
