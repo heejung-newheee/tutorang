@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/config/configStore';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Alert, Report } from '../components';
@@ -8,13 +6,14 @@ import { matchingRequest } from '../api/match';
 import { fetchData, fetchReview } from '../api/user';
 import { fetchLike } from '../api/like';
 import { fetchTutorAll } from '../api/tutor';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../redux/modules';
 import { useEffect, useState } from 'react';
 import supabase from '../supabase';
 import { Session } from '@supabase/supabase-js';
-import sendbird from '../sendbird';
+import sendbird, { sendRequestCustomMessage } from '../sendbird';
 import { GroupChannel, GroupChannelCreateParams } from '@sendbird/chat/groupChannel';
+import { RootState } from '../redux/config/configStore';
 
 const Detail = () => {
   const [isLoading, setLoading] = useState(true);
@@ -69,6 +68,8 @@ const Detail = () => {
   const handleOpen = () => {
     dispatch(openModal('report'));
   };
+  // const { Modal, isOpen, openModal, closeModal } = useModal();
+  // redux type
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
 
@@ -119,6 +120,7 @@ const Detail = () => {
           onClick={async () => {
             try {
               await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
+              await sendRequestCustomMessage(loginUser!.id, filteredUser![0].id);
               alert('신청완료');
             } catch (error) {
               console.error('매칭 요청 중 오류 발생:', error);

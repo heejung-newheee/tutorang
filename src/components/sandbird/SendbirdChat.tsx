@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import '@sendbird/uikit-react/dist/index.css';
 import { ClientUserMessage, EveryMessage, RenderChannelPreviewProps } from 'SendbirdUIKitGlobal';
 import './style.css';
+import { Link } from 'react-router-dom';
 
 const APP_ID = import.meta.env.VITE_SANDBIRD_APP_ID;
 
@@ -76,7 +77,14 @@ const SendbirdChat = ({ channel_url, userId }: { channel_url: string; userId: st
                 if (props.message.customType === 'request') {
                   const message = props.message as ClientUserMessage;
                   const { nickname } = message.sender;
-                  return <div style={{ padding: '20px', borderRadius: '20px', backgroundColor: '#ffc1b0' }}>{nickname}님으로 부터 튜터링 요청을 받았습니다.</div>;
+                  return (
+                    <div style={{ padding: '20px', borderRadius: '20px', backgroundColor: '#ffc1b0' }}>
+                      {nickname}님으로 부터 튜터링 요청을 받았습니다.
+                      <Link to={'/mypage'} style={{ fontWeight: '700' }}>
+                        마이페이지에서 확인하기
+                      </Link>
+                    </div>
+                  );
                 }
               }}
             />
