@@ -1,7 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Layout, SignInForm, SignUpForm } from '../components';
+import { Layout, SignInForm } from '../components';
+import SignUpWrapBox from '../components/Form/SignUpForm/SignUpWrapBox';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import { AuthMain, Detail, List, Main, Mypage } from '../pages';
+import Test from '../pages/Test';
 
 const Router = () => {
   return (
@@ -9,14 +11,15 @@ const Router = () => {
       <Routes>
         <Route element={<GlobalLayout />}>
           <Route path="/" element={<Main />} />
+          <Route element={<AuthMain />}>
+            <Route path="/signin" element={<SignInForm />} />
+            <Route path="/signup" element={<SignUpWrapBox />} />
+          </Route>
           <Route element={<Layout />}>
             <Route path="/detail/:id" element={<Detail />} />
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/list" element={<List />} />
-            <Route element={<AuthMain />}>
-              <Route path="/signin" element={<SignInForm />} />
-              <Route path="/signup" element={<SignUpForm />} />
-            </Route>
+            <Route path="/test" element={<Test />} />
           </Route>
         </Route>
       </Routes>
