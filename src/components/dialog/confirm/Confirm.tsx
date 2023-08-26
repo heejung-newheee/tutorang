@@ -1,10 +1,14 @@
+import { useDispatch } from 'react-redux';
 import * as S from './Confirm.styled';
+import { closeModal } from '../../../redux/modules';
 
-type ConfirmProps = {
-  closeModal: () => void;
-};
+const Confirm = () => {
+  const dispatch = useDispatch();
 
-const Confirm = ({ closeModal }: ConfirmProps) => {
+  const handleClose = () => {
+    dispatch(closeModal());
+  };
+
   return (
     <S.Container>
       <S.Inner
@@ -12,8 +16,8 @@ const Confirm = ({ closeModal }: ConfirmProps) => {
           e.stopPropagation();
         }}
       >
-        <button onClick={closeModal}>취소</button>
-        <button onClick={closeModal}>확인</button>
+        <button onClick={handleClose}>취소</button>
+        <button>확인</button>
       </S.Inner>
     </S.Container>
   );

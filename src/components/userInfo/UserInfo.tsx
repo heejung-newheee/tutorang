@@ -1,40 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchData } from '../../api/user';
 import * as S from './UserInfo.styled';
-import supabase from '../../supabase';
 import TutorInfo from '../tutorInfo/TutorInfo';
 import StudentInfo from '../studentInfo/StudentInfo';
-
-import { useDispatch } from 'react-redux';
-import { setUser } from '../../redux/modules/user';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/config/configStore';
+import { getMatchData, matchingTutorData } from '../../api/match';
+import { useQuery } from '@tanstack/react-query';
 
 const UserInfo = () => {
-  const dispatch = useDispatch();
-  const { data, isLoading, isError } = useQuery(['profiles'], fetchData);
-  const [email, setEmail] = useState<string>();
-
-  const getUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    setEmail(user?.email);
-  };
-  const user = data?.find((item) => {
-    return item.email === email;
-  });
-
-  useEffect(() => {
-    getUser();
-    if (user) {
-      dispatch(setUser(user));
-    }
-  }, [user, dispatch]);
-
-  if (isLoading) {
-    return <div>로딩중~~~~~~~~~~~</div>;
-  }
-  if (isError || !user) {
+  const user = useSelector((state: RootState) => state.user.user);
+  const { data, isLoading, isError } = useQuery(['matching_tutor_data'], matchingTutorData);
+  console.log('UserInfo 로그인사용자', user);
+  console.log('matchData', data);
+  if (!user) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
 
@@ -68,9 +45,14 @@ const UserInfo = () => {
             <p>X개</p>
           </div>
         </S.StudyInfoBox>
-
-        <TutorInfo />
-        <StudentInfo />
+        {data && data.length > 0 ? (
+          <>
+            <TutorInfo match={data} />
+            <StudentInfo match={data} />
+          </>
+        ) : (
+          <div>매칭 데이터가 없습니다.</div>
+        )}
       </S.MypageContainer>
     </>
   );

@@ -1,15 +1,21 @@
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/config/configStore';
 import { useQuery } from '@tanstack/react-query';
-import { fetchData, fetchLike, fetchTutor, fetchReview } from '../api/user';
 import { useParams } from 'react-router-dom';
-import { Alert, Report } from '../components';
-import { useModal, useReviewAverage } from '../hooks';
+import { useReviewAverage } from '../hooks';
+import { matchingRequest } from '../api/match';
+import { fetchData, fetchReview } from '../api/user';
+import { fetchLike } from '../api/like';
+import { fetchTutorAll } from '../api/tutor';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../redux/modules';
 
 const Detail = () => {
   const { id } = useParams();
 
   const { data: profiles, isLoading: profilesLoading, isError: profilesError } = useQuery(['profiles'], fetchData);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
-  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor'], fetchTutor);
+  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor'], fetchTutorAll);
   const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], fetchReview);
 
   const filteredUser = profiles?.filter((profiles) => profiles.id === id);
@@ -18,8 +24,17 @@ const Detail = () => {
   const reviewRatings = filteredReview?.map((review) => review.rating);
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
+  const loginUser = useSelector((state: RootState) => state.user.user);
+  console.log(filteredUser);
+  console.log('리덕스 로그인사용자', loginUser);
+
   // 모달
-  const { Modal, isOpen, openModal, closeModal } = useModal();
+  // const { Modal, isOpen, openModal, closeModal } = useModal();
+  // redux type
+  const dispatch = useDispatch();
+  const handleOpen = () => {
+    dispatch(openModal('report'));
+  };
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
 
@@ -29,7 +44,6 @@ const Detail = () => {
   if (!tutor || !profiles || !like || profilesError || likeError || tutorError || reviewError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
-
   return (
     <>
       {/* 튜터데이터 */}
@@ -55,11 +69,25 @@ const Detail = () => {
             </div>
           );
         })}
+        <button
+          onClick={async () => {
+            try {
+              await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
+              alert('신청완료');
+            } catch (error) {
+              console.error('매칭 요청 중 오류 발생:', error);
+              alert('매칭 요청 중 오류가 발생했습니다.');
+            }
+          }}
+        >
+          매칭 요청 버튼 !!!!!!!!!!
+        </button>
 
-        <Modal isOpen={isOpen} closeModal={closeModal}>
+        {/* <Modal isOpen={isOpen} closeModal={closeModal}>
           <Report closeModal={closeModal} />
         </Modal>
-        <button onClick={openModal}>신고하기</button>
+        <button onClick={openModal}>신고하기</button> */}
+        <button onClick={handleOpen}>신고하기</button>
 
         {/* <div>튜터의 스킬/장점/성격</div> */}
       </section>

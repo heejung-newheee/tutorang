@@ -36,12 +36,18 @@ export const getTutorMostReview = async () => {
   return data;
 };
 
-export const getBoard = async () => {
-  const { data, error } = await supabase.from('board').select(
-    `
-      *,
-      profiles(id,username)
-      `,
-  );
+export const fetchTutorAll = async ({ queryKey }: { queryKey: string[] }) => {
+  const [_, tutor] = queryKey;
+  const res = await supabase.from('tutor_info').select('*');
+  return res.data;
+};
+
+export const fetchTutorFilter = async () => {
+  const res = await supabase.from('tutor_info').select('*').range(0, 1).eq('user_id', 'fd32cf82-7866-4d4c-90fc-3539ef165556');
+  return res.data;
+};
+export const tutorInfoMatched = async () => {
+  const { data, error } = await supabase.from('tutor_info_join').select();
+  if (error) throw error;
   return data;
 };
