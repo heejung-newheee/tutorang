@@ -8,9 +8,9 @@ import { fetchData, fetchReview } from '../api/user';
 import { fetchLike } from '../api/like';
 import { fetchTutorAll } from '../api/tutor';
 import { useDispatch } from 'react-redux';
-import { openModal, setTargetId } from '../redux/modules';
+import { openModal, setReview, setTargetId } from '../redux/modules';
 import { useEffect } from 'react';
-import { reviewDelete } from '../api/review';
+import { reviewDelete, reviewUpdate } from '../api/review';
 
 const Detail = () => {
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const Detail = () => {
 
   const queryClient = useQueryClient();
 
-  const mutation = useMutation(reviewDelete, {
+  const mutationReviewDelete = useMutation(reviewDelete, {
     onSuccess: () => {
       queryClient.invalidateQueries(['review']);
     },
@@ -49,13 +49,18 @@ const Detail = () => {
   const handleOpen = () => {
     dispatch(openModal('report'));
   };
-  const addReview = () => {
-    dispatch(openModal('review'));
+
+  const handleOpenReviewCreateForm = () => {
+    dispatch(openModal('reviewCreate'));
+  };
+
+  const handleOpenReviewUpdateForm = () => {
+    dispatch(openModal('reviewUpdate'));
   };
 
   // 리뷰 Delete
   const handleReviewDelete = (id: number) => {
-    mutation.mutate(id);
+    mutationReviewDelete.mutate(id);
   };
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
@@ -124,7 +129,8 @@ const Detail = () => {
         <h4>
           리뷰 <span>{filteredReview?.length}</span>
         </h4>
-        <button onClick={addReview}>리뷰 남기기</button>
+        <button onClick={handleOpenReviewCreateForm}>리뷰 남기기</button>
+
         <ul>
           {filteredReview?.map((review) => {
             return (
@@ -134,7 +140,14 @@ const Detail = () => {
 
                 {loginUser?.id === review.user_id ? (
                   <div>
-                    <button>수정</button>
+                    <button
+                      onClick={() => {
+                        handleOpenReviewUpdateForm();
+                        dispatch(setReview(review));
+                      }}
+                    >
+                      수정
+                    </button>
                     <button
                       onClick={() => {
                         handleReviewDelete(review.id);

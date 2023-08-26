@@ -2,13 +2,13 @@ import * as S from './ReviewForm.styled';
 import { useInput } from '../../../hooks';
 import { Button } from '../..';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeModal, setReview } from '../../../redux/modules';
+import { closeModal } from '../../../redux/modules';
 import { starEmpty, starFull } from '../../../assets';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { reviewRequest } from '../../../api/review';
+import { reviewUpdate } from '../../../api/review';
 import { RootState } from '../../../redux/config/configStore';
-import { reviews } from '../../../supabase/database.types';
+import { Tables, reviews } from '../../../supabase/database.types';
 
 type initialStateType = {
   title: string;
@@ -19,26 +19,28 @@ type reviewFormProps = {
   reviewed_id: string;
 };
 
-const ReviewForm = ({ reviewed_id }: reviewFormProps) => {
+const ReviewUpdateForm = ({ reviewed_id }: reviewFormProps) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const mutation = useMutation(reviewRequest, {
+  const prevReview: Tables<'review'> = useSelector((state: RootState) => state.review);
+
+  const mutationReviewUpdate = useMutation(reviewUpdate, {
     onSuccess: () => {
       queryClient.invalidateQueries(['review']);
     },
   });
 
   const initialState: initialStateType = {
-    title: '',
-    content: '',
+    title: prevReview?.title || '',
+    content: prevReview?.content || '',
   };
 
   const [{ title, content }, onChange] = useInput(initialState);
 
   const stars = [1, 2, 3, 4, 5];
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(prevReview?.rating || 0);
   const [hoveredStar, setHoveredStar] = useState(0);
 
   /** [ star UI ] : hover, click 상황에 따라 UI가 변경됩니다. */
@@ -66,12 +68,12 @@ const ReviewForm = ({ reviewed_id }: reviewFormProps) => {
     setRating(clickedRate);
   };
 
-  const handleReviewSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleReviewUpdateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!loginUser) return;
 
-    const newReview: reviews = {
+    const updatedReview: reviews = {
       reviewed_id: reviewed_id,
       user_id: loginUser?.id,
       author: loginUser?.username,
@@ -81,7 +83,7 @@ const ReviewForm = ({ reviewed_id }: reviewFormProps) => {
     };
 
     try {
-      await mutation.mutate(newReview);
+      await mutationReviewUpdate.mutate({ updatedReview, id: prevReview.id });
     } catch (error) {
       console.error('error submit review : ', error);
     }
@@ -99,8 +101,8 @@ const ReviewForm = ({ reviewed_id }: reviewFormProps) => {
         <S.ContentWrapper>
           <button onClick={handleClose}>닫기</button>
 
-          <form onSubmit={handleReviewSubmit}>
-            <S.Title>리뷰 남기기</S.Title>
+          <form onSubmit={handleReviewUpdateSubmit}>
+            <S.Title>리뷰 수정하기</S.Title>
             <S.StarList>
               {stars.map((star) => {
                 return (
@@ -115,7 +117,7 @@ const ReviewForm = ({ reviewed_id }: reviewFormProps) => {
             <S.Textarea name="content" value={content as string} onChange={onChange} />
             <S.ButtonWrapper>
               <Button variant="solid" color="black" size="Large">
-                등록하기
+                수정하기
               </Button>
             </S.ButtonWrapper>
           </form>
@@ -125,4 +127,4 @@ const ReviewForm = ({ reviewed_id }: reviewFormProps) => {
   );
 };
 
-export default ReviewForm;
+export default ReviewUpdateForm;

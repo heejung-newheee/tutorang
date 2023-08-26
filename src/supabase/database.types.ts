@@ -358,3 +358,4 @@ export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'c
 };
 
 export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
+export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
