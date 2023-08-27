@@ -49,6 +49,9 @@ ${reset}
             cursor: pointer;
         }
     }
+    img{
+        width: 100%;
+    }
 `;
 
 export default GlobalStyles;

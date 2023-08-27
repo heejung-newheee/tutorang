@@ -29,12 +29,16 @@ export const UserName = styled.p`
   }
 `;
 
-export const StudyInfoBox = styled.div`
-  display: flex;
+export const InfoSection = styled.section`
   padding: 20px;
   border-radius: 5px;
   background-color: #eee;
   margin: 20px 0;
-  text-align: center;
+  justify-content: space-between;
+  align-items: center;
+`;
+export const InfoList = styled.ul``;
+export const InfoItem = styled.li`
+  display: flex;
   justify-content: space-between;
 `;

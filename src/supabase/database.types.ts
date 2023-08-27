@@ -537,6 +537,7 @@ export interface Database {
           created_at: string | null;
           price: number | null;
           tutor_id: string | null;
+          tutor_img: string | null;
           tutor_info_id: number | null;
           tutor_name: string | null;
           update: string | null;

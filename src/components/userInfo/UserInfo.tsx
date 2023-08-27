@@ -30,7 +30,7 @@ const UserInfo = () => {
         <div>
           지역 : {user.location1} | {user.location2}
         </div>
-        <S.StudyInfoBox>
+        <S.InfoSection>
           <div>
             {/* 매칭 후 데이터 불러와야함 */}
             <p>완료된 수업</p>
@@ -44,7 +44,7 @@ const UserInfo = () => {
             <p>ooo</p>
             <p>X개</p>
           </div>
-        </S.StudyInfoBox>
+        </S.InfoSection>
         {data && data.length > 0 ? (
           <>
             <TutorInfo match={data} />

@@ -8,12 +8,15 @@ import { getBoard } from '../../api/board';
 import * as S from './StudentInfo.styled';
 import supabase from '../../supabase';
 import { matchingCancel, matchingTutorData } from '../../api/match';
+import { InfoItem, InfoList, InfoSection } from '../userInfo/UserInfo.styled';
+import CompleteClass from '../completeClassSlider/CompleteClass';
+import LikeTutors from '../likeTutorSlider/LikeTutors';
+import MatchingTutor from '../matchingTutorTab/MatchingTutor';
 
 interface pageProps {
-  match: Tables<'matching'>[];
+  match: Views<'matching_tutor_data'>[];
 }
 const StudentInfo = ({ match }: pageProps) => {
-  const queryClient = useQueryClient();
   const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor_info_username'], tutorInfoMatched);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
   const { data: board, isLoading: boardLoading, isError: boardError } = useQuery(['board'], getBoard);
@@ -21,20 +24,6 @@ const StudentInfo = ({ match }: pageProps) => {
   const user = useSelector((state: RootState) => state.user.user);
   // console.log('studentInfo 로그인사용자', user);
   console.log('match 테이블 전체', match);
-
-  const cancelMatchMutation = useMutation(matchingCancel, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['matching']);
-    },
-  });
-
-  // 튜터 이미지, 이름, 지역 필요
-
-  // console.log('튜터리스트', tutor);
-
-  const cancelMatch = async (id: string) => {
-    cancelMatchMutation.mutate(id);
-  };
 
   if (likeLoading || tutorLoading || boardLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
@@ -45,61 +34,31 @@ const StudentInfo = ({ match }: pageProps) => {
 
   const likedList = like.filter((item: Tables<'like'>) => item.user_id === user!.id).map((item) => item.liked_id);
   const likedUser = tutor!.filter((item: Views<'tutor_info_join'>) => likedList.includes(item.tutor_id ?? ''));
+  console.log(likedList);
+  console.log(likedUser);
 
   // 내가 보낸 요청 내역
   const matchingData = Array.isArray(match) ? match : [match];
-  const matchList = matchingData.filter((item: Tables<'matching'>) => item.user_id === user!.id);
+  const matchList = matchingData.filter((item: Views<'matching_tutor_data'>) => item.user_id === user!.id);
   console.log(matchList);
 
   return (
     <div>
       <div>학생 대시보드</div>
-      찜한 강사 리스트
-      <S.LikeTutorList>
-        {likedUser.map((tutor: Views<'tutor_info_join'>) => {
-          return (
-            <S.LikeTutorItem key={tutor.tutor_info_id}>
-              {tutor.tutor_name}
-              {tutor.class_info}
-              {tutor.price}
-            </S.LikeTutorItem>
-          );
-        })}
-      </S.LikeTutorList>
-      <div>
-        <div>요청 내역</div>
-        {matchList &&
-          matchList.map((item: Tables<'matching'>) => {
-            return (
-              <div key={item.id}>
-                <div>요청 상태{item.status}</div>
-                <div>날짜{item.created_at.split('T')[0]}</div>
-                <div>튜터 이름</div>
-                <div>지역</div>
-                <button onClick={() => cancelMatch(item.id)}>요청 취소 버튼</button>
-              </div>
-            );
-          })}
-      </div>
-      <div>
-        수업했던 튜터
-        {matchList &&
-          matchList
-            .filter((item) => item.matched === true)
-            .map((item: Tables<'matching'>) => {
-              return (
-                <div key={item.id}>
-                  <div>튜터 이름</div>
-                  <div>지역</div>
-                  <button>리뷰 남기기</button>
-
-                  {/* 클릭 시 이사람 아이디 넘겨주고 후기를 post */}
-                </div>
-              );
-            })}
-      </div>
-      문의 리스트
-      <div>
+      <InfoSection key="likeTutor">
+        <h2>찜한 강사 리스트</h2>
+        <LikeTutors likedUser={likedUser} />
+      </InfoSection>
+      <InfoSection key="matchingList">
+        <h2>튜터링 요청 내역</h2>
+        <MatchingTutor matchList={matchList} />
+      </InfoSection>
+      <InfoSection key="matchedList">
+        <h2>수업했던 튜터</h2>
+        <CompleteClass matchList={matchList} />
+      </InfoSection>
+      <InfoSection key="boardList">
+        문의 리스트
         {board!
           .filter((board: Tables<'board'>) => {
             return board.user_id === user!.id;
@@ -113,7 +72,7 @@ const StudentInfo = ({ match }: pageProps) => {
               </div>
             );
           })}
-      </div>
+      </InfoSection>
     </div>
   );
 };
