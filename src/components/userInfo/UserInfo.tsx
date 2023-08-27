@@ -3,14 +3,14 @@ import TutorInfo from '../tutorInfo/TutorInfo';
 import StudentInfo from '../studentInfo/StudentInfo';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
-import { getMatchData } from '../../api/match';
+import { getMatchData, matchingTutorData } from '../../api/match';
 import { useQuery } from '@tanstack/react-query';
 
 const UserInfo = () => {
   const user = useSelector((state: RootState) => state.user.user);
-  const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
+  const { data, isLoading, isError } = useQuery(['matching_tutor_data'], matchingTutorData);
   console.log('UserInfo 로그인사용자', user);
-  console.log('matchData', matchData);
+  console.log('matchData', data);
   if (!user) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
@@ -45,10 +45,10 @@ const UserInfo = () => {
             <p>X개</p>
           </div>
         </S.StudyInfoBox>
-        {matchData && matchData.length > 0 ? (
+        {data && data.length > 0 ? (
           <>
-            <TutorInfo match={matchData[0]} />
-            <StudentInfo match={matchData[0]} />{' '}
+            <TutorInfo match={data} />
+            <StudentInfo match={data} />
           </>
         ) : (
           <div>매칭 데이터가 없습니다.</div>

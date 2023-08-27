@@ -27,11 +27,24 @@ export const matchingCancel = async (id: string) => {
 };
 
 export const matchingAccept = async (id: string) => {
-  const { data, error } = await supabase.from('matching').update({ status: 'complete' }).eq('id', id).select();
+  const { data, error } = await supabase
+    .from('matching')
+    .update({
+      status: 'complete',
+      matched: true,
+    })
+    .eq('id', id)
+    .select();
   if (error) throw error;
 };
 
 export const matchingReject = async (id: string) => {
   const { data, error } = await supabase.from('matching').update({ status: 'reject' }).eq('id', id).select();
   if (error) throw error;
+};
+
+export const matchingTutorData = async () => {
+  const { data, error } = await supabase.from('matching_tutor_data').select();
+  if (error) throw error;
+  return data;
 };

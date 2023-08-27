@@ -1,31 +1,36 @@
 import { useSelector } from 'react-redux';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Tables } from '../../supabase/database.types';
+import { Tables, Views } from '../../supabase/database.types';
 import { RootState } from '../../redux/config/configStore';
-import { fetchTutorAll } from '../../api/tutor';
+import { fetchTutorAll, tutorInfoMatched } from '../../api/tutor';
 import { fetchLike } from '../../api/like';
 import { getBoard } from '../../api/board';
 import * as S from './StudentInfo.styled';
 import supabase from '../../supabase';
-import { matchingCancel } from '../../api/match';
+import { matchingCancel, matchingTutorData } from '../../api/match';
 
 interface pageProps {
-  match: Tables<'matching'>;
+  match: Tables<'matching'>[];
 }
-const StudentInfo = (match: pageProps) => {
+const StudentInfo = ({ match }: pageProps) => {
   const queryClient = useQueryClient();
-  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor'], fetchTutorAll);
+  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor_info_username'], tutorInfoMatched);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
   const { data: board, isLoading: boardLoading, isError: boardError } = useQuery(['board'], getBoard);
+
   const user = useSelector((state: RootState) => state.user.user);
   // console.log('studentInfo 로그인사용자', user);
-  // console.log('match', match);
+  console.log('match 테이블 전체', match);
 
   const cancelMatchMutation = useMutation(matchingCancel, {
     onSuccess: () => {
       queryClient.invalidateQueries(['matching']);
     },
   });
+
+  // 튜터 이미지, 이름, 지역 필요
+
+  // console.log('튜터리스트', tutor);
 
   const cancelMatch = async (id: string) => {
     cancelMatchMutation.mutate(id);
@@ -39,24 +44,22 @@ const StudentInfo = (match: pageProps) => {
   }
 
   const likedList = like.filter((item: Tables<'like'>) => item.user_id === user!.id).map((item) => item.liked_id);
-  const likedUser = tutor!.filter((item: Tables<'tutor_info'>) => likedList.includes(item.user_id ?? ''));
+  const likedUser = tutor!.filter((item: Views<'tutor_info_join'>) => likedList.includes(item.tutor_id ?? ''));
 
-  const matching = match.match || [];
-  // console.log(matching);
   // 내가 보낸 요청 내역
-  const matchingData = Array.isArray(matching) ? matching : [matching];
-
+  const matchingData = Array.isArray(match) ? match : [match];
   const matchList = matchingData.filter((item: Tables<'matching'>) => item.user_id === user!.id);
-  // console.log(matchList);
+  console.log(matchList);
 
   return (
     <div>
       <div>학생 대시보드</div>
       찜한 강사 리스트
       <S.LikeTutorList>
-        {likedUser.map((tutor: Tables<'tutor_info'>) => {
+        {likedUser.map((tutor: Views<'tutor_info_join'>) => {
           return (
-            <S.LikeTutorItem key={tutor.id}>
+            <S.LikeTutorItem key={tutor.tutor_info_id}>
+              {tutor.tutor_name}
               {tutor.class_info}
               {tutor.price}
             </S.LikeTutorItem>
@@ -78,28 +81,39 @@ const StudentInfo = (match: pageProps) => {
             );
           })}
       </div>
-      수업했던 튜터
-      <S.TutorList>
-        <S.TutorItem>튜터1</S.TutorItem>
-        {/* 클릭 시 이사람 아이디 넘겨주고 후기를 post */}
-        <S.TutorItem>튜터2</S.TutorItem>
-      </S.TutorList>
+      <div>
+        수업했던 튜터
+        {matchList &&
+          matchList
+            .filter((item) => item.matched === true)
+            .map((item: Tables<'matching'>) => {
+              return (
+                <div key={item.id}>
+                  <div>튜터 이름</div>
+                  <div>지역</div>
+                  <button>리뷰 남기기</button>
+
+                  {/* 클릭 시 이사람 아이디 넘겨주고 후기를 post */}
+                </div>
+              );
+            })}
+      </div>
       문의 리스트
-      <S.TutorList>
+      <div>
         {board!
           .filter((board: Tables<'board'>) => {
             return board.user_id === user!.id;
           })
           .map((item: Tables<'board'>) => {
             return (
-              <S.TutorItem key={item.id}>
+              <div key={item.id}>
                 <div>{item.title}</div>
                 <div>{item.content}</div>
                 <div>{item.created_at.split('T')[0]}</div>
-              </S.TutorItem>
+              </div>
             );
           })}
-      </S.TutorList>
+      </div>
     </div>
   );
 };
