@@ -10,3 +10,4 @@ export { default as UserInfo } from './userInfo/UserInfo';
 export { default as SignInForm } from './Form/SignInForm/SignInForm';
 export { default as SignUpForm } from './Form/SignUpForm/SignUpForm';
 export { default as Button } from './button/Button';
+export { default as BookMark } from './bookMark/BookMark';

@@ -9,6 +9,8 @@ import { fetchLike } from '../api/like';
 import { fetchTutorAll } from '../api/tutor';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../redux/modules';
+import { fetchBookmark } from '../api/bookmark';
+import { BookMark } from '../components';
 
 const Detail = () => {
   const { id } = useParams();
@@ -25,8 +27,10 @@ const Detail = () => {
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log(filteredUser);
   console.log('리덕스 로그인사용자', loginUser);
+
+  const { data: bookMark } = useQuery(['bookMark'], fetchBookmark);
+  console.log('bookMark: ', bookMark);
 
   // 모달
   // const { Modal, isOpen, openModal, closeModal } = useModal();
@@ -66,6 +70,8 @@ const Detail = () => {
             <div key={tutor.user_id}>
               <p>{tutor.class_info}</p>
               <p>{tutor.price}(30분)</p>
+
+              <BookMark />
             </div>
           );
         })}
