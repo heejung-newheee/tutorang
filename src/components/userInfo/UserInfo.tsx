@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import { getMatchData, matchingTutorData } from '../../api/match';
 import { useQuery } from '@tanstack/react-query';
+import { icon_edit, icon_location } from '../../assets';
 
 const UserInfo = () => {
   const user = useSelector((state: RootState) => state.user.user);
@@ -18,33 +19,40 @@ const UserInfo = () => {
   return (
     <>
       <S.MypageContainer>
-        <div>내 정보</div>
-        <button>내정보 수정</button>
         <S.ProfileBox>
-          <img src={user.avatar_url ?? ''} alt="" />
+          <S.Container>
+            <S.ProfileImg>
+              <S.UserImg src={user.avatar_url ?? ''} alt="프로필 이미지" />
+              <S.EditBtn>
+                <img src={icon_edit} alt="" />
+              </S.EditBtn>
+            </S.ProfileImg>
+            <S.UserName>
+              {user.username}
+              <span> {user.role}</span>
+            </S.UserName>
+            <S.TutorLocationBox>
+              <img src={icon_location} alt="" /> {user.location1_sido} | {user.location1_gugun} <img src={icon_location} alt="" /> {user.location2_sido} | {user.location2_gugun}
+            </S.TutorLocationBox>
+            <S.Summary>
+              <S.SummaryItem>
+                {/* 매칭 후 데이터 불러와야함 */}
+                <p>X개</p>
+                <p>완료된 수업</p>
+              </S.SummaryItem>
+              <S.SummaryItem>
+                <p>X개</p>
+                <p>대기 요청</p>
+              </S.SummaryItem>
+              <S.SummaryItem>
+                <p>X개</p>
+                <p>나에게 남긴 후기</p>
+              </S.SummaryItem>
+            </S.Summary>
+          </S.Container>
         </S.ProfileBox>
-        <S.UserName>
-          {user.username}
-          <span> {user.role}</span>
-        </S.UserName>
-        <div>
-          지역 : {user.location1} | {user.location2}
-        </div>
-        <S.InfoSection>
-          <div>
-            {/* 매칭 후 데이터 불러와야함 */}
-            <p>완료된 수업</p>
-            <p>X개</p>
-          </div>
-          <div>
-            <p>문의중</p>
-            <p>X개</p>
-          </div>
-          <div>
-            <p>ooo</p>
-            <p>X개</p>
-          </div>
-        </S.InfoSection>
+
+        <div style={{ height: '170px' }}></div>
         {data && data.length > 0 ? (
           <>
             <TutorInfo match={data} />

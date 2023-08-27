@@ -8,10 +8,10 @@ import { getBoard } from '../../api/board';
 import * as S from './StudentInfo.styled';
 import supabase from '../../supabase';
 import { matchingCancel, matchingTutorData } from '../../api/match';
-import { InfoItem, InfoList, InfoSection } from '../userInfo/UserInfo.styled';
+import { Container, InfoItem, InfoList, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
 import CompleteClass from '../completeClassSlider/CompleteClass';
 import LikeTutors from '../likeTutorSlider/LikeTutors';
-import MatchingTutor from '../matchingTutorTab/MatchingTutor';
+import MatchingTutor from '../matchingTab/MatchingTutor';
 
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
@@ -45,33 +45,41 @@ const StudentInfo = ({ match }: pageProps) => {
   return (
     <div>
       <div>학생 대시보드</div>
-      <InfoSection key="likeTutor">
-        <h2>찜한 강사 리스트</h2>
-        <LikeTutors likedUser={likedUser} />
+      <InfoSection>
+        <Container>
+          <InfoTitle>찜한 강사 리스트</InfoTitle>
+          <LikeTutors likedUser={likedUser} />
+        </Container>
       </InfoSection>
-      <InfoSection key="matchingList">
-        <h2>튜터링 요청 내역</h2>
-        <MatchingTutor matchList={matchList} />
+      <InfoSection>
+        <Container>
+          <InfoTitle>튜터링 요청 내역</InfoTitle>
+          <MatchingTutor matchList={matchList} />
+        </Container>
       </InfoSection>
-      <InfoSection key="matchedList">
-        <h2>수업했던 튜터</h2>
-        <CompleteClass matchList={matchList} />
+      <InfoSection>
+        <Container>
+          <InfoTitle>수업했던 튜터</InfoTitle>
+          <CompleteClass matchList={matchList} />
+        </Container>
       </InfoSection>
-      <InfoSection key="boardList">
-        문의 리스트
-        {board!
-          .filter((board: Tables<'board'>) => {
-            return board.user_id === user!.id;
-          })
-          .map((item: Tables<'board'>) => {
-            return (
-              <div key={item.id}>
-                <div>{item.title}</div>
-                <div>{item.content}</div>
-                <div>{item.created_at.split('T')[0]}</div>
-              </div>
-            );
-          })}
+      <InfoSection>
+        <Container>
+          <InfoTitle>문의 리스트</InfoTitle>
+          {board!
+            .filter((board: Tables<'board'>) => {
+              return board.user_id === user!.id;
+            })
+            .map((item: Tables<'board'>) => {
+              return (
+                <div key={item.id}>
+                  <div>{item.title}</div>
+                  <div>{item.content}</div>
+                  <div>{item.created_at.split('T')[0]}</div>
+                </div>
+              );
+            })}
+        </Container>
       </InfoSection>
     </div>
   );
