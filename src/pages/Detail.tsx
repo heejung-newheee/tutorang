@@ -10,7 +10,7 @@ import { openModal } from '../redux/modules';
 import { useEffect, useState } from 'react';
 import supabase from '../supabase';
 import { Session } from '@supabase/supabase-js';
-import sendbird, { sendRequestCustomMessage } from '../sendbird';
+import sendbird, { sendRequestTutoringMessage, sendResponseTutoringMessage } from '../sendbird';
 import { GroupChannel, GroupChannelCreateParams } from '@sendbird/chat/groupChannel';
 import { RootState } from '../redux/config/configStore';
 
@@ -119,7 +119,8 @@ const Detail = () => {
           onClick={async () => {
             try {
               await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
-              await sendRequestCustomMessage(loginUser!.id, filteredUser![0].id);
+              await sendRequestTutoringMessage(loginUser!.id, filteredUser![0].id);
+              //await sendResponseTutoringMessage(loginUser!.id, filteredUser![0].id, 'reject');
               alert('신청완료');
             } catch (error) {
               console.error('매칭 요청 중 오류 발생:', error);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import supabase from '../supabase';
-import SendbirdChat from '../components/sandbird/sendbirdChat';
+import SendbirdChat from '../components/sandbird/SendbirdChat';
 
 const Chat = () => {
   const [searchParams] = useSearchParams();
