@@ -7,6 +7,12 @@ export const fetchBookmark = async () => {
   return data;
 };
 
+export const matchBookMark = async (tutorId: string) => {
+  const { data } = await supabase.from('bookmark').select().match({ tutor_id: tutorId });
+
+  return data;
+};
+
 export const createBookMark = async (bookMark: BookMarkType) => {
   await supabase.from('bookmark').insert(bookMark).select();
 };
@@ -20,7 +26,19 @@ export const useCreateBookMarkMutation = () => {
 
   const mutation = useMutation(createBookMark, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['bookmark']);
+      queryClient.invalidateQueries(['matchBookMark']);
+    },
+  });
+
+  return mutation;
+};
+
+export const useDeleteBookMarkMutation = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(deleteBookMark, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['matchBookMark']);
     },
   });
 
