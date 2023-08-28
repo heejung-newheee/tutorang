@@ -7,12 +7,11 @@ const AuthMain = () => {
   const navigate = useNavigate();
 
   const checkSignInUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    console.log('getUser', user);
-    if (user !== null) return navigate('/');
-    if (user === null) setIsSignIn(false);
+    supabase.auth.onAuthStateChange((event, session) => {
+      console.log(event, session);
+      if (session !== null) return navigate('/');
+      if (session === null) setIsSignIn(false);
+    });
   };
 
   useEffect(() => {
