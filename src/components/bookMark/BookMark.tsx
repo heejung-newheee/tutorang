@@ -41,7 +41,8 @@ const BookMark = () => {
   };
 
   if (isError) {
-    return console.log('supabase Error', error);
+    console.log('supabase Error', error);
+    return null;
   }
 
   return (

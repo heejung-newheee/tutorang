@@ -10,15 +10,23 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@egjs/flicking-plugins": "^4.7.1",
+    "@egjs/react-flicking": "^4.11.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.6",
     "@reduxjs/toolkit": "^1.9.5",
     "@supabase/supabase-js": "^2.32.0",
     "@tanstack/react-query": "^4.32.6",
+    "@types/aos": "^3.0.4",
+    "aos": "^2.3.4",
     "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.15.0",
+    "react-tabs": "^6.0.2",
     "styled-components": "^6.0.7",
     "styled-reset": "^4.5.1"
   },

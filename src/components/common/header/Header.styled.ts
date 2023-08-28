@@ -10,6 +10,7 @@ export const NavContainer = styled.div`
   left: 0;
   right: 0;
   box-shadow: 0 4px 4px -4px black;
+  z-index: 555;
 `;
 
 export const WidthLimitContainer = styled.div`
