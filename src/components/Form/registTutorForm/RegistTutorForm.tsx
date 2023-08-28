@@ -1,7 +1,7 @@
 // [ ] 현재 로그인한 사용자의 uid를 session에서 불러오고 있는데 , redux로 한번에 관리하는 거 연결하고 나면 없애야함.
 // [ ] 등록할 때 session?거기에 핞
 import { useEffect, useState } from 'react';
-import { BsFillRecordFill } from 'react-icons/bs';
+import { BsFileEarmarkImage, BsFileEarmarkPdf, BsFileEarmarkPerson, BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
 import { styled } from 'styled-components';
 import supabase from '../../../supabase';
@@ -35,6 +35,9 @@ const RegistTutorForm = () => {
   const [classInfo, setClassInfo] = useState('');
   const [university, setUniversity] = useState('');
   const [major, setMajor] = useState('');
+  // const [myImgFile, setMyImgFile] = useState<File | null>(null);
+  // const [previewMyImg, setPreviewMyImg] = useState<string | ArrayBuffer | null>(null);
+
   // 현재 로그인한 튜터정보 불러오기
   const findUserUid = async () => {
     await supabase.auth.onAuthStateChange((event, session) => {
@@ -142,6 +145,38 @@ const RegistTutorForm = () => {
     };
     console.log(formData);
   };
+
+  // const handleReadytoUploadMyimgfile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const selectedFile = e.target.files?.[0]; // Access the selected file
+  //   if (selectedFile) {
+  //     setMyImgFile(selectedFile); // Update the state with the selected file
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(selectedFile);
+  //     reader.onloadend = () => {
+  //       if (reader.result) {
+  //         setPreviewMyImg(reader.result);
+  //       }
+  //     };
+  //   }
+  // };
+  // const handleUploadMyimgfile = async (
+  //   e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  // ) => {
+  //   e.preventDefault();
+  //   if (myImgFile) {
+  //     const { data, error } = await supabase.storage
+  //       .from('tutor-profile-img')
+  //       .upload(public/${myImgFile.name}, myImgFile, {
+  //         cacheControl: '3600',
+  //         upsert: false,
+  //       });
+  //     // setImgData(data);
+  //   }
+  // };
+  // const handleCancelMyimgfileUpload = () => {
+  //   setMyImgFile(null);
+  //   setPreviewMyImg(null);
+  // };
   useEffect(() => {
     const isValidate = tuitionFeeOnline === 0 || tuitionFeeOffline === 0 || checkLanguageItems.length === 0 || checkClassLevelItems.length === 0 || classInfo.length === 0 ? true : false;
     setValicationCheck(() => isValidate);
@@ -171,8 +206,24 @@ const RegistTutorForm = () => {
             <SInput type="text" id="major" name="major" value={major} onChange={onChangeInputHandler}></SInput>
           </div>
         </SFormCertificateItem>
-        <SFormItem>
+        <SFormItem id="certification_Item">
           <span>학생증, 증명가능서류 사진첨부</span>
+          <SCertifiFilesArea>
+            <SCertifiIcon>
+              <BsFileEarmarkImage className="certification_icon" />
+            </SCertifiIcon>
+            <SCertifiFilesContainer>
+              <li></li>
+            </SCertifiFilesContainer>
+          </SCertifiFilesArea>
+          <SCertifiFilesArea>
+            <SCertifiIcon>
+              <BsFileEarmarkPdf className="certification_icon" />
+            </SCertifiIcon>
+            <SCertifiFilesContainer>
+              <li></li>
+            </SCertifiFilesContainer>
+          </SCertifiFilesArea>
         </SFormItem>
         <SFormItem>
           <span>성격 (최대 3개 선택)</span>
@@ -213,19 +264,19 @@ const RegistTutorForm = () => {
           <STextarea name="class_Info" id="class_Info" value={classInfo} onChange={(e) => setClassInfo(e.target.value)}></STextarea>
         </SFormItem>
         <SFormItem>
-          <span>자세한 수업료 기준</span>
+          <span>자세한 수업료 기준 (₩/30분)</span>
           <STuitionItems>
             <STuitionItem>
               <SItemHeader>
-                <BsFillRecordFill style={{ marginRight: '10px', fill: '#FE902F' }} />
-                <span>30분 화상 수업</span>
+                <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
+                <span>화상 수업</span>
               </SItemHeader>
               <SelectTuitionFee $tuitionType={'online'} $selectTuitionFee={selectTuitionFee} />
             </STuitionItem>
             <STuitionItem>
               <SItemHeader>
-                <BsFillRecordFill style={{ marginRight: '10px', fill: '#FE902F' }} />
-                <span>30분 대면 수업</span>
+                <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
+                <span>대면 수업</span>
               </SItemHeader>
               <SelectTuitionFee $tuitionType={'offline'} $selectTuitionFee={selectTuitionFee} />
             </STuitionItem>
@@ -233,6 +284,15 @@ const RegistTutorForm = () => {
         </SFormItem>
         <SFormItem>
           <span>대표 프로필 이미지</span>
+          <SCertifiFilesArea>
+            <SCertifiIcon>
+              <BsFileEarmarkPerson className="certification_icon" />
+            </SCertifiIcon>
+            <SCertifiFilesContainer id="certificateImgPreview">
+              <li></li>
+            </SCertifiFilesContainer>
+            <SImgPreview type="button">미리보기</SImgPreview>
+          </SCertifiFilesArea>
         </SFormItem>
         <button type="button" onClick={test}>
           test
@@ -248,17 +308,16 @@ const RegistTutorForm = () => {
 export default RegistTutorForm;
 
 const SContainer = styled.section`
+  margin-top: 100px;
+  max-width: 1200px;
+  min-width: 360px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  // 여기서 패딩줘도 되는건가
-  padding: 50px;
 `;
 
 const SForm = styled.form`
-  width: 400px;
   /* height: 500px; */
   padding: 20px;
   display: flex;
@@ -267,18 +326,15 @@ const SForm = styled.form`
 `;
 
 const SFormCertificateItem = styled.div`
-  /* width: 400px; */
-  width: 360px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 `;
 
 const SFormItem = styled.div`
-  /* width: 400px; */
-  width: 360px;
   display: flex;
   flex-direction: column;
+  gap: 5px;
 `;
 
 const SItemClassLevelHeader = styled.div`
@@ -331,16 +387,26 @@ const STextarea = styled.textarea`
 
 const STuitionItems = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
   padding: 10px;
   width: 100%;
-  gap: 20px;
+  gap: 25px;
+  @media screen and (min-width: 1024px) {
+    gap: 10px;
+  }
 `;
 
 const STuitionItem = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
-  gap: 15px;
+  justify-content: space-between;
+  gap: 5px;
+  @media screen and (min-width: 1024px) {
+    width: 48%;
+  }
 `;
 
 const SItemHeader = styled.div``;
@@ -361,4 +427,39 @@ const SButton = styled.button<{ disabled: boolean }>`
     else return 'pointer';
   }};
   border-radius: 3px;
+`;
+
+const SCertifiFilesArea = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const SCertifiIcon = styled.div`
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  cursor: pointer;
+`;
+
+const SCertifiFilesContainer = styled.ul<{ id?: string }>`
+  background-color: #f7f7f7;
+  border: 1px solid #696969;
+  border-radius: ${({ id }) => {
+    if (id === 'certificateImgPreview') return '3px 0 0 3px';
+    else return '3px';
+  }};
+  width: 100%;
+  height: 40px;
+`;
+
+const SImgPreview = styled.button`
+  border: 1px solid #696969;
+  border-left: none;
+  border-radius: 3px;
+  width: 100px;
+  height: 40px;
+  border-radius: 0 3px 3px 0;
 `;

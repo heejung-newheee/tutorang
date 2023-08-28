@@ -37,7 +37,7 @@ const SelectTuitionFee: React.FC<SelectTuitionFeeType> = ({ $tuitionType, $selec
   }, [isDropMenuOpen]);
 
   return (
-    <SbirthDropdownWrapper ref={dropContainerRef}>
+    <SDropdownWrapper ref={dropContainerRef}>
       <SDropDownHeader id={$tuitionType + 'Selectbox'} onClick={() => setIsDropMenuOpen((prev) => !prev)}>
         <SpanDefaultText $selectedOption={selectedOption}>{selectedOption === 0 ? '선택하세요' : selectedOption}</SpanDefaultText>
         <FaAngleDown />
@@ -53,16 +53,18 @@ const SelectTuitionFee: React.FC<SelectTuitionFeeType> = ({ $tuitionType, $selec
           </Select>
         </SOptionContainer>
       )}
-    </SbirthDropdownWrapper>
+    </SDropdownWrapper>
   );
 };
 
 export default SelectTuitionFee;
 
-const SbirthDropdownWrapper = styled.div`
+const SDropdownWrapper = styled.div`
   // 이거 width 100%로 해도 되는건가..
   box-sizing: border-box;
-  width: 195px;
+  /* width: 190px; */
+  max-width: 250px;
+  min-width: 180px;
   border: 1px solid #fe902f;
   position: relative;
   border-radius: 3px;

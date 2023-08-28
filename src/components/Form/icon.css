@@ -1,6 +1,6 @@
 .reset_input_btn {
   position: absolute;
-  right: 95px;
+  right: 85px;
   top: 12px;
   fill: #cdcdcd;
   z-index: 2
@@ -9,4 +9,10 @@
 .reset_input_btn:hover {
   cursor: pointer;
   fill: #f72525
+}
+
+.certification_icon {
+  width: 25px;
+  height: 25px;
+  fill: #FE902F;
 }

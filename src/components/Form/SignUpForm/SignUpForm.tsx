@@ -326,9 +326,9 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
       <h1>회원가입</h1>
       <SForm onSubmit={handleSubmit}>
         {/* [x] 이메일 작성란 */}
-        <SInputField>
+        <SFormItem>
           <label htmlFor="email">이메일</label>
-          <SEmailInputWrapper style={{ width: '360px' }}>
+          <SEmailInputWrapper style={{ minWidth: '360px' }}>
             <SInput
               type="text"
               id="email"
@@ -348,7 +348,7 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
             </SEmailButton>
             <BsXCircleFill className="reset_input_btn" onClick={deleteEmail} />
           </SEmailInputWrapper>
-          <SPGuideMessage>
+          <SPGuideMessage $guideMessageColor={'안내'}>
             <FaInfoCircle style={{ marginRight: '5px' }} />
             기입된 이메일로 최종 회원가입 승인메일을 보낼 예정이오니 실제 열람가능한 이메일을 기입해주시기 바랍니다.
           </SPGuideMessage>
@@ -365,15 +365,15 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
             </SPGuideMessage>
           )}
           {!!email && validEmail && doneDuplicationCheck && !duplicatedEmail && (
-            <SPGuideMessage $positiveMessage={!duplicatedEmail}>
+            <SPGuideMessage $guideMessageColor={!duplicatedEmail && '확인'}>
               <BsFillCheckCircleFill style={{ marginRight: '5px' }} />
               입력된 이메일을 사용할 수 있습니다!
             </SPGuideMessage>
           )}
-        </SInputField>
+        </SFormItem>
 
         {/* [x] 비밀번호 작성란 */}
-        <SInputField>
+        <SFormItem>
           <label htmlFor="password">비밀번호</label>
           <SInput
             type="password"
@@ -393,10 +393,10 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
               대소문자, 숫자, 특수문자(!@#$%)를 모두 포함하여 24자 이상의 비밀번호를 입력해주세요
             </SPGuideMessage>
           )}
-        </SInputField>
+        </SFormItem>
 
         {/* [x] 비밀번호 확인 작성란 */}
-        <SInputField>
+        <SFormItem>
           <label htmlFor="confirm_pwd">비밀번호 확인</label>
           <SInput
             type="password"
@@ -416,10 +416,10 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
               처음에 입력한 비밀번호와 동일해야합니다.
             </SPGuideMessage>
           )}
-        </SInputField>
+        </SFormItem>
 
         {/* [x] 이름 작성란 */}
-        <SInputField>
+        <SFormItem>
           <label htmlFor="username">이름</label>
           <SInput
             type="text"
@@ -439,14 +439,14 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
               2자 이상 6자미만의 한국실명 또는 2자이상 20자 미만의 영문실명을 입력하세요.
             </SPGuideMessage>
           )}
-        </SInputField>
+        </SFormItem>
 
         {/* [x] 생년월일 선택란 */}
-        <SInputField>
+        <SFormItem>
           <span>생년월일</span>
 
           <SDropdownField>
-            <SbirthDropdownWrapper>
+            <SDropdownWrapper>
               <SDropDownHeader id="birthYearDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, year: !prev.year }))}>
                 <span>{birth.year || '년도'}</span>
                 <FaAngleDown />
@@ -462,8 +462,8 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
                   </Select>
                 </SOptionContainer>
               )}
-            </SbirthDropdownWrapper>
-            <SbirthDropdownWrapper>
+            </SDropdownWrapper>
+            <SDropdownWrapper>
               <SDropDownHeader id="birthMonthDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, month: !prev.month }))}>
                 <span>{birth.month || '월'}</span>
                 <FaAngleDown />
@@ -479,8 +479,8 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
                   </Select>
                 </SOptionContainer>
               )}
-            </SbirthDropdownWrapper>
-            <SbirthDropdownWrapper>
+            </SDropdownWrapper>
+            <SDropdownWrapper>
               <SDropDownHeader id="birthDayDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, day: !prev.day }))}>
                 <span>{birth.day || '일'}</span>
                 <FaAngleDown />
@@ -496,12 +496,12 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
                   </Select>
                 </SOptionContainer>
               )}
-            </SbirthDropdownWrapper>
+            </SDropdownWrapper>
           </SDropdownField>
-        </SInputField>
+        </SFormItem>
 
         {/* [x] 성별 선택란 */}
-        <SInputField>
+        <SFormItem>
           <span>성별</span>
           <SRadioField>
             <SRadioLabel htmlFor="female" $isGenderChecked={checkedGender.female}>
@@ -513,10 +513,10 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
             </SRadioLabel>
             <SHiddenInput type="radio" id="male" name="male" value="male" checked={checkedGender.male} onChange={genderChangeHandler} />
           </SRadioField>
-        </SInputField>
+        </SFormItem>
 
         {/* [x] 지역 선택란 */}
-        <SInputField>
+        <SFormItem>
           <span>활동선호지역</span>
           {location1.sido1 === location2.sido2 && location1.gugun1 === location2.gugun2 && (
             <SPGuideMessage>
@@ -527,13 +527,13 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
           {/* [x] 1지역 선택란  */}
           <span>선택1</span>
           <SDropdownField>
-            <SbirthDropdownWrapper>
+            <SDropdownWrapper>
               <SDropDownHeader id="location1SidoDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, sido1: !prev.sido1 }))}>
                 <span>{location1.sido1}</span>
                 <FaAngleDown />
               </SDropDownHeader>
               {isLocationOpen.sido1 && (
-                <SOptionContainer>
+                <SOptionContainer $selectOptionsType={'location1'}>
                   <Select>
                     {cities.AREA0.map((option, index) => (
                       <SOption key={option} $selectedOption={location1.sido1 === option} onClick={() => selectLocation1Option(option, 'sido1', index.toString())}>
@@ -543,14 +543,14 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
                   </Select>
                 </SOptionContainer>
               )}
-            </SbirthDropdownWrapper>
-            <SbirthDropdownWrapper>
+            </SDropdownWrapper>
+            <SDropdownWrapper>
               <SDropDownHeader id="location1gugunDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, gugun1: !prev.gugun1 }))}>
                 <span>{location1.gugun1}</span>
                 <FaAngleDown />
               </SDropDownHeader>
               {isLocationOpen.gugun1 && (
-                <SOptionContainer>
+                <SOptionContainer $selectOptionsType={'location1'}>
                   <Select>
                     {gugun1Options.map((option, index) => (
                       <SOption key={option} $selectedOption={location1.gugun1 === option} onClick={() => selectLocation1Option(option, 'gugun1', index.toString())}>
@@ -560,19 +560,19 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
                   </Select>
                 </SOptionContainer>
               )}
-            </SbirthDropdownWrapper>
+            </SDropdownWrapper>
           </SDropdownField>
 
           {/* [x] 2지역 선택란  */}
           <span>선택2</span>
           <SDropdownField>
-            <SbirthDropdownWrapper>
+            <SDropdownWrapper>
               <SDropDownHeader id="location2SidoDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, sido2: !prev.sido2 }))}>
                 <span>{location2.sido2}</span>
                 <FaAngleDown />
               </SDropDownHeader>
               {isLocationOpen.sido2 && (
-                <SOptionContainer>
+                <SOptionContainer $selectOptionsType={'location2'}>
                   <Select>
                     {cities.AREA0.map((option, index) => (
                       <SOption key={option} $selectedOption={location2.sido2 === option} onClick={() => selectLocation2Option(option, 'sido2', index.toString())}>
@@ -582,19 +582,16 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
                   </Select>
                 </SOptionContainer>
               )}
-            </SbirthDropdownWrapper>
-            <SbirthDropdownWrapper>
+            </SDropdownWrapper>
+            <SDropdownWrapper>
               <SDropDownHeader id="location2gugunDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, gugun2: !prev.gugun2 }))}>
                 <span>{location2.gugun2}</span>
                 <FaAngleDown />
               </SDropDownHeader>
               {isLocationOpen.gugun2 && (
-                <SOptionContainer>
+                <SOptionContainer $selectOptionsType={'location2'}>
                   <Select>
-                    {/* <SOption key={option} selectedOption={birth.year === option} onClick={() => selectOption()}></SOption> */}
                     {gugun2Options.map((option, index) => (
-                      // <SOption key={option} selectedOption={+birth.year === option} onClick={() => setBirth((prev) => ({ ...prev, year: `${option}` }))}>
-                      // <SOption key={option} selectedOption={birth.year === option.toString()} onClick={() => selectOption(option.toString(), 'year')}>
                       <SOption key={option} $selectedOption={location2.gugun2 === option} onClick={() => selectLocation2Option(option, 'gugun2', index.toString())}>
                         {option}
                       </SOption>
@@ -602,9 +599,9 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
                   </Select>
                 </SOptionContainer>
               )}
-            </SbirthDropdownWrapper>
+            </SDropdownWrapper>
           </SDropdownField>
-        </SInputField>
+        </SFormItem>
 
         <SButton type="submit" disabled={!validEmail || !validPwd || !validMatch || !validUsername || !validBirth || !validGender || !validLocation || !doneDuplicationCheck || duplicatedEmail ? true : false}>
           sign Up
@@ -617,17 +614,18 @@ export default SignUpForm;
 
 const SContainer = styled.section`
   margin-top: 100px;
+  max-width: 1200px;
+  min-width: 360px;
 `;
 const SForm = styled.form`
-  width: 400px;
-  height: 500px;
+  /* height: 500px; */
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
 
-const SInputField = styled.div`
+const SFormItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -664,9 +662,9 @@ const SEmailButton = styled.button<{ disabled: boolean }>`
   }};
   background-color: ${({ disabled }) => {
     if (disabled) {
-      return '#8c474762';
+      return '#fe902f57';
     } else {
-      return '#8c4747';
+      return '#FE902F';
     }
   }};
   color: #fff;
@@ -674,18 +672,19 @@ const SEmailButton = styled.button<{ disabled: boolean }>`
 `;
 
 const SInput = styled.input<{ $color: boolean; $noFocusedColor: boolean; id?: string }>`
-  border: 1px solid #cdcdcd;
+  border: 1px solid #696969;
   box-sizing: border-box;
   /* background-color: #fff !important; */
   color: #000;
   vertical-align: middle;
   border-radius: 3px;
   padding: 5px;
-  width: ${({ id }) => {
+  width: 100%;
+  min-width: ${({ id }) => {
     if (id === 'email') {
-      return '280px';
+      return '260px';
     } else {
-      return '360px';
+      return '340px';
     }
   }};
   height: 40px;
@@ -707,32 +706,36 @@ const SRadioLabel = styled.label<{ $isGenderChecked: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props) => {
+  border: ${(props) => {
     if (props.$isGenderChecked === true) {
-      return '#d96767';
+      return '2.5px solid #FE902F';
     } else {
-      return '#eee';
+      return '1px solid #696969';
     }
   }};
+  color: #696969;
   cursor: pointer;
   border-radius: 3px;
 `;
 
-const SPGuideMessage = styled.p<{ $positiveMessage?: boolean }>`
+const SPGuideMessage = styled.p<{ $guideMessageColor?: string }>`
   font-size: 13px;
-  color: ${({ $positiveMessage }) => {
-    if ($positiveMessage) {
+  color: ${({ $guideMessageColor }) => {
+    if ($guideMessageColor === '확인') {
       return '#1b7b18';
+    } else if ($guideMessageColor === '안내') {
+      return '#696969';
     } else {
       return '#d71f1f';
     }
   }};
 `;
 
-const SbirthDropdownWrapper = styled.div`
+const SDropdownWrapper = styled.div`
   // 이거 width 100%로 해도 되는건가..
   width: 100%;
-  box-shadow: 0 4px 5px 0 #00000026;
+  border: 1px solid #696969;
+  border-radius: 3px;
   position: relative;
 `;
 
@@ -743,15 +746,20 @@ const SDropDownHeader = styled.div`
   justify-content: space-between;
 `;
 
-const SOptionContainer = styled.div`
+const SOptionContainer = styled.div<{ $selectOptionsType?: string }>`
   /* display: none; */
   background-color: #fff;
+  border: 1px solid #696969;
   display: block;
   position: absolute;
   width: 100%;
   max-height: 180px;
   left: 0;
   overflow-y: scroll;
+  z-index: ${({ $selectOptionsType }) => {
+    if ($selectOptionsType === 'location1') return '3';
+    else return '1';
+  }};
 `;
 const Select = styled.ul``;
 
@@ -766,13 +774,19 @@ const SOption = styled.li<{ $selectedOption: boolean }>`
 `;
 
 const SButton = styled.button<{ disabled: boolean }>`
+  height: 40px;
   background-color: ${(props) => {
-    if (props.disabled === true) return '#eee';
-    else return '#933636ed';
+    if (props.disabled === true) return '#e7e7e7';
+    else return '#FE902F';
   }};
+  /* color: ${(props) => {
+    if (props.disabled === true) return '#131212';
+    else return '#fff';
+  }}; */
   color: #fff;
   cursor: ${(props) => {
     if (props.disabled === true) return 'not-allowed';
     else return 'pointer';
   }};
+  border-radius: 3px;
 `;
