@@ -1,0 +1,4 @@
+.sendbird-channel-list {
+  width: 100%;
+  border: 1px solid var(--sendbird-light-onlight-04);
+}
