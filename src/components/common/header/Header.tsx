@@ -21,7 +21,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
-
+  console.log(userIsError, userIsLoading);
   const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
   console.log('matchData', matchData);
 
@@ -51,11 +51,11 @@ const Header = () => {
     navigate('/');
   };
 
-  const handleSignOut = async () => {
+  // TODO 로그아웃 함수 --> 일단은 main에 넣어둠
+  const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) alert(error.message);
     alert('로그아웃 되었습니다');
-    // 페이지 리로드가 필요하겠져?
   };
 
   if (isLoading) {
@@ -83,7 +83,7 @@ const Header = () => {
           {/* 미디어쿼리 */}
           <Styled.LoginBtn>
             <NavLink to="/signin">로그인 | 회원가입</NavLink>
-            <span onClick={handleSignOut}>LogOut</span>
+            <span onClick={() => signOut()}>LogOut</span>
           </Styled.LoginBtn>
         </Styled.WidthLimitContainer>
       </Styled.NavContainer>
