@@ -1,21 +1,25 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../redux/config/configStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useReviewAverage } from '../hooks';
 import { matchingRequest } from '../api/match';
 import { fetchData, fetchReview } from '../api/user';
 import { fetchLike } from '../api/like';
 import { fetchTutorAll } from '../api/tutor';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchBookmark } from '../api/bookmark';
 import { BookMark } from '../components';
 import { openModal, setReview, setTargetId } from '../redux/modules';
-import { useEffect } from 'react';
 import { reviewDelete, reviewUpdate } from '../api/review';
+import { useEffect, useState } from 'react';
+import supabase from '../supabase';
+import { Session } from '@supabase/supabase-js';
+import { getGroupChannelUrl, sendRequestTutoringMessage, sendResponseTutoringMessage } from '../sendbird';
+import { RootState } from '../redux/config/configStore';
 
 const Detail = () => {
   const dispatch = useDispatch();
+  const [isLoading, setLoading] = useState(true);
+  const [session, setSession] = useState<Session | null>(null);
   const { id } = useParams();
 
   // newReview에 사용할 targeId 업데이트
@@ -24,6 +28,7 @@ const Detail = () => {
       dispatch(setTargetId(id));
     }
   }, [id]);
+  const navigate = useNavigate();
 
   const { data: profiles, isLoading: profilesLoading, isError: profilesError } = useQuery(['profiles'], fetchData);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
@@ -48,6 +53,14 @@ const Detail = () => {
     },
   });
 
+  const handleStartChat = async (targetId: string) => {
+    if (!(targetId && session)) return;
+    const url = await getGroupChannelUrl(session.user.id, targetId);
+    if (url) {
+      navigate(`/chat?channel_url=${url}`);
+    }
+  };
+
   // 모달
   const handleOpen = () => {
     dispatch(openModal('report'));
@@ -65,10 +78,23 @@ const Detail = () => {
   const handleReviewDelete = (id: number) => {
     mutationReviewDelete.mutate(id);
   };
+  // const { Modal, isOpen, openModal, closeModal } = useModal();
+  // redux type
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
 
-  if (profilesLoading || likeLoading || tutorLoading || reviewLoading) {
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
+
+  if (profilesLoading || likeLoading || tutorLoading || reviewLoading || isLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
   }
   if (!tutor || !profiles || !like || profilesError || likeError || tutorError || reviewError) {
@@ -84,6 +110,7 @@ const Detail = () => {
               <div>
                 <img src={`${user.avatar_url}`} alt="프로필 이미지" />
                 <span>{user.username}</span>
+                {session && <button onClick={() => handleStartChat(user.id)}>대화시작하기</button>}
               </div>
               <div>
                 활동 지역 : {user.location1_sido} | {user.location2_sido}
@@ -105,6 +132,8 @@ const Detail = () => {
           onClick={async () => {
             try {
               await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
+              await sendRequestTutoringMessage(loginUser!.id, filteredUser![0].id);
+              //await sendResponseTutoringMessage(loginUser!.id, filteredUser![0].id, 'reject');
               alert('신청완료');
             } catch (error) {
               console.error('매칭 요청 중 오류 발생:', error);
