@@ -334,6 +334,7 @@ export interface Database {
           reviewed_id: string | null;
           title: string | null;
           user_id: string | null;
+          author: string | null;
         };
         Insert: {
           author?: string | null;
@@ -344,6 +345,7 @@ export interface Database {
           reviewed_id?: string | null;
           title?: string | null;
           user_id?: string | null;
+          author: string | null;
         };
         Update: {
           author?: string | null;
@@ -354,6 +356,7 @@ export interface Database {
           reviewed_id?: string | null;
           title?: string | null;
           user_id?: string | null;
+          author: string | null;
         };
         Relationships: [
           {
@@ -603,3 +606,5 @@ export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'c
 };
 
 export type BookMarkType = Pick<Tables<'bookmark'>, 'tutor_id' | 'user_id'>;
+export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
+export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
