@@ -61,7 +61,8 @@ const TutorInfo = ({ match }: pageProps) => {
             <div>수업레벨 : Lv 2</div>
             <div>별점 : ⭐⭐⭐⭐ </div>
             <div>수업소개 : {tutorInfo!.class_info}</div>
-            <div>시간당 : {tutorInfo!.price}원</div>
+            <div>시간당 : {tutorInfo!.tuition_fee_offline}원</div>
+            <div>시간당 : {tutorInfo!.tuition_fee_online}원</div>
             {/* <div style={{ fontSize: '0.8rem', color: '#ggg' }}> 마지막 정보 업데이트 {tutorInfo?.update ? <span>{tutorInfo.update}</span> : <span>{created}</span>}</div> */}
           </InfoSection>
 

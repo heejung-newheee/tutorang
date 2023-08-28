@@ -26,7 +26,7 @@ const LikeTutors = (likedUser: LikeTutorsProps) => {
                 <S.LikeTutorTitle>{tutor.class_info}</S.LikeTutorTitle>
                 <S.LikeTutorName>{tutor.tutor_name}</S.LikeTutorName>
                 <S.LikeTutorContent>
-                  {tutor.price}
+                  {/* {tutor.tuition_fee_offline} |{tutor.tuition_fee_online} */}
                   <S.LikeTag>
                     <div>#열정적인</div>
                     <div>#열정적인</div>

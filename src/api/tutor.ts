@@ -13,7 +13,8 @@ export const getTutors = async () => {
     .select(
       `
       id,
-      price,
+      tuition_fee_offline,
+      tuition_fee_online,
       class_info,
       profiles: profiles(id, username, avatar_url)
       `,
@@ -28,7 +29,7 @@ export const getTutorMostReview = async () => {
   const { data, error } = await supabase.from('most_review_tutor').select(
     `
       id,
-      tutor_info: tutor_info(price, class_info)
+      tutor_info: tutor_info(tuition_fee_offline,tuition_fee_online, class_info)
       profiles: profiles(id, username, avatar_url)
       `,
   );

@@ -388,26 +388,65 @@ export interface Database {
       };
       tutor_info: {
         Row: {
+          certification_image: string | null;
+          certification_pdf: string | null;
           class_info: string | null;
+          class_level: string | null;
           created_at: string;
           id: number;
-          price: number | null;
+          location1_gugun: string | null;
+          location1_sido: string | null;
+          location2_gugun: string | null;
+          location2_sido: string | null;
+          major: string | null;
+          personality: string | null;
+          profile_image: string | null;
+          speaking_language: string | null;
+          tuition_fee_offline: number | null;
+          tuition_fee_online: number | null;
+          university: string | null;
           update: string | null;
           user_id: string | null;
         };
         Insert: {
+          certification_image?: string | null;
+          certification_pdf?: string | null;
           class_info?: string | null;
+          class_level?: string | null;
           created_at?: string;
           id?: number;
-          price?: number | null;
+          location1_gugun?: string | null;
+          location1_sido?: string | null;
+          location2_gugun?: string | null;
+          location2_sido?: string | null;
+          major?: string | null;
+          personality?: string | null;
+          profile_image?: string | null;
+          speaking_language?: string | null;
+          tuition_fee_offline?: number | null;
+          tuition_fee_online?: number | null;
+          university?: string | null;
           update?: string | null;
           user_id?: string | null;
         };
         Update: {
+          certification_image?: string | null;
+          certification_pdf?: string | null;
           class_info?: string | null;
+          class_level?: string | null;
           created_at?: string;
           id?: number;
-          price?: number | null;
+          location1_gugun?: string | null;
+          location1_sido?: string | null;
+          location2_gugun?: string | null;
+          location2_sido?: string | null;
+          major?: string | null;
+          personality?: string | null;
+          profile_image?: string | null;
+          speaking_language?: string | null;
+          tuition_fee_offline?: number | null;
+          tuition_fee_online?: number | null;
+          university?: string | null;
           update?: string | null;
           user_id?: string | null;
         };
@@ -544,6 +583,6 @@ export interface Database {
 
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 export type Views<T extends keyof Database['public']['Views']> = Database['public']['Views'][T]['Row'];
-export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'class_info' | 'price'> & {
+export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'class_info' | 'tuition_fee_offline' | 'tuition_fee_online'> & {
   profiles: Pick<Tables<'profiles'>, 'id' | 'username' | 'avatar_url'>;
 };

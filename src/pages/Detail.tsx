@@ -56,7 +56,7 @@ const Detail = () => {
                 <span>{user.username}</span>
               </div>
               <div>
-                활동 지역 : {user.location1} | {user.location2}
+                활동 지역 : {user.location1_sido} | {user.location2_sido}
               </div>
             </div>
           );
@@ -65,7 +65,8 @@ const Detail = () => {
           return (
             <div key={tutor.user_id}>
               <p>{tutor.class_info}</p>
-              <p>{tutor.price}(30분)</p>
+              <p>{tutor.tuition_fee_offline}(30분)</p>
+              <p>{tutor.tuition_fee_online}(30분)</p>
             </div>
           );
         })}
