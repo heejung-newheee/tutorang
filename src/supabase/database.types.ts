@@ -320,6 +320,7 @@ export interface Database {
           reviewed_id: string | null;
           title: string | null;
           user_id: string | null;
+          author: string | null;
         };
         Insert: {
           author?: string | null;
@@ -330,6 +331,7 @@ export interface Database {
           reviewed_id?: string | null;
           title?: string | null;
           user_id?: string | null;
+          author: string | null;
         };
         Update: {
           author?: string | null;
@@ -340,6 +342,7 @@ export interface Database {
           reviewed_id?: string | null;
           title?: string | null;
           user_id?: string | null;
+          author: string | null;
         };
         Relationships: [
           {
@@ -587,3 +590,6 @@ export type Views<T extends keyof Database['public']['Views']> = Database['publi
 export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'class_info' | 'price'> & {
   profiles: Pick<Tables<'profiles'>, 'id' | 'username' | 'avatar_url'>;
 };
+
+export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
+export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
