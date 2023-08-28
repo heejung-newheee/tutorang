@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import * as Styled from './Header.styled';
-import { Link, useNavigate } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import supabase from '../../../supabase';
-import { setUser } from '../../../redux/modules/user';
-import { fetchData } from '../../../api/user';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
+import { fetchData } from '../../../api/user';
 import { matchingList } from '../../../redux/modules/matching';
 import { tutorInfoJoin } from '../../../api/tutor';
 import { tutorInfo } from '../../../redux/modules/tutorSlice';
+import { setUser } from '../../../redux/modules/user';
+import supabase from '../../../supabase';
+import * as Styled from './Header.styled';
 
 type HEADERMENU = { title: string; path: string }[];
 
