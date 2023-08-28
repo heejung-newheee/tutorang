@@ -3,6 +3,7 @@ import { Layout, SignInForm, SignUpForm } from '../components';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import { AuthMain, Detail, List, Main, Mypage } from '../pages';
 import Chat from '../pages/Chat';
+import Chat2 from '../pages/Chat2';
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
             <Route path="/detail/:id" element={<Detail />} />
             <Route path="/list" element={<List />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/chat2" element={<Chat2 />} />
             <Route element={<AuthMain />}>
               <Route path="/signin" element={<SignInForm />} />
               <Route path="/signup" element={<SignUpForm />} />

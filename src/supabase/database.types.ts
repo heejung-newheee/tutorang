@@ -70,6 +70,134 @@ export interface Database {
         };
         Relationships: [];
       };
+      chat_messages: {
+        Row: {
+          content: string | null;
+          created_at: string;
+          data: string | null;
+          message_id: string;
+          message_type: string;
+          room_id: string;
+          user_id: string;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          data?: string | null;
+          message_id?: string;
+          message_type?: string;
+          room_id: string;
+          user_id?: string;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
+          data?: string | null;
+          message_id?: string;
+          message_type?: string;
+          room_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'chat_messages_room_id_fkey';
+            columns: ['room_id'];
+            referencedRelation: 'chat_rooms';
+            referencedColumns: ['room_id'];
+          },
+          {
+            foreignKeyName: 'chat_messages_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'chat_messages_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'matching_tutor_data';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'chat_messages_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'chat_messages_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_info_join';
+            referencedColumns: ['tutor_id'];
+          },
+        ];
+      };
+      chat_room_participants: {
+        Row: {
+          created_at: string;
+          room_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          room_id: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          room_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'chat_room_participants_room_id_fkey';
+            columns: ['room_id'];
+            referencedRelation: 'chat_rooms';
+            referencedColumns: ['room_id'];
+          },
+          {
+            foreignKeyName: 'chat_room_participants_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'chat_room_participants_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'matching_tutor_data';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'chat_room_participants_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'chat_room_participants_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_info_join';
+            referencedColumns: ['tutor_id'];
+          },
+        ];
+      };
+      chat_rooms: {
+        Row: {
+          created_at: string | null;
+          name: string | null;
+          room_id: string;
+        };
+        Insert: {
+          created_at?: string | null;
+          name?: string | null;
+          room_id?: string;
+        };
+        Update: {
+          created_at?: string | null;
+          name?: string | null;
+          room_id?: string;
+        };
+        Relationships: [];
+      };
       city: {
         Row: {
           id: number;
@@ -306,7 +434,7 @@ export interface Database {
       };
       review: {
         Row: {
-          author?: string | null;
+          author: string | null;
           content: string | null;
           created_at: string;
           id: number;
@@ -552,12 +680,15 @@ export interface Database {
         Row: {
           class_info: string | null;
           created_at: string | null;
-          price: number | null;
+          location1_gugun: string | null;
+          location2_gugun: string | null;
+          major: string | null;
+          personality: string | null;
           tutor_id: string | null;
           tutor_img: string | null;
           tutor_info_id: number | null;
           tutor_name: string | null;
-          update: string | null;
+          university: string | null;
         };
         Relationships: [
           {
@@ -570,7 +701,13 @@ export interface Database {
       };
     };
     Functions: {
-      [_ in never]: never;
+      is_room_participant: {
+        Args: {
+          room_id: string;
+          user_id: string;
+        };
+        Returns: boolean;
+      };
     };
     Enums: {
       [_ in never]: never;
