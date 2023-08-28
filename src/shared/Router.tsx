@@ -4,6 +4,7 @@ import SignUpWrapBox from '../components/Form/SignUpForm/SignUpWrapBox';
 import RegistTutorForm from '../components/Form/registTutorForm/RegistTutorForm';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import { AuthMain, Detail, List, Main, Mypage } from '../pages';
+import Chat from '../pages/Chat';
 import Test from '../pages/Test';
 
 const Router = () => {
@@ -22,6 +23,7 @@ const Router = () => {
             <Route path="/list" element={<List />} />
             <Route path="/test" element={<Test />} />
             <Route path="/tutor-registration" element={<RegistTutorForm />} />
+            <Route path="/chat" element={<Chat />} />
           </Route>
         </Route>
       </Routes>
