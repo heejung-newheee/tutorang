@@ -11,7 +11,6 @@ export const fetchBookmark = async () => {
 // 해당 게시물(튜터) 북마크 데이터만 조회
 export const matchBookMark = async (tutorId: string) => {
   const { data } = await supabase.from('bookmark').select().match({ tutor_id: tutorId });
-
   return data;
 };
 

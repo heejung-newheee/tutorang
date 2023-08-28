@@ -2,41 +2,50 @@ import * as S from './BookMark.styled';
 import { useQuery } from '@tanstack/react-query';
 import { matchBookMark, useCreateBookMarkMutation, useDeleteBookMarkMutation } from '../../api/bookmark';
 import { BookMarkType } from '../../supabase/database.types';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { openModal } from '../../redux/modules';
 
 const BookMark = () => {
+  const dispatch = useDispatch();
+
   const { id } = useParams();
   if (!id) return;
+  const loginUser = useSelector((state: RootState) => state.user.user);
 
   const { data: bookMarkList, isError, error } = useQuery(['matchBookMark'], () => matchBookMark(id));
   const [isBookMark, setIsBookMark] = useState(false);
 
-  const loginUser = useSelector((state: RootState) => state.user.user);
+  const findBookMark = bookMarkList?.find((bookmark) => bookmark.user_id === loginUser?.id);
 
   const bookMarkCreateMutation = useCreateBookMarkMutation();
   const bookMarkDeleteMutation = useDeleteBookMarkMutation();
 
   useEffect(() => {
-    if (bookMarkList?.length === 0) {
-      setIsBookMark(false);
-    } else {
+    if (findBookMark) {
       setIsBookMark(true);
+    } else {
+      setIsBookMark(false);
     }
-  }, [bookMarkList]);
+  }, [findBookMark]);
 
   const handleToggleBookMark = async () => {
+    if (!loginUser) {
+      dispatch(openModal('confirm'));
+      return null;
+    }
+
     const newBookMark: BookMarkType = {
       tutor_id: id || '',
       user_id: loginUser?.id || '',
     };
 
     if (isBookMark === false) {
-      bookMarkCreateMutation.mutate(newBookMark);
+      await bookMarkCreateMutation.mutate(newBookMark);
     } else {
-      bookMarkDeleteMutation.mutate(id);
+      await bookMarkDeleteMutation.mutate(id);
     }
   };
 

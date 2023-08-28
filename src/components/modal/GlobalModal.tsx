@@ -19,7 +19,7 @@ const GlobalModal = () => {
   const MODAL_COMPONENTS = [
     {
       type: MODAL_TYPES.confirm,
-      component: <Report />,
+      component: <Confirm />,
     },
     {
       type: MODAL_TYPES.alert,
@@ -27,7 +27,7 @@ const GlobalModal = () => {
     },
     {
       type: MODAL_TYPES.report,
-      component: <Confirm />,
+      component: <Report />,
     },
     {
       type: MODAL_TYPES.reviewCreate,
