@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchBookmark } from '../api/bookmark';
 import { BookMark } from '../components';
 import { openModal, setReview, setTargetId } from '../redux/modules';
-import { useEffect } from 'react';
 import { reviewDelete, reviewUpdate } from '../api/review';
 import { useEffect, useState } from 'react';
 import supabase from '../supabase';
