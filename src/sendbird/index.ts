@@ -19,6 +19,22 @@ const getGroupChannel = async (studentId: string, tutorId: string) => {
   return channel;
 };
 
+export const getGroupChannelUrl = async (studentId: string, tutorId: string) => {
+  try {
+    await sendbird.connect(studentId);
+  } catch (err) {
+    console.error(err);
+  }
+  let channel;
+  try {
+    channel = await getGroupChannel(studentId, tutorId);
+  } catch (err) {
+    console.error(err);
+  }
+  if (!channel) throw new Error('채널을 가져올 수 없습니다.');
+  return channel.url;
+};
+
 /**
  * 학생이 튜터에게 튜터링 요청 메시지를 보낸다.
  * @function sendRequestTutoringMessage

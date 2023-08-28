@@ -10,8 +10,7 @@ import { openModal } from '../redux/modules';
 import { useEffect, useState } from 'react';
 import supabase from '../supabase';
 import { Session } from '@supabase/supabase-js';
-import sendbird, { sendRequestTutoringMessage, sendResponseTutoringMessage } from '../sendbird';
-import { GroupChannel, GroupChannelCreateParams } from '@sendbird/chat/groupChannel';
+import { getGroupChannelUrl, sendRequestTutoringMessage, sendResponseTutoringMessage } from '../sendbird';
 import { RootState } from '../redux/config/configStore';
 
 const Detail = () => {
@@ -36,27 +35,10 @@ const Detail = () => {
   console.log('리덕스 로그인사용자', loginUser);
 
   const handleStartChat = async (targetId: string) => {
-    let user;
     if (!(targetId && session)) return;
-    try {
-      user = await sendbird.connect(session.user.id);
-    } catch (err) {
-      console.error(err);
-    }
-    if (!user) return;
-    const params: GroupChannelCreateParams = {
-      invitedUserIds: [user.userId, targetId],
-      operatorUserIds: [user.userId, targetId],
-      isDistinct: true,
-    };
-    const channel: GroupChannel = await sendbird.groupChannel.createChannel(params);
-    try {
-      await sendbird.disconnect();
-    } catch (err) {
-      console.error(err);
-    }
-    if (channel) {
-      navigate(`/chat?channel_url=${channel.url}`);
+    const url = await getGroupChannelUrl(session.user.id, targetId);
+    if (url) {
+      navigate(`/chat?channel_url=${url}`);
     }
   };
 
