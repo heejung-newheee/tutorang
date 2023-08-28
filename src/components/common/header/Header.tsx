@@ -9,6 +9,8 @@ import { setUser } from '../../../redux/modules/user';
 import { fetchData } from '../../../api/user';
 import { getMatchData } from '../../../api/match';
 import { matchingList } from '../../../redux/modules/matching';
+import { tutorInfoJoin } from '../../../api/tutor';
+import { tutorInfo } from '../../../redux/modules/tutorSlice';
 
 type HEADERMENU = { title: string; path: string }[];
 
@@ -22,9 +24,10 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
-
-  const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
-  console.log('matchData', matchData);
+  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor_info_join'], tutorInfoJoin);
+  // const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
+  // console.log('matchData', matchData);
+  console.log('tutor_info_join', tutor);
 
   const [email, setEmail] = useState<string>();
 
@@ -43,8 +46,11 @@ const Header = () => {
     if (user) {
       dispatch(setUser(user));
     }
-    if (matchData) {
-      dispatch(matchingList(matchData));
+    // if (matchData) {
+    //   dispatch(matchingList(matchData));
+    // }
+    if (tutor) {
+      dispatch(tutorInfo(tutor));
     }
   }, [user, dispatch]);
 
@@ -52,10 +58,10 @@ const Header = () => {
     navigate('/');
   };
 
-  if (isLoading) {
+  if (userIsLoading) {
     return <div>로딩중~~~~~~~~~~~스피너~~</div>;
   }
-  if (isError) {
+  if (userIsError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
   return (

@@ -41,6 +41,7 @@ const TutorInfo = ({ match }: pageProps) => {
   const matchingData = Array.isArray(match) ? match : [match];
   const matchList = matchingData.filter((item: Views<'matching_tutor_data'>) => item.tutor_id === user!.id);
   console.log(matchList);
+  console.log('tutorInfo', tutorInfo);
 
   if (tutorLoading || reviewLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
