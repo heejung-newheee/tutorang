@@ -7,6 +7,7 @@ import SelectBox from '../components/list/SelectBox';
 import CityModal from '../components/list/CityModal';
 import { price } from '../components/list/MobileModal';
 import axios from 'axios';
+import { TTutorWithUser } from '../supabase/database.types';
 
 const List = () => {
   const { Modal, isOpen, openModal, closeModal } = useModal();
@@ -27,11 +28,16 @@ const List = () => {
     location1: '',
     location2: [],
     age: [],
-    // classStyle: 'offLine',
+    classStyle: 'onLine',
   });
+  //검색
+  const [searchText, setSearchText] = useState('');
+  const [tutorApiData, setTutorApiData] = useState<>();
+
   console.log(selectedFilters, selectedArr);
   //체크박스 클릭
   const handleFilterdObj = (item: string, category: string) => {
+    console.log('sfsfd');
     switch (category) {
       //성별
       case 'gender':
@@ -75,12 +81,18 @@ const List = () => {
         break;
       //가격
       case 'price':
+        console.log(item);
+
         if (item === '전체') {
+          console.log('전체');
+
           setSelectedFilters((pre: any) => (pre ? { ...pre, minPrice: 0 } : { ...pre }));
           setSelectedFilters((pre: any) => (pre ? { ...pre, maxPrice: 100000 } : { ...pre }));
           setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
           setSelectedArr((pre) => [...pre, ['price', '전체']]);
         } else {
+          console.log('else');
+
           const minPrice = price.find((i) => i.priceNum === item)?.min;
           const maxPrice = price.find((i) => i.priceNum === item)?.max;
           setSelectedFilters((pre: any) => (pre ? { ...pre, minPrice, maxPrice } : { ...pre }));
@@ -148,7 +160,7 @@ const List = () => {
   //강사 api 호출
   useEffect(() => {
     getData();
-  }, [selectedFilters]);
+  }, [selectedFilters, searchText]);
 
   const getData = async () => {
     const { gender } = selectedFilters;
@@ -157,14 +169,15 @@ const List = () => {
       // .range(0, 1)
       // const { data, error } = await supabase.from('profiles').select('*').in('gender', [genderArr]).textSearch('username', `':*'`);
       // const { data, error } = await supabase.from('profiles').select('*').in('gender', [genderArr]).in('language_level', [language_levelArr]).match(filterdObj);
-      // let query = supabase.from('profiles').select('*');
+      let query = supabase.from('tutor_info').select('*');
       // if (gender) {
       //   query = query.in('gender', [...gender]);
       // }
-      // const { data, error } = await query.range(1, 3);
-      // console.log(error);
+      const { data, error } = await query.range(1, 3);
+      console.log(error);
       // .gte('price', 3000).lte('price', 100000)
-      // console.log(data, 'ㅁㄴㅇㄴ');
+      setTutorApiData(data);
+      console.log(data, 'ㅁㄴㅇㄴ');
     } catch (error) {
       console.log(error);
     }
@@ -276,16 +289,25 @@ const List = () => {
   // }, [books]);
 
   //Debouncing
-  // const [searchText, setSearchText] = useState('second');
-  // const debounce = (callback: () => any, delay: number) => {
-  //   let timerId: string | null = null;
-  //   return (...args) => {
-  //     if (timerId) clearTimeout(timerId);
-  //     timerId = setTimeout(() => {
-  //       callback(...args);
-  //     }, delay);
-  //   };
-  // };
+  const debounce = <T extends (...args: any[]) => any>(fn: T, delay: number) => {
+    let timeout: ReturnType<typeof setTimeout>;
+
+    return (...args: Parameters<T>): ReturnType<T> => {
+      let result: any;
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        result = fn(...args);
+      }, delay);
+      return result;
+    };
+  };
+
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+  console.log(searchText, 'searchText');
+
+  const debouncedOnChange = debounce<typeof onChange>(onChange, 500);
 
   // Debouncing
   // const debounce = (callback: (text: string) => any, delay: number | undefined) => {
@@ -310,10 +332,10 @@ const List = () => {
   return (
     <Container>
       <SearchWrap>
-        {/* <input type="text" onChange={() => handleDebouncing(e)} /> */}
         <svg xmlns="http://www.w3.org/2000/svg" fill="#fe902f" height="1em" viewBox="0 0 512 512">
           <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
         </svg>
+        <input type="text" onChange={debouncedOnChange} />
       </SearchWrap>
       {/* 필터박스 */}
       <SelectBox handleFilterdObj={handleFilterdObj} openModal={openModal} selectedArr={selectedArr} setSelectedArr={setSelectedArr} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />

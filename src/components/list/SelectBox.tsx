@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { gender, level, age, price } from './MobileModal';
+import { gender, level, age, price, priceOnline } from './MobileModal';
+import locationIcon from '../../assets/location-icon.png';
 
 const obj: any = {
   gender,
   level,
   age,
   price,
+  priceOnline,
 };
 
 type Props = {
@@ -28,6 +30,11 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
   const handleHiddenBox = (category: string) => {
     setfilteredMenu(category);
     setIsOpen((pre) => !pre);
+  };
+
+  const onOffChange = () => {
+    const onOff = selectedFilters.classStyle === 'onLine' ? 'offLine' : 'onLine';
+    setSelectedFilters((pre: any) => pre && { ...pre, classStyle: onOff });
   };
 
   const DeleteFilterBar = (item: string[]) => {
@@ -53,8 +60,6 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
         setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
 
         break;
-      //나이
-      case 'age':
 
       //나이
       case 'age':
@@ -151,11 +156,14 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
     setSelectedArr((pre) => [...pre, ['price', `${minPriceNum?.toLocaleString('ko-KR')}~${maxPriceNum?.toLocaleString('ko-KR')}`]]);
   };
 
-  console.log(selectedFilters['minPrice'] > 0, 'asdsd');
-  console.log(selectedFilters['maxPrice'], 'asdsd');
-
   return (
     <>
+      <LocationDiv>
+        {' '}
+        <img src={locationIcon} />
+        지역으로 찾기
+      </LocationDiv>
+
       <FilterBox>
         <InnerBox $isIn={selectedFilters.gender.length !== 0} onClick={() => handleHiddenBox('gender')}>
           성별
@@ -177,19 +185,21 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
           <button>+</button>
         </InnerBox>
 
-        <InnerBox $isIn={selectedArr.some((i) => i[0] === 'price') ? true : false} onClick={() => handleHiddenBox('price')}>
+        <InnerPriceBox $isIn={selectedArr.some((i) => i[0] === 'price') ? true : false} onClick={() => handleHiddenBox('price')}>
           가격
-          <ChevronSpan $chevron={isOpen === true && filteredMenu === 'price'}></ChevronSpan>
-        </InnerBox>
+          <ChevronSpan $chevron={(isOpen === true && filteredMenu === 'price') || filteredMenu === 'priceOnline'}></ChevronSpan>
+        </InnerPriceBox>
       </FilterBox>
 
       {/* 체크박스 */}
       {isOpen && filteredMenu !== 'price' ? (
         <InnerHidden>
-          {obj[filteredMenu]?.map((item: string, index: number) => (
-            <div key={index} onClick={() => handleFilterdObj(item, filteredMenu)}>
+          {obj[filteredMenu]?.map((item: string) => (
+            <div key={Math.random() * 22229999}>
               <input type="checkbox" id="check" checked={(selectedFilters[filteredMenu]?.length === 0 && item === '전체') || selectedArr.some((i) => i[0] === filteredMenu && i[1] === item && item !== '전체')} />
-              <label htmlFor="check">{item}</label>
+              <label htmlFor="check" onClick={() => handleFilterdObj(item, filteredMenu)}>
+                {item}
+              </label>
             </div>
           ))}
         </InnerHidden>
@@ -199,14 +209,19 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
         <InnerHidden>
           {/* 수정해야 함 */}
           <ClassType>
-            <span>OffLine - Class</span>
-          </ClassType>
-          <ClassType>
-            <span>OnLine - Class</span>
-          </ClassType>
+            <div>
+              {selectedFilters.classStyle === 'onLine' ? <span>OnLine - Class </span> : null}
+              {selectedFilters.classStyle === 'offLine' ? <span>OffLine - Class </span> : null}
 
-          {obj[filteredMenu]?.map((item: { priceNum: string; min: number; max: number }, index: number) => (
-            <div key={index} onClick={() => handleFilterdObj(item['priceNum'], filteredMenu)}>
+              <svg onClick={() => onOffChange()} xmlns="http://www.w3.org/2000/svg" fill="#9d9d9d" height="1em" viewBox="0 0 512 512">
+                <path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z" />
+              </svg>
+            </div>
+          </ClassType>
+          <ClassType></ClassType>
+
+          {obj[filteredMenu]?.map((item: { priceNum: string; min: number; max: number }) => (
+            <div key={Math.random() * 22229999} onClick={() => handleFilterdObj(item['priceNum'], filteredMenu)}>
               <input type="checkbox" id="check" checked={(selectedFilters['minPrice'] === 0 && selectedFilters['maxPrice'] > 40000 && item.priceNum === '전체') || selectedArr.some((i) => i[0] === filteredMenu && i[1] === item['priceNum'])} />
               <label htmlFor="check">{item['priceNum']}</label>
             </div>
@@ -259,13 +274,32 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
 
 export default SelectBox;
 
+const LocationDiv = styled.div`
+  width: 100%;
+  height: 50px;
+  margin-top: 100px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  color: white;
+  padding-left: 10px;
+  background-color: #fe902f;
+
+  & > img {
+    width: 20px;
+  }
+`;
+
 const FilterBox = styled.div`
   width: 100%;
-  margin-top: 100px;
+  margin-top: 20px;
   height: auto;
   display: flex;
   overflow: scroll;
-  padding: 0 10px;
+
+  @media all and (max-width: 1200px) {
+    padding: 0 10px;
+  }
 `;
 
 const InnerBox = styled.div<{ $isIn: boolean }>`
@@ -281,12 +315,39 @@ const InnerBox = styled.div<{ $isIn: boolean }>`
   font-size: 14px;
   cursor: pointer;
   border-color: ${(props) => (props.$isIn === true ? '#FE902F' : '#dadce0')};
+  position: relative;
+`;
 
-  /* @media only screen and (max-width: 1200px) {
-    margin: 0 10px;
+// const SSSSS = styled.div`
+//   width: 100px;
+//   height: 100px;
+//   background-color: #459ae5;
+//   position: absolute;
+//   left: 310px;
+//   top: 355px;
+// `;
+
+const InnerPriceBox = styled.div<{ $isIn: boolean }>`
+  display: flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 10px;
+  margin-right: 10px;
+  border: 1px solid black;
+  white-space: nowrap;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  border-color: ${(props) => (props.$isIn === true ? '#FE902F' : '#dadce0')};
+  position: relative;
+  /* 
+  & > div {
+    background-color: #e5e59b;
+    width: 100px;
+    height: 100px;
+    position: absolute;
   } */
-
-  /* border-bottom: 1px solid rgb(247, 249, 250); */
 `;
 
 const InnerHidden = styled.div`
@@ -304,17 +365,38 @@ const InnerHidden = styled.div`
   & > div {
     width: 50%;
     padding: 10px;
-    cursor: pointer;
+    /* cursor: pointer; */
+
+    & > input {
+      cursor: pointer;
+    }
+    & > label {
+      cursor: pointer;
+    }
   }
 `;
 const ClassType = styled.div`
   font-weight: 800;
   color: #fe902f;
+  display: flex;
+  align-items: center;
+
   & > span {
     border-left: 3px solid #fe902f;
     padding-left: 5px;
     cursor: pointer;
   }
+
+  & > div > {
+    border-left: 3px solid #fe902f;
+    padding-left: 5px;
+    cursor: pointer;
+  }
+`;
+const HiddenClass = styled.div`
+  width: 100%;
+  height: 100px;
+  background-color: blanchedalmond;
 `;
 
 const FilterBar = styled.div`
