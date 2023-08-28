@@ -59,8 +59,12 @@ const Header = () => {
   };
 
   if (userIsLoading) {
-    return <div>로딩중~~~~~~~~~~~스피너~~</div>;
-  }
+  // TODO 로그아웃 함수 --> 일단은 main에 넣어둠
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) alert(error.message);
+    alert('로그아웃 되었습니다');
+  };
   if (userIsError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
@@ -83,7 +87,7 @@ const Header = () => {
           {/* 미디어쿼리 */}
           <Styled.LoginBtn>
             <NavLink to="/signin">로그인 | 회원가입</NavLink>
-            <span>LogOut</span>
+            <span onClick={() => signOut()}>LogOut</span>
           </Styled.LoginBtn>
         </Styled.WidthLimitContainer>
       </Styled.NavContainer>
