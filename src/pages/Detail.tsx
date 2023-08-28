@@ -8,6 +8,8 @@ import { fetchData, fetchReview } from '../api/user';
 import { fetchLike } from '../api/like';
 import { fetchTutorAll } from '../api/tutor';
 import { useDispatch } from 'react-redux';
+import { fetchBookmark } from '../api/bookmark';
+import { BookMark } from '../components';
 import { openModal, setReview, setTargetId } from '../redux/modules';
 import { useEffect } from 'react';
 import { reviewDelete, reviewUpdate } from '../api/review';
@@ -37,6 +39,7 @@ const Detail = () => {
   const loginUser = useSelector((state: RootState) => state.user.user);
   console.log('리덕스 로그인사용자', loginUser);
 
+  const { data: bookMark } = useQuery(['bookMark'], fetchBookmark);
   const queryClient = useQueryClient();
 
   const mutationReviewDelete = useMutation(reviewDelete, {
@@ -93,6 +96,8 @@ const Detail = () => {
             <div key={tutor.user_id}>
               <p>{tutor.class_info}</p>
               <p>{tutor.price}(30분)</p>
+
+              <BookMark />
             </div>
           );
         })}
