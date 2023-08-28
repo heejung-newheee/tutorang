@@ -32,7 +32,7 @@ const List = () => {
   });
   //검색
   const [searchText, setSearchText] = useState('');
-  const [tutorApiData, setTutorApiData] = useState<>();
+  // const [tutorApiData, setTutorApiData] = useState<>();
 
   console.log(selectedFilters, selectedArr);
   //체크박스 클릭
@@ -176,7 +176,7 @@ const List = () => {
       const { data, error } = await query.range(1, 3);
       console.log(error);
       // .gte('price', 3000).lte('price', 100000)
-      setTutorApiData(data);
+      // setTutorApiData(data);
       console.log(data, 'ㅁㄴㅇㄴ');
     } catch (error) {
       console.log(error);

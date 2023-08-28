@@ -1,15 +1,25 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import * as S from './Header.styled';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
+=======
+>>>>>>> fb337fb3ad2e54d1dfc6766c700f2f79e4b963eb
 import { useQuery } from '@tanstack/react-query';
-import supabase from '../../../supabase';
-import { setUser } from '../../../redux/modules/user';
-import { fetchData } from '../../../api/user';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
+import { fetchData } from '../../../api/user';
 import { matchingList } from '../../../redux/modules/matching';
+<<<<<<< HEAD
 import logo from '../../../assets/logo.png';
+=======
+import { setUser } from '../../../redux/modules/user';
+import supabase from '../../../supabase';
+import * as Styled from './Header.styled';
+>>>>>>> fb337fb3ad2e54d1dfc6766c700f2f79e4b963eb
 
 type HEADERMENU = { title: string; path: string }[];
 
@@ -23,7 +33,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
-
+  console.log(userIsError, userIsLoading);
   const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
   console.log('matchData', matchData);
 
@@ -53,6 +63,13 @@ const Header = () => {
     navigate('/');
   };
 
+  // TODO 로그아웃 함수 --> 일단은 main에 넣어둠
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) alert(error.message);
+    alert('로그아웃 되었습니다');
+  };
+
   if (isLoading) {
     return <div>로딩중~~~~~~~~~~~스피너~~</div>;
   }
@@ -76,6 +93,7 @@ const Header = () => {
           <S.Hamberger>=</S.Hamberger>
           <S.MiddleLogo onClick={handleHome}>Logo</S.MiddleLogo>
           {/* 미디어쿼리 */}
+<<<<<<< HEAD
           <S.LoginBtn>
             <NavLink to="/signin">로그인</NavLink>
             <NavLink to="/signup">
@@ -85,6 +103,14 @@ const Header = () => {
           </S.LoginBtn>
         </S.WidthLimitContainer>
       </S.NavContainer>
+=======
+          <Styled.LoginBtn>
+            <NavLink to="/signin">로그인 | 회원가입</NavLink>
+            <span onClick={() => signOut()}>LogOut</span>
+          </Styled.LoginBtn>
+        </Styled.WidthLimitContainer>
+      </Styled.NavContainer>
+>>>>>>> fb337fb3ad2e54d1dfc6766c700f2f79e4b963eb
     </>
   );
 };
