@@ -103,6 +103,20 @@ export interface Database {
         };
         Relationships: [];
       };
+      //
+      bookmark: {
+        Row: {
+          id: number;
+          tutor_id: string;
+          user_id: string | null;
+        };
+        Insert: {
+          id?: number;
+          tutor_id: string;
+          user_id?: string | null;
+        };
+      };
+      //
       like: {
         Row: {
           id: number;
@@ -314,6 +328,7 @@ export interface Database {
           reviewed_id: string | null;
           title: string | null;
           user_id: string | null;
+          author: string | null;
         };
         Insert: {
           author?: string | null;
@@ -324,6 +339,7 @@ export interface Database {
           reviewed_id?: string | null;
           title?: string | null;
           user_id?: string | null;
+          author: string | null;
         };
         Update: {
           author?: string | null;
@@ -334,6 +350,7 @@ export interface Database {
           reviewed_id?: string | null;
           title?: string | null;
           user_id?: string | null;
+          author: string | null;
         };
         Relationships: [
           {
@@ -586,3 +603,7 @@ export type Views<T extends keyof Database['public']['Views']> = Database['publi
 export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'class_info' | 'tuition_fee_offline' | 'tuition_fee_online'> & {
   profiles: Pick<Tables<'profiles'>, 'id' | 'username' | 'avatar_url'>;
 };
+
+export type BookMarkType = Pick<Tables<'bookmark'>, 'tutor_id' | 'user_id'>;
+export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
+export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;

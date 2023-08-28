@@ -4,3 +4,6 @@ export { default as twitter } from './twitter.png';
 export { default as arrow_top } from './arrow-top.svg';
 export { default as icon_location } from './icon_location.svg';
 export { default as icon_edit } from './icon_edit.png';
+export { default as starEmpty } from './ico_star.svg';
+export { default as starHalf } from './ico_star_half.svg';
+export { default as starFull } from './ico_star_full.svg';
