@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout, SignInForm } from '../components';
 import SignUpWrapBox from '../components/Form/SignUpForm/SignUpWrapBox';
+import RegistTutorForm from '../components/Form/registTutorForm/RegistTutorForm';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import { AuthMain, Detail, List, Main, Mypage } from '../pages';
 import Test from '../pages/Test';
@@ -20,6 +21,7 @@ const Router = () => {
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/list" element={<List />} />
             <Route path="/test" element={<Test />} />
+            <Route path="/tutor-registration" element={<RegistTutorForm />} />
           </Route>
         </Route>
       </Routes>
