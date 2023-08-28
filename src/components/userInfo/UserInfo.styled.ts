@@ -10,6 +10,7 @@ export const ProfileBox = styled.section`
   position: relative;
   height: 528px;
   padding-top: 45px;
+  border-radius: 0 0 40px 40px;
 `;
 export const Container = styled.div`
   max-width: 1200px;

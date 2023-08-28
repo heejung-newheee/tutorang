@@ -131,10 +131,15 @@ const Detail = () => {
         <button
           onClick={async () => {
             try {
-              await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
-              await sendRequestTutoringMessage(loginUser!.id, filteredUser![0].id);
-              //await sendResponseTutoringMessage(loginUser!.id, filteredUser![0].id, 'reject');
-              alert('신청완료');
+              if (loginUser) {
+                await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
+                await sendRequestTutoringMessage(loginUser!.id, filteredUser![0].id);
+                //await sendResponseTutoringMessage(loginUser!.id, filteredUser![0].id, 'reject');
+                alert('매칭 요청 완료');
+              } else {
+                alert('로그인 후 사용 가능합니다');
+                navigate('/signin');
+              }
             } catch (error) {
               console.error('매칭 요청 중 오류 발생:', error);
               alert('매칭 요청 중 오류가 발생했습니다.');

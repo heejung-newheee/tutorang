@@ -82,7 +82,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
             <div>이름</div>
             <div>지역</div>
             <div>날짜</div>
-            <div>취소</div>
+            <div>확인</div>
           </InfoItem>
         </InfoList>
         {matchList &&
@@ -100,8 +100,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                       {item.tutor_lc_1_gugun} | {item.tutor_lc_2_gugun}
                     </div>
                     <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
-
-                    <MatchBtn onClick={() => item.id !== null && cancelMatch(item.id)}>요청 취소</MatchBtn>
+                    <div>완료</div>
                   </InfoItem>
                 </InfoList>
               );

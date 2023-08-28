@@ -15,7 +15,13 @@ interface LikeTutorsProps {
 
 const LikeTutorsSlider = () => {
   const _plugins = [new Arrow()];
-  const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
+  const {
+    data: like,
+    isLoading: likeLoading,
+    isError: likeError,
+  } = useQuery(['like'], fetchLike, {
+    enabled: true, // true로 설정하면 컴포넌트 마운트 시 데이터 가져오기 시작
+  });
 
   const user = useSelector((state: RootState) => state.user.user);
   const tutors = useSelector((state: RootState) => state.tutor.tutor);
