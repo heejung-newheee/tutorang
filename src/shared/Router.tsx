@@ -16,9 +16,9 @@ const Router = () => {
             <Route path="/signin" element={<SignInForm />} />
             <Route path="/signup" element={<SignUpWrapBox />} />
           </Route>
+          <Route path="/mypage" element={<Mypage />} />
           <Route element={<Layout />}>
             <Route path="/detail/:id" element={<Detail />} />
-            <Route path="/mypage" element={<Mypage />} />
             <Route path="/list" element={<List />} />
             <Route path="/test" element={<Test />} />
             <Route path="/tutor-registration" element={<RegistTutorForm />} />

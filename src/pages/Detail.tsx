@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/config/configStore';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useReviewAverage } from '../hooks';
 import { matchingRequest } from '../api/match';
@@ -8,10 +8,22 @@ import { fetchData, fetchReview } from '../api/user';
 import { fetchLike } from '../api/like';
 import { fetchTutorAll } from '../api/tutor';
 import { useDispatch } from 'react-redux';
-import { openModal } from '../redux/modules';
+import { fetchBookmark } from '../api/bookmark';
+import { BookMark } from '../components';
+import { openModal, setReview, setTargetId } from '../redux/modules';
+import { useEffect } from 'react';
+import { reviewDelete, reviewUpdate } from '../api/review';
 
 const Detail = () => {
+  const dispatch = useDispatch();
   const { id } = useParams();
+
+  // newReview에 사용할 targeId 업데이트
+  useEffect(() => {
+    if (id) {
+      dispatch(setTargetId(id));
+    }
+  }, [id]);
 
   const { data: profiles, isLoading: profilesLoading, isError: profilesError } = useQuery(['profiles'], fetchData);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
@@ -20,20 +32,38 @@ const Detail = () => {
 
   const filteredUser = profiles?.filter((profiles) => profiles.id === id);
   const filteredTutor = tutor?.filter((tutor) => tutor.user_id === id);
-  const filteredReview = review?.filter((review) => review.user_id === id);
+  const filteredReview = review?.filter((review) => review.reviewed_id === id);
   const reviewRatings = filteredReview?.map((review) => review.rating);
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log(filteredUser);
   console.log('리덕스 로그인사용자', loginUser);
 
+  const { data: bookMark } = useQuery(['bookMark'], fetchBookmark);
+  const queryClient = useQueryClient();
+
+  const mutationReviewDelete = useMutation(reviewDelete, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['review']);
+    },
+  });
+
   // 모달
-  // const { Modal, isOpen, openModal, closeModal } = useModal();
-  // redux type
-  const dispatch = useDispatch();
   const handleOpen = () => {
     dispatch(openModal('report'));
+  };
+
+  const handleOpenReviewCreateForm = () => {
+    dispatch(openModal('reviewCreate'));
+  };
+
+  const handleOpenReviewUpdateForm = () => {
+    dispatch(openModal('reviewUpdate'));
+  };
+
+  // 리뷰 Delete
+  const handleReviewDelete = (id: number) => {
+    mutationReviewDelete.mutate(id);
   };
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
@@ -56,7 +86,7 @@ const Detail = () => {
                 <span>{user.username}</span>
               </div>
               <div>
-                활동 지역 : {user.location1} | {user.location2}
+                활동 지역 : {user.location1_sido} | {user.location2_sido}
               </div>
             </div>
           );
@@ -65,7 +95,9 @@ const Detail = () => {
           return (
             <div key={tutor.user_id}>
               <p>{tutor.class_info}</p>
-              <p>{tutor.price}(30분)</p>
+              <p>{tutor.tuition_fee_offline}(30분)</p>
+              <p>{tutor.tuition_fee_online}(30분)</p>
+              <BookMark />
             </div>
           );
         })}
@@ -83,10 +115,6 @@ const Detail = () => {
           매칭 요청 버튼 !!!!!!!!!!
         </button>
 
-        {/* <Modal isOpen={isOpen} closeModal={closeModal}>
-          <Report closeModal={closeModal} />
-        </Modal>
-        <button onClick={openModal}>신고하기</button> */}
         <button onClick={handleOpen}>신고하기</button>
 
         {/* <div>튜터의 스킬/장점/성격</div> */}
@@ -103,17 +131,41 @@ const Detail = () => {
 
       {/* 튜터 리뷰 */}
       <section>
-        <h4>리뷰</h4>
-        <div>
+        <h4>
+          리뷰 <span>{filteredReview?.length}</span>
+        </h4>
+        <button onClick={handleOpenReviewCreateForm}>리뷰 남기기</button>
+
+        <ul>
           {filteredReview?.map((review) => {
             return (
-              <div key={review.id}>
+              <li key={review.id}>
                 <p>{review.title}</p>
                 <p>{review.content}</p>
-              </div>
+
+                {loginUser?.id === review.user_id ? (
+                  <div>
+                    <button
+                      onClick={() => {
+                        handleOpenReviewUpdateForm();
+                        dispatch(setReview(review));
+                      }}
+                    >
+                      수정
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleReviewDelete(review.id);
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                ) : null}
+              </li>
             );
           })}
-        </div>
+        </ul>
       </section>
     </>
   );

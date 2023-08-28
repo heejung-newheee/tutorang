@@ -306,7 +306,7 @@ export interface Database {
       };
       review: {
         Row: {
-          author: string | null;
+          author?: string | null;
           content: string | null;
           created_at: string;
           id: number;
@@ -583,6 +583,10 @@ export interface Database {
 
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 export type Views<T extends keyof Database['public']['Views']> = Database['public']['Views'][T]['Row'];
-// export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'class_info' | 'price'> & {
-// profiles: Pick<Tables<'profiles'>, 'id' | 'username' | 'avatar_url'>;
-// };
+export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'class_info' | 'tuition_fee_offline' | 'tuition_fee_online'> & {
+  profiles: Pick<Tables<'profiles'>, 'id' | 'username' | 'avatar_url'>;
+};
+
+export type BookMarkType = Pick<Tables<'bookmark'>, 'tutor_id' | 'user_id'>;
+export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
+export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
