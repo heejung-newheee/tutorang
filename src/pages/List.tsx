@@ -1,95 +1,143 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import supabase from '../supabase';
 import { useModal } from '../hooks';
 import TutorListCompo from '../components/list/TutorListCompo';
 import SelectBox from '../components/list/SelectBox';
 import CityModal from '../components/list/CityModal';
+import { price } from '../components/list/MobileModal';
+import axios from 'axios';
 
 const List = () => {
-  //유저가 선택한 목록{} - 검색 api 사용
-  const [filterdObj, setFilterdObj] = useState<any>({});
   const { Modal, isOpen, openModal, closeModal } = useModal();
   //시/군/구
-  const [checkedcity, setCheckedCity] = useState<any>('전체');
-  const [checkedGunGu, setCheckedGunGu] = useState<string>('');
+  const [checkedcity, setCheckedCity] = useState<string>('전체');
+  const [checkedGunGu, setCheckedGunGu] = useState<string>('전체');
   //모달 시/군/구 드롭다운
   const [isDropdown, setisDropdown] = useState(false);
 
-  //유저가 선택한 목록[]
-  type ddd = {};
+  //유저가 선택한 목록 - 필터 바에 들어갈 값[]
   const [selectedArr, setSelectedArr] = useState<string[][]>([]);
 
-  //////
-  const [genderArr, setGenderArr] = useState<string[]>(['전체', '여성', '남성']);
-  const [language_levelArr, setLanguage_levelArr] = useState<string[]>(['전체', 'advanced', 'beginner']);
-
-  // const [location1Arr, setLocation1Arr] = useState<string[]>([]);
-
-  // const [location2Arr, setLocation2Arr] = useState<string[]>([]);
-
-  const [priceArr, setPriceArr] = useState<string[]>([]);
-
-  console.log(selectedArr, 'selectedArr');
-  const handleFilterdObg = (item: string, category: string) => {
+  const [selectedFilters, setSelectedFilters] = useState<any>({
+    gender: [],
+    level: [],
+    minPrice: 0,
+    maxPrice: 100000,
+    location1: '',
+    location2: [],
+    age: [],
+    // classStyle: 'offLine',
+  });
+  console.log(selectedFilters, selectedArr);
+  //체크박스 클릭
+  const handleFilterdObj = (item: string, category: string) => {
     switch (category) {
       //성별
       case 'gender':
-        //처음 클릭했을 때
-        if (genderArr.includes('전체') && item !== '전체') {
-          setGenderArr([item]);
-          setSelectedArr((pre) => [...pre, ['gender', item]]);
-        } else if (item === '전체') {
-          setGenderArr(['전체', '여성', '남성']);
-          setSelectedArr((pre) => pre.filter((item) => item[0] !== 'gender'));
-        } else if (!genderArr.includes('전체') && item !== '전체') {
-          if (genderArr.includes(item)) {
-            setGenderArr((pre) => pre.filter((i) => i !== item));
-            setSelectedArr((pre: any[]) => pre.filter((i) => i[1] !== item));
-          } else {
-            setGenderArr((pre) => [...pre, item]);
+        if (item === '전체') {
+          //전체 클릭 - 모든 값 초기화
+          setSelectedFilters((pre: any) => (pre ? { ...pre, gender: [] } : { ...pre, gender: [] }));
+          setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'gender')]);
+          //전체를 제외한 첫 클릭
+        } else if (item !== '전체') {
+          //값이 없을때 - 추가
+          if (selectedFilters.gender.find((i: string) => i === item) === undefined) {
+            setSelectedFilters((pre: any) => (pre ? { ...pre, gender: [...pre.gender, item] } : null));
             setSelectedArr((pre: any) => [...pre, ['gender', item]]);
+            //값이 없을때 - 추가
+          } else {
+            setSelectedFilters((pre: any) => (pre ? { ...pre, gender: pre.gender.filter((i: any) => i !== item) } : null));
+            setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
           }
         }
         break;
 
-      // 난이도
+      //난이도
       case 'level':
-        if (language_levelArr.includes('전체')) {
-          setLanguage_levelArr([item]);
-        } else if (!language_levelArr.includes('전체')) {
-          language_levelArr.includes(item) ? setLanguage_levelArr((pre) => pre.filter((i) => i !== item)) : setLanguage_levelArr((pre) => [...pre, item]);
+        if (item === '전체') {
+          //전체 클릭 - 모든 값 초기화
+          setSelectedFilters((pre: any) => (pre ? { ...pre, level: [] } : { ...pre, level: [] }));
+          setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'level')]);
+          //전체를 제외한 첫 클릭
+        } else if (item !== '전체') {
+          //값이 없을때 - 추가
+          if (selectedFilters.level.find((i: string) => i === item) === undefined) {
+            setSelectedFilters((pre: any) => (pre ? { ...pre, level: [...pre.level, item] } : null));
+            setSelectedArr((pre: any) => [...pre, ['level', item]]);
+            //값이 없을때 - 추가
+          } else {
+            setSelectedFilters((pre: any) => (pre ? { ...pre, level: pre.level.filter((i: any) => i !== item) } : null));
+            setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
+          }
         }
+
         break;
-
-      // 한국어 가능
-      // case 'isPossibleKorean':
-      //   if (item === '전체') {
-      //     delete filterdObj.isPossibleKorean;
-      //     setFilterdObj((pre: any) => (pre ? { ...pre } : null));
-      //   } else {
-      //     setFilterdObj({ ...filterdObj, isPossibleKorean: item });
-      //   }
-      //   break;
-
-      //나이
-      case 'age':
-        // if (item === '전체') {
-        //   delete filterdObj.age;
-        //   setFilterdObj((pre: any) => (pre ? { ...pre } : null));
-        // } else {
-        //   setFilterdObj({ ...filterdObj, age: item });
-        // }
-        break;
-
       //가격
       case 'price':
         if (item === '전체') {
-          delete filterdObj.price;
-          setFilterdObj((pre: any) => (pre ? { ...pre } : null));
+          setSelectedFilters((pre: any) => (pre ? { ...pre, minPrice: 0 } : { ...pre }));
+          setSelectedFilters((pre: any) => (pre ? { ...pre, maxPrice: 100000 } : { ...pre }));
+          setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
+          setSelectedArr((pre) => [...pre, ['price', '전체']]);
         } else {
-          setFilterdObj({ ...filterdObj, price: item });
+          const minPrice = price.find((i) => i.priceNum === item)?.min;
+          const maxPrice = price.find((i) => i.priceNum === item)?.max;
+          setSelectedFilters((pre: any) => (pre ? { ...pre, minPrice, maxPrice } : { ...pre }));
+          setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
+          setSelectedArr((pre) => [...pre, ['price', item]]);
         }
+        break;
+
+      //나이
+      case 'age':
+        let ageNum = 0;
+        switch (item) {
+          case '10대':
+            ageNum = 10;
+            break;
+          case '20대':
+            ageNum = 20;
+
+            break;
+          case '30대':
+            ageNum = 30;
+
+            break;
+          case '40대':
+            ageNum = 40;
+
+            break;
+          case '50대':
+            ageNum = 50;
+
+            break;
+          case '60대':
+            ageNum = 60;
+
+            break;
+
+          default:
+            break;
+        }
+
+        if (item === '전체') {
+          //전체 클릭 - 모든 값 초기화
+          setSelectedFilters((pre: any) => (pre ? { ...pre, age: [] } : { ...pre, age: [] }));
+          setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'age')]);
+          //전체를 제외한 첫 클릭
+        } else if (item !== '전체') {
+          //값이 없을때 - 추가
+          if (selectedFilters.age.find((i: string) => Number(i) === ageNum) === undefined) {
+            setSelectedFilters((pre: any) => (pre ? { ...pre, age: [...pre.age, ageNum] } : null));
+            setSelectedArr((pre: any) => [...pre, ['age', item]]);
+            //값이 없을때 - 추가
+          } else {
+            setSelectedFilters((pre: any) => (pre ? { ...pre, age: pre.age.filter((i: any) => i !== ageNum) } : null));
+            setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
+          }
+        }
+
         break;
 
       default:
@@ -100,100 +148,189 @@ const List = () => {
   //강사 api 호출
   useEffect(() => {
     getData();
-
-    // const arr: string[] = [];
-    // for (const key in filterdObj) {
-    //   arr.push(filterdObj[key]);
-    // }
-
-    // setSelectedArr(arr);
-  }, [filterdObj, genderArr, language_levelArr]);
+  }, [selectedFilters]);
 
   const getData = async () => {
+    const { gender } = selectedFilters;
+    // console.log(gender);
     try {
-      // const minPrice = 20000; // 최소 가격
-      // const maxPrice = 5000; // 최대 가격
       // .range(0, 1)
-      // const { data, error } = await supabase.from('profiles').select('*').match(filterdObj);
-      const { data, error } = await supabase.from('profiles').select('*').in('gender', [genderArr]).in('language_level', [language_levelArr]).match(filterdObj);
-      // const { data, error } = await supabase.from('tutor_info').select('*').gte('price', minPrice);
+      // const { data, error } = await supabase.from('profiles').select('*').in('gender', [genderArr]).textSearch('username', `':*'`);
+      // const { data, error } = await supabase.from('profiles').select('*').in('gender', [genderArr]).in('language_level', [language_levelArr]).match(filterdObj);
+      let query = supabase.from('profiles').select('*');
+
+      if (gender) {
+        query = query.in('gender', [...gender]);
+      }
+      const { data, error } = await query.range(1, 3);
+
+      console.log(error);
 
       // .gte('price', 3000).lte('price', 100000)
-      console.log(data, 'ㅁㄴㅇㄴ');
+      // console.log(data, 'ㅁㄴㅇㄴ');
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(filterdObj, selectedArr);
 
-  const handleDropAndSi = (item: string) => {
-    //시(city)생성, 군구 초기화
+  const handleDropAndSi = (item: string, version: string) => {
+    //시, 군구 setState
     setCheckedCity(item);
     setCheckedGunGu('');
-    setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
-    setSelectedArr((pre) => [...pre, ['location1', item]]);
-    //군구 초기화
-    delete filterdObj.location2;
-    setFilterdObj(filterdObj);
-    setisDropdown(!isDropdown);
+    //체크박스 닫기
+    version === 'pc' ? null : setisDropdown(!isDropdown);
   };
 
   const handelCloseModalAndSelect = () => {
-    console.log(checkedcity, checkedGunGu);
-
     if (checkedcity === '전체') {
       //전체면 필터객체에서 삭제
-      setFilterdObj((prevState: any) => {
-        if (prevState) {
-          delete prevState.location1;
-          return prevState;
+      setSelectedFilters((pre: any) => {
+        if (pre) {
+          return { ...pre, location1: '', location2: [] };
         }
-        setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location1'));
       });
+      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location1'));
+      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
     } else {
       //지역명이 있으면 업데이트
-      setFilterdObj((prevState: any) => (prevState ? { ...prevState, location1: checkedcity } : null));
+      setSelectedFilters((pre: any) => {
+        if (pre) {
+          return { ...pre, location1: checkedcity, location2: [] };
+        }
+      });
+
       setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'location1'), ['location1', checkedcity]]);
+      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
     }
 
-    if (checkedGunGu === '전체') {
+    if (checkedGunGu.includes('전체')) {
       //전체면 필터객체에서 삭제
-      setFilterdObj((prevState: any) => {
-        if (prevState) {
-          delete prevState.location2;
-          return prevState;
+      setSelectedFilters((pre: any) => {
+        if (pre) {
+          return { ...pre, location2: [] };
         }
       });
       setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
     } else if (checkedGunGu) {
       //지역명이 있으면 업데이트
-      setFilterdObj((prevState: any) => (prevState ? { ...prevState, location2: checkedGunGu } : null));
+      setSelectedFilters((pre: any) => {
+        if (pre) {
+          return { ...pre, location2: checkedGunGu };
+        }
+      });
+
       setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'location2'), ['location2', checkedGunGu]]);
     }
     closeModal();
   };
 
-  const DeleteFilterBar = (item: string) => {};
+  const handleCloseModal = () => {
+    closeModal();
+  };
+
+  //무한크스롤
+  const elementRef = useRef<HTMLDivElement | null>(null);
+
+  // const [books, setBooks] = useState<string[]>([]);
+  // const [pageNum, setPageNum] = useState(1);
+  // const [hasMore, setHasMore] = useState(false);
+  // const getApi = () => {
+  //   axios({
+  //     method: 'GET',
+  //     url: 'http://openlibrary.org/search.json',
+  //     params: { q: 'text', page: pageNum },
+  //   })
+  //     .then((res) => {
+  //       setBooks((pre) => (pre ? [...pre, ...res.data.docs.map((i: { title: any }) => i.title)] : [...pre]));
+  //       setHasMore(res.data.docs.length > 0);
+  //       setPageNum((pre) => pre + 1);
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //     });
+  // };
+
+  // console.log(books);
+
+  // useEffect(() => {
+  //   if (books.length === 0) {
+  //     getApi();
+  //   }
+
+  //   const observer = new IntersectionObserver((entries, observer) => {
+  //     // IntersectionObserverEntry 객체 리스트와 observer 본인(self)를 받음
+  //     if (entries[0].isIntersecting && hasMore) {
+  //       getApi();
+  //       observer.disconnect();
+  //     }
+  //   });
+  //   if (observer && elementRef.current && hasMore) {
+  //     observer.observe(elementRef.current);
+  //   }
+
+  //   if (!hasMore) {
+  //     observer.disconnect();
+  //   }
+  //   // return () => {
+  //   //   if (observer) {
+  //   //     observer.disconnect();
+  //   //   }
+  //   // };
+  // }, [books]);
+
+  //Debouncing
+  // const [searchText, setSearchText] = useState('second');
+  // const debounce = (callback: () => any, delay: number) => {
+  //   let timerId: string | null = null;
+  //   return (...args) => {
+  //     if (timerId) clearTimeout(timerId);
+  //     timerId = setTimeout(() => {
+  //       callback(...args);
+  //     }, delay);
+  //   };
+  // };
+
+  // Debouncing
+  // const debounce = (callback: (text: string) => any, delay: number | undefined) => {
+  //   let timerId: any = null;
+  //   if (timerId) {
+  //     clearTimeout(timerId);
+  //   }
+  //   timerId = setTimeout(() => {
+  //     timerId = null;
+  //     return callback;
+  //   }, delay);
+  // };
+
+  // const handleSearchText = useCallback(
+  //   debounce((text: string) => setSearchText(text), 2000),
+  //   [],
+  // );
+  const handleDebouncing = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // handleSearchText(e.target.value);
+    console.log('sfs');
+  };
   return (
     <Container>
+      <SearchWrap>
+        <input type="text" onChange={() => handleDebouncing(e)} />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="#fe902f" height="1em" viewBox="0 0 512 512">
+          <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+        </svg>
+      </SearchWrap>
       {/* 필터박스 */}
-      <SelectBox
-        handleFilterdObg={handleFilterdObg}
-        openModal={openModal}
-        selectedArr={selectedArr}
-        filterdObj={filterdObj}
-        setFilterdObj={setFilterdObj}
-        genderArr={genderArr}
-        language_levelArr={language_levelArr}
-        setGenderArr={setGenderArr}
-        setSelectedArr={setSelectedArr}
-      />
+      <SelectBox handleFilterdObj={handleFilterdObj} openModal={openModal} selectedArr={selectedArr} setSelectedArr={setSelectedArr} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
       {/* 강사 리스트 */}
       <TutorList>
+        {/* {books?.map((i) => (
+          <TutorListCompo />
+        ))} */}
         <TutorListCompo />
         <TutorListCompo />
         <TutorListCompo />
       </TutorList>
+      <div ref={elementRef}>Loading</div>
+
       {/* 모달 */}
       <Modal isOpen={isOpen} closeModal={closeModal}>
         <InnerModal
@@ -201,7 +338,16 @@ const List = () => {
             e.stopPropagation();
           }}
         >
-          <CityModal isDropdown={isDropdown} setisDropdown={setisDropdown} checkedcity={checkedcity} handleDropAndSi={handleDropAndSi} setCheckedGunGu={setCheckedGunGu} handelCloseModalAndSelect={handelCloseModalAndSelect} />
+          <CityModal
+            isDropdown={isDropdown}
+            setisDropdown={setisDropdown}
+            checkedcity={checkedcity}
+            handleDropAndSi={handleDropAndSi}
+            setCheckedGunGu={setCheckedGunGu}
+            checkedGunGu={checkedGunGu}
+            handelCloseModalAndSelect={handelCloseModalAndSelect}
+            handleCloseModal={handleCloseModal}
+          />
         </InnerModal>
       </Modal>
     </Container>
@@ -219,17 +365,18 @@ const Container = styled.div`
 const TutorList = styled.div`
   margin-top: 50px;
   width: 100%;
-  padding: 0 20px;
+  /* padding: 0 20px; */
+  padding: 0 10px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 
-  @media only screen and (max-width: 890px) {
+  @media only screen and (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
   & > div {
-    background-color: beige;
+    /* background-color: beige; */
     word-break: break-all;
   }
 
@@ -245,7 +392,30 @@ const InnerModal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  @media only screen and (max-width: 590px) {
+
+  @media all and (min-width: 0px) and (max-width: 600px) {
     align-items: end;
+  }
+`;
+
+////Search
+const SearchWrap = styled.div`
+  width: 50%;
+  min-width: 240px;
+  height: 60px;
+  padding: 0 10px;
+  margin-top: 70px;
+  border: 1px solid #fe902f;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 2px 2px 4px -4px black;
+
+  & > input {
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 100%;
   }
 `;
