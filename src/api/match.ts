@@ -6,6 +6,13 @@ export const getMatchData = async () => {
   return matching;
 };
 
+//조인한 매칭 테이블 전체
+export const matchingTutorData = async () => {
+  const { data, error } = await supabase.from('matching_tutor_data').select();
+  if (error) throw error;
+  return data;
+};
+
 export const matchingRequest = async ({ tutorId, userId }: { tutorId: string; userId: string }) => {
   const { error } = await supabase
     .from('matching')
@@ -13,7 +20,7 @@ export const matchingRequest = async ({ tutorId, userId }: { tutorId: string; us
       {
         user_id: userId,
         tutor_id: tutorId,
-        matching: false,
+        matched: false,
         status: 'request',
       },
     ])
@@ -41,10 +48,4 @@ export const matchingAccept = async (id: string) => {
 export const matchingReject = async (id: string) => {
   const { data, error } = await supabase.from('matching').update({ status: 'reject' }).eq('id', id).select();
   if (error) throw error;
-};
-
-export const matchingTutorData = async () => {
-  const { data, error } = await supabase.from('matching_tutor_data').select();
-  if (error) throw error;
-  return data;
 };

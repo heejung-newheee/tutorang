@@ -211,7 +211,8 @@ const TutorCard = ({ tutor }: { tutor: TTutorWithUser }) => {
         <p>지역2: {tutor.location_2}</p> */}
           <br />
           {tutor.class_info}
-          <p>₩{tutor.price}~</p>
+          <p>₩{tutor.tuition_fee_offline}~</p>
+          <p>₩{tutor.tuition_fee_online}~</p>
         </TutorCardContent>
       </Link>
     </TutorCardContainer>

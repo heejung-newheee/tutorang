@@ -10,9 +10,9 @@ const Router = () => {
       <Routes>
         <Route element={<GlobalLayout />}>
           <Route path="/" element={<Main />} />
+          <Route path="/mypage" element={<Mypage />} />
           <Route element={<Layout />}>
             <Route path="/detail/:id" element={<Detail />} />
-            <Route path="/mypage" element={<Mypage />} />
             <Route path="/list" element={<List />} />
             <Route path="/chat" element={<Chat />} />
             <Route element={<AuthMain />}>
