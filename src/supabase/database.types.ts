@@ -103,20 +103,6 @@ export interface Database {
         };
         Relationships: [];
       };
-      //
-      bookmark: {
-        Row: {
-          id: number;
-          tutor_id: string;
-          user_id: string | null;
-        };
-        Insert: {
-          id?: number;
-          tutor_id: string;
-          user_id?: string | null;
-        };
-      };
-      //
       like: {
         Row: {
           id: number;
@@ -320,7 +306,7 @@ export interface Database {
       };
       review: {
         Row: {
-          author: string | null;
+          author?: string | null;
           content: string | null;
           created_at: string;
           id: number;
@@ -328,7 +314,6 @@ export interface Database {
           reviewed_id: string | null;
           title: string | null;
           user_id: string | null;
-          author: string | null;
         };
         Insert: {
           author?: string | null;
@@ -339,7 +324,6 @@ export interface Database {
           reviewed_id?: string | null;
           title?: string | null;
           user_id?: string | null;
-          author: string | null;
         };
         Update: {
           author?: string | null;
@@ -350,7 +334,6 @@ export interface Database {
           reviewed_id?: string | null;
           title?: string | null;
           user_id?: string | null;
-          author: string | null;
         };
         Relationships: [
           {
