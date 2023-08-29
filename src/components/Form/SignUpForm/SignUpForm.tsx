@@ -273,6 +273,8 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
       location2_sido: location2.sido2,
       location2_gugun: location2.gugun2,
       role: 'student',
+      avatar_url:
+        'https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/sign/avatars/default_profile.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhdmF0YXJzL2RlZmF1bHRfcHJvZmlsZS5wbmciLCJpYXQiOjE2OTMyNDM2OTUsImV4cCI6MTcyNDc3OTY5NX0.KRdjhdXKjTM1GbM_7KPyU-GSspnWID29bEjWwQvg83s&t=2023-08-28T17%3A28%3A17.316Z',
     };
 
     // TODO 아래 식이 DB에 넘기는 단계 => 아래식 거치기 전에 회원정보 입력할 수 있어야함.

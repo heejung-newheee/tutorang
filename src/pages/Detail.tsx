@@ -15,6 +15,7 @@ import supabase from '../supabase';
 import { Session } from '@supabase/supabase-js';
 import { getGroupChannelUrl, sendRequestTutoringMessage, sendResponseTutoringMessage } from '../sendbird';
 import { RootState } from '../redux/config/configStore';
+import { starFull, starHalf, starEmpty } from '../assets';
 
 const Detail = () => {
   const dispatch = useDispatch();
@@ -42,9 +43,25 @@ const Detail = () => {
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log('리덕스 로그인사용자', loginUser);
 
-  const { data: bookMark } = useQuery(['bookMark'], fetchBookmark);
+  // StarRate
+
+  const starRating = (currentRate: number) => {
+    const MAX_STAR_RATE = 5;
+    let starCount = Math.floor(currentRate);
+
+    //소수점 찾기
+    let halfStarRate = currentRate - starCount;
+
+    if (currentRate - halfStarRate >= 0.5) {
+      return <img src={starHalf} alt={`Half Star`} />;
+    } else {
+      return <img src={starEmpty} alt={`Empty Star`} />;
+    }
+  };
+
+  //
+
   const queryClient = useQueryClient();
 
   const mutationReviewDelete = useMutation(reviewDelete, {
@@ -157,7 +174,10 @@ const Detail = () => {
       {/* 튜터 overview */}
       <section>
         <ul>
-          <li>리뷰 평점 : {reviewAverage}</li>
+          <li>
+            <div></div>
+            <p>리뷰 평점 : {reviewAverage} / 5.0</p>
+          </li>
           <li>리뷰수 : {filteredReview?.length}</li>
           {/* <li>매칭수 : </li> */}
         </ul>

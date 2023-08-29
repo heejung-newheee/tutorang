@@ -24,7 +24,7 @@ const StudentInfo = ({ match }: pageProps) => {
   const user = useSelector((state: RootState) => state.user.user);
   // const tutors = useSelector((state: RootState) => state.tutor.tutor);
   // console.log('tutor', tutors);
-  console.log('match 테이블 전체', match);
+  // console.log('match 테이블 전체', match);
 
   if (boardLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
@@ -41,7 +41,7 @@ const StudentInfo = ({ match }: pageProps) => {
   // 내가 보낸 요청 내역
   const matchingData = Array.isArray(match) ? match : [match];
   const matchList = matchingData.filter((item: Views<'matching_tutor_data'>) => item.user_id === user!.id);
-  console.log(matchList);
+  // console.log(matchList);
 
   return (
     <div>

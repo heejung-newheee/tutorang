@@ -9,19 +9,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import { useQuery } from '@tanstack/react-query';
 import ProfilesCard from '../profilesCard/ProfilesCard';
-interface LikeTutorsProps {
-  likedUser: Views<'tutor_info_join'>[];
-}
 
 const LikeTutorsSlider = () => {
   const _plugins = [new Arrow()];
-  const {
-    data: like,
-    isLoading: likeLoading,
-    isError: likeError,
-  } = useQuery(['like'], fetchLike, {
-    enabled: true, // true로 설정하면 컴포넌트 마운트 시 데이터 가져오기 시작
-  });
+  const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
 
   const user = useSelector((state: RootState) => state.user.user);
   const tutors = useSelector((state: RootState) => state.tutor.tutor);
@@ -35,16 +26,16 @@ const LikeTutorsSlider = () => {
   if (!like || !tutors) {
     return null;
   }
+  // console.log('LikeTutorsSlider---user', user);
+  // console.log('LikeTutorsSlider---tutors', tutors);
 
   // 좋아요한 튜터 아이디만 가져오기
   const likedList = like.filter((item: Tables<'like'>) => item.user_id === user!.id).map((item) => item.liked_id);
   // 튜터 아이디를 포함하고있는 tutor_info 리스트 가져오기
   const likedUser = tutors!.filter((item: Views<'tutor_info_join'>) => likedList.includes(item.tutor_id ?? ''));
 
-  console.log(likedUser);
-
-  console.log('LikeTutorsSlider---user', user);
-  console.log('LikeTutorsSlider---tutors', tutors);
+  // console.log(likedList);
+  // console.log(likedUser);
 
   return (
     <>

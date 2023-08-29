@@ -605,6 +605,6 @@ export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'c
   profiles: Pick<Tables<'profiles'>, 'id' | 'username' | 'avatar_url'>;
 };
 
-export type BookMarkType = Pick<Tables<'bookmark'>, 'tutor_id' | 'user_id'>;
+export type BookMarkType = Pick<Tables<'like'>, 'liked_id' | 'user_id'>;
 export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
 export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;

@@ -41,7 +41,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     rejectMatchMutation.mutate(id);
   };
 
-  console.log(matchList);
+  // console.log(matchList);
   const [activeTab, setActiveTab] = useState<number>(0);
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setActiveTab(newValue);
@@ -79,8 +79,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                     </div>
                     <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
                     <div>
-                      <MatchBtn onClick={() => item.id !== null && acceptMatch(item.id)}>요청 수락</MatchBtn>
-                      <MatchBtn onClick={() => item.id !== null && rejectMatch(item.id)}>요청 거절</MatchBtn>
+                      <MatchBtn onClick={() => item.id !== null && acceptMatch(item.id)}>수락</MatchBtn>
+                      <MatchBtn onClick={() => item.id !== null && rejectMatch(item.id)}>거절</MatchBtn>
                     </div>
                   </InfoItem>
                 </InfoList>

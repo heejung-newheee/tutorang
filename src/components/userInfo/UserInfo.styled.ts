@@ -122,6 +122,7 @@ export const MatchBtn = styled.button`
   font-size: 16px;
   line-height: 32px;
   padding: 0 18px;
+  margin: 0 5px;
   border-radius: 20px;
   border: solid 1px #000;
   transition: all 0.4s;

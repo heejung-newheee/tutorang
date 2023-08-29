@@ -24,9 +24,11 @@ const Header = () => {
 
   const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
   const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor_info_join'], tutorInfoJoin);
-  // const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
+
+  // matching 테이블 모든 데이터
+  const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
   // console.log('matchData', matchData);
-  console.log('tutor_info_join', tutor);
+  // console.log('tutor_info_join', tutor);
 
   const [email, setEmail] = useState<string>();
 
@@ -45,13 +47,13 @@ const Header = () => {
     if (user) {
       dispatch(setUser(user));
     }
-    // if (matchData) {
-    //   dispatch(matchingList(matchData));
-    // }
+    if (matchData) {
+      dispatch(matchingList(matchData));
+    }
     if (tutor) {
       dispatch(tutorInfo(tutor));
     }
-  }, [user, dispatch]);
+  }, [user, matchData, tutor, dispatch]);
 
   const handleHome = () => {
     navigate('/');
