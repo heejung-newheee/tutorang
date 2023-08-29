@@ -298,7 +298,9 @@ const List = () => {
       {/* 필터박스 */}
       <SelectBox handleFilterdObj={handleFilterdObj} openModal={openModal} selectedArr={selectedArr} setSelectedArr={setSelectedArr} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
       {/* 강사 리스트 */}
-      <TutorList>{data?.pages.map((i, first) => i?.map((userInfo, second) => (second === i.length - 1 && data?.pages.length - 1 === first ? <LastTutorListCompo LastelementRef={LastelementRef} /> : <TutorListCompo />)))}</TutorList>
+      <TutorList>
+        {data?.pages.map((i, first) => i?.map((userInfo, second) => (second === i.length - 1 && data?.pages.length - 1 === first ? <LastTutorListCompo LastelementRef={LastelementRef} /> : <TutorListCompo userInfo={userInfo} />)))}
+      </TutorList>
 
       {/* 모달 */}
       <Modal isOpen={isOpen} closeModal={closeModal}>

@@ -9,6 +9,7 @@ import logo from '../../../assets/logo.png';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import * as Styled from './Header.styled';
+import { openModal } from '../../../redux/modules';
 
 type HEADERMENU = { title: string; path: string }[];
 
@@ -58,6 +59,10 @@ const Header = () => {
     if (error) alert(error.message);
     alert('로그아웃 되었습니다');
   };
+  //모달
+  const handleHiddenDiv = () => {
+    dispatch(openModal('navbabr'));
+  };
 
   if (isLoading) {
     return <div>로딩중~~~~~~~~~~~스피너~~</div>;
@@ -79,12 +84,26 @@ const Header = () => {
             ))}
           </Styled.LogoWrap>
           {/* 미디어쿼리 */}
-          <Styled.Hamberger>=</Styled.Hamberger>
-          <Styled.MiddleLogo onClick={handleHome}>Logo</Styled.MiddleLogo>
+          <Styled.MiddleLogo onClick={handleHome}>
+            <div>
+              <Styled.NavLogoImg src={logo} alt="logo"></Styled.NavLogoImg>
+              Logo
+            </div>
+          </Styled.MiddleLogo>
+
+          <Styled.Hamberger onClick={handleHiddenDiv}>
+            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+              <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
+            </svg>
+          </Styled.Hamberger>
+          {/* <Styled.HiddenBarDiv></Styled.HiddenBarDiv> */}
+
           {/* 미디어쿼리 */}
           <Styled.LoginBtn>
-            <NavLink to="/signin">로그인 | 회원가입</NavLink>
-            <span onClick={() => signOut()}>LogOut</span>
+            <NavLink to="/signin">로그인</NavLink>
+            <Styled.LoginBtnSignUp onClick={() => signOut()}>회원가입</Styled.LoginBtnSignUp>
+            {/* 로그아웃 */}
+            {/* <Styled.LoginBtnSignUp onClick={() => signOut()}>로그아웃</Styled.LoginBtnSignUp> */}
           </Styled.LoginBtn>
         </Styled.WidthLimitContainer>
       </Styled.NavContainer>

@@ -56,9 +56,10 @@ export const LogoWrap = styled.div`
 `;
 export const Hamberger = styled.button`
   display: none;
+  cursor: pointer;
 
   @media only screen and (max-width: 768px) {
-    display: flex;
+    display: block;
   }
 `;
 
@@ -67,17 +68,23 @@ export const MiddleLogo = styled.div`
   font-size: 20px;
   color: black;
   display: none;
-  position: absolute;
-  left: 44%;
+  cursor: pointer;
 
-  @media only screen and (max-width: 768px) {
+  & > div {
     display: flex;
+    align-items: center;
+  }
+  /* position: absolute;
+  left: 44%; */
+  @media all and (max-width: 768px) {
+    display: block;
   }
 `;
 
 export const NavLogoImg = styled.img`
   width: auto;
   height: 20px;
+  margin-right: 5px;
 `;
 
 export const NavLinkSt = styled(NavLink)`
@@ -117,3 +124,13 @@ export const LoginBtnSignUp = styled.button`
     color: white;
   }
 `;
+
+// export const HiddenBarDiv = styled.div`
+//   position: fixed;
+//   width: 30%;
+//   /* height: 100%; */
+//   right: 0;
+//   bottom: 0;
+//   top: 0;
+//   background-color: aquamarine;
+// `;

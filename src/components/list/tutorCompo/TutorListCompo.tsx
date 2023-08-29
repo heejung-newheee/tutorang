@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { TutorLists } from '../../../supabase/database.types';
+import { TutorLists, Tables } from '../../../supabase/database.types';
 
 type Props = {
-  // userInfo: TutorLists<'Row'>;
+  userInfo: Tables<'tutor_info'>;
 };
 
-const TutorListCompo = ({}: Props) => {
+const TutorListCompo = ({ userInfo }: Props) => {
   return (
     <TutorContainer>
       <img src="http://thumbnail.10x10.co.kr/webimage/image/basic/524/B005247708.jpeg?cmd=thumb&fit=true&ws=false&w=300&h=300" />
