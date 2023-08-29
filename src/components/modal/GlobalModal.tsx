@@ -3,6 +3,7 @@ import { Alert, Confirm, Report, ReviewForm, ReviewUpdateForm } from '..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import ModalPortal from './ModalPortal';
+import EditProfileForm from '../Form/profileForm/EditProfileForm';
 
 const GlobalModal = () => {
   const { type, isOpen } = useSelector((state: RootState) => state.modal);
@@ -14,6 +15,7 @@ const GlobalModal = () => {
     report: 'report',
     reviewCreate: 'reviewCreate',
     reviewUpdate: 'reviewUpdate',
+    editProfiles: 'editProfiles',
   };
 
   const MODAL_COMPONENTS = [
@@ -36,6 +38,10 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.reviewUpdate,
       component: <ReviewUpdateForm />,
+    },
+    {
+      type: MODAL_TYPES.editProfiles,
+      component: <EditProfileForm />,
     },
   ];
 

@@ -1,20 +1,39 @@
 import * as S from './UserInfo.styled';
 import TutorInfo from '../tutorInfo/TutorInfo';
 import StudentInfo from '../studentInfo/StudentInfo';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import { getMatchData, matchingTutorData } from '../../api/match';
 import { useQuery } from '@tanstack/react-query';
 import { icon_edit, icon_location } from '../../assets';
+import { openModal } from '../../redux/modules';
+import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../api/review';
 
 const UserInfo = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
+  const matchData = useSelector((state: RootState) => state.match.match);
   const { data, isLoading, isError } = useQuery(['matching_tutor_data'], matchingTutorData);
   console.log('UserInfo 로그인사용자', user);
-  console.log('matchData', data);
+  // console.log('matchData:DB mtching_tutor_data', data);
+  // console.log(matchData);
+
+  // TODO count가 null이라면????????
+  const writeReviewCount = useQuery(['writeReviewCount'], () => getWriteReviewCount(user!.id));
+  // console.log(writeReviewCount.data);
+  const receivedReviewCount = useQuery(['receivedReviewCount'], () => getReceivedWriteReviewCount(user!.id));
+  // console.log(receivedReviewCount.data);
+
   if (!user) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
+  const handleEditProfiles = () => {
+    dispatch(openModal({ type: 'editProfiles' }));
+  };
+  const studentMatch = matchData?.filter((item) => item.user_id === user.id);
+  console.log(studentMatch);
+  const tutorMatch = matchData?.filter((item) => item.tutor_id === user.id);
+  console.log(tutorMatch);
 
   return (
     <>
@@ -23,7 +42,7 @@ const UserInfo = () => {
           <S.Container>
             <S.ProfileImg>
               <S.UserImg src={user.avatar_url ?? ''} alt="프로필 이미지" />
-              <S.EditBtn>
+              <S.EditBtn onClick={handleEditProfiles}>
                 <img src={icon_edit} alt="" />
               </S.EditBtn>
             </S.ProfileImg>
@@ -35,19 +54,39 @@ const UserInfo = () => {
               <img src={icon_location} alt="" /> {user.location1_sido} | {user.location1_gugun} <img src={icon_location} alt="" /> {user.location2_sido} | {user.location2_gugun}
             </S.TutorLocationBox>
             <S.Summary>
-              <S.SummaryItem>
-                {/* 매칭 후 데이터 불러와야함 */}
-                <p>X개</p>
-                <p>완료된 수업</p>
-              </S.SummaryItem>
-              <S.SummaryItem>
-                <p>X개</p>
-                <p>대기 요청</p>
-              </S.SummaryItem>
-              <S.SummaryItem>
-                <p>X개</p>
-                <p>나에게 남긴 후기</p>
-              </S.SummaryItem>
+              {user.role === 'tutor' ? (
+                <>
+                  <S.SummaryItem>
+                    <p>{tutorMatch?.filter((a) => a.matched === true).length}개</p>
+                    <p>완료된 수업</p>
+                  </S.SummaryItem>
+                  <S.SummaryItem>
+                    <p>{tutorMatch?.filter((a) => a.matched === false).length}개</p>
+                    <p>대기 요청</p>
+                  </S.SummaryItem>
+                  <S.SummaryItem>
+                    <p>{receivedReviewCount.data}개</p>
+                    <p>나에게 남긴 후기</p>
+                  </S.SummaryItem>
+                </>
+              ) : user.role === 'student' ? (
+                <>
+                  <S.SummaryItem>
+                    <p>{studentMatch?.filter((a) => a.matched === true).length}개</p>
+                    <p>완료된 수업</p>
+                  </S.SummaryItem>
+                  <S.SummaryItem>
+                    <p>{studentMatch?.filter((a) => a.matched === false).length}개</p>
+                    <p>대기 요청</p>
+                  </S.SummaryItem>
+                  <S.SummaryItem>
+                    <p>{writeReviewCount.data}개</p>
+                    <p>내가 남긴 후기</p>
+                  </S.SummaryItem>
+                </>
+              ) : (
+                <>{/* 관리자일 경우 ?  */}</>
+              )}
             </S.Summary>
           </S.Container>
         </S.ProfileBox>

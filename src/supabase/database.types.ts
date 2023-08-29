@@ -70,6 +70,21 @@ export interface Database {
         };
         Relationships: [];
       };
+      chat_rooms: {
+        Row: {
+          id: string;
+          name: string | null;
+        };
+        Insert: {
+          id?: string;
+          name?: string | null;
+        };
+        Update: {
+          id?: string;
+          name?: string | null;
+        };
+        Relationships: [];
+      };
       city: {
         Row: {
           id: number;
@@ -306,7 +321,7 @@ export interface Database {
       };
       review: {
         Row: {
-          author?: string | null;
+          author: string | null;
           content: string | null;
           created_at: string;
           id: number;
@@ -553,12 +568,15 @@ export interface Database {
         Row: {
           class_info: string | null;
           created_at: string | null;
-          price: number | null;
+          location1_gugun: string | null;
+          location2_gugun: string | null;
+          major: string | null;
+          personality: string | null;
           tutor_id: string | null;
           tutor_img: string | null;
           tutor_info_id: number | null;
           tutor_name: string | null;
-          update: string | null;
+          university: string | null;
         };
         Relationships: [
           {
