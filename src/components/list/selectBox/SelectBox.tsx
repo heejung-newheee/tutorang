@@ -64,7 +64,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
       case 'age':
         let ageNum = handleAgeNum(item[1]);
 
-        setSelectedFilters((pre: any) => (pre ? { ...pre, age: pre.age.filter((i: any) => i !== ageNum) } : null));
+        setSelectedFilters((pre: any) => pre && { ...pre, age: pre.age.filter((i: any) => i !== ageNum) });
         setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
 
         break;
@@ -92,8 +92,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
       //가격
       case 'price':
         setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-        setSelectedFilters((pre: any) => (pre ? { ...pre, minPrice: 0 } : { ...pre }));
-        setSelectedFilters((pre: any) => (pre ? { ...pre, maxPrice: 100000 } : { ...pre }));
+        setSelectedFilters((pre: any) => pre && { ...pre, minPrice: 0, maxPrice: 100000, priceType: '전체' });
         break;
       default:
         break;
@@ -125,11 +124,34 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
   };
 
   const handelInputPrice = () => {
-    setSelectedFilters((pre: any) => (pre ? { ...pre, maxPrice: maxPriceNum, minPrice: minPriceNum } : {}));
+    setSelectedFilters((pre: any) => pre && { ...pre, maxPrice: maxPriceNum, minPrice: minPriceNum });
     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
     setSelectedArr((pre) => [...pre, ['price', `${minPriceNum?.toLocaleString('ko-KR')}~${maxPriceNum?.toLocaleString('ko-KR')}`]]);
   };
 
+  const isColorTrue = (item: string) => {
+    return selectedFilters[item].length !== 0;
+  };
+
+  const ischevronOpen = (item: string) => {
+    return isOpen === true && filteredMenu === item;
+  };
+
+  const isChecked = (item: string) => {
+    return (selectedFilters[filteredMenu]?.length === 0 && item === '전체') || selectedArr.some((i) => i[0] === filteredMenu && i[1] === item);
+  };
+
+  const isCheckedPrice = (item: { priceNum: string; min: number; max: number }) => {
+    if (selectedFilters['priceType'] === '전체' && item['priceNum'] === '전체') {
+      return true;
+    }
+
+    if (selectedFilters['priceType'] === item['priceNum']) {
+      return true;
+    }
+
+    return false;
+  };
   return (
     <>
       {/* <LocationDiv>
@@ -139,38 +161,38 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
       </LocationDiv> */}
 
       <S.FilterBox>
-        <S.InnerBox $isIn={selectedFilters.gender.length !== 0} onClick={() => handleHiddenBox('gender')}>
+        <S.InnerBox $isIn={isColorTrue('gender')} onClick={() => handleHiddenBox('gender')}>
           성별
-          <S.ChevronSpan $chevron={isOpen === true && filteredMenu === 'gender'}></S.ChevronSpan>
+          <S.ChevronSpan $chevron={ischevronOpen('gender')}></S.ChevronSpan>
         </S.InnerBox>
 
-        <S.InnerBox $isIn={selectedFilters.level.length !== 0} onClick={() => handleHiddenBox('level')}>
+        <S.InnerBox $isIn={isColorTrue('level')} onClick={() => handleHiddenBox('level')}>
           난이도
-          <S.ChevronSpan $chevron={isOpen === true && filteredMenu === 'level'}></S.ChevronSpan>
+          <S.ChevronSpan $chevron={ischevronOpen('level')}></S.ChevronSpan>
         </S.InnerBox>
 
-        <S.InnerBox $isIn={selectedFilters.age.length !== 0} onClick={() => handleHiddenBox('age')}>
+        <S.InnerBox $isIn={isColorTrue('age')} onClick={() => handleHiddenBox('age')}>
           연령대
-          <S.ChevronSpan $chevron={isOpen === true && filteredMenu === 'age'}></S.ChevronSpan>
+          <S.ChevronSpan $chevron={ischevronOpen('age')}></S.ChevronSpan>
         </S.InnerBox>
 
-        <S.InnerBox onClick={openModal} $isIn={selectedFilters.location1.length !== 0}>
+        <S.InnerBox onClick={openModal} $isIn={isColorTrue('location1')}>
           지역
           <button>+</button>
         </S.InnerBox>
 
         <S.InnerBox $isIn={selectedArr.some((i) => i[0] === 'price') ? true : false} onClick={() => handleHiddenBox('price')}>
           가격
-          <S.ChevronSpan $chevron={(isOpen === true && filteredMenu === 'price') || filteredMenu === 'priceOnline'}></S.ChevronSpan>
+          <S.ChevronSpan $chevron={ischevronOpen('price')}></S.ChevronSpan>
         </S.InnerBox>
       </S.FilterBox>
 
-      {/* 체크박스 */}
+      {/* 체크박스 - 가격 제외*/}
       {isOpen && filteredMenu !== 'price' ? (
         <S.InnerHidden>
           {obj[filteredMenu]?.map((item: string) => (
             <div key={Math.random() * 22229999}>
-              <input type="checkbox" id="check" checked={(selectedFilters[filteredMenu]?.length === 0 && item === '전체') || selectedArr.some((i) => i[0] === filteredMenu && i[1] === item && item !== '전체')} />
+              <input type="checkbox" id="check" checked={isChecked(item)} readOnly />
               <label htmlFor="check" onClick={() => handleFilterdObj(item, filteredMenu)}>
                 {item}
               </label>
@@ -178,7 +200,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
           ))}
         </S.InnerHidden>
       ) : null}
-
+      {/* 체크박스 - 가격*/}
       {isOpen && filteredMenu === 'price' ? (
         <S.InnerHidden>
           {/* 수정해야 함 */}
@@ -196,7 +218,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
 
           {obj[filteredMenu]?.map((item: { priceNum: string; min: number; max: number }) => (
             <div key={Math.random() * 22229999} onClick={() => handleFilterdObj(item['priceNum'], filteredMenu)}>
-              <input type="checkbox" id="check" checked={(selectedFilters['minPrice'] === 0 && selectedFilters['maxPrice'] > 40000 && item.priceNum === '전체') || selectedArr.some((i) => i[0] === filteredMenu && i[1] === item['priceNum'])} />
+              <input type="checkbox" id="check" checked={isCheckedPrice(item)} readOnly />
               <label htmlFor="check">{item['priceNum']}</label>
             </div>
           ))}

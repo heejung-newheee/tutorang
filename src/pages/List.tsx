@@ -6,7 +6,7 @@ import TutorListCompo from '../components/list/tutorCompo/TutorListCompo';
 import LastTutorListCompo from '../components/list/tutorCompo/LastTutorListCompo';
 import SelectBox from '../components/list/selectBox/SelectBox';
 import CityModal from '../components/list/location/CityModal';
-import { handleAgeNum, price } from '../components/list/utility';
+import { handleAgeNum, price, SelectedFilters } from '../components/list/utility';
 import { TTutorWithUser } from '../supabase/database.types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
@@ -21,11 +21,12 @@ const List = () => {
   //유저가 선택한 목록 - 필터 바에 들어갈 값[]
   const [selectedArr, setSelectedArr] = useState<string[][]>([]);
 
-  const [selectedFilters, setSelectedFilters] = useState<any>({
+  const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
     gender: [],
     level: [],
     minPrice: 0,
     maxPrice: 100000,
+    priceType: '전체',
     location1: '',
     location2: '',
     age: [],
@@ -42,17 +43,17 @@ const List = () => {
       case 'gender':
         if (item === '전체') {
           //전체 클릭 - 모든 값 초기화
-          setSelectedFilters((pre: any) => (pre ? { ...pre, gender: [] } : { ...pre, gender: [] }));
+          setSelectedFilters((pre: any) => pre && { ...pre, gender: [] });
           setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'gender')]);
           //전체를 제외한 첫 클릭
         } else if (item !== '전체') {
           //값이 없을때 - 추가
           if (selectedFilters.gender.find((i: string) => i === item) === undefined) {
-            setSelectedFilters((pre: any) => (pre ? { ...pre, gender: [...pre.gender, item] } : null));
+            setSelectedFilters((pre: any) => pre && { ...pre, gender: [...pre.gender, item] });
             setSelectedArr((pre: any) => [...pre, ['gender', item]]);
             //값이 있을때 - 삭제
           } else {
-            setSelectedFilters((pre: any) => (pre ? { ...pre, gender: pre.gender.filter((i: any) => i !== item) } : null));
+            setSelectedFilters((pre: any) => pre && { ...pre, gender: pre.gender.filter((i: any) => i !== item) });
             setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
           }
         }
@@ -62,17 +63,17 @@ const List = () => {
       case 'level':
         if (item === '전체') {
           //전체 클릭 - 모든 값 초기화
-          setSelectedFilters((pre: any) => (pre ? { ...pre, level: [] } : { ...pre, level: [] }));
+          setSelectedFilters((pre: any) => pre && { ...pre, level: [] });
           setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'level')]);
           //전체를 제외한 첫 클릭
         } else if (item !== '전체') {
           //값이 없을때 - 추가
           if (selectedFilters.level.find((i: string) => i === item) === undefined) {
-            setSelectedFilters((pre: any) => (pre ? { ...pre, level: [...pre.level, item] } : null));
+            setSelectedFilters((pre: any) => pre && { ...pre, level: [...pre.level, item] });
             setSelectedArr((pre: any) => [...pre, ['level', item]]);
             //값이 있을때 - 삭제
           } else {
-            setSelectedFilters((pre: any) => (pre ? { ...pre, level: pre.level.filter((i: any) => i !== item) } : null));
+            setSelectedFilters((pre: any) => pre && { ...pre, level: pre.level.filter((i: any) => i !== item) });
             setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
           }
         }
@@ -81,14 +82,14 @@ const List = () => {
       //가격
       case 'price':
         if (item === '전체') {
-          setSelectedFilters((pre: any) => (pre ? { ...pre, minPrice: 0 } : { ...pre }));
-          setSelectedFilters((pre: any) => (pre ? { ...pre, maxPrice: 100000 } : { ...pre }));
+          setSelectedFilters((pre: any) => pre && { ...pre, minPrice: 0, maxPrice: 100000, priceType: '전체' });
+          // setSelectedFilters((pre: any) => (pre ? { ...pre, maxPrice: 100000 } : { ...pre }));
           setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-          setSelectedArr((pre) => [...pre, ['price', '전체']]);
+          // setSelectedArr((pre) => [...pre, ['price', '전체']]);
         } else {
           const minPrice = price.find((i: { priceNum: string; min: number; max: number }) => i.priceNum === item)?.min;
           const maxPrice = price.find((i: { priceNum: string; min: number; max: number }) => i.priceNum === item)?.max;
-          setSelectedFilters((pre: any) => (pre ? { ...pre, minPrice, maxPrice } : { ...pre }));
+          setSelectedFilters((pre: any) => pre && { ...pre, minPrice, maxPrice, priceType: item });
           setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
           setSelectedArr((pre) => [...pre, ['price', item]]);
         }
@@ -101,17 +102,16 @@ const List = () => {
 
         if (item === '전체') {
           //전체 클릭 - 모든 값 초기화
-          setSelectedFilters((pre: any) => (pre ? { ...pre, age: [] } : { ...pre, age: [] }));
+          setSelectedFilters((pre: any) => pre && { ...pre, age: [] });
           setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'age')]);
-          //전체를 제외한 첫 클릭
         } else if (item !== '전체') {
           //값이 없을때 - 추가
-          if (selectedFilters.age.find((i: string) => Number(i) === ageNum) === undefined) {
-            setSelectedFilters((pre: any) => (pre ? { ...pre, age: [...pre.age, ageNum] } : null));
+          if (selectedFilters.age.find((i: number) => i === ageNum) === undefined) {
+            setSelectedFilters((pre: any) => pre && { ...pre, age: [...pre.age, ageNum] });
             setSelectedArr((pre: any) => [...pre, ['age', item]]);
             //값이 있을때 - 삭제
           } else {
-            setSelectedFilters((pre: any) => (pre ? { ...pre, age: pre.age.filter((i: any) => i !== ageNum) } : null));
+            setSelectedFilters((pre: any) => pre && { ...pre, age: pre.age.filter((i: any) => i !== ageNum) });
             setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
           }
         }
@@ -239,8 +239,8 @@ const List = () => {
   const reloadQuery = () => {
     refetch();
   };
-  // 어떤 변수든 변경될 때마다 api 함수 호출
 
+  // 어떤 변수든 변경될 때마다 api 함수 호출
   useEffect(() => {
     reloadQuery();
   }, [selectedFilters, searchText]);
