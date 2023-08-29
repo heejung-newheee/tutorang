@@ -17,16 +17,18 @@ const UserInfo = () => {
   console.log('UserInfo 로그인사용자', user);
   // console.log('matchData:DB mtching_tutor_data', data);
   // console.log(matchData);
-  const writeReviewCount = useQuery(['writeReviewCount'], () => getWriteReviewCount(user.id));
+
+  // TODO count가 null이라면????????
+  const writeReviewCount = useQuery(['writeReviewCount'], () => getWriteReviewCount(user!.id));
   // console.log(writeReviewCount.data);
-  const receivedReviewCount = useQuery(['receivedReviewCount'], () => getReceivedWriteReviewCount(user.id));
+  const receivedReviewCount = useQuery(['receivedReviewCount'], () => getReceivedWriteReviewCount(user!.id));
   // console.log(receivedReviewCount.data);
 
   if (!user) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
   const handleEditProfiles = () => {
-    dispatch(openModal('editProfiles'));
+    dispatch(openModal({ type: 'editProfiles' }));
   };
   const studentMatch = matchData?.filter((item) => item.user_id === user.id);
   console.log(studentMatch);

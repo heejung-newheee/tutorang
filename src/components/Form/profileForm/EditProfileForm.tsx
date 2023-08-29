@@ -93,7 +93,7 @@ const EditProfileForm = () => {
             <p>비밀번호</p>
             <input type="text" name="password" value={password} onChange={changeNewpassword} />
             <p></p>
-            {password.length > 6 || PWD_REGEX.test(password) ? <p>사용가능한 비밀번호 입니다</p> : password !== '' ? <p>6자 이상 영문 대소문자, 숫자, 특수문자를 포함해주세요</p> : <p></p>}
+            {password.length > 6 && PWD_REGEX.test(password) ? <p>사용가능한 비밀번호 입니다</p> : password !== '' ? <p>6자 이상 영문 대소문자, 숫자, 특수문자를 포함해주세요</p> : <p></p>}
             <input type="text" name="confirmPassword" value={confirmPassword} onChange={changeConfirmPassword} />
             {password === confirmPassword ? <p></p> : confirmPassword !== '' ? <p>비밀번호가 다릅니다</p> : <p></p>}
             <p>이름</p>

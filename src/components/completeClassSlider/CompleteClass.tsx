@@ -19,8 +19,8 @@ const CompleteClass = ({ matchList }: CompleteClassProps) => {
   // const completeTutor = matchList;
   // console.log(matchList);
 
-  const handleReviewCreate = () => {
-    // dispatch(openModal({ type: 'reviewCreate', targetId: id }));
+  const handleReviewCreate = (id: string): void => {
+    dispatch(openModal({ type: 'reviewCreate', targetId: id }));
   };
   return (
     <>
@@ -39,7 +39,7 @@ const CompleteClass = ({ matchList }: CompleteClassProps) => {
                     <S.ComTutorLocation>
                       {item.tutor_lc_1_gugun} | {item.tutor_lc_2_gugun}
                     </S.ComTutorLocation>
-                    <S.ReviewBtn onClick={handleReviewCreate(item.tutor_id)}>리뷰 쓰기</S.ReviewBtn>
+                    <S.ReviewBtn onClick={() => handleReviewCreate(item.tutor_id!)}>리뷰 쓰기</S.ReviewBtn>
                     {/* 클릭 시 이사람 아이디 넘겨주고 후기를 post */}
                   </S.CompleteContents>
                 </S.CompleteTutor>
