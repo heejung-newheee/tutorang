@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import supabase from '../supabase';
 import { useModal } from '../hooks';
 import TutorListCompo from '../components/list/TutorListCompo';
+import LastTutorListCompo from '../components/list/LastTutorListCompo';
 import SelectBox from '../components/list/SelectBox';
 import CityModal from '../components/list/CityModal';
 import { price } from '../components/list/MobileModal';
-import axios from 'axios';
 import { TTutorWithUser } from '../supabase/database.types';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 const List = () => {
   const { Modal, isOpen, openModal, closeModal } = useModal();
@@ -32,9 +33,8 @@ const List = () => {
   });
   //검색
   const [searchText, setSearchText] = useState('');
-  // const [tutorApiData, setTutorApiData] = useState<>();
 
-  console.log(selectedFilters, selectedArr);
+  // console.log(selectedFilters, selectedArr);
   //체크박스 클릭
   const handleFilterdObj = (item: string, category: string) => {
     console.log('sfsfd');
@@ -157,31 +157,62 @@ const List = () => {
     }
   };
 
-  //강사 api 호출
-  useEffect(() => {
-    getData();
-  }, [selectedFilters, searchText]);
+  //튜터 api 호출
+  const PAGE_SIZE = 6;
 
-  const getData = async () => {
-    const { gender } = selectedFilters;
-    // console.log(gender);
-    try {
-      // .range(0, 1)
-      // const { data, error } = await supabase.from('profiles').select('*').in('gender', [genderArr]).textSearch('username', `':*'`);
-      // const { data, error } = await supabase.from('profiles').select('*').in('gender', [genderArr]).in('language_level', [language_levelArr]).match(filterdObj);
-      let query = supabase.from('tutor_info').select('*');
-      // if (gender) {
-      //   query = query.in('gender', [...gender]);
-      // }
-      const { data, error } = await query.range(1, 3);
-      console.log(error);
-      // .gte('price', 3000).lte('price', 100000)
-      // setTutorApiData(data);
-      console.log(data, 'ㅁㄴㅇㄴ');
-    } catch (error) {
-      console.log(error);
+  const api = async (page = 1) => {
+    const { gender, level, minPrice, maxPrice, location1, location2, age, classStyle } = selectedFilters;
+
+    let query = supabase.from('profiles').select('*');
+
+    if (gender.length !== 0) {
+      query = query.in('gender', [...gender]);
     }
+    if (level.length !== 0) {
+      query = query.in('level', [...level]);
+    }
+
+    if (age.length !== 0) {
+      const minAge = age.sort()[0];
+      const maxAge = age.sort()[age.length - 1];
+      query = query.gte('age', minAge).lte('age', maxAge);
+    }
+
+    // if (minPrice >= 0 && maxPrice) {
+    //   if (classStyle === 'onLine') {
+    //     query = query.gte('tuition_fee_online', minPrice).lte('tuition_fee_online', maxPrice);
+    //   } else {
+    //     query = query.gte('tuition_fee_offline', minPrice).lte('tuition_fee_offline', maxPrice);
+    //   }
+    // }
+
+    if (location1) {
+      query = query.match({ location1_sido: location1, location1_gungu: location2, location2_sido: location1, location2_gungu: location2 });
+    }
+    const { data, error } = await query.range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
+
+    console.log(data, 'ㅁㄴㅇㄴ');
+
+    return data;
   };
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(['tutor'], ({ pageParam }) => api(pageParam), {
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage?.length === PAGE_SIZE) {
+        return allPages.length + 1; // 다음 페이지 번호 반환
+      }
+      return undefined;
+    },
+    enabled: false, // 초기에는 쿼리 비활성화
+  });
+
+  const reloadQuery = () => {
+    refetch();
+  };
+  useEffect(() => {
+    reloadQuery();
+    // 어떤 변수든 변경될 때마다 api 함수 호출
+  }, [selectedFilters, searchText]);
 
   const handleDropAndSi = (item: string, version: string) => {
     //시, 군구 setState
@@ -239,54 +270,28 @@ const List = () => {
   };
 
   //무한크스롤
-  const elementRef = useRef<HTMLDivElement | null>(null);
+  const observer = useRef<IntersectionObserver | null>(null);
 
-  // const [books, setBooks] = useState<string[]>([]);
-  // const [pageNum, setPageNum] = useState(1);
-  // const [hasMore, setHasMore] = useState(false);
-  // const getApi = () => {
-  //   axios({
-  //     method: 'GET',
-  //     url: 'http://openlibrary.org/search.json',
-  //     params: { q: 'text', page: pageNum },
-  //   })
-  //     .then((res) => {
-  //       setBooks((pre) => (pre ? [...pre, ...res.data.docs.map((i: { title: any }) => i.title)] : [...pre]));
-  //       setHasMore(res.data.docs.length > 0);
-  //       setPageNum((pre) => pre + 1);
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // };
+  const LastelementRef = useCallback(
+    (node: HTMLDivElement) => {
+      console.log('useCallback', node, isFetchingNextPage, hasNextPage);
+      if (isFetchingNextPage) {
+        return null;
+      }
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries, observer) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
+          console.log('visible');
+        }
+      });
 
-  // console.log(books);
+      if (node) observer.current.observe(node);
+    },
+    [hasNextPage],
+  );
 
-  // useEffect(() => {
-  //   if (books.length === 0) {
-  //     getApi();
-  //   }
-
-  //   const observer = new IntersectionObserver((entries, observer) => {
-  //     // IntersectionObserverEntry 객체 리스트와 observer 본인(self)를 받음
-  //     if (entries[0].isIntersecting && hasMore) {
-  //       getApi();
-  //       observer.disconnect();
-  //     }
-  //   });
-  //   if (observer && elementRef.current && hasMore) {
-  //     observer.observe(elementRef.current);
-  //   }
-
-  //   if (!hasMore) {
-  //     observer.disconnect();
-  //   }
-  //   // return () => {
-  //   //   if (observer) {
-  //   //     observer.disconnect();
-  //   //   }
-  //   // };
-  // }, [books]);
+  console.log(data);
 
   //Debouncing
   const debounce = <T extends (...args: any[]) => any>(fn: T, delay: number) => {
@@ -305,30 +310,9 @@ const List = () => {
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
-  console.log(searchText, 'searchText');
 
   const debouncedOnChange = debounce<typeof onChange>(onChange, 500);
 
-  // Debouncing
-  // const debounce = (callback: (text: string) => any, delay: number | undefined) => {
-  //   let timerId: any = null;
-  //   if (timerId) {
-  //     clearTimeout(timerId);
-  //   }
-  //   timerId = setTimeout(() => {
-  //     timerId = null;
-  //     return callback;
-  //   }, delay);
-  // };
-
-  // const handleSearchText = useCallback(
-  //   debounce((text: string) => setSearchText(text), 2000),
-  //   [],
-  // );
-  const handleDebouncing = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // handleSearchText(e.target.value);
-    console.log('sfs');
-  };
   return (
     <Container>
       <SearchWrap>
@@ -340,15 +324,7 @@ const List = () => {
       {/* 필터박스 */}
       <SelectBox handleFilterdObj={handleFilterdObj} openModal={openModal} selectedArr={selectedArr} setSelectedArr={setSelectedArr} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
       {/* 강사 리스트 */}
-      <TutorList>
-        {/* {books?.map((i) => (
-          <TutorListCompo />
-        ))} */}
-        <TutorListCompo />
-        <TutorListCompo />
-        <TutorListCompo />
-      </TutorList>
-      <div ref={elementRef}>Loading</div>
+      <TutorList>{data?.pages.map((i, first) => i?.map((userInfo, second) => (second === i.length - 1 && data?.pages.length - 1 === first ? <LastTutorListCompo LastelementRef={LastelementRef} /> : <TutorListCompo />)))}</TutorList>
 
       {/* 모달 */}
       <Modal isOpen={isOpen} closeModal={closeModal}>

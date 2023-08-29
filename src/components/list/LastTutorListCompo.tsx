@@ -2,15 +2,17 @@ import styled from 'styled-components';
 import { TutorLists } from '../../supabase/database.types';
 
 type Props = {
-  // userInfo: TutorLists<'Row'>;
+  LastelementRef: (node: HTMLDivElement) => void;
+  // userInfo: TutorInfoIdType;
 };
+type TutorInfoIdType = TutorLists<'id'>;
 
-const TutorListCompo = ({}: Props) => {
+const TutorListCompo = ({ LastelementRef }: Props) => {
   return (
-    <TutorContainer>
+    <TutorContainer ref={LastelementRef}>
       <img src="http://thumbnail.10x10.co.kr/webimage/image/basic/524/B005247708.jpeg?cmd=thumb&fit=true&ws=false&w=300&h=300" />
       <div>
-        <div>{'ㅁㄴㅇㅁㄴㅇㄴ'}</div>
+        <div>{'LastelementRef'}</div>
         <div>
           <div>Name(sdfsf)</div>
           <div>

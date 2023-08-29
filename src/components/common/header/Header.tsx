@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import * as S from './Header.styled';
-import { useNavigate } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
-=======
->>>>>>> fb337fb3ad2e54d1dfc6766c700f2f79e4b963eb
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -13,13 +5,10 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
 import { fetchData } from '../../../api/user';
 import { matchingList } from '../../../redux/modules/matching';
-<<<<<<< HEAD
 import logo from '../../../assets/logo.png';
-=======
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import * as Styled from './Header.styled';
->>>>>>> fb337fb3ad2e54d1dfc6766c700f2f79e4b963eb
 
 type HEADERMENU = { title: string; path: string }[];
 
@@ -33,9 +22,9 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
-  console.log(userIsError, userIsLoading);
+  // console.log(userIsError, userIsLoading);
   const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
-  console.log('matchData', matchData);
+  // console.log('matchData', matchData);
 
   const [email, setEmail] = useState<string>();
 
@@ -78,39 +67,27 @@ const Header = () => {
   }
   return (
     <>
-      <S.NavContainer>
-        <S.WidthLimitContainer>
-          <S.LogoWrap>
-            <S.NavLogoImg src={logo} alt="logo"></S.NavLogoImg>
+      <Styled.NavContainer>
+        <Styled.WidthLimitContainer>
+          <Styled.LogoWrap>
+            <Styled.NavLogoImg src={logo} alt="logo"></Styled.NavLogoImg>
             <h1 onClick={handleHome}>튜터랑</h1>
             {HeaderMenu.map((item, index) => (
-              <S.NavLinkSt key={index} to={item.path}>
+              <Styled.NavLinkSt key={index} to={item.path}>
                 {item.title}
-              </S.NavLinkSt>
+              </Styled.NavLinkSt>
             ))}
-          </S.LogoWrap>
+          </Styled.LogoWrap>
           {/* 미디어쿼리 */}
-          <S.Hamberger>=</S.Hamberger>
-          <S.MiddleLogo onClick={handleHome}>Logo</S.MiddleLogo>
+          <Styled.Hamberger>=</Styled.Hamberger>
+          <Styled.MiddleLogo onClick={handleHome}>Logo</Styled.MiddleLogo>
           {/* 미디어쿼리 */}
-<<<<<<< HEAD
-          <S.LoginBtn>
-            <NavLink to="/signin">로그인</NavLink>
-            <NavLink to="/signup">
-              <S.LoginBtnSignUp>회원가입</S.LoginBtnSignUp>
-            </NavLink>
-            {/* <span>LogOut</span> */}
-          </S.LoginBtn>
-        </S.WidthLimitContainer>
-      </S.NavContainer>
-=======
           <Styled.LoginBtn>
             <NavLink to="/signin">로그인 | 회원가입</NavLink>
             <span onClick={() => signOut()}>LogOut</span>
           </Styled.LoginBtn>
         </Styled.WidthLimitContainer>
       </Styled.NavContainer>
->>>>>>> fb337fb3ad2e54d1dfc6766c700f2f79e4b963eb
     </>
   );
 };
