@@ -7,6 +7,7 @@ import { fetchData } from '../../../api/user';
 import { matchingList } from '../../../redux/modules/matching';
 import { tutorInfoJoin } from '../../../api/tutor';
 import { tutorInfo } from '../../../redux/modules/tutorSlice';
+import logo from '../../../assets/logo.png';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import * as Styled from './Header.styled';
@@ -77,8 +78,8 @@ const Header = () => {
       <Styled.NavContainer>
         <Styled.WidthLimitContainer>
           <Styled.LogoWrap>
-            {/* <Styled.NavLogoImg src="" alt="logo"></Styled.NavLogoImg>  */}
-            <h1 onClick={handleHome}>Logo</h1>
+            <Styled.NavLogoImg src={logo} alt="logo"></Styled.NavLogoImg>
+            <h1 onClick={handleHome}>튜터랑</h1>
             {HeaderMenu.map((item, index) => (
               <Styled.NavLinkSt key={index} to={item.path}>
                 {item.title}
