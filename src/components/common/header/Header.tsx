@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
 import { fetchData } from '../../../api/user';
 import { matchingList } from '../../../redux/modules/matching';
+import logo from '../../../assets/logo.png';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import * as Styled from './Header.styled';
@@ -21,9 +22,9 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
-  console.log(userIsError, userIsLoading);
+  // console.log(userIsError, userIsLoading);
   const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
-  console.log('matchData', matchData);
+  // console.log('matchData', matchData);
 
   const [email, setEmail] = useState<string>();
 
@@ -69,8 +70,8 @@ const Header = () => {
       <Styled.NavContainer>
         <Styled.WidthLimitContainer>
           <Styled.LogoWrap>
-            {/* <Styled.NavLogoImg src="" alt="logo"></Styled.NavLogoImg>  */}
-            <h1 onClick={handleHome}>Logo</h1>
+            <Styled.NavLogoImg src={logo} alt="logo"></Styled.NavLogoImg>
+            <h1 onClick={handleHome}>튜터랑</h1>
             {HeaderMenu.map((item, index) => (
               <Styled.NavLinkSt key={index} to={item.path}>
                 {item.title}
