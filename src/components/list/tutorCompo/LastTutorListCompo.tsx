@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { TutorLists } from '../../supabase/database.types';
+import { TutorLists } from '../../../supabase/database.types';
 
 type Props = {
   LastelementRef: (node: HTMLDivElement) => void;

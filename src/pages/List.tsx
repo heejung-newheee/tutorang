@@ -2,11 +2,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import supabase from '../supabase';
 import { useModal } from '../hooks';
-import TutorListCompo from '../components/list/TutorListCompo';
-import LastTutorListCompo from '../components/list/LastTutorListCompo';
-import SelectBox from '../components/list/SelectBox';
-import CityModal from '../components/list/CityModal';
-import { price } from '../components/list/MobileModal';
+import TutorListCompo from '../components/list/tutorCompo/TutorListCompo';
+import LastTutorListCompo from '../components/list/tutorCompo/LastTutorListCompo';
+import SelectBox from '../components/list/selectBox/SelectBox';
+import CityModal from '../components/list/location/CityModal';
+import { handleAgeNum, price } from '../components/list/utility';
 import { TTutorWithUser } from '../supabase/database.types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
@@ -27,17 +27,16 @@ const List = () => {
     minPrice: 0,
     maxPrice: 100000,
     location1: '',
-    location2: [],
+    location2: '',
     age: [],
     classStyle: 'onLine',
   });
   //검색
   const [searchText, setSearchText] = useState('');
 
-  // console.log(selectedFilters, selectedArr);
+  console.log(selectedFilters, selectedArr);
   //체크박스 클릭
   const handleFilterdObj = (item: string, category: string) => {
-    console.log('sfsfd');
     switch (category) {
       //성별
       case 'gender':
@@ -51,7 +50,7 @@ const List = () => {
           if (selectedFilters.gender.find((i: string) => i === item) === undefined) {
             setSelectedFilters((pre: any) => (pre ? { ...pre, gender: [...pre.gender, item] } : null));
             setSelectedArr((pre: any) => [...pre, ['gender', item]]);
-            //값이 없을때 - 추가
+            //값이 있을때 - 삭제
           } else {
             setSelectedFilters((pre: any) => (pre ? { ...pre, gender: pre.gender.filter((i: any) => i !== item) } : null));
             setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
@@ -71,7 +70,7 @@ const List = () => {
           if (selectedFilters.level.find((i: string) => i === item) === undefined) {
             setSelectedFilters((pre: any) => (pre ? { ...pre, level: [...pre.level, item] } : null));
             setSelectedArr((pre: any) => [...pre, ['level', item]]);
-            //값이 없을때 - 추가
+            //값이 있을때 - 삭제
           } else {
             setSelectedFilters((pre: any) => (pre ? { ...pre, level: pre.level.filter((i: any) => i !== item) } : null));
             setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
@@ -81,20 +80,14 @@ const List = () => {
         break;
       //가격
       case 'price':
-        console.log(item);
-
         if (item === '전체') {
-          console.log('전체');
-
           setSelectedFilters((pre: any) => (pre ? { ...pre, minPrice: 0 } : { ...pre }));
           setSelectedFilters((pre: any) => (pre ? { ...pre, maxPrice: 100000 } : { ...pre }));
           setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
           setSelectedArr((pre) => [...pre, ['price', '전체']]);
         } else {
-          console.log('else');
-
-          const minPrice = price.find((i) => i.priceNum === item)?.min;
-          const maxPrice = price.find((i) => i.priceNum === item)?.max;
+          const minPrice = price.find((i: { priceNum: string; min: number; max: number }) => i.priceNum === item)?.min;
+          const maxPrice = price.find((i: { priceNum: string; min: number; max: number }) => i.priceNum === item)?.max;
           setSelectedFilters((pre: any) => (pre ? { ...pre, minPrice, maxPrice } : { ...pre }));
           setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
           setSelectedArr((pre) => [...pre, ['price', item]]);
@@ -103,35 +96,8 @@ const List = () => {
 
       //나이
       case 'age':
-        let ageNum = 0;
-        switch (item) {
-          case '10대':
-            ageNum = 10;
-            break;
-          case '20대':
-            ageNum = 20;
-
-            break;
-          case '30대':
-            ageNum = 30;
-
-            break;
-          case '40대':
-            ageNum = 40;
-
-            break;
-          case '50대':
-            ageNum = 50;
-
-            break;
-          case '60대':
-            ageNum = 60;
-
-            break;
-
-          default:
-            break;
-        }
+        //숫자로 변환
+        let ageNum = handleAgeNum(item);
 
         if (item === '전체') {
           //전체 클릭 - 모든 값 초기화
@@ -143,76 +109,18 @@ const List = () => {
           if (selectedFilters.age.find((i: string) => Number(i) === ageNum) === undefined) {
             setSelectedFilters((pre: any) => (pre ? { ...pre, age: [...pre.age, ageNum] } : null));
             setSelectedArr((pre: any) => [...pre, ['age', item]]);
-            //값이 없을때 - 추가
+            //값이 있을때 - 삭제
           } else {
             setSelectedFilters((pre: any) => (pre ? { ...pre, age: pre.age.filter((i: any) => i !== ageNum) } : null));
             setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
           }
         }
-
         break;
 
       default:
         break;
     }
   };
-
-  //튜터 api 호출
-  const PAGE_SIZE = 6;
-
-  const api = async (page = 1) => {
-    const { gender, level, minPrice, maxPrice, location1, location2, age, classStyle } = selectedFilters;
-
-    let query = supabase.from('profiles').select('*');
-
-    if (gender.length !== 0) {
-      query = query.in('gender', [...gender]);
-    }
-    if (level.length !== 0) {
-      query = query.in('level', [...level]);
-    }
-
-    if (age.length !== 0) {
-      const minAge = age.sort()[0];
-      const maxAge = age.sort()[age.length - 1];
-      query = query.gte('age', minAge).lte('age', maxAge);
-    }
-
-    // if (minPrice >= 0 && maxPrice) {
-    //   if (classStyle === 'onLine') {
-    //     query = query.gte('tuition_fee_online', minPrice).lte('tuition_fee_online', maxPrice);
-    //   } else {
-    //     query = query.gte('tuition_fee_offline', minPrice).lte('tuition_fee_offline', maxPrice);
-    //   }
-    // }
-
-    if (location1) {
-      query = query.match({ location1_sido: location1, location1_gungu: location2, location2_sido: location1, location2_gungu: location2 });
-    }
-    const { data, error } = await query.range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
-
-    console.log(data, 'ㅁㄴㅇㄴ');
-
-    return data;
-  };
-
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(['tutor'], ({ pageParam }) => api(pageParam), {
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage?.length === PAGE_SIZE) {
-        return allPages.length + 1; // 다음 페이지 번호 반환
-      }
-      return undefined;
-    },
-    enabled: false, // 초기에는 쿼리 비활성화
-  });
-
-  const reloadQuery = () => {
-    refetch();
-  };
-  useEffect(() => {
-    reloadQuery();
-    // 어떤 변수든 변경될 때마다 api 함수 호출
-  }, [selectedFilters, searchText]);
 
   const handleDropAndSi = (item: string, version: string) => {
     //시, 군구 setState
@@ -227,7 +135,7 @@ const List = () => {
       //전체면 필터객체에서 삭제
       setSelectedFilters((pre: any) => {
         if (pre) {
-          return { ...pre, location1: '', location2: [] };
+          return { ...pre, location1: '', location2: '' };
         }
       });
       setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location1'));
@@ -236,7 +144,7 @@ const List = () => {
       //지역명이 있으면 업데이트
       setSelectedFilters((pre: any) => {
         if (pre) {
-          return { ...pre, location1: checkedcity, location2: [] };
+          return { ...pre, location1: checkedcity, location2: '' };
         }
       });
 
@@ -244,7 +152,7 @@ const List = () => {
       setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
     }
 
-    if (checkedGunGu.includes('전체')) {
+    if (checkedGunGu === '전체') {
       //전체면 필터객체에서 삭제
       setSelectedFilters((pre: any) => {
         if (pre) {
@@ -269,12 +177,79 @@ const List = () => {
     closeModal();
   };
 
+  //튜터 api 호출
+  const PAGE_SIZE = 6;
+
+  const api = async (page = 1) => {
+    const { gender, level, minPrice, maxPrice, location1, location2, age, classStyle } = selectedFilters;
+
+    let query = supabase.from('tutor_info').select('*');
+
+    // if (gender.length !== 0) {
+    //   query = query.in('gender', [...gender]);
+    // }
+    // if (level.length !== 0) {
+    //   query = query.in('level', [...level]);
+    // }
+
+    // if (age.length !== 0) {
+    //   const minAge = age.sort()[0];
+    //   const maxAge = age.sort()[age.length - 1];
+    //   query = query.gte('age', minAge).lte('age', maxAge);
+    // }
+
+    // if (searchText) {
+    //   query = query.textSearch('username', `${searchText}`);
+    // }
+    // if (minPrice >= 0 && maxPrice) {
+    //   if (classStyle === 'onLine') {
+    //     query = query.gte('tuition_fee_online', 0).lte('tuition_fee_online', 100000);
+    //   } else {
+    //     query = query.gte('tuition_fee_offline', minPrice).lte('tuition_fee_offline', maxPrice);
+    //   }
+    // }
+
+    if (location1) {
+      query = query.or(`location1_sido.eq.${location1},location2_sido.eq.${location1}`);
+
+      console.log(location2, 'location2');
+      if (location2 !== '') {
+        query = query.or(`location2_gugun.eq.${location2},location2_gugun.eq.${location2}`);
+      }
+    }
+
+    const { data, error } = await query.range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
+    console.log(error, 'tutor-list-api-error');
+    console.log(data, 'tutor-list-api');
+
+    return data;
+  };
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(['tutor'], ({ pageParam }) => api(pageParam), {
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage?.length === PAGE_SIZE) {
+        return allPages.length + 1; // 다음 페이지 번호 반환
+      }
+      return undefined;
+    },
+    enabled: false, // 초기에는 쿼리 비활성화
+  });
+
+  // 어떤 변수든 변경될 때마다 api 함수 호출
+  const reloadQuery = () => {
+    refetch();
+  };
+  // 어떤 변수든 변경될 때마다 api 함수 호출
+
+  useEffect(() => {
+    reloadQuery();
+  }, [selectedFilters, searchText]);
+
   //무한크스롤
   const observer = useRef<IntersectionObserver | null>(null);
 
   const LastelementRef = useCallback(
     (node: HTMLDivElement) => {
-      console.log('useCallback', node, isFetchingNextPage, hasNextPage);
       if (isFetchingNextPage) {
         return null;
       }
@@ -282,7 +257,6 @@ const List = () => {
       observer.current = new IntersectionObserver((entries, observer) => {
         if (entries[0].isIntersecting) {
           fetchNextPage();
-          console.log('visible');
         }
       });
 
@@ -360,7 +334,6 @@ const Container = styled.div`
 const TutorList = styled.div`
   margin-top: 50px;
   width: 100%;
-  /* padding: 0 20px; */
   padding: 0 10px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -371,7 +344,6 @@ const TutorList = styled.div`
   }
 
   & > div {
-    /* background-color: beige; */
     word-break: break-all;
   }
 
