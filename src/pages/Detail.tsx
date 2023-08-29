@@ -44,24 +44,6 @@ const Detail = () => {
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  // StarRate
-
-  const starRating = (currentRate: number) => {
-    const MAX_STAR_RATE = 5;
-    let starCount = Math.floor(currentRate);
-
-    //소수점 찾기
-    let halfStarRate = currentRate - starCount;
-
-    if (currentRate - halfStarRate >= 0.5) {
-      return <img src={starHalf} alt={`Half Star`} />;
-    } else {
-      return <img src={starEmpty} alt={`Empty Star`} />;
-    }
-  };
-
-  //
-
   const queryClient = useQueryClient();
 
   const mutationReviewDelete = useMutation(reviewDelete, {
