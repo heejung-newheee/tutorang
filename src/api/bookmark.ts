@@ -58,7 +58,6 @@ export const useDeleteBookMarkMutation = () => {
   const mutation = useMutation(deleteBookMark, {
     onMutate: async (newBookMark) => {
       await queryClient.cancelQueries(['matchBookMark']);
-
       const previousBookMark = queryClient.getQueryData(['matchBookMark']);
       queryClient.setQueriesData(['matchBookMark'], (old: any) => [...old, newBookMark]);
 

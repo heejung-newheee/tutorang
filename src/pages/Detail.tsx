@@ -24,11 +24,11 @@ const Detail = () => {
   const { id } = useParams();
 
   // newReview에 사용할 targeId 업데이트
-  useEffect(() => {
-    if (id) {
-      dispatch(setTargetId(id));
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   if (id) {
+  //     dispatch(setTargetId(id));
+  //   }
+  // }, [id]);
   const navigate = useNavigate();
 
   const { data: profiles, isLoading: profilesLoading, isError: profilesError } = useQuery(['profiles'], fetchData);
@@ -43,24 +43,6 @@ const Detail = () => {
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
   const loginUser = useSelector((state: RootState) => state.user.user);
-
-  // StarRate
-
-  const starRating = (currentRate: number) => {
-    const MAX_STAR_RATE = 5;
-    let starCount = Math.floor(currentRate);
-
-    //소수점 찾기
-    let halfStarRate = currentRate - starCount;
-
-    if (currentRate - halfStarRate >= 0.5) {
-      return <img src={starHalf} alt={`Half Star`} />;
-    } else {
-      return <img src={starEmpty} alt={`Empty Star`} />;
-    }
-  };
-
-  //
 
   const queryClient = useQueryClient();
 
@@ -80,23 +62,21 @@ const Detail = () => {
 
   // 모달
   const handleOpen = () => {
-    dispatch(openModal('report'));
+    dispatch(openModal({ type: 'report' }));
   };
 
   const handleOpenReviewCreateForm = () => {
-    dispatch(openModal('reviewCreate'));
+    dispatch(openModal({ type: 'reviewCreate', targetId: id }));
   };
 
   const handleOpenReviewUpdateForm = () => {
-    dispatch(openModal('reviewUpdate'));
+    dispatch(openModal({ type: 'reviewUpdate', targetId: id }));
   };
 
   // 리뷰 Delete
   const handleReviewDelete = (id: number) => {
     mutationReviewDelete.mutate(id);
   };
-  // const { Modal, isOpen, openModal, closeModal } = useModal();
-  // redux type
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
 

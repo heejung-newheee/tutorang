@@ -6,7 +6,7 @@ import ModalPortal from './ModalPortal';
 import EditProfileForm from '../Form/profileForm/EditProfileForm';
 
 const GlobalModal = () => {
-  const { type, isOpen, targetId } = useSelector((state: RootState) => state.modal);
+  const { type, isOpen } = useSelector((state: RootState) => state.modal);
   if (!isOpen) return;
 
   const MODAL_TYPES = {
@@ -33,11 +33,11 @@ const GlobalModal = () => {
     },
     {
       type: MODAL_TYPES.reviewCreate,
-      component: targetId !== undefined ? <ReviewForm reviewed_id={targetId} /> : null,
+      component: <ReviewForm />,
     },
     {
       type: MODAL_TYPES.reviewUpdate,
-      component: targetId !== undefined ? <ReviewUpdateForm reviewed_id={targetId} /> : null,
+      component: <ReviewUpdateForm />,
     },
     {
       type: MODAL_TYPES.editProfiles,
