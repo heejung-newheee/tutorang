@@ -13,12 +13,15 @@ const BookMark = () => {
 
   const { id } = useParams();
   if (!id) return;
+
   const loginUser = useSelector((state: RootState) => state.user.user);
 
   const { data: bookMarkList, isError, error } = useQuery(['matchBookMark'], () => matchBookMark(id));
   const [isBookMark, setIsBookMark] = useState(false);
 
   const findBookMark = bookMarkList?.find((bookmark) => bookmark.user_id === loginUser?.id);
+
+  console.log(findBookMark);
 
   const bookMarkCreateMutation = useCreateBookMarkMutation();
   const bookMarkDeleteMutation = useDeleteBookMarkMutation();
@@ -38,7 +41,7 @@ const BookMark = () => {
     }
 
     const newBookMark: BookMarkType = {
-      tutor_id: id || '',
+      liked_id: id || '',
       user_id: loginUser?.id || '',
     };
 
