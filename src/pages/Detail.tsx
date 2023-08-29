@@ -24,11 +24,11 @@ const Detail = () => {
   const { id } = useParams();
 
   // newReview에 사용할 targeId 업데이트
-  useEffect(() => {
-    if (id) {
-      dispatch(setTargetId(id));
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   if (id) {
+  //     dispatch(setTargetId(id));
+  //   }
+  // }, [id]);
   const navigate = useNavigate();
 
   const { data: profiles, isLoading: profilesLoading, isError: profilesError } = useQuery(['profiles'], fetchData);
@@ -80,15 +80,15 @@ const Detail = () => {
 
   // 모달
   const handleOpen = () => {
-    dispatch(openModal('report'));
+    dispatch(openModal({ type: 'report' }));
   };
 
   const handleOpenReviewCreateForm = () => {
-    dispatch(openModal('reviewCreate'));
+    dispatch(openModal({ type: 'reviewCreate', targetId: id }));
   };
 
   const handleOpenReviewUpdateForm = () => {
-    dispatch(openModal('reviewUpdate'));
+    dispatch(openModal({ type: 'reviewUpdate', targetId: id }));
   };
 
   // 리뷰 Delete
