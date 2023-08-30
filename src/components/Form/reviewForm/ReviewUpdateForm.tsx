@@ -70,7 +70,7 @@ const ReviewUpdateForm = () => {
 
     if (!loginUser) return;
     if (!tutorId) {
-      console.log('수정하실 tutorId ID를 찾을 수 없습니다.');
+      console.log('등록할 튜터의 Id가 없습니다.');
       return;
     }
 

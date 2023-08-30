@@ -19,6 +19,11 @@ export const getReceivedWriteReviewCount = async (id: string) => {
   if (error) throw error;
   return count;
 };
+// 해당 게시물(튜터) 리뷰 데이터만 조회
+export const matchReview = async (tutorId: string) => {
+  const { data } = await supabase.from('review').select().match({ reviewed_id: tutorId });
+  return data;
+};
 
 /** review create */
 export const reviewRequest = async (newReview: reviews) => {

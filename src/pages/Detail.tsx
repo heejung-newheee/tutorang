@@ -7,7 +7,7 @@ import { fetchLike } from '../api/like';
 import { fetchTutorAll } from '../api/tutor';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBookmark } from '../api/bookmark';
-import { BookMark } from '../components';
+import { BookMark, Review } from '../components';
 import { openModal, setReview, setTargetId } from '../redux/modules';
 import { reviewDelete, reviewUpdate } from '../api/review';
 import { useEffect, useState } from 'react';
@@ -16,6 +16,7 @@ import { Session } from '@supabase/supabase-js';
 import { getGroupChannelUrl, sendRequestTutoringMessage, sendResponseTutoringMessage } from '../sendbird';
 import { RootState } from '../redux/config/configStore';
 import { starFull, starHalf, starEmpty } from '../assets';
+import TutorInfoDeatail from '../components/tutorInfoDetail/TutorInfoDetail';
 
 const Detail = () => {
   const dispatch = useDispatch();
@@ -100,12 +101,13 @@ const Detail = () => {
   return (
     <>
       {/* 튜터데이터 */}
+      <TutorInfoDeatail id={id} />
+      ----
       <section>
         {filteredUser?.map((user) => {
           return (
             <div key={user.id}>
               <div>
-                <img src={`${user.avatar_url}`} alt="프로필 이미지" />
                 <span>{user.username}</span>
                 {session && <button onClick={() => handleStartChat(user.id)}>대화시작하기</button>}
               </div>
@@ -150,7 +152,6 @@ const Detail = () => {
 
         {/* <div>튜터의 스킬/장점/성격</div> */}
       </section>
-
       {/* 튜터 overview */}
       <section>
         <ul>
@@ -162,45 +163,8 @@ const Detail = () => {
           {/* <li>매칭수 : </li> */}
         </ul>
       </section>
-
       {/* 튜터 리뷰 */}
-      <section>
-        <h4>
-          리뷰 <span>{filteredReview?.length}</span>
-        </h4>
-        <button onClick={handleOpenReviewCreateForm}>리뷰 남기기</button>
-
-        <ul>
-          {filteredReview?.map((review) => {
-            return (
-              <li key={review.id}>
-                <p>{review.title}</p>
-                <p>{review.content}</p>
-
-                {loginUser?.id === review.user_id ? (
-                  <div>
-                    <button
-                      onClick={() => {
-                        handleOpenReviewUpdateForm();
-                        dispatch(setReview(review));
-                      }}
-                    >
-                      수정
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleReviewDelete(review.id);
-                      }}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                ) : null}
-              </li>
-            );
-          })}
-        </ul>
-      </section>
+      <Review id={id} />
     </>
   );
 };

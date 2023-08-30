@@ -68,7 +68,7 @@ const ReviewForm = () => {
 
     if (!loginUser) return;
     if (!tutorId) {
-      console.log('지정할 tutor의 Id가 없습니다.');
+      console.log('등록할 튜터의 Id가 없습니다.');
       return;
     }
 
