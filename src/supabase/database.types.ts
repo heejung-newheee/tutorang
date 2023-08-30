@@ -74,28 +74,28 @@ export interface Database {
         Row: {
           content: string | null;
           created_at: string;
-          data: string | null;
+          data: Json | null;
           message_id: string;
-          message_type: string;
           room_id: string;
+          type: string;
           user_id: string;
         };
         Insert: {
           content?: string | null;
           created_at?: string;
-          data?: string | null;
+          data?: Json | null;
           message_id?: string;
-          message_type?: string;
           room_id: string;
+          type?: string;
           user_id?: string;
         };
         Update: {
           content?: string | null;
           created_at?: string;
-          data?: string | null;
+          data?: Json | null;
           message_id?: string;
-          message_type?: string;
           room_id?: string;
+          type?: string;
           user_id?: string;
         };
         Relationships: [
@@ -103,6 +103,12 @@ export interface Database {
             foreignKeyName: 'chat_messages_room_id_fkey';
             columns: ['room_id'];
             referencedRelation: 'chat_rooms';
+            referencedColumns: ['room_id'];
+          },
+          {
+            foreignKeyName: 'chat_messages_room_id_fkey';
+            columns: ['room_id'];
+            referencedRelation: 'chat_room_view';
             referencedColumns: ['room_id'];
           },
           {
@@ -152,6 +158,12 @@ export interface Database {
             foreignKeyName: 'chat_room_participants_room_id_fkey';
             columns: ['room_id'];
             referencedRelation: 'chat_rooms';
+            referencedColumns: ['room_id'];
+          },
+          {
+            foreignKeyName: 'chat_room_participants_room_id_fkey';
+            columns: ['room_id'];
+            referencedRelation: 'chat_room_view';
             referencedColumns: ['room_id'];
           },
           {
@@ -517,19 +529,14 @@ export interface Database {
       tutor_info: {
         Row: {
           certification_image: string | null;
-          certification_pdf: string | null;
           class_info: string | null;
-          class_level: string | null;
+          class_level: string[] | null;
           created_at: string;
+          enrollmentStatus: string | null;
           id: number;
-          location1_gugun: string | null;
-          location1_sido: string | null;
-          location2_gugun: string | null;
-          location2_sido: string | null;
           major: string | null;
-          personality: string | null;
-          profile_image: string | null;
-          speaking_language: string | null;
+          personality: string[] | null;
+          speaking_language: string[] | null;
           tuition_fee_offline: number | null;
           tuition_fee_online: number | null;
           university: string | null;
@@ -538,19 +545,14 @@ export interface Database {
         };
         Insert: {
           certification_image?: string | null;
-          certification_pdf?: string | null;
           class_info?: string | null;
-          class_level?: string | null;
+          class_level?: string[] | null;
           created_at?: string;
+          enrollmentStatus?: string | null;
           id?: number;
-          location1_gugun?: string | null;
-          location1_sido?: string | null;
-          location2_gugun?: string | null;
-          location2_sido?: string | null;
           major?: string | null;
-          personality?: string | null;
-          profile_image?: string | null;
-          speaking_language?: string | null;
+          personality?: string[] | null;
+          speaking_language?: string[] | null;
           tuition_fee_offline?: number | null;
           tuition_fee_online?: number | null;
           university?: string | null;
@@ -559,19 +561,14 @@ export interface Database {
         };
         Update: {
           certification_image?: string | null;
-          certification_pdf?: string | null;
           class_info?: string | null;
-          class_level?: string | null;
+          class_level?: string[] | null;
           created_at?: string;
+          enrollmentStatus?: string | null;
           id?: number;
-          location1_gugun?: string | null;
-          location1_sido?: string | null;
-          location2_gugun?: string | null;
-          location2_sido?: string | null;
           major?: string | null;
-          personality?: string | null;
-          profile_image?: string | null;
-          speaking_language?: string | null;
+          personality?: string[] | null;
+          speaking_language?: string[] | null;
           tuition_fee_offline?: number | null;
           tuition_fee_online?: number | null;
           university?: string | null;
@@ -607,6 +604,30 @@ export interface Database {
       };
     };
     Views: {
+      chat_room_view: {
+        Row: {
+          created_at: string | null;
+          last_message: string | null;
+          name: string | null;
+          participants: string[] | null;
+          room_id: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          last_message?: never;
+          name?: string | null;
+          participants?: never;
+          room_id?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          last_message?: never;
+          name?: string | null;
+          participants?: never;
+          room_id?: string | null;
+        };
+        Relationships: [];
+      };
       matching_tutor_data: {
         Row: {
           created_at: string | null;
@@ -681,9 +702,11 @@ export interface Database {
           class_info: string | null;
           created_at: string | null;
           location1_gugun: string | null;
+          location1_sido: string | null;
           location2_gugun: string | null;
+          location2_sido: string | null;
           major: string | null;
-          personality: string | null;
+          personality: string[] | null;
           tutor_id: string | null;
           tutor_img: string | null;
           tutor_info_id: number | null;
@@ -701,6 +724,17 @@ export interface Database {
       };
     };
     Functions: {
+      get_two_person_chat_room: {
+        Args: {
+          user1_id: string;
+          user2_id: string;
+        };
+        Returns: {
+          room_id: string;
+          name: string;
+          created_at: string;
+        }[];
+      };
       is_room_participant: {
         Args: {
           room_id: string;
@@ -727,3 +761,10 @@ export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'c
 export type BookMarkType = Pick<Tables<'bookmark'>, 'tutor_id' | 'user_id'>;
 export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
 export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
+export type RoomType = Tables<'chat_rooms'> & {
+  chat_room_participants: (Tables<'chat_room_participants'> & { profiles: Tables<'profiles'> })[];
+};
+
+export type RoomWithLastMessageType = RoomType & {
+  last_message: Tables<'chat_messages'>[];
+};

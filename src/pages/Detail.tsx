@@ -13,8 +13,8 @@ import { reviewDelete, reviewUpdate } from '../api/review';
 import { useEffect, useState } from 'react';
 import supabase from '../supabase';
 import { Session } from '@supabase/supabase-js';
-import { getGroupChannelUrl, sendRequestTutoringMessage, sendResponseTutoringMessage } from '../sendbird';
 import { RootState } from '../redux/config/configStore';
+import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../api/chat';
 
 const Detail = () => {
   const dispatch = useDispatch();
@@ -55,9 +55,22 @@ const Detail = () => {
 
   const handleStartChat = async (targetId: string) => {
     if (!(targetId && session)) return;
-    const url = await getGroupChannelUrl(session.user.id, targetId);
-    if (url) {
-      navigate(`/chat?channel_url=${url}`);
+
+    try {
+      const chatRooms = await getChatRoomWithTutor(targetId);
+      console.log('chatRooms', chatRooms);
+      if (chatRooms && chatRooms.length > 0) {
+        navigate(`/chat2?room_id=${chatRooms[0].room_id}`);
+        return;
+      }
+
+      const newRoom = await createChatRoom();
+
+      await inviteChatRoom(newRoom.room_id, targetId);
+
+      navigate(`/chat2?room_id=${newRoom.room_id}`);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -132,7 +145,7 @@ const Detail = () => {
           onClick={async () => {
             try {
               await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
-              await sendRequestTutoringMessage(loginUser!.id, filteredUser![0].id);
+              // await sendRequestTutoringMessage(loginUser!.id, filteredUser![0].id);
               //await sendResponseTutoringMessage(loginUser!.id, filteredUser![0].id, 'reject');
               alert('신청완료');
             } catch (error) {
