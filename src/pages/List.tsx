@@ -225,7 +225,7 @@ const List = () => {
     return data;
   };
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(['tutor'], ({ pageParam }) => api(pageParam), {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(['tutor-list'], ({ pageParam }) => api(pageParam), {
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage?.length === PAGE_SIZE) {
         return allPages.length + 1; // 다음 페이지 번호 반환
