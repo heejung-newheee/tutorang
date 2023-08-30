@@ -54,19 +54,20 @@ const SLabel = styled.label<{ $labelType: string; $isChecked: boolean; $ableMore
   box-sizing: border-box;
   border: ${({ $isChecked }) => {
     if ($isChecked === true) {
-      return '2.5px solid #FE902F';
+      // return '2.5px solid #FE902F';
+      return '1px solid #FE902F';
     } else {
       return '1px solid #696969';
     }
   }};
-  /* color: ${({ $isChecked }) => {
+  color: ${({ $isChecked }) => {
     if ($isChecked === true) {
-      return '#fff';
+      return '#FE902F';
     } else {
-      return '#000';
+      return '#696969';
     }
-  }}; */
-  color: #696969;
+  }};
+
   cursor: pointer;
   border-radius: 3px;
 
