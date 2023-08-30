@@ -2,18 +2,16 @@ import React, { ChangeEvent, useState } from 'react';
 import { Container, ContentWrapper, Inner } from '../reviewForm/ReviewForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../../../redux/modules';
-import { Tables } from '../../../supabase/database.types';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
-import { useInput } from '../../../hooks';
 import * as S from './ProfileForm.styled';
-import { FaAngleDown } from 'react-icons/fa';
+import { close } from '../../../assets';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
 
-  console.log(user);
+  // console.log(user);
   const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
 
   const [checkedGender, setCheckedGender] = useState<string>('');
@@ -23,9 +21,9 @@ const EditProfileForm = () => {
   // const [preview, setPreview] = useState<string | null>(null);
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   //   const [isLocationOpen, setIsLocationOpen] = useState({ sido1: false, gugun1: false, sido2: false, gugun2: false });
-  console.log(checkedGender);
-  console.log(password);
-  console.log(confirmPassword);
+  // console.log(checkedGender);
+  // console.log(password);
+  // console.log(confirmPassword);
 
   const changeNewpassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -82,35 +80,76 @@ const EditProfileForm = () => {
     <Container>
       <Inner>
         <ContentWrapper>
-          <h3>내 정보 수정</h3>
-          <button onClick={handleClose}>닫기</button>
+          <S.EditFormTop>
+            <h3>내 정보 수정</h3>
+            <S.CloseBtn onClick={handleClose}>
+              <img src={close} alt="" />{' '}
+            </S.CloseBtn>
+          </S.EditFormTop>
 
           <form onSubmit={updateProfilesInfo}>
-            <img src={user?.avatar_url || undefined} alt="" style={{ width: '60px', height: '60px' }} />
-            <input type="file" id="fileInput" accept="image/*" onChange={onFileChange} />
-            <p>이메일</p>
-            <div>{user?.email}</div>
-            <p>비밀번호</p>
-            <input type="text" name="password" value={password} onChange={changeNewpassword} />
-            <p></p>
-            {password.length > 6 && PWD_REGEX.test(password) ? <p>사용가능한 비밀번호 입니다</p> : password !== '' ? <p>6자 이상 영문 대소문자, 숫자, 특수문자를 포함해주세요</p> : <p></p>}
-            <input type="text" name="confirmPassword" value={confirmPassword} onChange={changeConfirmPassword} />
-            {password === confirmPassword ? <p></p> : confirmPassword !== '' ? <p>비밀번호가 다릅니다</p> : <p></p>}
-            <p>이름</p>
-            <div>{user?.username}</div>
-            <p>생년월일</p>
-            <div>{user?.birth}</div>
-            <p>성별</p>
+            <S.ProfileImg>
+              <img src={user?.avatar_url || undefined} alt="" />
+            </S.ProfileImg>
+            <S.EditInput type="file" id="fileInput" accept="image/*" onChange={onFileChange} />
+            <S.EditFormFlex>
+              <p>이름</p>
+              <div>{user?.username}</div>
+            </S.EditFormFlex>
+            <S.EditFormFlex>
+              <p>이메일</p>
+              <div>{user?.email}</div>
+            </S.EditFormFlex>
             <div>
-              <label htmlFor="female">
-                여성
-                <input type="radio" id="female" name="female" value="여성" checked={checkedGender === '여성'} onChange={onChangeHandler} />
-              </label>
-              <label htmlFor="male">
-                남성
-                <input type="radio" id="male" name="male" value="남성" checked={checkedGender === '남성'} onChange={onChangeHandler} />
-              </label>
+              <p>비밀번호</p>
+              <S.EditInput type="password" name="password" value={password} onChange={changeNewpassword} />
+              <S.ConfirmPass>
+                {password.length > 6 && PWD_REGEX.test(password) ? (
+                  <p>사용가능한 비밀번호 입니다</p>
+                ) : password !== '' ? (
+                  <p>6자 이상 영문 대소문자, 숫자, 특수문자를 포함해주세요</p>
+                ) : (
+                  <p>
+                    <br />
+                  </p>
+                )}
+              </S.ConfirmPass>
             </div>
+            <div>
+              <p>비밀번호 확인</p>
+              <S.EditInput type="password" name="confirmPassword" value={confirmPassword} onChange={changeConfirmPassword} />
+              <S.ConfirmPass>
+                {password === confirmPassword ? (
+                  <p>
+                    <br />
+                  </p>
+                ) : confirmPassword !== '' ? (
+                  <p>비밀번호가 다릅니다</p>
+                ) : (
+                  <p>
+                    <br />
+                  </p>
+                )}
+              </S.ConfirmPass>
+            </div>
+
+            <S.EditFormFlex>
+              <p>생년월일</p>
+              <div>{user?.birth}</div>
+            </S.EditFormFlex>
+            <S.EditFormFlex>
+              <p>성별</p>
+              <div>
+                <label htmlFor="female">
+                  여성
+                  <input type="radio" id="female" name="female" value="여성" checked={checkedGender === '여성'} onChange={onChangeHandler} />
+                </label>
+                <label htmlFor="male">
+                  남성
+                  <input type="radio" id="male" name="male" value="남성" checked={checkedGender === '남성'} onChange={onChangeHandler} />
+                </label>
+              </div>
+            </S.EditFormFlex>
             <p>지역</p>
             {/* <span>선택1</span>
             <S.SDropdownField>

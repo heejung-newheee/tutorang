@@ -44,3 +44,47 @@ export const SOption = styled.li<{ $selectedOption: boolean }>`
     else return '#fff';
   }};
 `;
+export const EditFormTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+export const CloseBtn = styled.button`
+  height: 22px;
+  img {
+    height: 100%;
+  }
+`;
+export const ProfileImg = styled.div`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+`;
+export const EditInput = styled.input`
+  width: 100%;
+  height: 40px;
+  border: 1px solid #696969;
+  color: #000;
+  vertical-align: middle;
+  border-radius: 3px;
+  padding: 5px;
+  margin: 5px 0;
+  &:focus {
+    outline: none;
+  }
+`;
+export const EditFormFlex = styled.div`
+  display: flex;
+  p {
+    width: 30%;
+  }
+`;
+export const ConfirmPass = styled.div`
+  color: #9d9d9d;
+  font-size: 0.8rem;
+`;
