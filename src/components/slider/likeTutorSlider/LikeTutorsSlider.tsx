@@ -2,13 +2,13 @@ import Flicking, { ViewportSlot } from '@egjs/react-flicking';
 import { Arrow } from '@egjs/flicking-plugins';
 import '@egjs/react-flicking/dist/flicking.css';
 import '@egjs/flicking-plugins/dist/arrow.css';
-import { Tables, Views } from '../../supabase/database.types';
+import { Tables, Views } from '../../../supabase/database.types';
 import * as S from './LikeTutors.styled';
-import { fetchLike } from '../../api/like';
+import { fetchLike } from '../../../api/like';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/config/configStore';
+import { RootState } from '../../../redux/config/configStore';
 import { useQuery } from '@tanstack/react-query';
-import ProfilesCard from '../profilesCard/ProfilesCard';
+import ProfilesCard from '../../profilesCard/ProfilesCard';
 
 const LikeTutorsSlider = () => {
   const _plugins = [new Arrow()];

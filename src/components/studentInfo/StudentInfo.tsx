@@ -2,16 +2,11 @@ import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 import { Tables, Views } from '../../supabase/database.types';
 import { RootState } from '../../redux/config/configStore';
-
 import { getBoard } from '../../api/board';
-import * as S from './StudentInfo.styled';
-import supabase from '../../supabase';
-import { matchingCancel, matchingTutorData } from '../../api/match';
-import { Container, InfoItem, InfoList, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
-import CompleteClass from '../completeClassSlider/CompleteClass';
-import LikeTutorsSlider from '../likeTutorSlider/LikeTutorsSlider';
+import { Container, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
+import CompleteClass from '../slider/completeClassSlider/CompleteClass';
+import LikeTutorsSlider from '../slider/likeTutorSlider/LikeTutorsSlider';
 import MatchingTutor from '../matchingTab/MatchingTutor';
-import ProfilesCard from '../profilesCard/ProfilesCard';
 
 interface pageProps {
   match: Views<'matching_tutor_data'>[];

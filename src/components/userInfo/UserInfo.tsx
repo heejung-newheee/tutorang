@@ -3,7 +3,7 @@ import TutorInfo from '../tutorInfo/TutorInfo';
 import StudentInfo from '../studentInfo/StudentInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
-import { getMatchData, matchingTutorData } from '../../api/match';
+import { matchingTutorData } from '../../api/match';
 import { useQuery } from '@tanstack/react-query';
 import { icon_edit, icon_location } from '../../assets';
 import { openModal } from '../../redux/modules';
@@ -14,7 +14,7 @@ const UserInfo = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const matchData = useSelector((state: RootState) => state.match.match);
   const { data, isLoading, isError } = useQuery(['matching_tutor_data'], matchingTutorData);
-  console.log('UserInfo 로그인사용자', user);
+  // console.log('UserInfo 로그인사용자', user);
   // console.log('matchData:DB mtching_tutor_data', data);
   // console.log(matchData);
 
@@ -31,9 +31,9 @@ const UserInfo = () => {
     dispatch(openModal({ type: 'editProfiles' }));
   };
   const studentMatch = matchData?.filter((item) => item.user_id === user.id);
-  console.log(studentMatch);
+  // console.log(studentMatch);
   const tutorMatch = matchData?.filter((item) => item.tutor_id === user.id);
-  console.log(tutorMatch);
+  // console.log(tutorMatch);
 
   return (
     <>
