@@ -6,6 +6,7 @@ import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import { AuthMain, Detail, List, Main, Mypage } from '../pages';
 import Chat from '../pages/Chat';
 import Test from '../pages/Test';
+import Chat2 from '../pages/Chat2';
 
 const Router = () => {
   return (
@@ -24,6 +25,7 @@ const Router = () => {
             <Route path="/test" element={<Test />} />
             <Route path="/tutor-registration" element={<RegistTutorForm />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/chat2" element={<Chat2 />} />
           </Route>
         </Route>
       </Routes>
