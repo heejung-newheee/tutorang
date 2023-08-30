@@ -71,7 +71,7 @@ const SDropdownWrapper = styled.div`
 `;
 
 const SDropDownHeader = styled.div`
-  padding: 12px;
+  padding: 8px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -79,7 +79,7 @@ const SDropDownHeader = styled.div`
 `;
 const SpanDefaultText = styled.span<{ $selectedOption: number }>`
   width: 100%;
-  color: ${({ $selectedOption }) => ($selectedOption === 0 ? '#cdcdcd;' : '#000')};
+  color: ${({ $selectedOption }) => ($selectedOption === 0 ? '#aeaeae;' : '#000')};
 `;
 const SOptionContainer = styled.div<{ $tuitionType: string }>`
   background-color: #fff;
@@ -101,7 +101,8 @@ const Select = styled.ul``;
 // const SOption = styled.li<{ $selectedOption: boolean }>`
 const SOption = styled.li<{ $optionValue: number; $selectedOption: number }>`
   box-sizing: border-box;
-  padding: 12px;
+  height: 40px;
+  padding: 8px;
   cursor: pointer;
   background-color: ${({ $optionValue, $selectedOption }) => {
     if ($optionValue === $selectedOption) {

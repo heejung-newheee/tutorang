@@ -1,77 +1,42 @@
 // [ ] 현재 로그인한 사용자의 uid를 session에서 불러오고 있는데 , redux로 한번에 관리하는 거 연결하고 나면 없애야함.
 // [ ] 등록할 때 session?거기에 핞
 import { useEffect, useState } from 'react';
-import { BsFileEarmarkImage, BsFileEarmarkPdf, BsFileEarmarkPerson, BsFillRecordFill } from 'react-icons/bs';
+import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
+import { v4 } from 'uuid';
+import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
 import Checkbox from './Checkbox';
+import ImgFileUpload from './ImgFileUpload';
+import SelectEnrollmentStatus from './SelectEnrollmentStatus';
 import SelectTuitionFee from './SelectTuitionFee';
 import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from './constant';
 import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from './translation';
 
-// null 안넣고 싶은데 안넣으면 빨간줄이 안사라져서 넣어본다...
-type locationType = {
-  location1_sido: string | null;
-  location1_gugun: string | null;
-  location2_sido: string | null;
-  location2_gugun: string | null;
-};
 const RegistTutorForm = () => {
-  const [isHovered, setIsHovered] = useState(false);
   const [tuitionFeeOnline, setTuitionFeeOnline] = useState(0);
   const [tuitionFeeOffline, setTuitionFeeOffline] = useState(0);
   const [checkPersonalityItems, setCheckPersonalityItems] = useState<string[]>([]);
   const [checkLanguageItems, setCheckLanguageItems] = useState<string[]>([]);
   const [checkClassLevelItems, setCheckClassLevelItems] = useState<string[]>([]);
   const [validationCheck, setValicationCheck] = useState(false);
-  const [location, setLocation] = useState<locationType>({
-    location1_sido: '',
-    location1_gugun: '',
-    location2_sido: '',
-    location2_gugun: '',
-  });
-  const [uid, setUid] = useState<string>('');
+  const [uid, setUid] = useState<string | null>('');
+  const [email, setEmail] = useState<string | null>('');
   const [classInfo, setClassInfo] = useState('');
   const [university, setUniversity] = useState('');
   const [major, setMajor] = useState('');
-  // const [myImgFile, setMyImgFile] = useState<File | null>(null);
-  // const [previewMyImg, setPreviewMyImg] = useState<string | ArrayBuffer | null>(null);
+  const [certificationImgFile, setCertificationImgFile] = useState<File | undefined>();
+  const [enrollmentStatus, setEnrollmentStatus] = useState('');
+  const user = useSelector((state: RootState) => state.user.user);
+  console.log('user', user);
 
-  // 현재 로그인한 튜터정보 불러오기
-  const findUserUid = async () => {
-    await supabase.auth.onAuthStateChange((event, session) => {
-      // console.log('event', event);
-      // console.log('session', session);
-      if (session) {
-        setUid(() => session.user.id);
-      }
-    });
-  };
   const onChangeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.name === 'university') setUniversity(event.target.value);
     if (event.target.name === 'major') setMajor(event.target.value);
   };
-  const getUserData = async (uid: string) => {
-    try {
-      const { data, error } = await supabase.from('profiles').select('*').eq('id', uid).single();
-      console.log('hey~', data);
-      if (error) throw error;
-      if (data) {
-        // const authData = data[0];
-        const storedLocation: locationType = { location1_sido: data.location1_sido, location1_gugun: data.location1_gugun, location2_sido: data.location2_sido, location2_gugun: data.location2_gugun };
 
-        setLocation(storedLocation);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        // 👉️ err is type Error here
-        console.log(error.message);
-
-        return;
-      }
-    }
-  };
   const handleCheckedItems = (checkBoxType: string, value: string, isChecked: boolean) => {
     if (checkBoxType === 'personality') {
       if (isChecked) {
@@ -114,6 +79,24 @@ const RegistTutorForm = () => {
     }
   };
 
+  const storeAndGetProfileImg = async () => {
+    console.log('이메일이 있단 말인가???', email);
+    const imgIdentity = v4();
+    // let pdfUrlList: string | undefined;
+    if (certificationImgFile && certificationImgFile !== undefined) {
+      const { error } = await supabase.storage.from('certification-img-file').upload(`${email}/${imgIdentity}`, certificationImgFile, {
+        cacheControl: '3600',
+        upsert: false,
+      });
+      if (error) {
+        console.error('upload error', error);
+      } else {
+        const { data } = await supabase.storage.from('certification-img-file').getPublicUrl(`${email}/${imgIdentity}`);
+        return data?.publicUrl; // 업로드된 파일들의 URL을 반환합니다. imgUrlList
+      }
+    } else return undefined;
+  };
+
   const selectTuitionFee = (option: number, tuitionType: string) => {
     if (tuitionType === 'online') {
       setTuitionFeeOnline(option);
@@ -122,108 +105,70 @@ const RegistTutorForm = () => {
       setTuitionFeeOffline(option);
     }
   };
-  const test = () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const imgUrlList = await storeAndGetProfileImg();
     const personality = personalityTranslation(checkPersonalityItems);
     const class_level = classLevelTranslation(checkClassLevelItems);
     const speaking_language = speakingLanguageTranslation(checkLanguageItems);
     const formData = {
+      user_id: uid,
       university,
       major,
-      certification_image: '사진',
-      certification_pdf: 'pdf파일 (사진 or 파일 둘중 하나는 필수)',
-      location1_sido: location?.location1_sido,
-      location1_gugun: location?.location1_gugun,
-      location2_sido: location?.location2_sido,
-      location2_gugun: location?.location2_gugun,
+      enrollmentStatus,
+      certification_image: imgUrlList,
       speaking_language,
       personality,
       class_level,
       class_info: classInfo,
       tuition_fee_online: tuitionFeeOnline,
       tuition_fee_offline: tuitionFeeOffline,
-      profile_image: '이미지url',
     };
-    console.log(formData);
+    // console.log('formData로 뭐가 들어오나요? =>', formData);
+    const { error } = await supabase.from('tutor_info').insert(formData);
+    if (error) console.log(error.message);
   };
 
-  // const handleReadytoUploadMyimgfile = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const selectedFile = e.target.files?.[0]; // Access the selected file
-  //   if (selectedFile) {
-  //     setMyImgFile(selectedFile); // Update the state with the selected file
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(selectedFile);
-  //     reader.onloadend = () => {
-  //       if (reader.result) {
-  //         setPreviewMyImg(reader.result);
-  //       }
-  //     };
-  //   }
-  // };
-  // const handleUploadMyimgfile = async (
-  //   e: React.MouseEvent<HTMLDivElement, MouseEvent>
-  // ) => {
-  //   e.preventDefault();
-  //   if (myImgFile) {
-  //     const { data, error } = await supabase.storage
-  //       .from('tutor-profile-img')
-  //       .upload(public/${myImgFile.name}, myImgFile, {
-  //         cacheControl: '3600',
-  //         upsert: false,
-  //       });
-  //     // setImgData(data);
-  //   }
-  // };
-  // const handleCancelMyimgfileUpload = () => {
-  //   setMyImgFile(null);
-  //   setPreviewMyImg(null);
-  // };
   useEffect(() => {
-    const isValidate = tuitionFeeOnline === 0 || tuitionFeeOffline === 0 || checkLanguageItems.length === 0 || checkClassLevelItems.length === 0 || classInfo.length === 0 ? true : false;
+    const isValidate =
+      tuitionFeeOnline === 0 || tuitionFeeOffline === 0 || checkLanguageItems.length === 0 || checkClassLevelItems.length === 0 || enrollmentStatus === '' || classInfo === '' || university === '' || major === '' || certificationImgFile === undefined
+        ? true
+        : false;
     setValicationCheck(() => isValidate);
-  }, [tuitionFeeOffline, tuitionFeeOnline, checkClassLevelItems, checkLanguageItems, checkPersonalityItems, classInfo]);
+  }, [enrollmentStatus, tuitionFeeOffline, tuitionFeeOnline, checkClassLevelItems, checkLanguageItems, checkPersonalityItems, classInfo, university, major, certificationImgFile]);
 
   useEffect(() => {
-    findUserUid();
-  }, []);
-
-  useEffect(() => {
-    if (uid) {
-      getUserData(uid);
+    if (user) {
+      setUid(user.id);
+      setEmail(user.email);
     }
-  }, [uid]);
+  }, [user]);
 
   return (
     <SContainer>
       <h1>RegistTutorForm</h1>
-      <SForm>
-        <SFormCertificateItem>
+      <SForm onSubmit={handleSubmit}>
+        <SFormItem>
           <div>
-            <label htmlFor="university">대학교</label>
-            <SInput type="text" id="university" name="university" value={university} onChange={onChangeInputHandler} />
+            <h3>학위/자격 증명</h3>
           </div>
-          <div>
-            <label htmlFor="">학과</label>
-            <SInput type="text" id="major" name="major" value={major} onChange={onChangeInputHandler}></SInput>
-          </div>
-        </SFormCertificateItem>
-        <SFormItem id="certification_Item">
-          <span>학생증, 증명가능서류 사진첨부</span>
-          <SCertifiFilesArea>
-            <SCertifiIcon>
-              <BsFileEarmarkImage className="certification_icon" />
-            </SCertifiIcon>
-            <SCertifiFilesContainer>
-              <li></li>
-            </SCertifiFilesContainer>
-          </SCertifiFilesArea>
-          <SCertifiFilesArea>
-            <SCertifiIcon>
-              <BsFileEarmarkPdf className="certification_icon" />
-            </SCertifiIcon>
-            <SCertifiFilesContainer>
-              <li></li>
-            </SCertifiFilesContainer>
-          </SCertifiFilesArea>
+          <SFormCertificateItems>
+            <SCertificateItem>
+              <label htmlFor="university">대학교</label>
+              <SItemSchool>
+                <SInput type="text" id="university" name="university" value={university} onChange={onChangeInputHandler} />
+                <SelectEnrollmentStatus $setEnrollmentStatus={setEnrollmentStatus} />
+              </SItemSchool>
+            </SCertificateItem>
+            <SCertificateItem>
+              <label htmlFor="">학과</label>
+              <SInput type="text" id="major" name="major" value={major} onChange={onChangeInputHandler}></SInput>
+            </SCertificateItem>
+            <SCertificateItem>
+              <span>학생증, 증명가능서류 사진첨부</span>
+              <ImgFileUpload $setCertificationImgFile={setCertificationImgFile} $fileType={'tutorCertificationImg'} />
+            </SCertificateItem>
+          </SFormCertificateItems>
         </SFormItem>
         <SFormItem>
           <span>성격 (최대 3개 선택)</span>
@@ -244,20 +189,23 @@ const RegistTutorForm = () => {
         <SFormItem>
           <SItemClassLevelHeader>
             <span>수업 level</span>
-            <FaInfoCircle style={{ marginLeft: '10px', cursor: 'pointer' }} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} />
-            {isHovered && (
-              <SPGuideMessage>
-                <li>{'초급 : 기본적인 일상 대화와 문법 학습'}</li>
-                <li>{'중급 : 다양한 주제에 대한 의사소통과 간단한 토론'}</li>
-                <li>{'고급 : 심도 있는 토론과 어려운 어휘, 문법 다룸'}</li>
-              </SPGuideMessage>
-            )}
+            {/* <FaInfoCircle style={{ marginLeft: '10px', cursor: 'pointer' }} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} />
+             isHovered && (
+            )} */}
           </SItemClassLevelHeader>
           <SItems>
             {CLASSLEVEL_LIST.map((classLevel) => (
               <Checkbox key={classLevel.value} $checkboxType={'classLevel'} option={classLevel} handleCheckedItems={handleCheckedItems} checkItems={checkClassLevelItems} />
             ))}
           </SItems>
+          <SGuideBox>
+            <FaInfoCircle style={{ marginLeft: '5px', fill: '#696969' }} />
+            <SPGuideMessage>
+              <li>{'초급 : 기본적인 일상 대화와 문법 학습'}</li>
+              <li>{'중급 : 다양한 주제에 대한 의사소통과 간단한 토론'}</li>
+              <li>{'고급 : 심도 있는 토론과 어려운 어휘, 문법 다룸'}</li>
+            </SPGuideMessage>
+          </SGuideBox>
         </SFormItem>
         <SFormItem>
           <span>수업소개</span>
@@ -282,21 +230,6 @@ const RegistTutorForm = () => {
             </STuitionItem>
           </STuitionItems>
         </SFormItem>
-        <SFormItem>
-          <span>대표 프로필 이미지</span>
-          <SCertifiFilesArea>
-            <SCertifiIcon>
-              <BsFileEarmarkPerson className="certification_icon" />
-            </SCertifiIcon>
-            <SCertifiFilesContainer id="certificateImgPreview">
-              <li></li>
-            </SCertifiFilesContainer>
-            <SImgPreview type="button">미리보기</SImgPreview>
-          </SCertifiFilesArea>
-        </SFormItem>
-        <button type="button" onClick={test}>
-          test
-        </button>
         <SButton type="submit" disabled={validationCheck}>
           튜터 신청 완료
         </SButton>
@@ -308,7 +241,7 @@ const RegistTutorForm = () => {
 export default RegistTutorForm;
 
 const SContainer = styled.section`
-  margin-top: 100px;
+  /* margin-top: 100px; */
   max-width: 1200px;
   min-width: 360px;
   display: flex;
@@ -319,16 +252,24 @@ const SContainer = styled.section`
 
 const SForm = styled.form`
   /* height: 500px; */
-  padding: 20px;
+  box-sizing: border-box;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+`;
+const SItemSchool = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+const SFormCertificateItems = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`;
-
-const SFormCertificateItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  padding: 20px 10px;
+  border: 1px solid #696969;
+  border-radius: 3px;
 `;
 
 const SFormItem = styled.div`
@@ -337,24 +278,28 @@ const SFormItem = styled.div`
   gap: 5px;
 `;
 
+const SCertificateItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
 const SItemClassLevelHeader = styled.div`
   position: relative;
 `;
+const SGuideBox = styled.div`
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 14px;
+`;
 
 const SPGuideMessage = styled.ul`
-  position: absolute;
-  top: -72px;
-  left: 100px;
-  width: 360px;
-  z-index: 1;
-  background-color: #fdf9f9;
-  padding: 10px;
-  border-radius: 3px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  /* font-size: 13px;
-  color:  */
+  /* width: 360px; */
+  color: #aeaeae;
 `;
-// const SPersonalityItems = styled.div`
+
 const SItems = styled.div`
   box-sizing: border-box;
   display: flex;
@@ -368,10 +313,12 @@ const SInput = styled.input`
   box-sizing: border-box;
   width: 100%;
   height: 40px;
+  line-height: 40px;
   border: 1px solid #696969;
   border-radius: 3px;
   outline: none;
-  padding: 10px;
+  padding: 8px;
+  font-size: 16px;
 `;
 
 const STextarea = styled.textarea`
@@ -382,15 +329,18 @@ const STextarea = styled.textarea`
   border-radius: 3px;
   resize: none;
   outline: none;
-  padding: 10px;
+  padding: 8px;
+  font-size: 16px;
 `;
 
 const STuitionItems = styled.div`
+  border: 1px solid #696969;
+  border-radius: 3px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 10px;
+  padding: 20px 10px;
   width: 100%;
   gap: 25px;
   @media screen and (min-width: 1024px) {
@@ -417,49 +367,10 @@ const SButton = styled.button<{ disabled: boolean }>`
     if (props.disabled === true) return '#e7e7e7';
     else return '#FE902F';
   }};
-  /* color: ${(props) => {
-    if (props.disabled === true) return '#131212';
-    else return '#fff';
-  }}; */
   color: #fff;
   cursor: ${(props) => {
     if (props.disabled === true) return 'not-allowed';
     else return 'pointer';
   }};
   border-radius: 3px;
-`;
-
-const SCertifiFilesArea = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const SCertifiIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
-  cursor: pointer;
-`;
-
-const SCertifiFilesContainer = styled.ul<{ id?: string }>`
-  background-color: #f7f7f7;
-  border: 1px solid #696969;
-  border-radius: ${({ id }) => {
-    if (id === 'certificateImgPreview') return '3px 0 0 3px';
-    else return '3px';
-  }};
-  width: 100%;
-  height: 40px;
-`;
-
-const SImgPreview = styled.button`
-  border: 1px solid #696969;
-  border-left: none;
-  border-radius: 3px;
-  width: 100px;
-  height: 40px;
-  border-radius: 0 3px 3px 0;
 `;
