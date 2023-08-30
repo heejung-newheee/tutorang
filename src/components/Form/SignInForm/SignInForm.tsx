@@ -1,43 +1,41 @@
 // * 카카오 소셜 회원가입/로그인만 완료.
 // * TODO 구글이랑 twitter 소셜 회원가입 등록 예정
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { google, kakaotalk, twitter } from '../../../assets';
 import supabase from '../../../supabase';
 
+const EMAIL_REGEX = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/;
+
 const SignInForm = () => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [validationCheck, setValidationCheck] = useState(false);
+  // const [isAuthenticated, setIsAuthenticated] =useState(false)
   // const [session, setSession] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      setLoading(true);
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      alert('check your email for the login link!');
+    const isValidEmail = EMAIL_REGEX.test(email);
+    if (!isValidEmail) {
+      alert('이메일 형식을 맞춰서 입력해주세요');
+      return false;
+    }
+    setLoading(true);
+    const isAuthenticated = await emailCheckFromDB(email);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      isAuthenticated ? alert('비밀번호를 다시한 번 확인해주세요') : alert('해당 이메일로 회원가입되어있지 않습니다.');
+    } else {
       setEmail('');
       setPassword('');
       navigate('/');
-    } catch (error) {
-      if (error instanceof Error) {
-        // 👉️ err is type Error here
-        console.log(error.message);
-
-        return;
-      }
-
-      console.log('Unexpected error', error);
-
-      return;
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,21 +57,53 @@ const SignInForm = () => {
       provider: 'kakao',
     });
     if (error) alert(error.message);
-    if (data) console.log(data);
+    console.log(data);
+    // if (!data) {
+    //   setLoading(true);
+    // } else {
+    //   setLoading(false);
+    //   navigate('/');
+    // }
   };
+
+  const emailCheckFromDB = async (enteredEmail: string) => {
+    // unverifiedEmail 을 supabase의 db 에서 확인
+    const { data: profiles, error } = await supabase.from('profiles').select('email');
+    const myEmailFromDB = profiles?.find((profile) => {
+      return profile.email === enteredEmail;
+    });
+    const isMyEmailHere = myEmailFromDB === undefined ? false : true;
+    console.log('????????', isMyEmailHere);
+    // setDuplicatedEmail(isMyEmailHere);
+    // setIsAuthenticated(true);
+    return isMyEmailHere;
+    console.log(error?.message);
+  };
+
+  useEffect(() => {
+    if (email === '' || password === '') {
+      setValidationCheck(false);
+    } else {
+      setValidationCheck(true);
+    }
+  }, [email, password]);
   return (
     <SContainer>
       {loading ? (
-        <p>로그인중임</p>
+        <p>확인하는 동안 보여줄 내용 (or 스피너)</p>
       ) : (
         <>
           <SForm onSubmit={handleLogin}>
             <h3>로그인</h3>
-            <input type="text" placeholder="이메일" name="email" value={email} onChange={handleInput} />
-            <input type="password" placeholder="비밀번호" name="password" value={password} onChange={handleInput} />
-            {/* <p>패스워드 저장하기</p>  */}
-            <p>비밀번호 찾기</p>
-            <button>로그인</button>
+            <SFormItem>
+              <span>이메일</span>
+              <SInput type="text" placeholder="이메일" name="email" value={email} onChange={handleInput} />
+            </SFormItem>
+            <SFormItem>
+              <span>비밀번호</span>
+              <SInput type="password" placeholder="비밀번호" name="password" value={password} onChange={handleInput} />
+            </SFormItem>
+            <SButton disabled={!validationCheck}>로그인</SButton>
           </SForm>
           <SImg src={kakaotalk} onClick={() => kakaoLogin()} />
           <SImg src={google} onClick={() => kakaoLogin()} />
@@ -89,6 +119,12 @@ export default SignInForm;
 
 const SContainer = styled.section`
   margin-top: 100px;
+  max-width: 1200px;
+  min-width: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 const SForm = styled.form`
   width: 400px;
@@ -103,4 +139,36 @@ const SImg = styled.img`
   width: 40px;
   height: 40px;
   cursor: pointer;
+`;
+
+const SFormItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+const SInput = styled.input`
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  border: 1px solid #696969;
+  border-radius: 3px;
+  outline: none;
+  padding: 8px;
+  font-size: 16px;
+  box-shadow: none;
+`;
+
+const SButton = styled.button<{ disabled: boolean }>`
+  height: 40px;
+  background-color: ${(props) => {
+    if (props.disabled === true) return '#e7e7e7';
+    else return '#FE902F';
+  }};
+  color: #fff;
+  cursor: ${(props) => {
+    if (props.disabled === true) return 'not-allowed';
+    else return 'pointer';
+  }};
+  border-radius: 3px;
 `;

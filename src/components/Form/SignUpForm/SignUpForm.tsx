@@ -392,7 +392,7 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
           {!!pwd && !validPwd && (
             <SPGuideMessage>
               <FaInfoCircle style={{ marginRight: '5px' }} />
-              대소문자, 숫자, 특수문자(!@#$%)를 모두 포함하여 24자 이상의 비밀번호를 입력해주세요
+              대소문자, 숫자, 특수문자(!@#$%)를 모두 포함하여 6자 이상 24자 이하의 비밀번호를 입력해주세요
             </SPGuideMessage>
           )}
         </SFormItem>
@@ -652,7 +652,7 @@ const SEmailInputWrapper = styled.div`
 `;
 
 const SEmailButton = styled.button<{ disabled: boolean }>`
-  width: 70px;
+  width: 95px;
   height: 40px;
   /* cursor: default; */
   cursor: ${({ disabled }) => {
@@ -680,7 +680,13 @@ const SInput = styled.input<{ $color: boolean; $noFocusedColor: boolean; id?: st
   color: #000;
   vertical-align: middle;
   border-radius: 3px;
-  padding: 5px;
+  padding: ${({ id }) => {
+    if (id === 'email') {
+      return '260px';
+    } else {
+      return '340px';
+    }
+  }};
   width: 100%;
   min-width: ${({ id }) => {
     if (id === 'email') {
