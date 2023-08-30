@@ -1,13 +1,11 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchReview } from '../../api/user';
 import * as S from './TutorInfo.styled';
 import { RootState } from '../../redux/config/configStore';
 import { useSelector } from 'react-redux';
 import { fetchTutorAll } from '../../api/tutor';
-import { Tables, Views } from '../../supabase/database.types';
-import supabase from '../../supabase';
-import { matchingAccept, matchingReject } from '../../api/match';
-import { Container, InfoItem, InfoList, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
+import { Views } from '../../supabase/database.types';
+import { Container, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
 import MatchingStudent from '../matchingTab/MatchingStudent';
 import { useEffect } from 'react';
 import AOS from 'aos';
@@ -26,6 +24,7 @@ const TutorInfo = ({ match }: pageProps) => {
   const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], fetchReview);
   const user = useSelector((state: RootState) => state.user.user);
   // console.log('tutorInfo 로그인사용자', user);
+  if (!user) return null;
 
   const reviewData = review?.filter((item) => {
     return user!.id === item.reviewed_id;

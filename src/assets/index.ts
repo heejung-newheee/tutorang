@@ -7,3 +7,4 @@ export { default as icon_edit } from './icon_edit.png';
 export { default as starEmpty } from './ico_star.svg';
 export { default as starHalf } from './ico_star_half.svg';
 export { default as starFull } from './ico_star_full.svg';
+export { default as close } from './close-btn.svg';

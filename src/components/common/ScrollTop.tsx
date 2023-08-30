@@ -21,7 +21,6 @@ const ScrollTop = () => {
         setVisible(false);
       }
     };
-    console.log(window.scrollY);
     // window.addEventListener('scroll', handleShowButton);
     document.onscroll = handleShowButton;
     return () => {
