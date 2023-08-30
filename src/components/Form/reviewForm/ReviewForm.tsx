@@ -15,14 +15,11 @@ type initialStateType = {
   content: string;
 };
 
-type reviewFormProps = {
-  reviewed_id: string;
-};
-
-const ReviewForm = ({ reviewed_id }: reviewFormProps) => {
+const ReviewForm = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const loginUser = useSelector((state: RootState) => state.user.user);
+  const { targetId: tutorId } = useSelector((state: RootState) => state.modal);
 
   const mutation = useMutation(reviewRequest, {
     onSuccess: () => {
@@ -70,9 +67,13 @@ const ReviewForm = ({ reviewed_id }: reviewFormProps) => {
     e.preventDefault();
 
     if (!loginUser) return;
+    if (!tutorId) {
+      console.log('지정할 tutor의 Id가 없습니다.');
+      return;
+    }
 
     const newReview: reviews = {
-      reviewed_id: reviewed_id,
+      reviewed_id: tutorId,
       user_id: loginUser?.id,
       author: loginUser?.username,
       title: title as string,

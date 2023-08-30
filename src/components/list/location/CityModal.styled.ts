@@ -23,7 +23,7 @@ export const InnerModalBox = styled.div`
 
   @media all and (min-width: 0px) and (max-width: 600px) {
     width: 100%;
-    height: 70%;
+    height: 80%;
   }
 `;
 
@@ -101,8 +101,7 @@ export const HiddenDropMenu = styled.div`
   align-items: center;
   border: 1px solid #fe902f;
   border-radius: 7px;
-  min-height: 200px;
-  max-height: 400px;
+  height: 50%;
   overflow-y: scroll;
 
   & > div {

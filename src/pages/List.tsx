@@ -6,7 +6,7 @@ import TutorListCompo from '../components/list/tutorCompo/TutorListCompo';
 import LastTutorListCompo from '../components/list/tutorCompo/LastTutorListCompo';
 import SelectBox from '../components/list/selectBox/SelectBox';
 import CityModal from '../components/list/location/CityModal';
-import { handleAgeNum, price, SelectedFilters } from '../components/list/utility';
+import { handleAgeNum, SelectedFilters } from '../components/list/utility';
 import { TTutorWithUser } from '../supabase/database.types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
@@ -80,20 +80,20 @@ const List = () => {
 
         break;
       //가격
-      case 'price':
-        if (item === '전체') {
-          setSelectedFilters((pre: any) => pre && { ...pre, minPrice: 0, maxPrice: 100000, priceType: '전체' });
-          // setSelectedFilters((pre: any) => (pre ? { ...pre, maxPrice: 100000 } : { ...pre }));
-          setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-          // setSelectedArr((pre) => [...pre, ['price', '전체']]);
-        } else {
-          const minPrice = price.find((i: { priceNum: string; min: number; max: number }) => i.priceNum === item)?.min;
-          const maxPrice = price.find((i: { priceNum: string; min: number; max: number }) => i.priceNum === item)?.max;
-          setSelectedFilters((pre: any) => pre && { ...pre, minPrice, maxPrice, priceType: item });
-          setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-          setSelectedArr((pre) => [...pre, ['price', item]]);
-        }
-        break;
+      // case 'price':
+      //   if (item === '전체') {
+      //     setSelectedFilters((pre: any) => pre && { ...pre, minPrice: 0, maxPrice: 100000, priceType: '전체' });
+      //     // setSelectedFilters((pre: any) => (pre ? { ...pre, maxPrice: 100000 } : { ...pre }));
+      //     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
+      //     // setSelectedArr((pre) => [...pre, ['price', '전체']]);
+      //   } else {
+      //     const minPrice = price.find((i: { priceNum: string; min: number; max: number }) => i.priceNum === item)?.min;
+      //     const maxPrice = price.find((i: { priceNum: string; min: number; max: number }) => i.priceNum === item)?.max;
+      //     setSelectedFilters((pre: any) => pre && { ...pre, minPrice, maxPrice, priceType: item });
+      //     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
+      //     setSelectedArr((pre) => [...pre, ['price', item]]);
+      //   }
+      //   break;
 
       //나이
       case 'age':
@@ -289,12 +289,12 @@ const List = () => {
 
   return (
     <Container>
-      <SearchWrap>
+      {/* <SearchWrap>
         <svg xmlns="http://www.w3.org/2000/svg" fill="#fe902f" height="1em" viewBox="0 0 512 512">
           <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
         </svg>
         <input type="text" onChange={debouncedOnChange} />
-      </SearchWrap>
+      </SearchWrap> */}
       {/* 필터박스 */}
       <SelectBox handleFilterdObj={handleFilterdObj} openModal={openModal} selectedArr={selectedArr} setSelectedArr={setSelectedArr} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
       {/* 강사 리스트 */}
@@ -336,13 +336,21 @@ const Container = styled.div`
 const TutorList = styled.div`
   margin-top: 50px;
   width: 100%;
-  padding: 0 10px;
+  padding: 0 20px;
   display: grid;
+  gap: 30px;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+
+  @media only screen and (max-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   @media only screen and (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media only screen and (max-width: 650px) {
+    grid-template-columns: repeat(1, 1fr);
   }
 
   & > div {

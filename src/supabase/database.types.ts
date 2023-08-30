@@ -70,6 +70,21 @@ export interface Database {
         };
         Relationships: [];
       };
+      chat_rooms: {
+        Row: {
+          id: string;
+          name: string | null;
+        };
+        Insert: {
+          id?: string;
+          name?: string | null;
+        };
+        Update: {
+          id?: string;
+          name?: string | null;
+        };
+        Relationships: [];
+      };
       city: {
         Row: {
           id: number;
@@ -306,7 +321,7 @@ export interface Database {
       };
       review: {
         Row: {
-          author?: string | null;
+          author: string | null;
           content: string | null;
           created_at: string;
           id: number;
@@ -553,12 +568,15 @@ export interface Database {
         Row: {
           class_info: string | null;
           created_at: string | null;
-          price: number | null;
+          location1_gugun: string | null;
+          location2_gugun: string | null;
+          major: string | null;
+          personality: string | null;
           tutor_id: string | null;
           tutor_img: string | null;
           tutor_info_id: number | null;
           tutor_name: string | null;
-          update: string | null;
+          university: string | null;
         };
         Relationships: [
           {
@@ -592,4 +610,4 @@ export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'c
 export type BookMarkType = Pick<Tables<'like'>, 'liked_id' | 'user_id'>;
 export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
 export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
-export type TutorLists<T extends keyof Database['public']['Tables']['tutor_info']['Row']> = Database['public']['Tables']['tutor_info']['Row'][T];
+// export type TutorLists<T extends keyof Database['public']['Tables']['tutor_info']['Row']> = Database['public']['Tables']['tutor_info']['Row'][T];

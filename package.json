@@ -14,7 +14,7 @@
     "@egjs/react-flicking": "^4.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.6",
+    "@mui/material": "^5.14.7",
     "@reduxjs/toolkit": "^1.9.5",
     "@sendbird/chat": "^4.9.9",
     "@sendbird/uikit-react": "^3.6.7",

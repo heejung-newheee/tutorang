@@ -1,14 +1,28 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { gender, level, age, price, handleAgeNum } from '../utility';
-import locationIcon from '../../assets/location-icon.png';
+import { gender, level, age, handleAgeNum } from '../utility';
+// import locationIcon from '../../assets/location-icon.png';
 import * as S from './SelectBox.styled';
+import styled from 'styled-components';
+import { Slider } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+// import { debounce } from '../utility';
+// import { styled } from '@mui/system';
 
 const obj: any = {
   gender,
   level,
   age,
-  price,
+  // price,
 };
+
+const theme = createTheme({
+  palette: {
+    secondary: {
+      main: '#fe902f;', // 변경하고자 하는 색상 지정
+    },
+  },
+});
 
 type Props = {
   handleFilterdObj: (item: string, category: string) => void;
@@ -19,16 +33,19 @@ type Props = {
   setSelectedFilters: Dispatch<SetStateAction<any>>;
 };
 
-const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, selectedFilters, setSelectedFilters }: Props) => {
-  const [filteredMenu, setfilteredMenu] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+let timerId: ReturnType<typeof setTimeout> | null = null;
 
-  const [minPriceNum, setMinPriceNum] = useState<undefined | number>(undefined);
-  const [maxPriceNum, setMaxPriceNum] = useState<undefined | number>(undefined);
+const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, selectedFilters, setSelectedFilters }: Props) => {
+  const [filteredMenu, setfilteredMenu] = useState('gender');
+  const [isOpen, setIsOpen] = useState(true);
+
+  const [minPriceNum, setMinPriceNum] = useState<undefined | number>(0);
+  const [maxPriceNum, setMaxPriceNum] = useState<undefined | number>(100000);
+  const [Value, setValue] = useState<number>(0);
 
   const handleHiddenBox = (category: string) => {
     setfilteredMenu(category);
-    setIsOpen((pre) => !pre);
+    // setIsOpen((pre) => !pre);
   };
 
   const onOffChange = () => {
@@ -115,19 +132,36 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
     setMinPriceNum(0);
   };
 
-  const handleRangeMinNum = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMinPriceNum(Number(e.target.value.replace(/[^0-9]/g, '')));
-  };
+  // const handleRangeMinNum = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setMinPriceNum(Number(e.target.value.replace(/[^0-9]/g, '')));
+  // };
 
-  const handleRangeMaxNum = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMaxPriceNum(Number(e.target.value.replace(/[^0-9]/g, '')));
-  };
+  // const handleRangeMaxNum = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setMaxPriceNum(Number(e.target.value.replace(/[^0-9]/g, '')));
+  // };
 
-  const handelInputPrice = () => {
-    setSelectedFilters((pre: any) => pre && { ...pre, maxPrice: maxPriceNum, minPrice: minPriceNum });
+  const handelInputPrice = (item: number) => {
+    setSelectedFilters((pre: any) => pre && { ...pre, maxPrice: item, minPrice: minPriceNum });
     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-    setSelectedArr((pre) => [...pre, ['price', `${minPriceNum?.toLocaleString('ko-KR')}~${maxPriceNum?.toLocaleString('ko-KR')}`]]);
+    setSelectedArr((pre) => [...pre, ['price', `${minPriceNum?.toLocaleString('ko-KR')}~${item?.toLocaleString('ko-KR')}`]]);
   };
+
+  const debounce = (fn: (item: number) => void, delay: number) => {
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => {
+      fn(Value);
+      timerId = null;
+    }, delay);
+  };
+
+  const handleSliderChange = (event: Event, newValue: number | number[]) => {
+    setValue(newValue as number); // 슬라이더 값이 변경되면 state 업데이트
+    debounce(() => handelInputPrice(newValue as number), 1000);
+  };
+
+  // const debouncedOnChange = debounce(5000);
 
   const isColorTrue = (item: string) => {
     return selectedFilters[item].length !== 0;
@@ -141,102 +175,102 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
     return (selectedFilters[filteredMenu]?.length === 0 && item === '전체') || selectedArr.some((i) => i[0] === filteredMenu && i[1] === item);
   };
 
-  const isCheckedPrice = (item: { priceNum: string; min: number; max: number }) => {
-    if (selectedFilters['priceType'] === '전체' && item['priceNum'] === '전체') {
-      return true;
-    }
+  // const isCheckedPrice = (item: { priceNum: string; min: number; max: number }) => {
+  //   if (selectedFilters['priceType'] === '전체' && item['priceNum'] === '전체') {
+  //     return true;
+  //   }
 
-    if (selectedFilters['priceType'] === item['priceNum']) {
-      return true;
-    }
+  //   if (selectedFilters['priceType'] === item['priceNum']) {
+  //     return true;
+  //   }
 
-    return false;
-  };
+  //   return false;
+  // };
   return (
     <>
-      {/* <LocationDiv>
-        {' '}
-        <img src={locationIcon} />
-        지역으로 찾기
-      </LocationDiv> */}
+      <Search>지역을 통해서 찾기</Search>
 
-      <S.FilterBox>
-        <S.InnerBox $isIn={isColorTrue('gender')} onClick={() => handleHiddenBox('gender')}>
-          성별
-          <S.ChevronSpan $chevron={ischevronOpen('gender')}></S.ChevronSpan>
-        </S.InnerBox>
+      {/* <DDDD>지역을 통해서 찾기</DDDD> */}
+      <FilterContainer>
+        <LocationDiv>
+          {' '}
+          {/* <img src={locationIcon} /> */}
+          필터로 자세히 찾기
+        </LocationDiv>
 
-        <S.InnerBox $isIn={isColorTrue('level')} onClick={() => handleHiddenBox('level')}>
-          난이도
-          <S.ChevronSpan $chevron={ischevronOpen('level')}></S.ChevronSpan>
-        </S.InnerBox>
+        <S.FilterBox>
+          <S.InnerBox $isIn={isColorTrue('gender')} onClick={() => handleHiddenBox('gender')}>
+            성별
+            <S.ChevronSpan $chevron={ischevronOpen('gender')}></S.ChevronSpan>
+          </S.InnerBox>
 
-        <S.InnerBox $isIn={isColorTrue('age')} onClick={() => handleHiddenBox('age')}>
-          연령대
-          <S.ChevronSpan $chevron={ischevronOpen('age')}></S.ChevronSpan>
-        </S.InnerBox>
+          <S.InnerBox $isIn={isColorTrue('level')} onClick={() => handleHiddenBox('level')}>
+            난이도
+            <S.ChevronSpan $chevron={ischevronOpen('level')}></S.ChevronSpan>
+          </S.InnerBox>
 
-        <S.InnerBox onClick={openModal} $isIn={isColorTrue('location1')}>
-          지역
-          <button>+</button>
-        </S.InnerBox>
+          <S.InnerBox $isIn={isColorTrue('age')} onClick={() => handleHiddenBox('age')}>
+            연령대
+            <S.ChevronSpan $chevron={ischevronOpen('age')}></S.ChevronSpan>
+          </S.InnerBox>
 
-        <S.InnerBox $isIn={selectedArr.some((i) => i[0] === 'price') ? true : false} onClick={() => handleHiddenBox('price')}>
-          가격
-          <S.ChevronSpan $chevron={ischevronOpen('price')}></S.ChevronSpan>
-        </S.InnerBox>
-      </S.FilterBox>
+          <S.InnerBox onClick={openModal} $isIn={isColorTrue('location1')}>
+            지역
+            <button>+</button>
+          </S.InnerBox>
 
-      {/* 체크박스 - 가격 제외*/}
-      {isOpen && filteredMenu !== 'price' ? (
-        <S.InnerHidden>
-          {obj[filteredMenu]?.map((item: string) => (
-            <div key={Math.random() * 22229999}>
-              <input type="checkbox" id="check" checked={isChecked(item)} readOnly />
-              <label htmlFor="check" onClick={() => handleFilterdObj(item, filteredMenu)}>
-                {item}
-              </label>
-            </div>
-          ))}
-        </S.InnerHidden>
-      ) : null}
-      {/* 체크박스 - 가격*/}
-      {isOpen && filteredMenu === 'price' ? (
-        <S.InnerHidden>
-          {/* 수정해야 함 */}
-          <S.PriceClassType>
-            <div>
-              {selectedFilters.classStyle === 'onLine' ? <span>OnLine - Class </span> : null}
-              {selectedFilters.classStyle === 'offLine' ? <span>OffLine - Class </span> : null}
+          <S.InnerBox $isIn={selectedArr.some((i) => i[0] === 'price') ? true : false} onClick={() => handleHiddenBox('price')}>
+            가격
+            <S.ChevronSpan $chevron={ischevronOpen('price')}></S.ChevronSpan>
+          </S.InnerBox>
+        </S.FilterBox>
 
-              <svg onClick={() => onOffChange()} xmlns="http://www.w3.org/2000/svg" fill="#9d9d9d" height="1em" viewBox="0 0 512 512">
-                <path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z" />
-              </svg>
-            </div>
-          </S.PriceClassType>
-          <S.PriceClassType></S.PriceClassType>
+        {/* 체크박스 - 가격 제외*/}
+        {filteredMenu !== 'price' ? (
+          <S.InnerHidden>
+            {obj[filteredMenu]?.map((item: string) => (
+              <div key={Math.random() * 22229999}>
+                <input type="checkbox" id="check" checked={isChecked(item)} readOnly />
+                <label htmlFor="check" onClick={() => handleFilterdObj(item, filteredMenu)}>
+                  {item}
+                </label>
+              </div>
+            ))}
+          </S.InnerHidden>
+        ) : null}
+        {/* 체크박스 - 가격*/}
+        {filteredMenu === 'price' ? (
+          <S.InnerHiddenPrice>
+            {/* 수정해야 함 */}
+            <S.PriceClassType>
+              <div>
+                {selectedFilters.classStyle === 'onLine' ? <span>OnLine - Class </span> : null}
+                {selectedFilters.classStyle === 'offLine' ? <span>OffLine - Class </span> : null}
 
-          {obj[filteredMenu]?.map((item: { priceNum: string; min: number; max: number }) => (
-            <div key={Math.random() * 22229999} onClick={() => handleFilterdObj(item['priceNum'], filteredMenu)}>
-              <input type="checkbox" id="check" checked={isCheckedPrice(item)} readOnly />
-              <label htmlFor="check">{item['priceNum']}</label>
-            </div>
-          ))}
-          <S.InputRangeDiv>
-            <div>
-              <input type="text" value={minPriceNum?.toLocaleString('ko-KR')} onChange={(e) => handleRangeMinNum(e)} />
-              <span>원</span>
-            </div>
-            <span>~</span>
-            <div>
-              <input type="text" value={maxPriceNum?.toLocaleString('ko-KR')} onChange={(e) => handleRangeMaxNum(e)} />
-              <span>원</span>
-            </div>
-            <S.InputRangeBtn onClick={handelInputPrice}>검색</S.InputRangeBtn>
-          </S.InputRangeDiv>
-          <S.InputRangeBtnMobile onClick={handelInputPrice}>검색</S.InputRangeBtnMobile>
-        </S.InnerHidden>
-      ) : null}
+                <svg onClick={() => onOffChange()} xmlns="http://www.w3.org/2000/svg" fill="#9d9d9d" height="1em" viewBox="0 0 512 512">
+                  <path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z" />
+                </svg>
+              </div>
+            </S.PriceClassType>
+            <ThemeProvider theme={theme}>
+              <Slider getAriaLabel={() => 'Temperature range'} valueLabelDisplay="auto" min={0} max={100000} value={Value} step={1000} onChange={handleSliderChange} color="secondary" />
+            </ThemeProvider>
+            {/* <S.InputRangeDiv>
+              <div>
+                <input type="text" value={minPriceNum?.toLocaleString('ko-KR')} onChange={(e) => handleRangeMinNum(e)} />
+                <span>원</span>
+              </div>
+              <span>~</span>
+              <div>
+                <input type="text" value={maxPriceNum?.toLocaleString('ko-KR')} onChange={(e) => handleRangeMaxNum(e)} />
+                <span>원</span>
+              </div>
+              <S.InputRangeBtn onClick={handelInputPrice}>검색</S.InputRangeBtn>
+            </S.InputRangeDiv> */}
+            {/* <S.InputRangeBtnMobile onClick={handelInputPrice}>검색</S.InputRangeBtnMobile> */}
+          </S.InnerHiddenPrice>
+        ) : null}
+      </FilterContainer>
 
       {/* 필터 바 */}
       {selectedArr.length > 0 && selectedArr.filter((i) => i[1] === '전체').length !== selectedArr.length ? (
@@ -269,3 +303,42 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
 };
 
 export default SelectBox;
+
+const Search = styled.div`
+  margin-top: 180px;
+  width: 100%;
+  height: 50px;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+`;
+
+const FilterContainer = styled.div`
+  width: 100%;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+`;
+
+const DDDD = styled.div`
+  margin-top: 30px;
+  width: 100%;
+  width: 100px;
+  height: 50px;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  background-color: #fe902f;
+  border-radius: 5px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+`;
+
+const LocationDiv = styled.div`
+  width: 100%;
+  height: 50px;
+  /* background-color: #fe902f; */
+  display: flex;
+  align-items: center;
+  /* margin-top: 100px; */
+  padding-left: 10px;
+  border-bottom: 1px solid #eaeaea;
+`;

@@ -1,15 +1,14 @@
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-export const LikeTutor = styled(Link)`
+export const TutorCard = styled(Link)`
   width: 335px;
   margin-right: 30px;
   border-radius: 8px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   overflow: hidden;
-  background-color: #fff;
 `;
-export const LikeTutorImg = styled.div`
+export const TutorImg = styled.div`
   width: 100%;
   height: 265px;
   overflow: hidden;
@@ -19,10 +18,10 @@ export const LikeTutorImg = styled.div`
     object-fit: cover;
   }
 `;
-export const LikeTutorInfo = styled.div`
+export const TutorInfo = styled.div`
   padding: 25px;
 `;
-export const LikeTutorTitle = styled.h5`
+export const TutorTitle = styled.h5`
   font-size: 17px;
   font-weight: bold;
   border-left: 3px solid #fe902f;
@@ -32,15 +31,15 @@ export const LikeTutorTitle = styled.h5`
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
-export const LikeTutorName = styled.div`
+export const TutorName = styled.div`
   font-size: 16px;
   margin-bottom: 12px;
 `;
-export const LikeTutorContent = styled.div`
+export const TutorContent = styled.div`
   font-size: 13px;
   margin-bottom: 15px;
 `;
-export const LikeTag = styled.div`
+export const Tag = styled.div`
   display: flex;
   gap: 7px;
   div {
