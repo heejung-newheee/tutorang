@@ -13,3 +13,4 @@ export { default as Button } from './button/Button';
 export { default as BookMark } from './bookMark/BookMark';
 export { default as ReviewForm } from './Form/reviewForm/ReviewForm';
 export { default as ReviewUpdateForm } from './Form/reviewForm/ReviewUpdateForm';
+export { default as Review } from './review/Review';

@@ -6,9 +6,7 @@ import { openModal, closeModal } from '../../../redux/modules';
 const Report = () => {
   const dispatch = useDispatch();
 
-  const sendReport = () => {
-    dispatch(openModal('report'));
-  };
+  const sendReport = () => {};
 
   const handleClose = () => {
     dispatch(closeModal());

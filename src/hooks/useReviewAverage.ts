@@ -9,9 +9,9 @@ const useReviewAverage = (reviewRatings: number[]): number => {
     sumReviewRating += reviewRating;
   });
 
-  const result = sumReviewRating / reviewRatings?.length;
+  const result = (sumReviewRating / reviewRatings?.length).toFixed(2);
 
-  return result;
+  return parseFloat(result);
 };
 
 export default useReviewAverage;

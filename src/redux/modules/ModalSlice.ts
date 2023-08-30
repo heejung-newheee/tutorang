@@ -19,7 +19,6 @@ const modalSlice = createSlice({
     openModal: (state, action: PayloadAction<ModalState>) => {
       state.type = action.payload.type;
       state.targetId = action.payload.targetId;
-
       state.isOpen = true;
     },
 

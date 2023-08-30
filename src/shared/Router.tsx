@@ -18,8 +18,8 @@ const Router = () => {
             <Route path="/signup" element={<SignUpWrapBox />} />
           </Route>
           <Route path="/mypage" element={<Mypage />} />
+          <Route path="/detail/:id" element={<Detail />} />
           <Route element={<Layout />}>
-            <Route path="/detail/:id" element={<Detail />} />
             <Route path="/list" element={<List />} />
             <Route path="/test" element={<Test />} />
             <Route path="/tutor-registration" element={<RegistTutorForm />} />
