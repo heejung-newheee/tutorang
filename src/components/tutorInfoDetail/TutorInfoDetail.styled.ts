@@ -216,7 +216,7 @@ export const StarList = styled.ul`
   filter: invert(63%) sepia(97%) saturate(1441%) hue-rotate(336deg) brightness(100%) contrast(102%);
 `;
 
-export const StarWrapper = styled.p`
+export const StarWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
