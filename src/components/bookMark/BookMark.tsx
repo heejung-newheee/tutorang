@@ -8,6 +8,8 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { openModal } from '../../redux/modules';
 
+const BOOK_MARK_QUERY_KEY = ['matchBookMark'];
+
 const BookMark = () => {
   const dispatch = useDispatch();
 
@@ -16,12 +18,10 @@ const BookMark = () => {
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const { data: bookMarkList, isError, error } = useQuery(['matchBookMark'], () => matchBookMark(id));
+  const { data: bookMarkList, isError, error } = useQuery(BOOK_MARK_QUERY_KEY, () => matchBookMark(id));
   const [isBookMark, setIsBookMark] = useState(false);
 
   const findBookMark = bookMarkList?.find((bookmark) => bookmark.user_id === loginUser?.id);
-
-  console.log(findBookMark);
 
   const bookMarkCreateMutation = useCreateBookMarkMutation();
   const bookMarkDeleteMutation = useDeleteBookMarkMutation();
@@ -36,7 +36,7 @@ const BookMark = () => {
 
   const handleToggleBookMark = async () => {
     if (!loginUser) {
-      dispatch(openModal('confirm'));
+      dispatch(openModal({ type: 'confirm' }));
       return null;
     }
 
@@ -59,7 +59,7 @@ const BookMark = () => {
 
   return (
     <div>
-      <button onClick={() => handleToggleBookMark()}> {isBookMark === false ? `북마크` : `북마크 해제`} </button>
+      <button onClick={() => handleToggleBookMark()}> {isBookMark ? `북마크 해제` : `북마크`} </button>
     </div>
   );
 };
