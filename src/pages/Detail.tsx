@@ -7,13 +7,15 @@ import { fetchLike } from '../api/like';
 import { fetchTutorAll } from '../api/tutor';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchBookmark } from '../api/bookmark';
-import { BookMark } from '../components';
+import { BookMark, Review } from '../components';
 import { openModal, setReview, setTargetId } from '../redux/modules';
 import { reviewDelete, reviewUpdate } from '../api/review';
 import { useEffect, useState } from 'react';
 import supabase from '../supabase';
 import { Session } from '@supabase/supabase-js';
 import { RootState } from '../redux/config/configStore';
+import { starFull, starHalf, starEmpty } from '../assets';
+import TutorInfoDeatail from '../components/tutorInfoDetail/TutorInfoDetail';
 import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../api/chat';
 
 const Detail = () => {
@@ -23,11 +25,11 @@ const Detail = () => {
   const { id } = useParams();
 
   // newReview에 사용할 targeId 업데이트
-  useEffect(() => {
-    if (id) {
-      dispatch(setTargetId(id));
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   if (id) {
+  //     dispatch(setTargetId(id));
+  //   }
+  // }, [id]);
   const navigate = useNavigate();
 
   const { data: profiles, isLoading: profilesLoading, isError: profilesError } = useQuery(['profiles'], fetchData);
@@ -42,9 +44,7 @@ const Detail = () => {
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log('리덕스 로그인사용자', loginUser);
 
-  const { data: bookMark } = useQuery(['bookMark'], fetchBookmark);
   const queryClient = useQueryClient();
 
   const mutationReviewDelete = useMutation(reviewDelete, {
@@ -76,23 +76,21 @@ const Detail = () => {
 
   // 모달
   const handleOpen = () => {
-    dispatch(openModal('report'));
+    dispatch(openModal({ type: 'report' }));
   };
 
   const handleOpenReviewCreateForm = () => {
-    dispatch(openModal('reviewCreate'));
+    dispatch(openModal({ type: 'reviewCreate', targetId: id }));
   };
 
   const handleOpenReviewUpdateForm = () => {
-    dispatch(openModal('reviewUpdate'));
+    dispatch(openModal({ type: 'reviewUpdate', targetId: id }));
   };
 
   // 리뷰 Delete
   const handleReviewDelete = (id: number) => {
     mutationReviewDelete.mutate(id);
   };
-  // const { Modal, isOpen, openModal, closeModal } = useModal();
-  // redux type
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
 
@@ -116,12 +114,13 @@ const Detail = () => {
   return (
     <>
       {/* 튜터데이터 */}
+      <TutorInfoDeatail id={id} />
+      ----
       <section>
         {filteredUser?.map((user) => {
           return (
             <div key={user.id}>
               <div>
-                <img src={`${user.avatar_url}`} alt="프로필 이미지" />
                 <span>{user.username}</span>
                 {session && <button onClick={() => handleStartChat(user.id)}>대화시작하기</button>}
               </div>
@@ -144,10 +143,15 @@ const Detail = () => {
         <button
           onClick={async () => {
             try {
-              await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
-              // await sendRequestTutoringMessage(loginUser!.id, filteredUser![0].id);
-              //await sendResponseTutoringMessage(loginUser!.id, filteredUser![0].id, 'reject');
-              alert('신청완료');
+              if (loginUser) {
+                await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
+                await sendRequestTutoringMessage(loginUser!.id, filteredUser![0].id);
+                //await sendResponseTutoringMessage(loginUser!.id, filteredUser![0].id, 'reject');
+                alert('매칭 요청 완료');
+              } else {
+                alert('로그인 후 사용 가능합니다');
+                navigate('/signin');
+              }
             } catch (error) {
               console.error('매칭 요청 중 오류 발생:', error);
               alert('매칭 요청 중 오류가 발생했습니다.');
@@ -161,54 +165,19 @@ const Detail = () => {
 
         {/* <div>튜터의 스킬/장점/성격</div> */}
       </section>
-
       {/* 튜터 overview */}
       <section>
         <ul>
-          <li>리뷰 평점 : {reviewAverage}</li>
+          <li>
+            <div></div>
+            <p>리뷰 평점 : {reviewAverage} / 5.0</p>
+          </li>
           <li>리뷰수 : {filteredReview?.length}</li>
           {/* <li>매칭수 : </li> */}
         </ul>
       </section>
-
       {/* 튜터 리뷰 */}
-      <section>
-        <h4>
-          리뷰 <span>{filteredReview?.length}</span>
-        </h4>
-        <button onClick={handleOpenReviewCreateForm}>리뷰 남기기</button>
-
-        <ul>
-          {filteredReview?.map((review) => {
-            return (
-              <li key={review.id}>
-                <p>{review.title}</p>
-                <p>{review.content}</p>
-
-                {loginUser?.id === review.user_id ? (
-                  <div>
-                    <button
-                      onClick={() => {
-                        handleOpenReviewUpdateForm();
-                        dispatch(setReview(review));
-                      }}
-                    >
-                      수정
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleReviewDelete(review.id);
-                      }}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                ) : null}
-              </li>
-            );
-          })}
-        </ul>
-      </section>
+      <Review id={id} />
     </>
   );
 };

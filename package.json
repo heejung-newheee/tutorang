@@ -14,7 +14,7 @@
     "@egjs/react-flicking": "^4.11.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.6",
+    "@mui/material": "^5.14.7",
     "@reduxjs/toolkit": "^1.9.5",
     "@sendbird/chat": "^4.9.9",
     "@sendbird/uikit-react": "^3.6.7",
@@ -30,11 +30,13 @@
     "react-router-dom": "^6.15.0",
     "react-tabs": "^6.0.2",
     "styled-components": "^6.0.7",
-    "styled-reset": "^4.5.1"
+    "styled-reset": "^4.5.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@types/uuid": "^9.0.2",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",

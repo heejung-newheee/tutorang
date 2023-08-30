@@ -7,6 +7,24 @@ export const getAllReviewCount = async () => {
   return count;
 };
 
+export const getWriteReviewCount = async (id: string) => {
+  const { count, error } = await supabase.from('review').select('*', { count: 'estimated', head: true }).eq('user_id', id);
+
+  if (error) throw error;
+  return count;
+};
+export const getReceivedWriteReviewCount = async (id: string) => {
+  const { count, error } = await supabase.from('review').select('*', { count: 'estimated', head: true }).eq('reviewed_id', id);
+
+  if (error) throw error;
+  return count;
+};
+// 해당 게시물(튜터) 리뷰 데이터만 조회
+export const matchReview = async (tutorId: string) => {
+  const { data } = await supabase.from('review').select().match({ reviewed_id: tutorId });
+  return data;
+};
+
 /** review create */
 export const reviewRequest = async (newReview: reviews) => {
   const { error } = await supabase.from('review').insert(newReview).select();

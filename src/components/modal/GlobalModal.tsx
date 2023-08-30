@@ -3,9 +3,11 @@ import { Alert, Confirm, Report, ReviewForm, ReviewUpdateForm } from '..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import ModalPortal from './ModalPortal';
+import HeaderModal from '../common/header/HeaderModal';
+import EditProfileForm from '../Form/profileForm/EditProfileForm';
 
 const GlobalModal = () => {
-  const { type, isOpen, targetId } = useSelector((state: RootState) => state.modal);
+  const { type, isOpen } = useSelector((state: RootState) => state.modal);
   if (!isOpen) return;
 
   const MODAL_TYPES = {
@@ -14,12 +16,14 @@ const GlobalModal = () => {
     report: 'report',
     reviewCreate: 'reviewCreate',
     reviewUpdate: 'reviewUpdate',
+    navbabr: 'navbabr',
+    editProfiles: 'editProfiles',
   };
 
   const MODAL_COMPONENTS = [
     {
       type: MODAL_TYPES.confirm,
-      component: <Report />,
+      component: <Confirm />,
     },
     {
       type: MODAL_TYPES.alert,
@@ -27,15 +31,23 @@ const GlobalModal = () => {
     },
     {
       type: MODAL_TYPES.report,
-      component: <Confirm />,
+      component: <Report />,
     },
     {
       type: MODAL_TYPES.reviewCreate,
-      component: targetId !== undefined ? <ReviewForm reviewed_id={targetId} /> : null,
+      component: <ReviewForm />,
     },
     {
       type: MODAL_TYPES.reviewUpdate,
-      component: targetId !== undefined ? <ReviewUpdateForm reviewed_id={targetId} /> : null,
+      component: <ReviewUpdateForm />,
+    },
+    {
+      type: MODAL_TYPES.editProfiles,
+      component: <EditProfileForm />,
+    },
+    {
+      type: MODAL_TYPES.navbabr,
+      component: <HeaderModal />,
     },
   ];
 
