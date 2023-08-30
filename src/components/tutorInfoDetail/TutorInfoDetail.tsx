@@ -6,6 +6,7 @@ import { Button } from '..';
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../redux/modules';
 import { useReviewAverage } from '../../hooks';
+import { fetchReview } from '../../api/user';
 
 type TutorDetailProps = {
   id: string | undefined;
@@ -16,18 +17,23 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
   const dispatch = useDispatch();
   const { data: tutors, isLoading, isError, error } = useQuery(['tutorDetail'], () => matchTutor(id));
 
+  // 리뷰
+  const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], fetchReview);
+  const filteredReview = review?.filter((review) => review.reviewed_id === id);
+  const reviewRatings = filteredReview?.map((review) => review.rating);
+  const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
+
   //별점
   const stars = [1, 2, 3, 4, 5];
-  // const [rating, setRating] = useState(prevReview?.rating || 0);
 
   //별점 평균
-  const reviewAverage = useReviewAverage([1, 2]);
-
-  const decimalPoint = Math.floor(reviewAverage * 10) % 10;
+  const reviewAverage = useReviewAverage(filteredReviewRatings);
 
   const starRating = (currentRate: number) => {
     if (reviewAverage >= currentRate) {
       return <img src={starFull} alt={`Full Star`} />;
+    } else if (reviewAverage + 0.5 >= currentRate) {
+      return <img src={starHalf} alt={`Half Star`} />;
     }
 
     return <img src={starEmpty} alt={`Empty Star`} />;
@@ -124,14 +130,14 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
       <S.OverviewContainer>
         <S.OverviewList>
           <S.OverviewItem>
-            <p>
+            <S.StarWrapper>
               <S.StarList>
                 {stars.map((star) => {
-                  return <li>{starRating(star)}</li>;
+                  return <li key={star}>{starRating(star)}</li>;
                 })}
               </S.StarList>
-              / 5.0
-            </p>
+              {reviewAverage} / 5.0
+            </S.StarWrapper>
             <span>리뷰 평점</span>
           </S.OverviewItem>
           <S.OverviewItem>

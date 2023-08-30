@@ -179,6 +179,7 @@ export const OverviewList = styled.section`
 
 export const OverviewItem = styled.div`
   text-align: center;
+  height: 80px;
 
   & img {
     margin-bottom: 24px;
@@ -197,4 +198,10 @@ export const OverviewItem = styled.div`
 
 export const StarList = styled.ul`
   display: flex;
+`;
+
+export const StarWrapper = styled.p`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
