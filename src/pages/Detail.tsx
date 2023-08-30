@@ -38,6 +38,12 @@ const Detail = () => {
   const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor'], fetchTutorAll);
   const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], fetchReview);
 
+  if (profilesLoading || likeLoading || tutorLoading || reviewLoading || isLoading) {
+    return <div>로딩중~~~~~~~~~~~</div>;
+  }
+  if (!tutor || !profiles || !like || profilesError || likeError || tutorError || reviewError) {
+    return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
+  }
   const filteredUser = profiles?.filter((profiles) => profiles.id === id);
   const filteredTutor = tutor?.filter((tutor) => tutor.user_id === id);
   const filteredReview = review?.filter((review) => review.reviewed_id === id);
@@ -106,12 +112,6 @@ const Detail = () => {
     });
   }, []);
 
-  if (profilesLoading || likeLoading || tutorLoading || reviewLoading || isLoading) {
-    return <div>로딩중~~~~~~~~~~~</div>;
-  }
-  if (!tutor || !profiles || !like || profilesError || likeError || tutorError || reviewError) {
-    return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
-  }
   return (
     <>
       {/* 튜터데이터 */}

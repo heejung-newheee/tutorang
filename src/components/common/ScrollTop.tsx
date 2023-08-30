@@ -15,11 +15,13 @@ const ScrollTop = () => {
 
   useEffect(() => {
     const handleShowButton = () => {
-      if (window.scrollY > 500) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
+      // if (window.scrollY > 500) {
+      //   setVisible(true);
+      // } else {
+      //   setVisible(false);
+      // }
+
+      setVisible(window.scrollY > 500);
     };
     // window.addEventListener('scroll', handleShowButton);
     document.onscroll = handleShowButton;
