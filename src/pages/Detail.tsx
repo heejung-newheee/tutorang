@@ -44,6 +44,7 @@ const Detail = () => {
   if (!tutor || !profiles || !like || profilesError || likeError || tutorError || reviewError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
+
   const filteredUser = profiles?.filter((profiles) => profiles.id === id);
   const filteredTutor = tutor?.filter((tutor) => tutor.user_id === id);
   const filteredReview = review?.filter((review) => review.reviewed_id === id);
