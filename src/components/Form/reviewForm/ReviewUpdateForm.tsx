@@ -15,14 +15,11 @@ type initialStateType = {
   content: string;
 };
 
-type reviewFormProps = {
-  reviewed_id: string;
-};
-
-const ReviewUpdateForm = ({ reviewed_id }: reviewFormProps) => {
+const ReviewUpdateForm = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const loginUser = useSelector((state: RootState) => state.user.user);
+  const { targetId: tutorId } = useSelector((state: RootState) => state.modal);
 
   const prevReview: Tables<'review'> = useSelector((state: RootState) => state.review);
 
@@ -72,9 +69,13 @@ const ReviewUpdateForm = ({ reviewed_id }: reviewFormProps) => {
     e.preventDefault();
 
     if (!loginUser) return;
+    if (!tutorId) {
+      console.log('수정하실 tutorId ID를 찾을 수 없습니다.');
+      return;
+    }
 
     const updatedReview: reviews = {
-      reviewed_id: reviewed_id,
+      reviewed_id: tutorId,
       user_id: loginUser?.id,
       author: loginUser?.username,
       title: title as string,

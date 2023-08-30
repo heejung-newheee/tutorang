@@ -1,10 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
 import { fetchData } from '../../../api/user';
 import { matchingList } from '../../../redux/modules/matching';
+import { tutorInfoJoin } from '../../../api/tutor';
+import { tutorInfo } from '../../../redux/modules/tutorSlice';
+import logo from '../../../assets/logo.png';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import * as Styled from './Header.styled';
@@ -21,9 +24,12 @@ const Header = () => {
   const navigate = useNavigate();
 
   const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
-  console.log(userIsError, userIsLoading);
+  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor_info_join'], tutorInfoJoin);
+
+  // matching 테이블 모든 데이터
   const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
-  console.log('matchData', matchData);
+  // console.log('matchData', matchData);
+  // console.log('tutor_info_join', tutor);
 
   const [email, setEmail] = useState<string>();
 
@@ -45,7 +51,10 @@ const Header = () => {
     if (matchData) {
       dispatch(matchingList(matchData));
     }
-  }, [user, dispatch]);
+    if (tutor) {
+      dispatch(tutorInfo(tutor));
+    }
+  }, [user, matchData, tutor, dispatch]);
 
   const handleHome = () => {
     navigate('/');
@@ -58,10 +67,10 @@ const Header = () => {
     alert('로그아웃 되었습니다');
   };
 
-  if (isLoading) {
+  if (userIsLoading) {
     return <div>로딩중~~~~~~~~~~~스피너~~</div>;
   }
-  if (isError) {
+  if (userIsError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
   return (
@@ -69,8 +78,8 @@ const Header = () => {
       <Styled.NavContainer>
         <Styled.WidthLimitContainer>
           <Styled.LogoWrap>
-            {/* <Styled.NavLogoImg src="" alt="logo"></Styled.NavLogoImg>  */}
-            <h1 onClick={handleHome}>Logo</h1>
+            <Styled.NavLogoImg src={logo} alt="logo"></Styled.NavLogoImg>
+            <h1 onClick={handleHome}>튜터랑</h1>
             {HeaderMenu.map((item, index) => (
               <Styled.NavLinkSt key={index} to={item.path}>
                 {item.title}
@@ -82,6 +91,7 @@ const Header = () => {
           <Styled.MiddleLogo onClick={handleHome}>Logo</Styled.MiddleLogo>
           {/* 미디어쿼리 */}
           <Styled.LoginBtn>
+            <Link to="/mypage">마이페이지 </Link>
             <NavLink to="/signin">로그인 | 회원가입</NavLink>
             <span onClick={() => signOut()}>LogOut</span>
           </Styled.LoginBtn>

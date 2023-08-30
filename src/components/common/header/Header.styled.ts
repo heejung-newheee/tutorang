@@ -4,11 +4,12 @@ import styled from 'styled-components';
 export const NavContainer = styled.div`
   width: 100vw;
   height: auto;
-  background-color: black;
+  background-color: white;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  box-shadow: 0 4px 4px -4px black;
   z-index: 555;
 `;
 
@@ -20,10 +21,14 @@ export const WidthLimitContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: saddlebrown;
+  background-color: white;
   position: relative;
 
-  @media only screen and (max-width: 730px) {
+  @media only screen and (max-width: 1200px) {
+    padding: 0 30px;
+  }
+
+  @media only screen and (max-width: 768px) {
     height: 50px;
   }
 `;
@@ -32,21 +37,27 @@ export const LogoWrap = styled.div`
   display: flex;
   align-items: center;
 
+  & > img {
+    margin-right: 10px;
+    width: 36px;
+    height: 36px;
+  }
+
   //임시
   & > h1 {
     font-weight: 900;
     font-size: 20px;
-    color: white;
+    color: black;
     margin-right: 10px;
   }
-  @media only screen and (max-width: 730px) {
+  @media all and (max-width: 768px) {
     display: none;
   }
 `;
 export const Hamberger = styled.button`
   display: none;
 
-  @media only screen and (max-width: 730px) {
+  @media only screen and (max-width: 768px) {
     display: flex;
   }
 `;
@@ -54,12 +65,12 @@ export const Hamberger = styled.button`
 export const MiddleLogo = styled.div`
   font-weight: 900;
   font-size: 20px;
-  color: white;
+  color: black;
   display: none;
   position: absolute;
   left: 44%;
 
-  @media only screen and (max-width: 730px) {
+  @media only screen and (max-width: 768px) {
     display: flex;
   }
 `;
@@ -70,26 +81,39 @@ export const NavLogoImg = styled.img`
 `;
 
 export const NavLinkSt = styled(NavLink)`
-  color: white;
   margin: 10px;
+  opacity: 0.7;
   &:link,
   &:focus,
   &:active,
   &:visited,
   &:hover {
-    color: white;
+    color: black;
   }
   &.active {
-    color: red;
+    color: #fe902f;
   }
 `;
 
 export const LoginBtn = styled.div`
   cursor: pointer;
-  color: white;
+  color: black;
+  display: flex;
+  align-items: center;
 
-  //임시
-  & > span {
-    margin-left: 10px;
+  @media all and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const LoginBtnSignUp = styled.button`
+  border: 1px solid #fe902f;
+  margin-left: 15px;
+  width: 122px;
+  height: 40px;
+  border-radius: 20px;
+  &:hover {
+    background-color: #fe902f;
+    color: white;
   }
 `;

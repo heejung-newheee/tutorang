@@ -706,6 +706,7 @@ export interface Database {
           location2_gugun: string | null;
           location2_sido: string | null;
           major: string | null;
+          personality: string[] | null;
           tutor_id: string | null;
           tutor_img: string | null;
           tutor_info_id: number | null;
@@ -753,10 +754,12 @@ export interface Database {
 
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 export type Views<T extends keyof Database['public']['Views']> = Database['public']['Views'][T]['Row'];
+
 export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'class_info' | 'tuition_fee_offline' | 'tuition_fee_online'> & {
   profiles: Pick<Tables<'profiles'>, 'id' | 'username' | 'avatar_url'>;
 };
 
-export type BookMarkType = Pick<Tables<'bookmark'>, 'tutor_id' | 'user_id'>;
+export type BookMarkType = Pick<Tables<'like'>, 'liked_id' | 'user_id'>;
 export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
 export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
+export type TutorLists<T extends keyof Database['public']['Tables']['tutor_info']['Row']> = Database['public']['Tables']['tutor_info']['Row'][T];

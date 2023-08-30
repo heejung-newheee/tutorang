@@ -15,6 +15,7 @@ import supabase from '../supabase';
 import { Session } from '@supabase/supabase-js';
 import { getGroupChannelUrl, sendRequestTutoringMessage, sendResponseTutoringMessage } from '../sendbird';
 import { RootState } from '../redux/config/configStore';
+import { starFull, starHalf, starEmpty } from '../assets';
 
 const Detail = () => {
   const dispatch = useDispatch();
@@ -23,11 +24,11 @@ const Detail = () => {
   const { id } = useParams();
 
   // newReview에 사용할 targeId 업데이트
-  useEffect(() => {
-    if (id) {
-      dispatch(setTargetId(id));
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   if (id) {
+  //     dispatch(setTargetId(id));
+  //   }
+  // }, [id]);
   const navigate = useNavigate();
 
   const { data: profiles, isLoading: profilesLoading, isError: profilesError } = useQuery(['profiles'], fetchData);
@@ -42,9 +43,7 @@ const Detail = () => {
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log('리덕스 로그인사용자', loginUser);
 
-  const { data: bookMark } = useQuery(['bookMark'], fetchBookmark);
   const queryClient = useQueryClient();
 
   const mutationReviewDelete = useMutation(reviewDelete, {
@@ -63,23 +62,21 @@ const Detail = () => {
 
   // 모달
   const handleOpen = () => {
-    dispatch(openModal('report'));
+    dispatch(openModal({ type: 'report' }));
   };
 
   const handleOpenReviewCreateForm = () => {
-    dispatch(openModal('reviewCreate'));
+    dispatch(openModal({ type: 'reviewCreate', targetId: id }));
   };
 
   const handleOpenReviewUpdateForm = () => {
-    dispatch(openModal('reviewUpdate'));
+    dispatch(openModal({ type: 'reviewUpdate', targetId: id }));
   };
 
   // 리뷰 Delete
   const handleReviewDelete = (id: number) => {
     mutationReviewDelete.mutate(id);
   };
-  // const { Modal, isOpen, openModal, closeModal } = useModal();
-  // redux type
 
   const reviewAverage = useReviewAverage(filteredReviewRatings);
 
@@ -131,10 +128,15 @@ const Detail = () => {
         <button
           onClick={async () => {
             try {
-              await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
-              await sendRequestTutoringMessage(loginUser!.id, filteredUser![0].id);
-              //await sendResponseTutoringMessage(loginUser!.id, filteredUser![0].id, 'reject');
-              alert('신청완료');
+              if (loginUser) {
+                await matchingRequest({ tutorId: filteredUser![0].id, userId: loginUser!.id });
+                await sendRequestTutoringMessage(loginUser!.id, filteredUser![0].id);
+                //await sendResponseTutoringMessage(loginUser!.id, filteredUser![0].id, 'reject');
+                alert('매칭 요청 완료');
+              } else {
+                alert('로그인 후 사용 가능합니다');
+                navigate('/signin');
+              }
             } catch (error) {
               console.error('매칭 요청 중 오류 발생:', error);
               alert('매칭 요청 중 오류가 발생했습니다.');
@@ -152,7 +154,10 @@ const Detail = () => {
       {/* 튜터 overview */}
       <section>
         <ul>
-          <li>리뷰 평점 : {reviewAverage}</li>
+          <li>
+            <div></div>
+            <p>리뷰 평점 : {reviewAverage} / 5.0</p>
+          </li>
           <li>리뷰수 : {filteredReview?.length}</li>
           {/* <li>매칭수 : </li> */}
         </ul>
