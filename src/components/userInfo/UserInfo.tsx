@@ -21,6 +21,7 @@ const UserInfo = () => {
   // TODO count가 null이라면????????
   const writeReviewCount = useQuery(['writeReviewCount'], () => getWriteReviewCount(user!.id));
   // console.log(writeReviewCount.data);
+
   const receivedReviewCount = useQuery(['receivedReviewCount'], () => getReceivedWriteReviewCount(user!.id));
   // console.log(receivedReviewCount.data);
 

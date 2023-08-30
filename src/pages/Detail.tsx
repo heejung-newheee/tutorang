@@ -17,6 +17,7 @@ import { RootState } from '../redux/config/configStore';
 import { starFull, starHalf, starEmpty } from '../assets';
 import TutorInfoDeatail from '../components/tutorInfoDetail/TutorInfoDetail';
 import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../api/chat';
+import { sendRequestTutoringMessage } from '../sendbird';
 
 const Detail = () => {
   const dispatch = useDispatch();

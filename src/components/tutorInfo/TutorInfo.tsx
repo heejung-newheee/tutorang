@@ -20,19 +20,12 @@ const TutorInfo = ({ match }: pageProps) => {
   }, []);
   const queryClient = useQueryClient();
 
-  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor'], fetchTutorAll);
+  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor-info'], fetchTutorAll);
   const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], fetchReview);
+
   const user = useSelector((state: RootState) => state.user.user);
   // console.log('tutorInfo 로그인사용자', user);
   if (!user) return null;
-
-  const reviewData = review?.filter((item) => {
-    return user!.id === item.reviewed_id;
-  });
-
-  const tutorInfo = tutor?.find((item) => {
-    return user!.id === item.user_id;
-  });
 
   // const created = tutorInfo!.created_at.split('T')[0];
 
@@ -51,6 +44,16 @@ const TutorInfo = ({ match }: pageProps) => {
   if (!tutor || !review || !matchList) {
     return null;
   }
+
+  const reviewData = review?.filter((item) => {
+    return user!.id === item.reviewed_id;
+  });
+
+  // const tutorInfo = tutor?.find((item) => {
+  //   return user!.id === item.user_id;
+  // });
+  const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.user_id) : null;
+
   return (
     <>
       {tutorInfo && (
