@@ -20,7 +20,7 @@ const TutorInfo = ({ match }: pageProps) => {
   }, []);
   const queryClient = useQueryClient();
 
-  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor'], fetchTutorAll);
+  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor-info'], fetchTutorAll);
   const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], fetchReview);
 
   const user = useSelector((state: RootState) => state.user.user);
