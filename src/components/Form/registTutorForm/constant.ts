@@ -27,3 +27,10 @@ export const CLASSLEVEL_LIST: CheckboxOptionType[] = [
 // 초급 영어회화: 기본적인 일상 대화와 문법 학습.
 // 중급 영어회화: 다양한 주제에 대한 의사소통과 간단한 토론.
 // 고급 영어회화: 심도 있는 토론과 어려운 어휘, 문법 다룸.
+
+export const ENROLLMENT_STATUS: CheckboxOptionType[] = [
+  { value: 'enrolled', text: '재학중' },
+  { value: 'onLeave', text: '휴학중' },
+  { value: 'graduated', text: '졸업' },
+  { value: 'withdrawn', text: '중퇴' },
+];
