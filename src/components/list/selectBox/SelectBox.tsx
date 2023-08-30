@@ -175,6 +175,8 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
     return (selectedFilters[filteredMenu]?.length === 0 && item === '전체') || selectedArr.some((i) => i[0] === filteredMenu && i[1] === item);
   };
 
+  //asdadasdasda
+
   // const isCheckedPrice = (item: { priceNum: string; min: number; max: number }) => {
   //   if (selectedFilters['priceType'] === '전체' && item['priceNum'] === '전체') {
   //     return true;
