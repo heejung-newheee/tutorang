@@ -43,7 +43,9 @@ export const Button = styled.button<ButtonProps>`
           color: ${colors[props.color]};
         `;
       case 'textIcon':
-        return css``;
+        return css`
+          color: ${colors[props.color]};
+        `;
     }
   }}
 
@@ -58,13 +60,17 @@ export const Button = styled.button<ButtonProps>`
       case 'Medium':
         return css`
           border: 1px solid ${colors[props.color]};
-          color: ${colors[props.color]};
+          color: ${colors.white};
+          border-radius: 30px;
+          padding: 13px 53px;
+          font-size: 19px;
         `;
       case 'Small':
         return css`
-          width: 100%;
+          display: inline-block;
+          max-width: 120px;
           text-align: center;
-          color: ${colors[props.color]};
+          color: ${colors.white};
         `;
     }
   }}

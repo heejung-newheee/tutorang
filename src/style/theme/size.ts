@@ -1,3 +1,3 @@
 export const size = {
-  globalInner: '1920px',
+  globalInner: '1200px',
 };

@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import { TutorLists } from '../../../supabase/database.types';
 
 type Props = {
   LastelementRef: (node: HTMLDivElement) => void;
   // userInfo: TutorInfoIdType;
 };
-type TutorInfoIdType = TutorLists<'id'>;
+// type TutorInfoIdType = TutorLists<'id'>;
 
 const TutorListCompo = ({ LastelementRef }: Props) => {
   return (

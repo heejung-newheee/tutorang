@@ -74,28 +74,28 @@ export interface Database {
         Row: {
           content: string | null;
           created_at: string;
-          data: string | null;
+          data: Json | null;
           message_id: string;
-          message_type: string;
           room_id: string;
+          type: string;
           user_id: string;
         };
         Insert: {
           content?: string | null;
           created_at?: string;
-          data?: string | null;
+          data?: Json | null;
           message_id?: string;
-          message_type?: string;
           room_id: string;
+          type?: string;
           user_id?: string;
         };
         Update: {
           content?: string | null;
           created_at?: string;
-          data?: string | null;
+          data?: Json | null;
           message_id?: string;
-          message_type?: string;
           room_id?: string;
+          type?: string;
           user_id?: string;
         };
         Relationships: [
@@ -762,4 +762,11 @@ export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'c
 export type BookMarkType = Pick<Tables<'like'>, 'liked_id' | 'user_id'>;
 export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
 export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
-export type TutorLists<T extends keyof Database['public']['Tables']['tutor_info']['Row']> = Database['public']['Tables']['tutor_info']['Row'][T];
+export type RoomType = Tables<'chat_rooms'> & {
+  chat_room_participants: (Tables<'chat_room_participants'> & { profiles: Tables<'profiles'> })[];
+};
+
+export type RoomWithLastMessageType = RoomType & {
+  last_message: Tables<'chat_messages'>[];
+};
+// export type TutorLists<T extends keyof Database['public']['Tables']['tutor_info']['Row']> = Database['public']['Tables']['tutor_info']['Row'][T];

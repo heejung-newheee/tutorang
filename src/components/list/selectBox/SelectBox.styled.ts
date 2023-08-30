@@ -2,15 +2,16 @@ import styled from 'styled-components';
 
 export const FilterBox = styled.div`
   width: 100%;
-  margin-top: 20px;
-  margin-top: 100px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   height: auto;
   display: flex;
   overflow: scroll;
+  padding: 0 30px;
 
-  @media all and (max-width: 1200px) {
+  /* @media all and (max-width: 1200px) {
     padding: 0 10px;
-  }
+  } */
 `;
 
 export const InnerBox = styled.div<{ $isIn: boolean }>`
@@ -33,9 +34,37 @@ export const InnerHidden = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  background-color: #f5f3f3;
+  /* background-color: #f5f3f3; */
   white-space: nowrap;
   margin: 20px 0;
+  padding: 0 20px;
+
+  @media all and (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  & > div {
+    width: 50%;
+    padding: 10px;
+
+    & > input {
+      cursor: pointer;
+    }
+    & > label {
+      cursor: pointer;
+    }
+  }
+`;
+
+export const InnerHiddenPrice = styled.div`
+  width: 50%;
+  /* max-width: 400px; */
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  /* background-color: #f5f3f3; */
+  white-space: nowrap;
+  margin: 20px 0;
+  padding: 0 20px;
 
   @media all and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
@@ -59,6 +88,7 @@ export const PriceClassType = styled.div`
   color: #fe902f;
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 
   & > span {
     border-left: 3px solid #fe902f;
@@ -81,7 +111,12 @@ export const FilterBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #f5f3f3;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 5px;
+  /* background-color: #f5f3f3; */
+  /* border-bottom: 1px solid #eaeaea; */
+  /* border-top: 1px solid #eaeaea; */
+
   overflow-x: scroll;
   white-space: nowrap;
 `;
@@ -93,7 +128,8 @@ export const ResetDiv = styled.div`
   width: 30px;
   height: 30px;
   cursor: pointer;
-  box-shadow: 0px 0px 20px 20px #f5f3f3;
+  border: 1px solid white;
+  box-shadow: 0px 0px 20px 20px white;
   z-index: 1;
 `;
 
@@ -136,7 +172,7 @@ export const ChevronSpan = styled.span<{ $chevron: boolean }>`
 export const InputRangeDiv = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 30px;
 
   & > div {
     border: 1px solid #fe902f;
@@ -149,7 +185,7 @@ export const InputRangeDiv = styled.div`
     background-color: transparent;
     width: 80px;
     height: 36px;
-    padding-left: 5px;
+    padding-left: 10px;
   }
 
   & > div > span {

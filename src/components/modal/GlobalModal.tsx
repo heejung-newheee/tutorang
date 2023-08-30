@@ -3,6 +3,7 @@ import { Alert, Confirm, Report, ReviewForm, ReviewUpdateForm } from '..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import ModalPortal from './ModalPortal';
+import HeaderModal from '../common/header/HeaderModal';
 import EditProfileForm from '../Form/profileForm/EditProfileForm';
 
 const GlobalModal = () => {
@@ -15,6 +16,7 @@ const GlobalModal = () => {
     report: 'report',
     reviewCreate: 'reviewCreate',
     reviewUpdate: 'reviewUpdate',
+    navbabr: 'navbabr',
     editProfiles: 'editProfiles',
   };
 
@@ -42,6 +44,10 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.editProfiles,
       component: <EditProfileForm />,
+    },
+    {
+      type: MODAL_TYPES.navbabr,
+      component: <HeaderModal />,
     },
   ];
 
