@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const FilterBox = styled.div`
   width: 100%;
@@ -30,14 +30,51 @@ export const InnerBox = styled.div<{ $isIn: boolean }>`
   position: relative;
 `;
 
-export const InnerHidden = styled.div`
+const slide = keyframes`
+	0%{
+    transform: translateX(-100px);
+    opacity: 0;
+    }
+    100%{
+    transform: translateX(0px);
+    opacity: 1;
+    }
+`;
+
+const slideDown = keyframes`
+  from {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+  to {
+    max-height: 1000px;
+    opacity: 1;
+    overflow: visible;
+  }
+`;
+
+const slideUp = keyframes`
+  from {
+    max-height: 1000px;
+    opacity: 1;
+    overflow: visible;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+`;
+
+export const InnerHidden = styled.div<{ $isChevronOpen: boolean }>`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  /* background-color: #f5f3f3; */
   white-space: nowrap;
   margin: 20px 0;
   padding: 0 20px;
+  animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   @media all and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
@@ -56,7 +93,7 @@ export const InnerHidden = styled.div`
   }
 `;
 
-export const InnerHiddenPrice = styled.div`
+export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean }>`
   width: 50%;
   /* max-width: 400px; */
   display: grid;
@@ -65,6 +102,7 @@ export const InnerHiddenPrice = styled.div`
   white-space: nowrap;
   margin: 20px 0;
   padding: 0 20px;
+  animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   @media all and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);

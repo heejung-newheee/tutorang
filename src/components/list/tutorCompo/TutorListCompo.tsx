@@ -5,37 +5,39 @@ import ProfilesCard from '../../profilesCard/ProfilesCard';
 import supabase from '../../../supabase';
 import { useEffect, useState } from 'react';
 import school from '../../../assets/school.png';
-import location from '../../../assets/location.png';
+import location from '../../../assets/location-icon.png';
 
 type Props = {
-  userInfo: Tables<'tutor_info'>;
+  userInfo: Views<'tutor_info_join'>;
 };
 
 const TutorListCompo = ({ userInfo }: Props) => {
-  const [additional, setAdditional] = useState<Views<'tutor_info_join'>>();
-  const fetchUserInfo = async (userId: string | null) => {
-    const { data, error } = await supabase.from('tutor_info_join').select('*').eq('tutor_id', userId).single(); // 단일 결과로 가져오기
+  console.log(userInfo, 'userInfo');
+  console.log('TutorListCompo');
 
-    if (error) {
-      console.error('Error fetching user info:', error);
-    } else {
-      console.log('User info:', data);
-      setAdditional(data);
-      // 데이터를 상태로 저장하거나 다른 작업을 수행할 수 있음
-    }
-  };
+  // const fetchUserInfo = async (userId: string | null) => {
+  //   const { data, error } = await supabase.from('tutor_info_join').select('*').eq('tutor_id', userId).single(); // 단일 결과로 가져오기
 
-  useEffect(() => {
-    fetchUserInfo(userInfo.user_id);
-  }, []);
+  //   if (error) {
+  //     console.error('Error fetching user info:', error);
+  //   } else {
+  //     // console.log('User info:', data);
+  //     setAdditional(data);
+  //     // 데이터를 상태로 저장하거나 다른 작업을 수행할 수 있음
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchUserInfo(userInfo.user_id);
+  // }, []);
 
   return (
-    <TutorContainer to={`/detail/${additional?.tutor_id}`} key={additional?.tutor_info_id}>
-      <img src={additional?.tutor_img || 'https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/advices/168628538809485777.png?gif=1&w=1440'} alt="" />
+    <TutorContainer to={`/detail/${userInfo?.tutor_id}`} key={userInfo?.tutor_info_id}>
+      <img src={userInfo?.tutor_img || 'https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/advices/168628538809485777.png?gif=1&w=1440'} alt="" />
       <InFoWrap>
         <div>{userInfo.class_info}</div>
         <SSSSSS>
-          <Name>{additional?.tutor_name}(hello)</Name>
+          <Name>{userInfo?.tutor_name}(hello)</Name>
           <LocationDiv>
             <div>
               <p>
