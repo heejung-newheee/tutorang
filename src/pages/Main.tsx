@@ -3,16 +3,20 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { getAllReviewCount } from '../api/review';
-import { getAllTutorCount, getTutors } from '../api/tutor';
+import { getAllTutorCount, getTopReviewer, getTutors } from '../api/tutor';
 import ProfileForm from '../components/Form/profileForm/CreateProfileForm';
 import supabase from '../supabase';
 import { TTutorWithUser } from '../supabase/database.types';
 import TutorSlider from '../components/slider/tutorSlider/TutorSlider';
+import UserReviewList from '../components/review/mainReviewList/UserReviewList';
+import ProfilesCard from '../components/profilesCard/ProfilesCard';
 
 const Main = () => {
-  const { isLoading, isError, data } = useQuery(['tutors'], () => getTutors());
+  // const { isLoading, isError, data } = useQuery(['tutors'], () => getTutors());
   const tutorCount = useQuery(['tutorCount'], () => getAllTutorCount());
   const reviewCount = useQuery(['reviewCount'], () => getAllReviewCount());
+  const { data: topReviewer, isLoading, isError } = useQuery(['topReviewer'], () => getTopReviewer());
+  console.log(topReviewer);
 
   // 임시임.
   const [isFirstSocialUser, setIsFirstSocialUser] = useState(false);
@@ -33,9 +37,11 @@ const Main = () => {
   if (isLoading) {
     return <span>Loading...</span>;
   }
-
   if (isError) {
     return <span>Error</span>;
+  }
+  if (!topReviewer) {
+    alert('ddd');
   }
 
   return (
@@ -50,13 +56,14 @@ const Main = () => {
       <Section style={{ backgroundColor: '#ffffff' }}>
         <Container>
           <SectionTitle>인기 강사</SectionTitle>
-          <TutorList>
+          {/* <TutorList>
             {data?.map((tutor) => (
               <li key={tutor.id}>
                 <TutorCard tutor={tutor} />
               </li>
             ))}
-          </TutorList>
+          </TutorList> */}
+          <TutorSlider tutorList={topReviewer} panels={4} uniqKey="main" />
         </Container>
       </Section>
       <Section style={{ backgroundColor: '#d8d2d2' }}>
@@ -79,54 +86,22 @@ const Main = () => {
           <MatchFlow></MatchFlow>
         </Container>
       </Section>
-      <Section>
-        <Container>
-          <SectionTitle style={{ textAlign: 'center' }}>이용 후기</SectionTitle>
-          <ReviewList>
-            <ReviewItem>
-              <ReviewItemContent>
-                <ReviewItemTitle>지금까지 배웠던 영어랑 너무 달라서 충격이었어요</ReviewItemTitle>
-                <ReviewItemText>튜러랑 매칭 후 이용후기 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 </ReviewItemText>
-                <ReviewItemAuthor>박금별(25)</ReviewItemAuthor>
-              </ReviewItemContent>
-              <div>
-                <ReviewItemImage src="https://picsum.photos/550/370?random=1"></ReviewItemImage>
-              </div>
-            </ReviewItem>
-            <ReviewItem style={{ flexDirection: 'row-reverse' }}>
-              <ReviewItemContent>
-                <ReviewItemTitle>지금까지 배웠던 영어랑 너무 달라서 충격이었어요</ReviewItemTitle>
-                <ReviewItemText>튜러랑 매칭 후 이용후기 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 </ReviewItemText>
-                <ReviewItemAuthor>박금별(25)</ReviewItemAuthor>
-              </ReviewItemContent>
-              <ReviewItemImage src="https://picsum.photos/550/370?random=1"></ReviewItemImage>
-            </ReviewItem>
-            <ReviewItem>
-              <ReviewItemContent>
-                <ReviewItemTitle>지금까지 배웠던 영어랑 너무 달라서 충격이었어요</ReviewItemTitle>
-                <ReviewItemText>튜러랑 매칭 후 이용후기 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 </ReviewItemText>
-                <ReviewItemAuthor>박금별(25)</ReviewItemAuthor>
-              </ReviewItemContent>
-              <ReviewItemImage src="https://picsum.photos/550/370?random=1"></ReviewItemImage>
-            </ReviewItem>
-          </ReviewList>
-        </Container>
-      </Section>
+      <UserReviewList />
     </div>
   );
 };
 
 export default Main;
 
-const Container = styled.div`
+export const Container = styled.div`
   max-width: 1200px;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   margin: 0 auto;
 `;
 
-const Section = styled.section``;
+export const Section = styled.section``;
 
-const SectionTitle = styled.h2`
+export const SectionTitle = styled.h2`
   font-weight: 700;
   font-size: 1.5rem;
   margin: 2rem 0;
@@ -166,39 +141,6 @@ const SummaryItem = styled.div`
 const MatchFlow = styled.div`
   height: 1000px;
   background-color: #73a9ff;
-`;
-
-const ReviewList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-`;
-
-const ReviewItem = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ReviewItemContent = styled.div`
-  max-width: 550px;
-`;
-
-const ReviewItemTitle = styled.h4`
-  font-size: 2.5rem;
-  font-weight: 700;
-`;
-
-const ReviewItemText = styled.p`
-  font-size: 1.25rem;
-`;
-
-const ReviewItemAuthor = styled.span`
-  font-size: 1.375rem;
-`;
-
-const ReviewItemImage = styled.img`
-  height: auto;
-  max-width: 100%;
 `;
 
 const TutorCard = ({ tutor }: { tutor: TTutorWithUser }) => {
