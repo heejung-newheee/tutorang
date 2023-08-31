@@ -7,7 +7,9 @@ const GlobalLayout = () => {
     <>
       <ScrollTop />
       <Header />
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
       <Footer />
     </>
   );

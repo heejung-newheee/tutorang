@@ -16,7 +16,6 @@ const Review = ({ id }: ReviewProps) => {
 
   const { data: reviews, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], () => matchReview(id));
 
-  console.log(reviews);
   const loginUser = useSelector((state: RootState) => state.user.user);
 
   const queryClient = useQueryClient();

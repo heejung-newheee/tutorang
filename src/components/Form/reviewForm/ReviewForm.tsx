@@ -111,9 +111,14 @@ const ReviewForm = () => {
                 );
               })}
             </S.StarList>
-
-            <input required name="title" value={title as string} onChange={onChange} />
-            <S.Textarea name="content" value={content as string} onChange={onChange} />
+            <div>
+              <label htmlFor="">제목</label>
+              <input required name="title" value={title as string} onChange={onChange} />
+            </div>
+            <div>
+              <label htmlFor="">내용</label>
+              <S.Textarea name="content" value={content as string} onChange={onChange} />
+            </div>
             <S.ButtonWrapper>
               <Button variant="solid" color="black" size="Large">
                 등록하기

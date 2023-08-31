@@ -178,23 +178,48 @@ export const OverviewList = styled.section`
 `;
 
 export const OverviewItem = styled.div`
+  position: relative;
   text-align: center;
-
-  & img {
-    margin-bottom: 24px;
-  }
-
-  & p {
-    font-size: 31px;
-    font-weight: 600;
-    line-height: 1;
-  }
 
   & span {
     font-size: 13px;
   }
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    content: '';
+    height: 120px;
+    width: 2px;
+    background-color: rgba(72, 72, 72, 0.8);
+  }
+  &:last-child::after {
+    display: none;
+  }
+`;
+
+export const OverviewItemNumber = styled.p`
+  font-size: 31px;
+  font-weight: 600;
+  margin-bottom: 4px;
+`;
+
+export const OverviewItemIcon = styled.img`
+  margin-bottom: 24px;
+  height: 60px;
 `;
 
 export const StarList = styled.ul`
   display: flex;
+  filter: invert(63%) sepia(97%) saturate(1441%) hue-rotate(336deg) brightness(100%) contrast(102%);
+`;
+
+export const StarWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 60px;
+  margin-bottom: 24px;
 `;

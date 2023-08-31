@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Footer = () => {
-  return <div>푸터입니다</div>;
+  return <footer>푸터입니다</footer>;
 };
 
 export default Footer;
