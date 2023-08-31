@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { gender, level, age, handleAgeNum } from '../utility';
+import { gender, level, age, handleDeleteFilterBar } from '../utility';
 import * as S from './SelectBox.styled';
 import styled, { keyframes } from 'styled-components';
 import { Slider } from '@mui/material';
@@ -43,82 +43,21 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
   const [maxPriceNum, setMaxPriceNum] = useState<undefined | number>(100000);
   const [Value, setValue] = useState<number>(0);
 
+  //체크박스 노출여부
   const handleHiddenBox = (category: string) => {
     setfilteredMenu(category);
-    setIsChevronOpen((pre) => !pre);
+    setIsChevronOpen((pre) => (isChevronOpen === true && filteredMenu !== category ? true : !pre));
   };
 
   //온,오프라인 설정
-  const onOffChange = () => {
+  const onOffPriceChange = () => {
     const onOff = selectedFilters.classStyle === 'onLine' ? 'offLine' : 'onLine';
     setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, classStyle: onOff });
   };
 
+  //필터값 삭제
   const DeleteFilterBar = (item: string[]) => {
-    switch (item[0]) {
-      //성별
-      case 'gender':
-        console.log(item);
-        setSelectedFilters((pre: SelectedFilters) => {
-          if (pre) {
-            return { ...pre!, gender: pre.gender.filter((i: string) => i !== item[1]) };
-          }
-          return pre; // pre가 undefined일 때도 반환값을 제공
-        });
-        setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
-        break;
-
-      //난이도
-      case 'level':
-        setSelectedFilters((pre: SelectedFilters) => {
-          if (pre) {
-            return { ...pre, level: pre.level.filter((i: string) => i !== item[1]) };
-          }
-          return pre; // pre가 undefined일 때도 반환값을 제공
-        });
-        setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
-        break;
-
-      //나이
-      case 'age':
-        let ageNum = handleAgeNum(item[1]);
-
-        setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: pre.age.filter((i: number) => i !== ageNum) });
-        setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
-        break;
-
-      //지역1
-      case 'location1':
-        setSelectedFilters((pre: SelectedFilters) => {
-          if (pre) {
-            return { ...pre, location1: '', location2: '' };
-          }
-          return pre; // pre가 undefined일 때도 반환값을 제공
-        });
-        setSelectedArr((pre) => pre.filter((i) => i[0] !== 'location1'));
-        setSelectedArr((pre) => pre.filter((i) => i[0] !== 'location2'));
-        break;
-
-      //지역2
-      case 'location2':
-        setSelectedFilters((pre: SelectedFilters) => {
-          if (pre) {
-            return { ...pre, location2: '' };
-          }
-          return pre; // pre가 undefined일 때도 반환값을 제공
-        });
-        setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
-        break;
-
-      //가격
-      case 'price':
-        setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-        setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, minPrice: 0, maxPrice: 100000, priceType: '전체' });
-        break;
-
-      default:
-        break;
-    }
+    handleDeleteFilterBar(item, setSelectedFilters, selectedFilters, setSelectedArr);
   };
 
   //초기화
@@ -148,7 +87,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
   };
 
   //price가격 debounce
-  const debounce = (fn: (item: number) => void, delay: number) => {
+  const priceDebounce = (fn: (item: number) => void, delay: number) => {
     if (timerId) {
       clearTimeout(timerId);
     }
@@ -161,7 +100,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
   //price가격 onchange
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number); // 슬라이더 값이 변경되면 state 업데이트
-    debounce(() => handelInputPrice(newValue as number), 1000);
+    priceDebounce(() => handelInputPrice(newValue as number), 1000);
   };
 
   //선택되면 색깔바뀜
@@ -198,7 +137,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
 
   return (
     <>
-      <LocationDiv>
+      <LocationDiv onClick={openModal}>
         <span>
           <img src={icon_location} />
           <p> 지역을 통해서 찾기</p>
@@ -229,31 +168,43 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
             <S.ChevronSpan $chevron={ischevronOpen('age')}></S.ChevronSpan>
           </S.InnerBox>
 
-          <S.InnerBox onClick={openModal} $isIn={isColorTrue('location1')}>
-            지역
-            <button>+</button>
-          </S.InnerBox>
-
           <S.InnerBox $isIn={selectedArr.some((i) => i[0] === 'price') ? true : false} onClick={() => handleHiddenBox('price')}>
             가격
             <S.ChevronSpan $chevron={ischevronOpen('price')}></S.ChevronSpan>
           </S.InnerBox>
         </S.FilterBox>
 
+        {/* <S.InnerBox onClick={openModal} $isIn={isColorTrue('location1')}>
+            지역
+            <button>+</button>
+          </S.InnerBox> */}
         {/* 체크박스 - 가격 제외*/}
         {filteredMenu !== 'price' && isChevronOpen ? (
           <S.InnerHidden $isChevronOpen={isChevronOpen}>
+            {/* <div> {filteredMenu}</div>
+            <div></div> */}
+
             {obj[filteredMenu]?.map((item: string) => (
               <div key={Math.random() * 22229999}>
-                <Checkbox id={`check-${item}`} onClick={() => handleFilterdObj(item, filteredMenu)} checked={isChecked(item)} inputProps={{ 'aria-label': 'controlled' }} />
-                {/* <input type="checkbox" id="check" checked={isChecked(item)} readOnly /> */}
+                <Checkbox
+                  sx={{
+                    color: 'gray',
+                    '&.Mui-checked': {
+                      color: '#fe902f',
+                    },
+                  }}
+                  id={`check-${item}`}
+                  onClick={() => handleFilterdObj(item, filteredMenu)}
+                  checked={isChecked(item)}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
                 <label htmlFor={`check-${item}`}>{item}</label>
               </div>
             ))}
           </S.InnerHidden>
         ) : null}
         {/* 체크박스 - 가격*/}
-        {filteredMenu === 'price' && isChevronOpen ? (
+        {filteredMenu === 'price' ? (
           <S.InnerHiddenPrice $isChevronOpen={isChevronOpen}>
             {/* 수정해야 함 */}
             <S.PriceClassType>
@@ -261,7 +212,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
                 {selectedFilters.classStyle === 'onLine' ? <span>OnLine - Class </span> : null}
                 {selectedFilters.classStyle === 'offLine' ? <span>OffLine - Class </span> : null}
 
-                <svg onClick={() => onOffChange()} xmlns="http://www.w3.org/2000/svg" fill="#9d9d9d" height="1em" viewBox="0 0 512 512">
+                <svg onClick={() => onOffPriceChange()} xmlns="http://www.w3.org/2000/svg" fill="#9d9d9d" height="1em" viewBox="0 0 512 512">
                   <path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z" />
                 </svg>
               </div>
@@ -333,8 +284,8 @@ const LocationDiv = styled.div`
   margin-top: 40px;
   color: #ffffff;
   padding-left: 20px;
-
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  cursor: pointer;
 
   /* border-bottom: 1px solid #eaeaea; */
 

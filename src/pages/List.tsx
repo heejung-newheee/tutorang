@@ -6,7 +6,7 @@ import TutorListCompo from '../components/list/tutorCompo/TutorListCompo';
 import LastTutorListCompo from '../components/list/tutorCompo/LastTutorListCompo';
 import SelectBox from '../components/list/selectBox/SelectBox';
 import CityModal from '../components/list/location/CityModal';
-import { handleAgeNum, SelectedFilters } from '../components/list/utility';
+import { handleAgeFilter, handleCityModalFilter, handleGenderFilter, handleLevelFilter, SelectedFilters } from '../components/list/utility';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 const List = () => {
@@ -31,7 +31,7 @@ const List = () => {
     age: [],
     classStyle: 'onLine',
   };
-
+  //유저가 선택한 목록 - 검색 api에 들어갈 값{}
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>(initialSelectedFilters);
   //검색
   const [searchText, setSearchText] = useState('');
@@ -42,64 +42,17 @@ const List = () => {
     switch (category) {
       //성별
       case 'gender':
-        if (item === '전체') {
-          //전체 클릭 - 모든 값 초기화
-          setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: [] });
-          setSelectedArr((pre: string[][]) => [...pre.filter((item) => item[0] !== 'gender')]);
-          //전체를 제외한 클릭
-        } else if (item !== '전체') {
-          //값이 없을때 - 추가
-          if (selectedFilters?.gender.find((i: string) => i === item) === undefined) {
-            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: [...pre.gender, item] });
-            setSelectedArr((pre: string[][]) => [...pre, ['gender', item]]);
-            //값이 있을때 - 삭제
-          } else {
-            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: pre.gender.filter((i: string) => i !== item) });
-            setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
-          }
-        }
+        handleGenderFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
         break;
 
       //난이도
       case 'level':
-        if (item === '전체') {
-          //전체 클릭 - 모든 값 초기화
-          setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, level: [] });
-          setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'level')]);
-          //전체를 제외한 클릭
-        } else if (item !== '전체') {
-          //값이 없을때 - 추가
-          if (selectedFilters?.level.find((i: string) => i === item) === undefined) {
-            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, level: [...pre.level, item] });
-            setSelectedArr((pre: string[][]) => [...pre, ['level', item]]);
-            //값이 있을때 - 삭제
-          } else {
-            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, level: pre.level.filter((i: string) => i !== item) });
-            setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
-          }
-        }
+        handleLevelFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
         break;
 
       //나이
       case 'age':
-        //숫자로 변환
-        let ageNum = handleAgeNum(item);
-
-        if (item === '전체') {
-          //전체 클릭 - 모든 값 초기화
-          setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: [] });
-          setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'age')]);
-        } else if (item !== '전체') {
-          //값이 없을때 - 추가
-          if (selectedFilters?.age.find((i: number) => i === ageNum) === undefined) {
-            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: [...pre.age, Number(ageNum)] });
-            setSelectedArr((pre: string[][]) => [...pre, ['age', item]]);
-            //값이 있을때 - 삭제
-          } else {
-            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: pre.age.filter((i: number) => i !== ageNum) });
-            setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
-          }
-        }
+        handleAgeFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
         break;
 
       default:
@@ -116,29 +69,7 @@ const List = () => {
   };
 
   const handelCloseModalAndSelect = () => {
-    if (checkedcity === '전체') {
-      //전체면 필터객체에서 삭제
-      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location1: '', location2: '' });
-      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location1'));
-      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
-    } else {
-      //지역명이 있으면 업데이트
-      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location1: checkedcity, location2: '' });
-
-      setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'location1'), ['location1', checkedcity]]);
-      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
-    }
-
-    if (checkedGunGu === '전체') {
-      //전체면 필터객체에서 삭제
-      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location2: '' });
-      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
-    } else if (checkedGunGu) {
-      //지역명이 있으면 업데이트
-      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location2: checkedGunGu });
-
-      setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'location2'), ['location2', checkedGunGu]]);
-    }
+    handleCityModalFilter(setSelectedFilters, selectedFilters, setSelectedArr, checkedcity, checkedGunGu);
     closeModal();
   };
 
@@ -167,9 +98,9 @@ const List = () => {
     //   query = query.gte('age', minAge).lte('age', maxAge);
     // }
 
-    // if (searchText) {
-    //   query = query.textSearch('username', `${searchText}`);
-    // }
+    if (searchText) {
+      query = query.textSearch('tutor_name', `${searchText}`);
+    }
     // if (minPrice >= 0 && maxPrice) {
     //   if (classStyle === 'onLine') {
     //     query = query.gte('tuition_fee_online', 0).lte('tuition_fee_online', 100000);
@@ -269,7 +200,7 @@ const List = () => {
       <SelectBox handleFilterdObj={handleFilterdObj} openModal={openModal} selectedArr={selectedArr} setSelectedArr={setSelectedArr} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
       {/* 강사 리스트 */}
       <TutorList>
-        {data?.pages.map((i, first) => i?.map((userInfo, second) => (second === i.length - 1 && data?.pages.length - 1 === first ? <LastTutorListCompo LastelementRef={LastelementRef} /> : <TutorListCompo userInfo={userInfo} />)))}
+        {data?.pages.map((i, first) => i?.map((userInfo, second) => (second === i.length - 1 && data?.pages.length - 1 === first ? <LastTutorListCompo LastelementRef={LastelementRef} userInfo={userInfo} /> : <TutorListCompo userInfo={userInfo} />)))}
       </TutorList>
 
       {/* 모달 */}
@@ -308,20 +239,17 @@ const TutorList = styled.div`
   margin-top: 50px;
   width: 100%;
   padding: 0 20px;
+  margin-top: 100px;
   display: grid;
-  gap: 30px;
+  justify-content: center;
   grid-template-columns: repeat(3, 1fr);
-  /* transition: height 0.5s ease-in-out; */
+  gap: 30px;
 
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 900px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media only screen and (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media only screen and (max-width: 650px) {
+  @media only screen and (max-width: 500px) {
     grid-template-columns: repeat(1, 1fr);
   }
 

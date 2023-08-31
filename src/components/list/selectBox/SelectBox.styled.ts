@@ -102,6 +102,7 @@ export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean }>`
   white-space: nowrap;
   margin: 20px 0;
   padding: 0 20px;
+  /* display: ${(props) => (props.$isChevronOpen ? 'block' : 'none')}; */
   animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   @media all and (max-width: 768px) {
@@ -154,9 +155,11 @@ export const FilterBar = styled.div`
   /* background-color: #f5f3f3; */
   /* border-bottom: 1px solid #eaeaea; */
   /* border-top: 1px solid #eaeaea; */
-
   overflow-x: scroll;
   white-space: nowrap;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 `;
 
 export const ResetDiv = styled.div`
@@ -175,6 +178,10 @@ export const FiterWrap = styled.div`
   display: flex;
   overflow-x: scroll;
   position: relative;
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 `;
 
 export const FiterWrapButton = styled.div`
@@ -188,6 +195,10 @@ export const FiterWrapButton = styled.div`
   display: flex;
   align-items: center;
   display: block;
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 
   & > div {
     display: flex;

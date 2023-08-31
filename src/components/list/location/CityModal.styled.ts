@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const InnerModalBox = styled.div`
   width: 70%;
-  max-width: 600px;
+  max-width: 650px;
   height: 80%;
   background-color: #fafafa;
   overflow-y: scroll;
@@ -104,6 +104,9 @@ export const HiddenDropMenu = styled.div`
   height: 50%;
   overflow-y: scroll;
 
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
   & > div {
     width: 100%;
     border-bottom: 1px solid #dbdbdb;
@@ -122,6 +125,10 @@ export const HiddenDropMenu = styled.div`
 export const GunGuBox = styled.div`
   overflow-y: scroll;
   width: 100%;
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 
   & > div {
     width: 100%;
