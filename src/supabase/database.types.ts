@@ -700,6 +700,7 @@ export interface Database {
       tutor_info_join: {
         Row: {
           class_info: string | null;
+          class_level: string[] | null;
           created_at: string | null;
           location1_gugun: string | null;
           location1_sido: string | null;
@@ -707,11 +708,15 @@ export interface Database {
           location2_sido: string | null;
           major: string | null;
           personality: string[] | null;
+          speaking_language: string[] | null;
+          tuition_fee_offline: number | null;
+          tuition_fee_online: number | null;
           tutor_id: string | null;
           tutor_img: string | null;
           tutor_info_id: number | null;
           tutor_name: string | null;
           university: string | null;
+          update: string | null;
         };
         Relationships: [
           {
