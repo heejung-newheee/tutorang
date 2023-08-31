@@ -37,15 +37,15 @@ export const TutorName = styled.div`
 `;
 export const TutorContent = styled.div`
   font-size: 13px;
-  margin-bottom: 15px;
 `;
 export const Tag = styled.div`
   display: flex;
   gap: 7px;
+  margin-top: 10px;
   div {
     padding: 0 11px;
     line-height: 26px;
     border-radius: 13px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 4px 0px;
   }
 `;

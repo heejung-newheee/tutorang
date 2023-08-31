@@ -117,6 +117,9 @@ export const InfoTitle = styled.h2`
   font-weight: bold;
   margin-bottom: 40px;
 `;
+export const InfoNull = styled.p`
+  color: #bebebe;
+`;
 export const MatchBtn = styled.button`
   display: inline-block;
   font-size: 16px;

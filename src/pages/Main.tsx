@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { getAllReviewCount } from '../api/review';
 import { getAllTutorCount, getTutors } from '../api/tutor';
 import { TTutorWithUser } from '../supabase/database.types';
+import TutorSlider from '../components/slider/tutorSlider/TutorSlider';
 
 const Main = () => {
   const { isLoading, isError, data } = useQuery(['tutors'], () => getTutors());

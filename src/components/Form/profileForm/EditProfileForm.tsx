@@ -6,6 +6,7 @@ import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
 import * as S from './ProfileForm.styled';
 import { close } from '../../../assets';
+import { v4 } from 'uuid';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -18,12 +19,6 @@ const EditProfileForm = () => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [imgFile, setImgFile] = useState<File | null>(null);
-  // const [preview, setPreview] = useState<string | null>(null);
-  const [imgUrl, setImgUrl] = useState<string | null>(null);
-  //   const [isLocationOpen, setIsLocationOpen] = useState({ sido1: false, gugun1: false, sido2: false, gugun2: false });
-  // console.log(checkedGender);
-  // console.log(password);
-  // console.log(confirmPassword);
 
   const changeNewpassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -35,14 +30,14 @@ const EditProfileForm = () => {
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     if (event.target.name === 'female' || event.target.name === 'male') setCheckedGender(event.target.value);
   };
+
+  // TODO 변경할 프로필 이미지 미리보기
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
     } = e;
     if (files && files.length > 0) {
       const theFile = files[0];
-      // const _preview = URL.createObjectURL(theFile);
-      // setPreview(_preview);
       setImgFile(theFile);
     }
   };
@@ -50,23 +45,24 @@ const EditProfileForm = () => {
   const handleClose = () => {
     dispatch(closeModal());
   };
-  // console.log(preview, imgFile);
 
   const updateProfilesInfo = async (e: React.FormEvent) => {
+    const imgName = v4();
     e.preventDefault();
-    // const avatarFile = e.target.files[0]
     try {
       if (password) {
         await supabase.auth.updateUser({ password: password });
         alert('비밀번호 변경이 완료되었습니다.');
       }
       await supabase.from('profiles').update({ gender: checkedGender }).eq('id', user?.id);
+
       if (imgFile) {
-        await supabase.storage.from('avatars').upload(`profiles/${user!.id}/${imgFile.name}`, imgFile);
-        await supabase
-          .from('profiles')
-          .update({ avatar_url: `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/profiles/${user!.id}/${imgFile.name}` })
-          .eq('id', user?.id);
+        await supabase.storage.from('avatars').upload(`profiles/${user!.id}/${imgName}`, imgFile);
+
+        // TODO await 수정하기
+        const { data } = await supabase.storage.from('avatars').getPublicUrl(`profiles/${user!.id}/${imgName}`);
+        console.log(data.publicUrl);
+        await supabase.from('profiles').update({ avatar_url: data.publicUrl }).eq('id', user?.id);
       }
 
       handleClose();
@@ -81,9 +77,9 @@ const EditProfileForm = () => {
       <Inner>
         <ContentWrapper>
           <S.EditFormTop>
-            <h3>내 정보 수정</h3>
+            <h2>내 정보 수정</h2>
             <S.CloseBtn onClick={handleClose}>
-              <img src={close} alt="" />{' '}
+              <img src={close} alt="close button" />
             </S.CloseBtn>
           </S.EditFormTop>
 

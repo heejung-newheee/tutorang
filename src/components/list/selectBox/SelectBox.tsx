@@ -1,19 +1,18 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { gender, level, age, handleAgeNum } from '../utility';
-// import locationIcon from '../../assets/location-icon.png';
 import * as S from './SelectBox.styled';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { Slider } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-// import { debounce } from '../utility';
-// import { styled } from '@mui/system';
+import Checkbox from '@mui/material/Checkbox';
+import { SelectedFilters, FilterMenuObj } from '../utility';
+import filterIcon from '../../../assets/funnel.png';
+import icon_location from '../../../assets/marker-location.png';
 
-const obj: any = {
+const obj: FilterMenuObj = {
   gender,
   level,
   age,
-  // price,
 };
 
 const theme = createTheme({
@@ -28,16 +27,17 @@ type Props = {
   handleFilterdObj: (item: string, category: string) => void;
   openModal: () => void;
   selectedArr: string[][];
-  setSelectedArr: Dispatch<SetStateAction<any[]>>;
-  selectedFilters: any;
-  setSelectedFilters: Dispatch<SetStateAction<any>>;
+  setSelectedArr: Dispatch<SetStateAction<string[][]>>;
+  selectedFilters: SelectedFilters;
+  setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>;
 };
 
+//price debounce
 let timerId: ReturnType<typeof setTimeout> | null = null;
 
 const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, selectedFilters, setSelectedFilters }: Props) => {
-  const [filteredMenu, setfilteredMenu] = useState('gender');
-  const [isOpen, setIsOpen] = useState(true);
+  const [filteredMenu, setfilteredMenu] = useState('');
+  const [isChevronOpen, setIsChevronOpen] = useState(false);
 
   const [minPriceNum, setMinPriceNum] = useState<undefined | number>(0);
   const [maxPriceNum, setMaxPriceNum] = useState<undefined | number>(100000);
@@ -45,12 +45,13 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
 
   const handleHiddenBox = (category: string) => {
     setfilteredMenu(category);
-    // setIsOpen((pre) => !pre);
+    setIsChevronOpen((pre) => !pre);
   };
 
+  //온,오프라인 설정
   const onOffChange = () => {
     const onOff = selectedFilters.classStyle === 'onLine' ? 'offLine' : 'onLine';
-    setSelectedFilters((pre: any) => pre && { ...pre, classStyle: onOff });
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, classStyle: onOff });
   };
 
   const DeleteFilterBar = (item: string[]) => {
@@ -58,64 +59,69 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
       //성별
       case 'gender':
         console.log(item);
-        setSelectedFilters((pre: any) => {
+        setSelectedFilters((pre: SelectedFilters) => {
           if (pre) {
-            return { ...pre, gender: pre.gender.filter((i: string) => i !== item[1]) };
+            return { ...pre!, gender: pre.gender.filter((i: string) => i !== item[1]) };
           }
+          return pre; // pre가 undefined일 때도 반환값을 제공
         });
         setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
-
         break;
+
       //난이도
       case 'level':
-        setSelectedFilters((pre: any) => {
+        setSelectedFilters((pre: SelectedFilters) => {
           if (pre) {
             return { ...pre, level: pre.level.filter((i: string) => i !== item[1]) };
           }
+          return pre; // pre가 undefined일 때도 반환값을 제공
         });
         setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
-
         break;
 
       //나이
       case 'age':
         let ageNum = handleAgeNum(item[1]);
 
-        setSelectedFilters((pre: any) => pre && { ...pre, age: pre.age.filter((i: any) => i !== ageNum) });
+        setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: pre.age.filter((i: number) => i !== ageNum) });
         setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
-
         break;
+
       //지역1
       case 'location1':
-        setSelectedFilters((pre: any) => {
+        setSelectedFilters((pre: SelectedFilters) => {
           if (pre) {
             return { ...pre, location1: '', location2: '' };
           }
+          return pre; // pre가 undefined일 때도 반환값을 제공
         });
         setSelectedArr((pre) => pre.filter((i) => i[0] !== 'location1'));
         setSelectedArr((pre) => pre.filter((i) => i[0] !== 'location2'));
-
         break;
+
       //지역2
       case 'location2':
-        setSelectedFilters((pre: any) => {
+        setSelectedFilters((pre: SelectedFilters) => {
           if (pre) {
             return { ...pre, location2: '' };
           }
+          return pre; // pre가 undefined일 때도 반환값을 제공
         });
         setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
-
         break;
+
       //가격
       case 'price':
         setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-        setSelectedFilters((pre: any) => pre && { ...pre, minPrice: 0, maxPrice: 100000, priceType: '전체' });
+        setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, minPrice: 0, maxPrice: 100000, priceType: '전체' });
         break;
+
       default:
         break;
     }
   };
 
+  //초기화
   const reset = () => {
     setSelectedArr([]);
     setSelectedFilters({
@@ -123,29 +129,25 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
       level: [],
       minPrice: 0,
       maxPrice: 100000,
+      priceType: '전체',
       location1: '',
-      location2: [],
+      location2: '',
       age: [],
+      classStyle: 'onLine',
     });
 
     setMaxPriceNum(0);
     setMinPriceNum(0);
   };
 
-  // const handleRangeMinNum = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setMinPriceNum(Number(e.target.value.replace(/[^0-9]/g, '')));
-  // };
-
-  // const handleRangeMaxNum = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setMaxPriceNum(Number(e.target.value.replace(/[^0-9]/g, '')));
-  // };
-
+  //price가격 업데이트
   const handelInputPrice = (item: number) => {
-    setSelectedFilters((pre: any) => pre && { ...pre, maxPrice: item, minPrice: minPriceNum });
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item, minPrice: Number(minPriceNum) });
     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
     setSelectedArr((pre) => [...pre, ['price', `${minPriceNum?.toLocaleString('ko-KR')}~${item?.toLocaleString('ko-KR')}`]]);
   };
 
+  //price가격 debounce
   const debounce = (fn: (item: number) => void, delay: number) => {
     if (timerId) {
       clearTimeout(timerId);
@@ -156,49 +158,60 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
     }, delay);
   };
 
+  //price가격 onchange
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number); // 슬라이더 값이 변경되면 state 업데이트
     debounce(() => handelInputPrice(newValue as number), 1000);
   };
 
-  // const debouncedOnChange = debounce(5000);
-
+  //선택되면 색깔바뀜
   const isColorTrue = (item: string) => {
-    return selectedFilters[item].length !== 0;
+    let isTrue = selectedArr.find((i) => i[0] === item);
+
+    if (isTrue?.length !== undefined) {
+      return true;
+    } else false;
+
+    return false;
   };
 
+  //꺽세모양
   const ischevronOpen = (item: string) => {
-    return isOpen === true && filteredMenu === item;
+    return isChevronOpen === true && filteredMenu === item;
   };
 
+  //체크박스
   const isChecked = (item: string) => {
-    return (selectedFilters[filteredMenu]?.length === 0 && item === '전체') || selectedArr.some((i) => i[0] === filteredMenu && i[1] === item);
+    let isTrue = selectedArr.some((i) => i[0] === filteredMenu && i[1] === item);
+    let DefaltCheck = selectedArr.some((i) => i[0] === filteredMenu);
+
+    if (!DefaltCheck && item === '전체') {
+      return true;
+    }
+
+    if (isTrue === true) {
+      return true;
+    } else if (!DefaltCheck && item === '전체') true;
+
+    return false;
   };
 
-  //asdadasdasda
-
-  // const isCheckedPrice = (item: { priceNum: string; min: number; max: number }) => {
-  //   if (selectedFilters['priceType'] === '전체' && item['priceNum'] === '전체') {
-  //     return true;
-  //   }
-
-  //   if (selectedFilters['priceType'] === item['priceNum']) {
-  //     return true;
-  //   }
-
-  //   return false;
-  // };
   return (
     <>
-      <Search>지역을 통해서 찾기</Search>
+      <LocationDiv>
+        <span>
+          <img src={icon_location} />
+          <p> 지역을 통해서 찾기</p>
+        </span>
+      </LocationDiv>
 
       {/* <DDDD>지역을 통해서 찾기</DDDD> */}
-      <FilterContainer>
-        <LocationDiv>
+      <FilterContainer $isChevronOpen={isChevronOpen}>
+        <FilterStart>
           {' '}
-          {/* <img src={locationIcon} /> */}
+          <img src={filterIcon} />
           필터로 자세히 찾기
-        </LocationDiv>
+        </FilterStart>
 
         <S.FilterBox>
           <S.InnerBox $isIn={isColorTrue('gender')} onClick={() => handleHiddenBox('gender')}>
@@ -228,21 +241,20 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
         </S.FilterBox>
 
         {/* 체크박스 - 가격 제외*/}
-        {filteredMenu !== 'price' ? (
-          <S.InnerHidden>
+        {filteredMenu !== 'price' && isChevronOpen ? (
+          <S.InnerHidden $isChevronOpen={isChevronOpen}>
             {obj[filteredMenu]?.map((item: string) => (
               <div key={Math.random() * 22229999}>
-                <input type="checkbox" id="check" checked={isChecked(item)} readOnly />
-                <label htmlFor="check" onClick={() => handleFilterdObj(item, filteredMenu)}>
-                  {item}
-                </label>
+                <Checkbox id={`check-${item}`} onClick={() => handleFilterdObj(item, filteredMenu)} checked={isChecked(item)} inputProps={{ 'aria-label': 'controlled' }} />
+                {/* <input type="checkbox" id="check" checked={isChecked(item)} readOnly /> */}
+                <label htmlFor={`check-${item}`}>{item}</label>
               </div>
             ))}
           </S.InnerHidden>
         ) : null}
         {/* 체크박스 - 가격*/}
-        {filteredMenu === 'price' ? (
-          <S.InnerHiddenPrice>
+        {filteredMenu === 'price' && isChevronOpen ? (
+          <S.InnerHiddenPrice $isChevronOpen={isChevronOpen}>
             {/* 수정해야 함 */}
             <S.PriceClassType>
               <div>
@@ -257,19 +269,6 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
             <ThemeProvider theme={theme}>
               <Slider getAriaLabel={() => 'Temperature range'} valueLabelDisplay="auto" min={0} max={100000} value={Value} step={1000} onChange={handleSliderChange} color="secondary" />
             </ThemeProvider>
-            {/* <S.InputRangeDiv>
-              <div>
-                <input type="text" value={minPriceNum?.toLocaleString('ko-KR')} onChange={(e) => handleRangeMinNum(e)} />
-                <span>원</span>
-              </div>
-              <span>~</span>
-              <div>
-                <input type="text" value={maxPriceNum?.toLocaleString('ko-KR')} onChange={(e) => handleRangeMaxNum(e)} />
-                <span>원</span>
-              </div>
-              <S.InputRangeBtn onClick={handelInputPrice}>검색</S.InputRangeBtn>
-            </S.InputRangeDiv> */}
-            {/* <S.InputRangeBtnMobile onClick={handelInputPrice}>검색</S.InputRangeBtnMobile> */}
           </S.InnerHiddenPrice>
         ) : null}
       </FilterContainer>
@@ -306,41 +305,63 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
 
 export default SelectBox;
 
-const Search = styled.div`
-  margin-top: 180px;
-  width: 100%;
-  height: 50px;
-  padding-left: 10px;
-  display: flex;
-  align-items: center;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+const slideIn = keyframes`
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 1000px; /* 원하는 최대 높이 설정 */
+    opacity: 1;
+  }
 `;
 
-const FilterContainer = styled.div`
+const FilterContainer = styled.div<{ $isChevronOpen: boolean }>`
   width: 100%;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-`;
 
-const DDDD = styled.div`
-  margin-top: 30px;
-  width: 100%;
-  width: 100px;
-  height: 50px;
-  padding-left: 10px;
-  display: flex;
-  align-items: center;
-  background-color: #fe902f;
-  border-radius: 5px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  height: ${(props) => (props.$isChevronOpen ? '100%' : 'auto')};
+  animation: ${slideIn} 0.5s ease-in-out; /* keyframes 애니메이션 적용 */
 `;
 
 const LocationDiv = styled.div`
+  width: 100%;
+  height: 50px;
+  background-color: #fe902f;
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  color: #ffffff;
+  padding-left: 20px;
+
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+  /* border-bottom: 1px solid #eaeaea; */
+
+  & > span {
+    display: flex;
+    align-items: center;
+  }
+
+  & > span > img {
+    height: 15px;
+    margin-right: 10px;
+  }
+`;
+
+const FilterStart = styled.div`
   width: 100%;
   height: 50px;
   /* background-color: #fe902f; */
   display: flex;
   align-items: center;
   /* margin-top: 100px; */
-  padding-left: 10px;
+  padding-left: 20px;
+
   border-bottom: 1px solid #eaeaea;
+
+  & > img {
+    height: 15px;
+    margin-right: 10px;
+  }
 `;
