@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import { RootState } from '../../../redux/config/configStore';
@@ -30,6 +31,7 @@ const RegistTutorForm = () => {
   const [certificationImgFile, setCertificationImgFile] = useState<File | undefined>();
   const [enrollmentStatus, setEnrollmentStatus] = useState('');
   const user = useSelector((state: RootState) => state.user.user);
+  const navigate = useNavigate();
   console.log('user', user);
 
   const onChangeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +82,6 @@ const RegistTutorForm = () => {
   };
 
   const storeAndGetProfileImg = async () => {
-    console.log('이메일이 있단 말인가???', email);
     const imgIdentity = v4();
     // let pdfUrlList: string | undefined;
     if (certificationImgFile && certificationImgFile !== undefined) {
@@ -127,6 +128,10 @@ const RegistTutorForm = () => {
     // console.log('formData로 뭐가 들어오나요? =>', formData);
     const { error } = await supabase.from('tutor_info').insert(formData);
     if (error) console.log(error.message);
+    else {
+      alert('튜터신청이 완료되었습니다! 관리자의 승인을 기다려주세염');
+      navigate(-1);
+    }
   };
 
   useEffect(() => {
