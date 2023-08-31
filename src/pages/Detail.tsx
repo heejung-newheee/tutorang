@@ -1,17 +1,29 @@
 import { useParams } from 'react-router-dom';
-import { Review } from '../components';
-import TutorInfoDeatail from '../components/tutorInfoDetail/TutorInfoDetail';
+import { Review, StarTutorSlider, TutorInfoDetail } from '../components';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '../redux/modules';
 
 const Detail = () => {
   const { id } = useParams();
-  if (!id) return;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(closeModal());
+    };
+  }, []);
 
   return (
     <>
       {/* 튜터데이터 */}
-      <TutorInfoDeatail id={id} />
+      <TutorInfoDetail id={id} />
+
       {/* 튜터 리뷰 */}
       <Review id={id} />
+
+      {/* 인기강사 */}
+      <StarTutorSlider />
     </>
   );
 };

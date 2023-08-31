@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { getAllReviewCount } from '../api/review';
-import { getAllTutorCount, getTopReviewer, getTutors } from '../api/tutor';
+import { getAllTutorCount, getTopReviewer } from '../api/tutor';
 import ProfileForm from '../components/Form/profileForm/CreateProfileForm';
 import supabase from '../supabase';
 import { TTutorWithUser } from '../supabase/database.types';
@@ -18,22 +17,6 @@ const Main = () => {
   const { data: topReviewer, isLoading, isError } = useQuery(['topReviewer'], () => getTopReviewer());
   console.log(topReviewer);
 
-  // 임시임.
-  const [isFirstSocialUser, setIsFirstSocialUser] = useState(false);
-
-  const checkFirstSocialSignin = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (user === null) return false;
-    const checkingFirstSocialUser = user?.user_metadata.role;
-    if (user !== null && checkingFirstSocialUser === undefined) setIsFirstSocialUser(true);
-  };
-
-  useEffect(() => {
-    checkFirstSocialSignin();
-  }, []);
-
   if (isLoading) {
     return <span>Loading...</span>;
   }
@@ -46,8 +29,6 @@ const Main = () => {
 
   return (
     <div>
-      Main
-      {isFirstSocialUser && <ProfileForm />}
       <Section style={{ backgroundColor: '#4946cf' }}>
         <Banner>
           <BannerImage src="https://picsum.photos/1920/700?random=1" alt="" />

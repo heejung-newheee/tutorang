@@ -60,7 +60,7 @@ export const tutorInfoJoin = async () => {
 
 // 해당 (튜터) 데이터만 조회
 export const matchTutor = async (tutorId: string) => {
-  const { data, error } = await supabase.from('tutor_info_join').select().match({ tutor_id: tutorId });
+  const { data, error } = await supabase.from('tutor_info_join').select().match({ tutor_id: tutorId }).single();
   if (error) throw error;
   return data;
 };

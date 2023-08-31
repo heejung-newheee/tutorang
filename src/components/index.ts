@@ -14,3 +14,5 @@ export { default as BookMark } from './bookMark/BookMark';
 export { default as ReviewForm } from './Form/reviewForm/ReviewForm';
 export { default as ReviewUpdateForm } from './Form/reviewForm/ReviewUpdateForm';
 export { default as Review } from './review/Review';
+export { default as TutorInfoDetail } from './tutorInfoDetail/TutorInfoDetail';
+export { default as StarTutorSlider } from './slider/starTutorSlider/StarTutorSlider';
