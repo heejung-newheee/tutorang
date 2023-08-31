@@ -87,6 +87,9 @@ export const NavLogoImg = styled.img`
   margin-right: 5px;
 `;
 
+export const LogoH1 = styled.h1`
+  cursor: pointer;
+`;
 export const NavLinkSt = styled(NavLink)`
   margin: 10px;
   opacity: 0.7;
