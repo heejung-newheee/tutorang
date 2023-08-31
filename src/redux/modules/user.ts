@@ -15,8 +15,12 @@ const userSlice = createSlice({
     setUser: (state, action: PayloadAction<Tables<'profiles'>>) => {
       state.user = action.payload;
     },
+
+    logOutUser: (state) => {
+      state.user = null;
+    },
   },
 });
 
 export default userSlice.reducer;
-export const { setUser } = userSlice.actions;
+export const { setUser, logOutUser } = userSlice.actions;

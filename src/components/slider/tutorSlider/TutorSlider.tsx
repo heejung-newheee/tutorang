@@ -15,7 +15,7 @@ const TutorSlider = ({ tutorList, panels }: pageProps) => {
   const _plugins = [new Arrow()];
   return (
     <>
-      <Flicking panelsPerView={panels} align="prev" circular={true} plugins={_plugins} style={{ padding: '0 50px' }}>
+      <Flicking panelsPerView={panels} align="prev" circular={true} plugins={_plugins} style={{ padding: '10px 50px' }}>
         {tutorList.map((tutor: Views<'tutor_info_join'>) => {
           return (
             // <S.LikeTutor to={`/detail/${tutor.tutor_id}`} key={tutor.tutor_info_id}>

@@ -11,3 +11,8 @@ export const fetchReview = async ({ queryKey }: { queryKey: string[] }) => {
   const res = await supabase.from('review').select('*');
   return res.data;
 };
+
+export const getUser = async (email: string | undefined) => {
+  const { data } = await supabase.from('profiles').select().eq('email', email).single();
+  return data;
+};
