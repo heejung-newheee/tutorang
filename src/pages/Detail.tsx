@@ -10,11 +10,9 @@ const Detail = () => {
     <>
       {/* 튜터데이터 */}
       <TutorInfoDeatail id={id} />
-
       {/* 튜터 리뷰 */}
       <Review id={id} />
     </>
   );
 };
-
 export default Detail;
