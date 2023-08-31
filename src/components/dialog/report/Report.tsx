@@ -1,7 +1,7 @@
 import { Button } from '../..';
 import * as S from './Report.styled';
 import { useDispatch } from 'react-redux';
-import { openModal, closeModal } from '../../../redux/modules';
+import { closeModal } from '../../../redux/modules';
 
 const Report = () => {
   const dispatch = useDispatch();

@@ -2,11 +2,10 @@ import * as S from './ReviewForm.styled';
 import { useInput } from '../../../hooks';
 import { Button } from '../..';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeModal, setReview } from '../../../redux/modules';
+import { closeModal } from '../../../redux/modules';
 import { starEmpty, starFull } from '../../../assets';
 import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { reviewRequest } from '../../../api/review';
+import { useCreateReviewMutation } from '../../../api/review';
 import { RootState } from '../../../redux/config/configStore';
 import { reviews } from '../../../supabase/database.types';
 
@@ -17,15 +16,10 @@ type initialStateType = {
 
 const ReviewForm = () => {
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
   const loginUser = useSelector((state: RootState) => state.user.user);
   const { targetId: tutorId } = useSelector((state: RootState) => state.modal);
 
-  const mutation = useMutation(reviewRequest, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['review']);
-    },
-  });
+  const createReview = useCreateReviewMutation();
 
   const initialState: initialStateType = {
     title: '',
@@ -82,7 +76,7 @@ const ReviewForm = () => {
     };
 
     try {
-      await mutation.mutate(newReview);
+      await createReview.mutate(newReview);
     } catch (error) {
       console.error('error submit review : ', error);
     }
