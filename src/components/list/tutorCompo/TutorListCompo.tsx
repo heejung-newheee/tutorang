@@ -15,6 +15,7 @@ const TutorListCompo = ({ userInfo }: Props) => {
   console.log(userInfo, 'userInfo');
   console.log('TutorListCompo');
 
+  ////sfsfdsfdsfsf
   // const fetchUserInfo = async (userId: string | null) => {
   //   const { data, error } = await supabase.from('tutor_info_join').select('*').eq('tutor_id', userId).single(); // 단일 결과로 가져오기
 
