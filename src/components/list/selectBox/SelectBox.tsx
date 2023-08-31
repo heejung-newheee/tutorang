@@ -46,7 +46,8 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
   //체크박스 노출여부
   const handleHiddenBox = (category: string) => {
     setfilteredMenu(category);
-    setIsChevronOpen((pre) => (isChevronOpen === true && filteredMenu !== category ? true : !pre));
+    setIsChevronOpen((pre) => (pre === true && filteredMenu !== category ? true : !pre));
+    // setIsChevronOpen((pre) => !pre);
   };
 
   //온,오프라인 설정
@@ -180,7 +181,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
           </S.InnerBox> */}
         {/* 체크박스 - 가격 제외*/}
         {filteredMenu !== 'price' && isChevronOpen ? (
-          <S.InnerHidden $isChevronOpen={isChevronOpen}>
+          <S.InnerHidden $isChevronOpen={isChevronOpen} $dddddd={filteredMenu !== 'price' && isChevronOpen}>
             {/* <div> {filteredMenu}</div>
             <div></div> */}
 
@@ -204,8 +205,8 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
           </S.InnerHidden>
         ) : null}
         {/* 체크박스 - 가격*/}
-        {filteredMenu === 'price' ? (
-          <S.InnerHiddenPrice $isChevronOpen={isChevronOpen}>
+        {filteredMenu === 'price' && isChevronOpen ? (
+          <S.InnerHiddenPrice $isChevronOpen={isChevronOpen} $dddddd={filteredMenu === 'price' && isChevronOpen}>
             {/* 수정해야 함 */}
             <S.PriceClassType>
               <div>
@@ -256,23 +257,11 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
 
 export default SelectBox;
 
-const slideIn = keyframes`
-  from {
-    max-height: 0;
-    opacity: 0;
-  }
-  to {
-    max-height: 1000px; /* 원하는 최대 높이 설정 */
-    opacity: 1;
-  }
-`;
-
 const FilterContainer = styled.div<{ $isChevronOpen: boolean }>`
   width: 100%;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
   height: ${(props) => (props.$isChevronOpen ? '100%' : 'auto')};
-  animation: ${slideIn} 0.5s ease-in-out; /* keyframes 애니메이션 적용 */
 `;
 
 const LocationDiv = styled.div`

@@ -29,20 +29,32 @@ export const InnerModalBox = styled.div`
 
 //pc버전
 export const PcSiWrap = styled.div`
-  display: flex;
+  /* display: flex;
   flex-wrap: wrap;
   padding: 0 10px 0 30px;
-  text-align: center;
+  text-align: center; */
   margin-bottom: 30px;
+  width: 100%;
+  padding: 0 20px;
+  display: table;
+  border-collapse: collapse;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
 
   @media all and (max-width: 768px) {
     display: none;
   }
 `;
 //pc버전 글자
-export const PcSiString = styled.p<{ $color: boolean }>`
+export const PcSiString = styled.div<{ $color: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-shadow: 1px 0 0 0 #e2e2e2, 0px 1px 0 0 #e2e2e2, 1px 1px 0 0 #e2e2e2, 0px 0 0 0 #e2e2e2 inset, 0 1px 0 0 #e2e2e2 inset;
   color: ${(props) => (props.$color === true ? '#fe902f' : 'black')};
-  margin: 5px 15px;
+  /* margin: 5px 15px; */
   text-align: center;
   cursor: pointer;
 `;

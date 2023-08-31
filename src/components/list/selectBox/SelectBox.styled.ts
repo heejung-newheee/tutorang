@@ -30,27 +30,19 @@ export const InnerBox = styled.div<{ $isIn: boolean }>`
   position: relative;
 `;
 
-const slide = keyframes`
-	0%{
-    transform: translateX(-100px);
-    opacity: 0;
-    }
-    100%{
-    transform: translateX(0px);
-    opacity: 1;
-    }
-`;
-
 const slideDown = keyframes`
   from {
     max-height: 0;
     opacity: 0;
-    overflow: hidden;
+    /* visibility:visible;s */
+    /* display: block; */
   }
   to {
     max-height: 1000px;
     opacity: 1;
-    overflow: visible;
+    /* visibility:hidden; */
+
+
   }
 `;
 
@@ -58,22 +50,33 @@ const slideUp = keyframes`
   from {
     max-height: 1000px;
     opacity: 1;
-    overflow: visible;
+    /* visibility:hidden; */
+
   }
   to {
     max-height: 0;
     opacity: 0;
-    overflow: hidden;
+    /* display: block; */
+    /* visibility:visible; */
+
   }
 `;
 
-export const InnerHidden = styled.div<{ $isChevronOpen: boolean }>`
+export const InnerHidden = styled.div<{ $isChevronOpen: boolean; $dddddd: boolean }>`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   white-space: nowrap;
   margin: 20px 0;
   padding: 0 20px;
+  /* height: ${(props) => (props.$dddddd ? 'auto' : 1)}; */
+  display: ${(props) => (props.$dddddd ? 'block' : 'none')};
+  /* visibility: ${(props) => (props.$dddddd ? 'visible' : 'hidden')}; */
+
+  /* display: ${(props) => (props.$dddddd ? 'block' : 'none')};
+  opacity: ${(props) => (props.$dddddd ? 1 : 0)};
+  transition: all 2s ease-in; */
+  /* overflow: hidden; */
   animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   @media all and (max-width: 768px) {
@@ -93,16 +96,19 @@ export const InnerHidden = styled.div<{ $isChevronOpen: boolean }>`
   }
 `;
 
-export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean }>`
+export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean; $dddddd: boolean }>`
   width: 50%;
-  /* max-width: 400px; */
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  /* background-color: #f5f3f3; */
   white-space: nowrap;
   margin: 20px 0;
+  display: ${(props) => (props.$dddddd ? 'block' : 'none')};
+
   padding: 0 20px;
+  /* display: ${(props) => (props.$dddddd ? 'block' : 'none')}; */
+
   /* display: ${(props) => (props.$isChevronOpen ? 'block' : 'none')}; */
+  /* animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease; */
   animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   @media all and (max-width: 768px) {
