@@ -7,7 +7,6 @@ import LastTutorListCompo from '../components/list/tutorCompo/LastTutorListCompo
 import SelectBox from '../components/list/selectBox/SelectBox';
 import CityModal from '../components/list/location/CityModal';
 import { handleAgeNum, SelectedFilters } from '../components/list/utility';
-import { TTutorWithUser } from '../supabase/database.types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 const List = () => {
@@ -21,7 +20,7 @@ const List = () => {
   //유저가 선택한 목록 - 필터 바에 들어갈 값[]
   const [selectedArr, setSelectedArr] = useState<string[][]>([]);
 
-  const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
+  const initialSelectedFilters: SelectedFilters = {
     gender: [],
     level: [],
     minPrice: 0,
@@ -31,7 +30,9 @@ const List = () => {
     location2: '',
     age: [],
     classStyle: 'onLine',
-  });
+  };
+
+  const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>(initialSelectedFilters);
   //검색
   const [searchText, setSearchText] = useState('');
 
@@ -43,17 +44,17 @@ const List = () => {
       case 'gender':
         if (item === '전체') {
           //전체 클릭 - 모든 값 초기화
-          setSelectedFilters((pre: any) => pre && { ...pre, gender: [] });
-          setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'gender')]);
-          //전체를 제외한 첫 클릭
+          setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: [] });
+          setSelectedArr((pre: string[][]) => [...pre.filter((item) => item[0] !== 'gender')]);
+          //전체를 제외한 클릭
         } else if (item !== '전체') {
           //값이 없을때 - 추가
-          if (selectedFilters.gender.find((i: string) => i === item) === undefined) {
-            setSelectedFilters((pre: any) => pre && { ...pre, gender: [...pre.gender, item] });
-            setSelectedArr((pre: any) => [...pre, ['gender', item]]);
+          if (selectedFilters?.gender.find((i: string) => i === item) === undefined) {
+            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: [...pre.gender, item] });
+            setSelectedArr((pre: string[][]) => [...pre, ['gender', item]]);
             //값이 있을때 - 삭제
           } else {
-            setSelectedFilters((pre: any) => pre && { ...pre, gender: pre.gender.filter((i: any) => i !== item) });
+            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: pre.gender.filter((i: string) => i !== item) });
             setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
           }
         }
@@ -63,37 +64,21 @@ const List = () => {
       case 'level':
         if (item === '전체') {
           //전체 클릭 - 모든 값 초기화
-          setSelectedFilters((pre: any) => pre && { ...pre, level: [] });
+          setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, level: [] });
           setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'level')]);
-          //전체를 제외한 첫 클릭
+          //전체를 제외한 클릭
         } else if (item !== '전체') {
           //값이 없을때 - 추가
-          if (selectedFilters.level.find((i: string) => i === item) === undefined) {
-            setSelectedFilters((pre: any) => pre && { ...pre, level: [...pre.level, item] });
-            setSelectedArr((pre: any) => [...pre, ['level', item]]);
+          if (selectedFilters?.level.find((i: string) => i === item) === undefined) {
+            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, level: [...pre.level, item] });
+            setSelectedArr((pre: string[][]) => [...pre, ['level', item]]);
             //값이 있을때 - 삭제
           } else {
-            setSelectedFilters((pre: any) => pre && { ...pre, level: pre.level.filter((i: any) => i !== item) });
+            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, level: pre.level.filter((i: string) => i !== item) });
             setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
           }
         }
-
         break;
-      //가격
-      // case 'price':
-      //   if (item === '전체') {
-      //     setSelectedFilters((pre: any) => pre && { ...pre, minPrice: 0, maxPrice: 100000, priceType: '전체' });
-      //     // setSelectedFilters((pre: any) => (pre ? { ...pre, maxPrice: 100000 } : { ...pre }));
-      //     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-      //     // setSelectedArr((pre) => [...pre, ['price', '전체']]);
-      //   } else {
-      //     const minPrice = price.find((i: { priceNum: string; min: number; max: number }) => i.priceNum === item)?.min;
-      //     const maxPrice = price.find((i: { priceNum: string; min: number; max: number }) => i.priceNum === item)?.max;
-      //     setSelectedFilters((pre: any) => pre && { ...pre, minPrice, maxPrice, priceType: item });
-      //     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-      //     setSelectedArr((pre) => [...pre, ['price', item]]);
-      //   }
-      //   break;
 
       //나이
       case 'age':
@@ -102,16 +87,16 @@ const List = () => {
 
         if (item === '전체') {
           //전체 클릭 - 모든 값 초기화
-          setSelectedFilters((pre: any) => pre && { ...pre, age: [] });
+          setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: [] });
           setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'age')]);
         } else if (item !== '전체') {
           //값이 없을때 - 추가
-          if (selectedFilters.age.find((i: number) => i === ageNum) === undefined) {
-            setSelectedFilters((pre: any) => pre && { ...pre, age: [...pre.age, ageNum] });
-            setSelectedArr((pre: any) => [...pre, ['age', item]]);
+          if (selectedFilters?.age.find((i: number) => i === ageNum) === undefined) {
+            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: [...pre.age, Number(ageNum)] });
+            setSelectedArr((pre: string[][]) => [...pre, ['age', item]]);
             //값이 있을때 - 삭제
           } else {
-            setSelectedFilters((pre: any) => pre && { ...pre, age: pre.age.filter((i: any) => i !== ageNum) });
+            setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: pre.age.filter((i: number) => i !== ageNum) });
             setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
           }
         }
@@ -133,20 +118,12 @@ const List = () => {
   const handelCloseModalAndSelect = () => {
     if (checkedcity === '전체') {
       //전체면 필터객체에서 삭제
-      setSelectedFilters((pre: any) => {
-        if (pre) {
-          return { ...pre, location1: '', location2: '' };
-        }
-      });
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location1: '', location2: '' });
       setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location1'));
       setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
     } else {
       //지역명이 있으면 업데이트
-      setSelectedFilters((pre: any) => {
-        if (pre) {
-          return { ...pre, location1: checkedcity, location2: '' };
-        }
-      });
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location1: checkedcity, location2: '' });
 
       setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'location1'), ['location1', checkedcity]]);
       setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
@@ -154,19 +131,11 @@ const List = () => {
 
     if (checkedGunGu === '전체') {
       //전체면 필터객체에서 삭제
-      setSelectedFilters((pre: any) => {
-        if (pre) {
-          return { ...pre, location2: [] };
-        }
-      });
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location2: '' });
       setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
     } else if (checkedGunGu) {
       //지역명이 있으면 업데이트
-      setSelectedFilters((pre: any) => {
-        if (pre) {
-          return { ...pre, location2: checkedGunGu };
-        }
-      });
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location2: checkedGunGu });
 
       setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'location2'), ['location2', checkedGunGu]]);
     }
@@ -183,7 +152,7 @@ const List = () => {
   const api = async (page = 1) => {
     const { gender, level, minPrice, maxPrice, location1, location2, age, classStyle } = selectedFilters;
 
-    let query = supabase.from('tutor_info').select('*');
+    let query = supabase.from('tutor_info_join').select('*');
 
     // if (gender.length !== 0) {
     //   query = query.in('gender', [...gender]);
@@ -289,13 +258,14 @@ const List = () => {
 
   return (
     <Container>
-      {/* <SearchWrap>
+      <SearchWrap>
         <svg xmlns="http://www.w3.org/2000/svg" fill="#fe902f" height="1em" viewBox="0 0 512 512">
           <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
         </svg>
         <input type="text" onChange={debouncedOnChange} />
-      </SearchWrap> */}
+      </SearchWrap>
       {/* 필터박스 */}
+
       <SelectBox handleFilterdObj={handleFilterdObj} openModal={openModal} selectedArr={selectedArr} setSelectedArr={setSelectedArr} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
       {/* 강사 리스트 */}
       <TutorList>
@@ -331,6 +301,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: all 0.5s ease-in-out;
 `;
 
 const TutorList = styled.div`
@@ -340,6 +311,7 @@ const TutorList = styled.div`
   display: grid;
   gap: 30px;
   grid-template-columns: repeat(3, 1fr);
+  /* transition: height 0.5s ease-in-out; */
 
   @media only screen and (max-width: 1000px) {
     grid-template-columns: repeat(2, 1fr);
@@ -377,22 +349,21 @@ const InnerModal = styled.div`
 
 ////Search
 const SearchWrap = styled.div`
-  width: 50%;
-  min-width: 240px;
-  height: 60px;
-  padding: 0 10px;
-  margin-top: 70px;
-  border: 1px solid #fe902f;
-  border-radius: 10px;
+  width: 100%;
+  height: 50px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  box-shadow: 2px 2px 4px -4px black;
+  margin-top: 120px;
+  color: #ffffff;
+  padding-left: 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
   & > input {
     outline: none;
     border: none;
     width: 100%;
     height: 100%;
+    padding-left: 20px;
+    font-size: 1em;
   }
 `;
