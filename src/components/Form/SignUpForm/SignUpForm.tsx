@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { AREA0, AREA1, AREA10, AREA11, AREA12, AREA13, AREA14, AREA15, AREA16, AREA2, AREA3, AREA4, AREA5, AREA6, AREA7, AREA8, AREA9 } from '../../../api/cities';
 import supabase from '../../../supabase';
+import FormHeader from '../FormHeader';
+import { FORM_CONSTANT_TITLE_SIGNUP } from '../formConstant';
 import '../icon.css';
 import '../inputBackgroundSetting.css';
 import ServiceAgreement from './ServiceAgreement';
@@ -326,10 +328,7 @@ const SignUpForm = () => {
   return (
     <SContainer>
       {/* {errMsg && <p ref={errRef}>{errMsg}</p>} */}
-      <SHeader>
-        <h1>회원가입</h1>
-        <p>쉽고 빠르게 튜터를 만나보는 1:1 매칭 서비스 튜터랑</p>
-      </SHeader>
+      <FormHeader $keyword={FORM_CONSTANT_TITLE_SIGNUP} />
       <SPartitionLine />
       <SFormContainer>
         <SForm onSubmit={handleSubmit}>
@@ -641,25 +640,6 @@ const SignUpForm = () => {
 export default SignUpForm;
 
 const SContainer = styled.div``;
-
-const SHeader = styled.header`
-  width: 100%;
-  height: 175px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  gap: 10px;
-  & h1 {
-    font-size: 32px;
-    font-weight: 700;
-  }
-  & p {
-    font-size: 20px;
-    color: #4a4a4a;
-  }
-`;
 
 const SPartitionLine = styled.div`
   position: relative;

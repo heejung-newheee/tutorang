@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { css, styled } from 'styled-components';
 import { googleicon, kakaotalk, navericon } from '../../../assets';
 import supabase from '../../../supabase';
+import FormHeader from '../FormHeader';
+import { FORM_CONSTANT_TITLE_SIGNIN } from '../formConstant';
 import './../inputBackgroundSetting.css';
 
 const EMAIL_REGEX = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -32,7 +34,13 @@ const SignInForm = () => {
     const isAuthenticated = await emailCheckFromDB(email);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-      isAuthenticated ? setGuideMessage({ email: '', password: '비밀번호를 다시한 번 확인해주세요' }) : setGuideMessage({ email: '해당 이메일로 회원가입되어있지 않습니다.', password: '' });
+      console.log('무슨에러임?', error);
+      console.log('무슨에러임?', error.message);
+      if (error.message === 'Email not confirmed') {
+        setGuideMessage({ email: '해당 이메일에서 회원가입승인 링크를 눌러주세요!', password: '' });
+      } else {
+        isAuthenticated ? setGuideMessage({ email: '', password: '비밀번호를 다시한 번 확인해주세요' }) : setGuideMessage({ email: '해당 이메일로 회원가입되어있지 않습니다.', password: '' });
+      }
     } else {
       setEmail('');
       setPassword('');
@@ -69,9 +77,28 @@ const SignInForm = () => {
     // }
   };
 
+  const googleLogin = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      },
+    });
+    if (error) alert(error.message);
+    console.log(data);
+  };
+
+  const naverLogin = () => {
+    alert('네이버 간편 로그인/회원가입 기능 준비중입니다. 다른 간편 로그인/회원가입 서비스를 이용해주세요!');
+  };
+
   const emailCheckFromDB = async (enteredEmail: string) => {
     // unverifiedEmail 을 supabase의 db 에서 확인
     const { data: profiles, error } = await supabase.from('profiles').select('email');
+
     const myEmailFromDB = profiles?.find((profile) => {
       return profile.email === enteredEmail;
     });
@@ -96,10 +123,11 @@ const SignInForm = () => {
         <p>확인하는 동안 보여줄 내용 (or 스피너)</p>
       ) : (
         <> */}
-      <SHeader>
+      {/* <SHeader>
         <h1>로그인</h1>
         <p>쉽고 빠르게 튜터를 만나보는 1:1 매칭 서비스 튜터랑</p>
-      </SHeader>
+      </SHeader> */}
+      <FormHeader $keyword={FORM_CONSTANT_TITLE_SIGNIN} />
       <SPartitionLine />
       <SFormContainer>
         <SForm onSubmit={handleLogin}>
@@ -133,8 +161,8 @@ const SignInForm = () => {
       <SFooter>
         <SsnsIconContainer>
           <SsnsIcon src={kakaotalk} onClick={() => kakaoLogin()} />
-          <SsnsIcon src={googleicon} $iconType={'google'} onClick={() => kakaoLogin()} />
-          <SsnsIcon src={navericon} onClick={() => kakaoLogin()} />
+          <SsnsIcon src={googleicon} $iconType={'google'} onClick={() => googleLogin()} />
+          <SsnsIcon src={navericon} onClick={() => naverLogin()} />
         </SsnsIconContainer>
       </SFooter>
       {/* </> */}
@@ -146,25 +174,6 @@ const SignInForm = () => {
 export default SignInForm;
 
 const SContainer = styled.div``;
-
-const SHeader = styled.header`
-  width: 100%;
-  height: 175px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  gap: 10px;
-  & h1 {
-    font-size: 32px;
-    font-weight: 700;
-  }
-  & p {
-    font-size: 20px;
-    color: #4a4a4a;
-  }
-`;
 
 const SPartitionLine = styled.div`
   position: relative;

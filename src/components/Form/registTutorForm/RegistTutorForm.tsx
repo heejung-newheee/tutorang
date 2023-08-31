@@ -9,6 +9,8 @@ import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
+import FormHeader from '../FormHeader';
+import { FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE } from '../formConstant';
 import Checkbox from './Checkbox';
 import ImgFileUpload from './ImgFileUpload';
 import SelectEnrollmentStatus from './SelectEnrollmentStatus';
@@ -151,7 +153,8 @@ const RegistTutorForm = () => {
 
   return (
     <SContainer>
-      <h1>RegistTutorForm</h1>
+      <FormHeader $keyword={FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE} />
+      <SPartitionLine />
       <SForm onSubmit={handleSubmit}>
         <SFormItem>
           <div>
@@ -247,8 +250,10 @@ export default RegistTutorForm;
 
 const SContainer = styled.section`
   /* margin-top: 100px; */
-  max-width: 1200px;
+  box-sizing: border-box;
+  max-width: 650px;
   min-width: 360px;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -258,7 +263,7 @@ const SContainer = styled.section`
 const SForm = styled.form`
   /* height: 500px; */
   box-sizing: border-box;
-  padding: 30px;
+  /* padding: 30px; */
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -378,4 +383,22 @@ const SButton = styled.button<{ disabled: boolean }>`
     else return 'pointer';
   }};
   border-radius: 3px;
+`;
+
+const SPartitionLine = styled.div`
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background-color: #eaeaea;
+  & p {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -10px;
+    & span {
+      background-color: #fff;
+    }
+  }
 `;

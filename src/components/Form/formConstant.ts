@@ -5,3 +5,9 @@ export const FORM_HEADER_TITLE = [
   { keyword: 'user_certificate', title: '추가인증' },
   { keyword: 'tutor_certificate', title: '튜터 추가인증 정보' },
 ];
+
+export const FORM_CONSTANT_TITLE_SIGNIN = 'signin';
+export const FORM_CONSTANT_TITLE_SIGNUP = 'signup';
+export const FORM_CONSTANT_TITLE_COMPLETE = 'complete';
+export const FORM_CONSTANT_TITLE_USER_CERTIFICATE = 'user_certificate';
+export const FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE = 'tutor_certificate';
