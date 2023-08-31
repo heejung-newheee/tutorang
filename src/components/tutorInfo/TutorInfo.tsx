@@ -1,11 +1,11 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { fetchReview } from '../../api/user';
 import * as S from './TutorInfo.styled';
 import { RootState } from '../../redux/config/configStore';
 import { useSelector } from 'react-redux';
 import { fetchTutorAll } from '../../api/tutor';
 import { Views } from '../../supabase/database.types';
-import { Container, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
+import { Container, InfoNull, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
 import MatchingStudent from '../matchingTab/MatchingStudent';
 import { useEffect } from 'react';
 import AOS from 'aos';
@@ -18,22 +18,16 @@ const TutorInfo = ({ match }: pageProps) => {
   useEffect(() => {
     AOS.init();
   }, []);
-  const queryClient = useQueryClient();
 
   const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor-info'], fetchTutorAll);
   const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], fetchReview);
 
   const user = useSelector((state: RootState) => state.user.user);
-  // console.log('tutorInfo 로그인사용자', user);
   if (!user) return null;
-
-  // const created = tutorInfo!.created_at.split('T')[0];
 
   // 받은 요청 내역
   const matchingData = Array.isArray(match) ? match : [match];
   const matchList = matchingData.filter((item: Views<'matching_tutor_data'>) => item.tutor_id === user!.id);
-  // console.log(matchList);
-  // console.log('tutorInfo', tutorInfo);
 
   if (tutorLoading || reviewLoading) {
     return <div>로딩중~~~~~~~~~~~</div>;
@@ -48,10 +42,6 @@ const TutorInfo = ({ match }: pageProps) => {
   const reviewData = review?.filter((item) => {
     return user!.id === item.reviewed_id;
   });
-
-  // const tutorInfo = tutor?.find((item) => {
-  //   return user!.id === item.user_id;
-  // });
   const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.user_id) : null;
 
   return (
@@ -72,23 +62,27 @@ const TutorInfo = ({ match }: pageProps) => {
           <InfoSection data-aos="fade-up">
             <Container>
               <InfoTitle>매칭 내역</InfoTitle>
-              <MatchingStudent matchList={matchList} />
+              {matchList.length > 0 ? <MatchingStudent matchList={matchList} /> : <InfoNull>매칭 내역이 없습니다</InfoNull>}
             </Container>
           </InfoSection>
           <InfoSection data-aos="fade-up">
             <Container>
               <InfoTitle>수강생 후기</InfoTitle>
-              <S.StudentList>
-                {reviewData &&
-                  reviewData.map((review) => {
-                    return (
-                      <S.StudentItem key={review.id}>
-                        <div>{review.title}</div>
-                        <div>{review.content}</div>
-                      </S.StudentItem>
-                    );
-                  })}
-              </S.StudentList>
+              {reviewData.length > 0 ? (
+                <S.StudentList>
+                  {reviewData &&
+                    reviewData.map((review) => {
+                      return (
+                        <S.StudentItem key={review.id}>
+                          <div>{review.title}</div>
+                          <div>{review.content}</div>
+                        </S.StudentItem>
+                      );
+                    })}
+                </S.StudentList>
+              ) : (
+                <InfoNull>후기가 없습니다</InfoNull>
+              )}
             </Container>
           </InfoSection>
           <InfoSection data-aos="fade-up">

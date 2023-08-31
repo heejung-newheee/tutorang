@@ -7,6 +7,7 @@ import { getAllTutorCount, getTutors } from '../api/tutor';
 import ProfileForm from '../components/Form/profileForm/CreateProfileForm';
 import supabase from '../supabase';
 import { TTutorWithUser } from '../supabase/database.types';
+import TutorSlider from '../components/slider/tutorSlider/TutorSlider';
 
 const Main = () => {
   const { isLoading, isError, data } = useQuery(['tutors'], () => getTutors());

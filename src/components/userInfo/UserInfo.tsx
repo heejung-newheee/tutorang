@@ -14,16 +14,11 @@ const UserInfo = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const matchData = useSelector((state: RootState) => state.match.match);
   const { data, isLoading, isError } = useQuery(['matching_tutor_data'], matchingTutorData);
-  // console.log('UserInfo 로그인사용자', user);
-  // console.log('matchData:DB mtching_tutor_data', data);
-  // console.log(matchData);
 
   // TODO count가 null이라면????????
+  // TODO 리덕스 로딩
   const writeReviewCount = useQuery(['writeReviewCount'], () => getWriteReviewCount(user!.id));
-  // console.log(writeReviewCount.data);
-
   const receivedReviewCount = useQuery(['receivedReviewCount'], () => getReceivedWriteReviewCount(user!.id));
-  // console.log(receivedReviewCount.data);
 
   if (!user) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
@@ -32,9 +27,7 @@ const UserInfo = () => {
     dispatch(openModal({ type: 'editProfiles' }));
   };
   const studentMatch = matchData?.filter((item) => item.user_id === user.id);
-  // console.log(studentMatch);
   const tutorMatch = matchData?.filter((item) => item.tutor_id === user.id);
-  // console.log(tutorMatch);
 
   return (
     <>
@@ -42,7 +35,7 @@ const UserInfo = () => {
         <S.ProfileBox>
           <S.Container>
             <S.ProfileImg>
-              <S.UserImg src={user.avatar_url ?? ''} alt="프로필 이미지" />
+              <S.UserImg src={user.avatar_url ?? ''} alt="user profile" />
               <S.EditBtn onClick={handleEditProfiles}>
                 <img src={icon_edit} alt="" />
               </S.EditBtn>

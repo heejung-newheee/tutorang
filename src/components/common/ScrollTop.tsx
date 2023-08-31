@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { arrow_top } from '../../assets';
-// import { topIcon } from '../../assets/img/topbtn.svg';
 
 const ScrollTop = () => {
   const [visible, setVisible] = useState(false);
@@ -15,15 +14,8 @@ const ScrollTop = () => {
 
   useEffect(() => {
     const handleShowButton = () => {
-      // if (window.scrollY > 500) {
-      //   setVisible(true);
-      // } else {
-      //   setVisible(false);
-      // }
-
       setVisible(window.scrollY > 500);
     };
-    // window.addEventListener('scroll', handleShowButton);
     document.onscroll = handleShowButton;
     return () => {
       document.onscroll = null;
