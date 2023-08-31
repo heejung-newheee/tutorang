@@ -6,7 +6,7 @@ interface pageProps {
 }
 
 const ProfilesCard = ({ tutor }: pageProps) => {
-  console.log(tutor); // 튜터 정보 넘겨주셔서 사용하시면 됩니당
+  // console.log(tutor); // 튜터 정보 넘겨주셔서 사용하시면 됩니당
 
   return (
     <>
