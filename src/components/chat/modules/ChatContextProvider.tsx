@@ -64,13 +64,14 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
       return;
     }
 
+    handleChangeChatRoom(room_id);
     try {
       const messages = await getMessagesInChatRoom(room_id);
       setChatMessages(messages);
     } catch (err) {
       console.error(err);
     }
-  }, [setChatMessages, room_id]);
+  }, [setChatMessages, handleChangeChatRoom, room_id]);
 
   useEffect(() => {
     handleGetMessages();
@@ -80,14 +81,7 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
     handleGetChatRooms();
   }, [handleGetChatRooms]);
 
-  useEffect(() => {
-    if (!room_id) {
-      setChatRoom(null);
-      setChatMessages([]);
-      return;
-    }
-    handleChangeChatRoom(room_id);
-  }, [room_id, handleChangeChatRoom]);
+  useEffect(() => {}, [room_id, handleChangeChatRoom]);
 
   useEffect(() => {
     if (!chatRoom) return;

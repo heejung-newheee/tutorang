@@ -18,5 +18,7 @@ export default Chat;
 
 const Container = styled.div`
   display: flex;
-  max-height: 800px;
+  height: 800px;
+  border: 1px solid #eaeaea;
+  border-top: 0px;
 `;
