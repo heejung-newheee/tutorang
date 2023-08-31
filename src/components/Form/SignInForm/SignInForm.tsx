@@ -119,30 +119,27 @@ const SignInForm = () => {
   }, [email, password]);
   return (
     <SContainer>
-      {/* {loading ? (
-        <p>확인하는 동안 보여줄 내용 (or 스피너)</p>
-      ) : (
-        <> */}
-      {/* <SHeader>
-        <h1>로그인</h1>
-        <p>쉽고 빠르게 튜터를 만나보는 1:1 매칭 서비스 튜터랑</p>
-      </SHeader> */}
       <FormHeader $keyword={FORM_CONSTANT_TITLE_SIGNIN} />
       <SPartitionLine />
       <SFormContainer>
         <SForm onSubmit={handleLogin}>
+          {/* [x] 이메일 입력 */}
           <SFormItem>
             <label htmlFor="email">이메일</label>
             <SInput type="text" id="email" placeholder="이메일을 입력하세요" name="email" value={email} onChange={handleInput} />
             <BsXCircleFill className="reset_signin_input_btn" onClick={() => setEmail('')} />
             <SPGuideMessage>{guideMessage.email && guideMessage.email}</SPGuideMessage>
           </SFormItem>
+
+          {/* [x] 비밀번호 입력 */}
           <SFormItem>
             <label htmlFor="password">비밀번호</label>
             <SInput type="password" id="password" placeholder="비밀번호를 입력하세요" name="password" value={password} onChange={handleInput} />
             <BsXCircleFill className="reset_signin_input_btn" onClick={() => setPassword('')} />
             <SPGuideMessage>{guideMessage.password && guideMessage.password}</SPGuideMessage>
           </SFormItem>
+
+          {/* [x] 버튼 & 근처 item */}
           <SButtonRelationArea>
             <SButton type="submit" disabled={!validationCheck}>
               로그인
@@ -153,6 +150,8 @@ const SignInForm = () => {
           </SButtonRelationArea>
         </SForm>
       </SFormContainer>
+
+      {/* [x] 간편로그인 */}
       <SPartitionLine>
         <p>
           <span>간편로그인/회원가입으로 시작하기</span>
@@ -165,8 +164,6 @@ const SignInForm = () => {
           <SsnsIcon src={navericon} onClick={() => naverLogin()} />
         </SsnsIconContainer>
       </SFooter>
-      {/* </> */}
-      {/* )} */}
     </SContainer>
   );
 };
@@ -196,17 +193,24 @@ const SPartitionLine = styled.div`
 const SFormContainer = styled.div`
   height: 600px;
   /* padding: 50px 20px; */
+  @media screen and (max-width: 420px) {
+    height: 460px;
+  }
 `;
 
 const SForm = styled.form`
+  box-sizing: border-box;
+  padding: 80px 20px;
   margin: 0 auto;
-  padding: 100px 20px 50px;
-  /* box-sizing: border-box; */
-  /* max-width: 806px; */
-  max-width: 846px;
+  max-width: 650px;
+  min-width: 360px;
   display: flex;
   flex-direction: column;
   gap: 40px;
+  @media screen and (max-width: 420px) {
+    padding: 50px 20px;
+    gap: 25px;
+  }
 `;
 
 const SsnsIcon = styled.img<{ $iconType?: string }>`
@@ -218,11 +222,19 @@ const SsnsIcon = styled.img<{ $iconType?: string }>`
       return css`
         width: 72px;
         height: 72px;
+        @media screen and (max-width: 420px) {
+          width: 58px;
+          height: 58px;
+        }
       `;
     else {
       return css`
         width: 70px;
         height: 70px;
+        @media screen and (max-width: 420px) {
+          width: 56px;
+          height: 56px;
+        }
       `;
     }
   }}
@@ -247,10 +259,15 @@ const SInput = styled.input`
   width: 100%;
   height: 50px;
   line-height: 50px;
+  font-size: 16px;
   border: 1px solid #696969;
   border-radius: 3px;
   outline: none;
   font-size: 16px;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 
 const SPGuideMessage = styled.p`
@@ -262,6 +279,7 @@ const SButton = styled.button<{ disabled: boolean }>`
   width: 100%;
   height: 50px;
   line-height: 50px;
+  font-size: 16px;
   border-radius: 3px;
   background-color: ${(props) => {
     if (props.disabled === true) return '#e7e7e7';
@@ -272,7 +290,12 @@ const SButton = styled.button<{ disabled: boolean }>`
     if (props.disabled === true) return 'not-allowed';
     else return 'pointer';
   }};
-  margin-top: 85px;
+  margin-top: 70px;
+  @media screen and (max-width: 420px) {
+    margin-top: 35px;
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 
 const SUnderFormButton = styled.div`
@@ -298,7 +321,10 @@ const SButtonRelationArea = styled.div`
 
 const SFooter = styled.footer`
   width: 100%;
-  height: 430px;
+  height: 280px;
+  @media screen and (max-width: 420px) {
+    height: 200px;
+  }
 `;
 
 const SsnsIconContainer = styled.div`
@@ -307,4 +333,7 @@ const SsnsIconContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 45px;
+  @media screen and (max-width: 420px) {
+    gap: 35px;
+  }
 `;

@@ -124,6 +124,13 @@ const SHeader = styled.header`
     font-size: 32px;
     font-weight: 700;
   }
+  @media screen and (max-width: 420px) {
+    height: 130px;
+    & h2 {
+      font-size: 25px;
+      font-weight: 600;
+    }
+  }
 `;
 
 const Label = styled.label`

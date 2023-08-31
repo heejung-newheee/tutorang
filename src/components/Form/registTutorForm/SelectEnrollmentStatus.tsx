@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaAngleDown } from 'react-icons/fa';
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { styled } from 'styled-components';
 import { ENROLLMENT_STATUS } from './constant';
 
@@ -30,7 +30,7 @@ const SelectEnrollmentStatus: React.FC<TypeSelectEnrollmentStatus> = ({ $setEnro
     <SDropdownWrapper ref={dropContainerRef}>
       <SDropDownHeader id="selectbox" onClick={() => setIsDropMenuOpen((prev) => !prev)}>
         <SpanDefaultText $selectedOption={selectedOption}>{selectedOption === '' ? '재학여부' : selectedOption}</SpanDefaultText>
-        <FaAngleDown />
+        {isDropMenuOpen ? <FaAngleDown /> : <FaAngleUp />}
       </SDropDownHeader>
       {isDropMenuOpen && (
         <SOptionContainer>
@@ -50,48 +50,57 @@ const SelectEnrollmentStatus: React.FC<TypeSelectEnrollmentStatus> = ({ $setEnro
 export default SelectEnrollmentStatus;
 
 const SDropdownWrapper = styled.div`
-  // 이거 width 100%로 해도 되는건가..
-  box-sizing: border-box;
-  /* width: 190px; */
-  height: 40px;
-  max-width: 150px;
-  min-width: 100px;
-  border: 1px solid #696969;
   position: relative;
+  box-sizing: border-box;
+  min-width: 135px;
+  border: 1px solid #696969;
   border-radius: 3px;
+  @media screen and (max-width: 420px) {
+    min-width: 105px;
+  }
 `;
 
 const SDropDownHeader = styled.div`
-  padding: 8px;
-  cursor: pointer;
+  box-sizing: border-box;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-radius: 3px;
+  cursor: pointer;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 const SpanDefaultText = styled.span<{ $selectedOption: string }>`
   width: 100%;
   color: ${({ $selectedOption }) => ($selectedOption === '' ? '#aeaeae;' : '#000')};
 `;
 const SOptionContainer = styled.div`
-  background-color: #fff;
   display: block;
   position: absolute;
+  left: 0;
   width: 100%;
   max-height: 180px;
-  left: 0;
-  overflow-y: scroll;
-  opacity: 1;
+  background-color: #fff;
   border: 1px solid #696969;
+  overflow-y: scroll;
   z-index: 1;
+  opacity: 1;
 `;
 const Select = styled.ul``;
 
 // const SOption = styled.li<{ $selectedOption: boolean }>`
 const SOption = styled.li<{ $optionValue: string; $selectedOption: string }>`
   box-sizing: border-box;
-  height: 40px;
-  padding: 8px;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
   background-color: ${({ $optionValue, $selectedOption }) => {
     if ($optionValue === $selectedOption) {
       return '#eee';
@@ -99,6 +108,11 @@ const SOption = styled.li<{ $optionValue: string; $selectedOption: string }>`
       return '#fff';
     }
   }};
+  cursor: pointer;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 /* background-color: ${(props) => {
     if (props.$selectedOption === true) return '#eee';

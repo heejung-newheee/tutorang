@@ -41,4 +41,15 @@ const SHeader = styled.header`
     font-size: 20px;
     color: #4a4a4a;
   }
+  @media screen and (max-width: 420px) {
+    height: 130px;
+    & h1 {
+      font-size: 25px;
+      font-weight: 600;
+    }
+    & p {
+      font-size: 14px;
+      color: #4a4a4a;
+    }
+  }
 `;
