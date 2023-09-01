@@ -113,8 +113,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                     </div>
                     <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
                     <div>
-                      <MatchBtn onClick={() => item.id !== null && acceptMatch(item.id, item.user_id)}>수락</MatchBtn>
-                      <MatchBtn onClick={() => item.id !== null && rejectMatch(item.id, item.user_id)}>거절</MatchBtn>
+                      <MatchBtn onClick={() => item.id !== null && acceptMatch(item.id, item.user_id!)}>수락</MatchBtn>
+                      <MatchBtn onClick={() => item.id !== null && rejectMatch(item.id, item.user_id!)}>거절</MatchBtn>
                     </div>
                   </InfoItem>
                 </InfoList>

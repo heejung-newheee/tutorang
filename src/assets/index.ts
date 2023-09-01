@@ -18,3 +18,7 @@ export { default as play_button } from './play_button.svg';
 export { default as kakaotalk } from './kakao-talk.png';
 export { default as navericon } from './navericon.png';
 export { default as twitter } from './twitter.png';
+export { default as bubble } from './talk_bubble.png';
+export { default as tabPanel_1 } from './tab-panel-1.png';
+export { default as tabPanel_3 } from './tab-panel-3.png';
+export { default as main_banner } from './main-banner.png';
