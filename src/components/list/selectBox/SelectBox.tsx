@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { gender, level, age, handleDeleteFilterBar } from '../utility';
+import { gender, level, age, handleDeleteFilterBar, price, Price } from '../utility';
 import * as S from './SelectBox.styled';
 import { Slider } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -32,7 +32,7 @@ type Props = {
 };
 
 //price debounce
-let timerId: ReturnType<typeof setTimeout> | null = null;
+// let timerId: ReturnType<typeof setTimeout> | null = null;
 
 const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, selectedFilters, setSelectedFilters }: Props) => {
   const [filteredMenu, setfilteredMenu] = useState('');
@@ -80,28 +80,30 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
   };
 
   //price가격 업데이트
-  const handelInputPrice = (item: number) => {
-    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item, minPrice: Number(minPriceNum) });
+  const handelInputPrice = (item: Price) => {
+    console.log(item);
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: Number(minPriceNum) });
     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-    setSelectedArr((pre) => [...pre, ['price', `${minPriceNum?.toLocaleString('ko-KR')}~${item?.toLocaleString('ko-KR')}`]]);
+    setSelectedArr((pre) => [...pre, ['price', item.optionPrice]]);
+    // setSelectedArr((pre) => [...pre, ['price', `${minPriceNum?.toLocaleString('ko-KR')}~${item?.toLocaleString('ko-KR')}`]]);
   };
 
-  //price가격 debounce
-  const priceDebounce = (fn: (item: number) => void, delay: number) => {
-    if (timerId) {
-      clearTimeout(timerId);
-    }
-    timerId = setTimeout(() => {
-      fn(Value);
-      timerId = null;
-    }, delay);
-  };
+  // //price가격 debounce
+  // const priceDebounce = (fn: (item: number) => void, delay: number) => {
+  //   if (timerId) {
+  //     clearTimeout(timerId);
+  //   }
+  //   timerId = setTimeout(() => {
+  //     fn(Value);
+  //     timerId = null;
+  //   }, delay);
+  // };
 
-  //price가격 onchange
-  const handleSliderChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as number); // 슬라이더 값이 변경되면 state 업데이트
-    priceDebounce(() => handelInputPrice(newValue as number), 1000);
-  };
+  // //price가격 onchange
+  // const handleSliderChange = (event: Event, newValue: number | number[]) => {
+  //   setValue(newValue as number); // 슬라이더 값이 변경되면 state 업데이트
+  //   priceDebounce(() => handelInputPrice(newValue as number), 1000);
+  // };
 
   //선택되면 색깔바뀜
   const isColorTrue = (item: string) => {
@@ -175,32 +177,30 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
 
         {/* 체크박스 - 가격 제외*/}
         {filteredMenu !== 'price' && isChevronOpen ? (
-          <>
-            <S.InnerHidden key={Math.random() * 22229999} $isChevronOpen={isChevronOpen} $dddddd={filteredMenu !== 'price' && isChevronOpen}>
-              {obj[filteredMenu]?.map((item: string) => (
-                <div>
-                  <Checkbox
-                    sx={{
-                      color: 'gray',
-                      '&.Mui-checked': {
-                        color: '#fe902f',
-                      },
-                    }}
-                    id={`check-${item}`}
-                    onClick={() => handleFilterdObj(item, filteredMenu)}
-                    checked={isChecked(item)}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                  />
-                  <label htmlFor={`check-${item}`}>{item}</label>
-                </div>
-              ))}
-            </S.InnerHidden>
-          </>
+          <S.InnerHidden key={filteredMenu} $isChevronOpen={isChevronOpen} $dddddd={filteredMenu !== 'price' && isChevronOpen}>
+            {obj[filteredMenu]?.map((item: string) => (
+              <div>
+                <Checkbox
+                  sx={{
+                    color: 'gray',
+                    '&.Mui-checked': {
+                      color: '#fe902f',
+                    },
+                  }}
+                  id={`check-${item}`}
+                  onClick={() => handleFilterdObj(item, filteredMenu)}
+                  checked={isChecked(item)}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+                <label htmlFor={`check-${item}`}>{item}</label>
+              </div>
+            ))}
+          </S.InnerHidden>
         ) : null}
 
         {/* 체크박스 - 가격*/}
         {filteredMenu === 'price' && isChevronOpen ? (
-          <S.InnerHiddenPrice $isChevronOpen={isChevronOpen} $dddddd={filteredMenu === 'price' && isChevronOpen}>
+          <S.InnerHiddenPrice key={filteredMenu} $isChevronOpen={isChevronOpen} $dddddd={filteredMenu === 'price' && isChevronOpen}>
             {/* 수정해야 함 */}
             <S.PriceClassType>
               <div>
@@ -212,9 +212,28 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
                 </svg>
               </div>
             </S.PriceClassType>
-            <ThemeProvider theme={theme}>
+
+            {price.map((item: Price) => (
+              <div>
+                <Checkbox
+                  sx={{
+                    color: 'gray',
+                    '&.Mui-checked': {
+                      color: '#fe902f',
+                    },
+                  }}
+                  id={`check-${item}`}
+                  onClick={() => handelInputPrice(item)}
+                  checked={isChecked(item.optionPrice)}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                />
+                <label htmlFor={`check-${item}`}>{item.optionPrice}</label>
+              </div>
+            ))}
+
+            {/* <ThemeProvider theme={theme}>
               <Slider getAriaLabel={() => 'Temperature range'} valueLabelDisplay="auto" min={0} max={100000} value={Value} step={1000} onChange={handleSliderChange} color="secondary" />
-            </ThemeProvider>
+            </ThemeProvider> */}
           </S.InnerHiddenPrice>
         ) : null}
       </S.FilterContainer>

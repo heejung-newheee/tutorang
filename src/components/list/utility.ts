@@ -103,7 +103,7 @@ export const 경북 = [
 ];
 
 ////////
-type Price = {
+export type Price = {
   optionPrice: string;
   min: number;
   max: number;
@@ -117,12 +117,12 @@ export const level: string[] = ['전체', '초급', '중급', '고급'];
 export const age: string[] = ['전체', '10대', '20대', '30대', '40대', '50대'];
 
 export const price: Price[] = [
-  { optionPrice: '전체', min: 0, max: 2000 },
-  { optionPrice: '전체', min: 0, max: 2000 },
-  { optionPrice: '전체', min: 0, max: 2000 },
-  { optionPrice: '전체', min: 0, max: 2000 },
-  { optionPrice: '전체', min: 0, max: 2000 },
-  { optionPrice: '전체', min: 0, max: 2000 },
+  { optionPrice: '전체', min: 0, max: 100000 },
+  { optionPrice: '5,000 ~ 10,000', min: 5000, max: 10000 },
+  { optionPrice: '10,000 ~ 20,000', min: 10000, max: 20000 },
+  { optionPrice: '20,000 ~ 30,000', min: 20000, max: 30000 },
+  { optionPrice: '30,000 ~ 40,000', min: 30000, max: 40000 },
+  { optionPrice: '50,000 ~', min: 50000, max: 100000 },
 ];
 
 export const handleAgeNum = (item: string) => {

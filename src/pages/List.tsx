@@ -50,6 +50,22 @@ const List = () => {
         handleLevelFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
         break;
 
+      // //가격
+      // case 'price':
+      //   if (item === '전체') {
+      //     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
+      //     setMinPrice(0);
+      //     setMaxPrice(100000);
+      //   } else if (item !== '전체') {
+      //     const min = price.find((i) => i.priceNum === item);
+      //     setMinPrice(min ? min.min : 0);
+      //     const max = price.find((i) => i.priceNum === item);
+      //     setMaxPrice(max ? max.max : 0);
+      //     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
+      //     setSelectedArr((pre) => [...pre, ['price', item]]);
+      //   }
+      //   break;
+
       //나이
       case 'age':
         handleAgeFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
@@ -100,16 +116,16 @@ const List = () => {
     //   query = query.gte('age', minAge).lte('age', maxAge);
     // }
 
-    // if (searchText) {
-    //   query = query.textSearch('tutor_name', `${searchText}`);
-    // }
-    // if (minPrice >= 0 && maxPrice) {
-    //   if (classStyle === 'onLine') {
-    //     query = query.gte('tuition_fee_online', 0).lte('tuition_fee_online', 100000);
-    //   } else {
-    //     query = query.gte('tuition_fee_offline', minPrice).lte('tuition_fee_offline', maxPrice);
-    //   }
-    // }
+    if (searchText) {
+      query = query.textSearch('tutor_name', `${searchText}`);
+    }
+    if (minPrice >= 0 && maxPrice) {
+      if (classStyle === 'onLine') {
+        query = query.gte('tuition_fee_online', 0).lte('tuition_fee_online', 100000);
+      } else {
+        query = query.gte('tuition_fee_offline', minPrice).lte('tuition_fee_offline', maxPrice);
+      }
+    }
 
     // query.filter(`languages && ARRAY[${selectedLanguages.map(lang => `'${lang}'`).join(', ')}]`);
 
