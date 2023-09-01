@@ -1,5 +1,13 @@
 import supabase from '../supabase';
 
+type tutoringType = 'request' | 'accept' | 'reject';
+
+const TUTORING_MESSAGE = {
+  request: '튜터링을 요청했습니다',
+  accept: '튜터링을 수락했습니다',
+  reject: '튜터링을 거절했습니다',
+};
+
 export const createChatRoom = async () => {
   const { data, error } = await supabase.from('chat_rooms').insert({}).select().single();
   if (error) throw error;
@@ -15,14 +23,10 @@ export const inviteChatRoom = async (room_id: string, invitee_id: string) => {
   if (error) throw error;
 };
 
-export const getChatRoomWithTutor = async (tutor_Id: string) => {
-  if (!tutor_Id) throw new Error('잘못된 인자값');
-  const { data, error: sessionError } = await supabase.auth.getSession();
-  if (sessionError) throw sessionError;
-  if (!data.session) throw new Error('사용자 세션을 찾을 수 없습니다');
+export const getChatRoomWithTutor = async (user1_id: string, user2_id: string) => {
+  if (!user1_id || !user2_id) throw new Error('잘못된 인자값');
 
-  const user_id = data.session.user.id;
-  const { data: rooms, error } = await supabase.rpc('get_two_person_chat_room', { user1_id: user_id, user2_id: tutor_Id });
+  const { data: rooms, error } = await supabase.rpc('get_two_person_chat_room', { user1_id, user2_id });
   if (error) throw error;
   return rooms;
 };
@@ -123,13 +127,7 @@ export const sendTextMessage = async (room_id: string, message: string) => {
   if (error) throw error;
 };
 
-const TUTORING_MESSAGE = {
-  request: '튜터링을 요청했습니다',
-  accept: '튜터링을 수락했습니다',
-  reject: '튜터링을 거절했습니다',
-};
-
-export const sendTutoringMessage = async (room_id: string, type: 'request' | 'accept' | 'reject') => {
+export const sendTutoringMessage = async (room_id: string, type: tutoringType) => {
   const message = TUTORING_MESSAGE[type];
   const { error } = await supabase.from('chat_messages').insert({
     room_id: room_id,

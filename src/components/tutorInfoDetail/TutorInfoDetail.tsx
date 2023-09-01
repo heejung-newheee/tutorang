@@ -32,26 +32,24 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const handleStartChat = async (targetId: string) => {
-    // if (!(targetId && session)) return;
-    if (!targetId) return;
+  const handleStartChat = async (tutorId: string) => {
+    if (!(tutorId && session)) return;
 
     if (!loginUser) {
       dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
     }
 
-    if (!session) return;
     try {
-      const chatRooms = await getChatRoomWithTutor(targetId);
+      const chatRoom = await getChatRoomWithTutor(session.user.id, tutorId);
 
-      if (chatRooms && chatRooms.length > 0) {
-        navigate(`/chat2?room_id=${chatRooms[0].room_id}`);
+      if (chatRoom.length > 0) {
+        navigate(`/chat2?room_id=${chatRoom[0].room_id}`);
         return;
       }
 
       const newRoom = await createChatRoom();
 
-      await inviteChatRoom(newRoom.room_id, targetId);
+      await inviteChatRoom(newRoom.room_id, tutorId);
 
       navigate(`/chat2?room_id=${newRoom.room_id}`);
     } catch (error) {
