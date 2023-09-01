@@ -30,6 +30,11 @@ const Review = ({ id }: ReviewProps) => {
 
   // 리뷰 작성
   const handleOpenReviewCreateForm = () => {
+    if (!loginUser) {
+      dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
+      return;
+    }
+
     dispatch(openModal({ type: 'reviewCreate', targetId: id }));
   };
   // 리뷰 업데이트
@@ -70,6 +75,12 @@ const Review = ({ id }: ReviewProps) => {
                 <S.ReviewTitle>{review.title}</S.ReviewTitle>
                 <S.ReviewDescription>{review.content}</S.ReviewDescription>
 
+                <div>
+                  <figure>
+                    <img></img>
+                  </figure>
+                  <p>{review.author}</p>
+                </div>
                 {loginUser?.id === review.user_id ? (
                   <div>
                     <button
