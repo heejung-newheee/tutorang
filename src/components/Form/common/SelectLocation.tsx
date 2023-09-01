@@ -107,10 +107,8 @@ export default SelectLocation;
 const SDropdownWrapper = styled.div`
   // 이거 width 100%로 해도 되는건가..
   box-sizing: border-box;
-  /* width: 190px; */
-  max-width: 250px;
-  min-width: 180px;
-  border: 1px solid #fe902f;
+  width: 100%;
+  border: 1px solid #696969;
   position: relative;
   border-radius: 3px;
 `;
@@ -147,11 +145,10 @@ const SOptionContainer = styled.div<{ $locationType: string }>`
     if ($locationType === 'locationType1') return '3';
     if ($locationType === 'locationType2') return '1';
   }};
-  border: 1px solid #fe902f;
+  border: 1px solid #696969;
 `;
 const Select = styled.ul``;
 
-// const SOption = styled.li<{ $selectedOption: boolean }>`
 const SOption = styled.li<{ $optionValue: string; $selectedOption: string }>`
   display: flex;
   align-items: center;
@@ -172,10 +169,7 @@ const SOption = styled.li<{ $optionValue: string; $selectedOption: string }>`
     line-height: 45px;
   }
 `;
-/* background-color: ${(props) => {
-    if (props.$selectedOption === true) return '#eee';
-    else return '#fff';
-  }}; */
+
 const SDropdownField = styled.div`
   display: flex;
   flex-direction: row;

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
-import FormHeader from '../FormHeader';
-import { FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO } from '../formConstant';
-import SelectLocation from './SelectLocation';
+import FormHeader from '../common/FormHeader';
+import SelectLocation from '../common/SelectLocation';
+import { FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO } from '../common/formConstant';
 
 const CreateProfileForm = () => {
   const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });

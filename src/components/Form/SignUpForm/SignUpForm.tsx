@@ -1,30 +1,20 @@
-// [ ] 이메일 중복 체크해야함.
-// [ ] 날짜 select box 밖에 클릭시 닫히게 해야함
-// [ ] 날짜 select box 열렸을 때 아이콘 방향 틀어야함
-
 import { useEffect, useRef, useState } from 'react';
-import { BsFillCheckCircleFill, BsFillEyeFill, BsFillEyeSlashFill, BsXCircleFill } from 'react-icons/bs';
+import { BsFillEyeFill, BsFillEyeSlashFill, BsXCircleFill } from 'react-icons/bs';
 import { FaAngleDown, FaInfoCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { AREA0, AREA1, AREA10, AREA11, AREA12, AREA13, AREA14, AREA15, AREA16, AREA2, AREA3, AREA4, AREA5, AREA6, AREA7, AREA8, AREA9 } from '../../../api/cities';
 import supabase from '../../../supabase';
-import FormHeader from '../FormHeader';
-import { FORM_CONSTANT_TITLE_SIGNUP } from '../formConstant';
-import '../icon.css';
-import '../inputBackgroundSetting.css';
+import FormHeader from '../common/FormHeader';
+import SelectLocation from '../common/SelectLocation';
+import { FORM_CONSTANT_TITLE_SIGNUP } from '../common/formConstant';
+import './../common/icon.css';
+import './../common/inputBackgroundSetting.css';
 import ServiceAgreement from './ServiceAgreement';
-interface CityData {
-  [key: string]: string[];
-}
 
-const cities: CityData = { AREA0, AREA1, AREA2, AREA3, AREA4, AREA5, AREA6, AREA7, AREA8, AREA9, AREA10, AREA11, AREA12, AREA13, AREA14, AREA15, AREA16 };
-
-// [\w-\.]
 const USERNAME_KR_REGEX = /^[가-힣|]{2,6}$/;
 const USERNAME_EN_REGEX = /^[a-z|A-Z|+\s]{2,20}$/;
 const EMAIL_REGEX = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
 
 const SignUpForm = () => {
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
@@ -62,8 +52,9 @@ const SignUpForm = () => {
   const [checkedGender, setCheckedGender] = useState({ female: false, male: false });
   const [validGender, setValidGender] = useState(false);
 
-  const [location1, setLoaction1] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택' });
-  const [location2, setLoaction2] = useState({ sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
+  // const [location1, setLoaction1] = useState({ sido1: '시/도 선택', gugun1: '구/군 선택' });
+  // const [location2, setLoaction2] = useState({ sido2: '시/도 선택', gugun2: '구/군 선택' });
+  const [location, setLoaction] = useState({ sido1: '시/도 선택', gugun1: '구/군 선택', sido2: '시/도 선택', gugun2: '구/군 선택' });
   const [validLocation, setValidLocation] = useState(false);
 
   const now = new Date();
@@ -80,11 +71,6 @@ const SignUpForm = () => {
     month: false,
     day: false,
   });
-
-  const [isLocationOpen, setIsLocationOpen] = useState({ sido1: false, gugun1: false, sido2: false, gugun2: false });
-
-  const [gugun1Options, setGugun1Options] = useState<string[]>([]);
-  const [gugun2Options, setGugun2Options] = useState<string[]>([]);
 
   const duplicationCheck = async (unverifiedEmail: string) => {
     // unverifiedEmail 을 supabase의 db 에서 확인
@@ -177,11 +163,11 @@ const SignUpForm = () => {
   }, [checkedGender]);
 
   useEffect(() => {
-    const checkedValidLocation1 = location1.sido1 !== '1지역 시/도 선택' && location1.sido1 !== '전체' && location1.gugun1 !== '1지역 구/군 선택';
-    const checkedValidLocation2 = location2.sido2 !== '2지역 시/도 선택' && location2.sido2 !== '전체' && location2.gugun2 !== '2지역 구/군 선택';
-    const checkedSameLocation = location1.sido1 === location2.sido2 && location1.gugun1 === location2.gugun2;
+    const checkedValidLocation1 = location.sido1 !== '시/도 선택' && location.sido1 !== '전체' && location.gugun1 !== '구/군 선택';
+    const checkedValidLocation2 = location.sido2 !== '시/도 선택' && location.sido2 !== '전체' && location.gugun2 !== '구/군 선택';
+    const checkedSameLocation = location.sido1 === location.sido2 && location.gugun1 === location.gugun2;
     setValidLocation(checkedValidLocation1 && checkedValidLocation2 && !checkedSameLocation);
-  }, [location1, location2]);
+  }, [location]);
 
   const selectDateOption = (value: string, dateType: string) => {
     console.log(value, dateType);
@@ -196,48 +182,6 @@ const SignUpForm = () => {
     if (dateType === 'day') {
       setBirth((prev) => ({ ...prev, day: value }));
       setIsDateOpen((prev) => ({ ...prev, day: !prev.day }));
-    }
-  };
-
-  const selectLocation1Option = (option: string, locationType: string, preCode: string) => {
-    if (locationType === 'sido1') {
-      setGugun1Options([]);
-      setLoaction1((prev) => ({ ...prev, sido1: option }));
-      setIsLocationOpen((prev) => ({ ...prev, sido1: !prev.sido1 }));
-
-      // option 전체일 때는 gugun 선택사항 X
-      if (option === '전체') return setLoaction1((prev) => ({ ...prev, gugun1: '1지역 구/군 선택' }));
-
-      // sido - gugun 관계 => 'sido에 해당하는 gugun', 'gugun selectbox에서 처음 보여줄 option' 세팅
-      const gugunCode = 'AREA' + preCode;
-      const options = cities[gugunCode];
-      setGugun1Options(options);
-      setLoaction1((prev) => ({ ...prev, gugun1: options[0] }));
-    }
-    if (locationType === 'gugun1') {
-      setLoaction1((prev) => ({ ...prev, gugun1: option }));
-      setIsLocationOpen((prev) => ({ ...prev, gugun1: !prev.gugun1 }));
-    }
-    // if (locationType === 'sido2') {}
-    // if (locationType === 'gugun2') {}
-  };
-  const selectLocation2Option = (option: string, locationType: string, preCode: string) => {
-    if (locationType === 'sido2') {
-      setGugun2Options([]);
-      setLoaction2((prev) => ({ ...prev, sido2: option }));
-      setIsLocationOpen((prev) => ({ ...prev, sido2: !prev.sido2 }));
-
-      if (option === '전체') return setLoaction2((prev) => ({ ...prev, gugun2: '2지역 구/군 선택' }));
-
-      // sido - gugun 관계 => 'sido에 해당하는 gugun', 'gugun selectbox에서 처음 보여줄 option' 세팅
-      const gugunCode = 'AREA' + preCode;
-      const options = cities[gugunCode];
-      setGugun2Options(options);
-      setLoaction2((prev) => ({ ...prev, gugun2: options[0] }));
-    }
-    if (locationType === 'gugun2') {
-      setLoaction2((prev) => ({ ...prev, gugun2: option }));
-      setIsLocationOpen((prev) => ({ ...prev, gugun2: !prev.gugun2 }));
     }
   };
 
@@ -272,10 +216,10 @@ const SignUpForm = () => {
       birth: trimmedBirth,
       age,
       gender,
-      location1_sido: location1.sido1,
-      location1_gugun: location1.gugun1,
-      location2_sido: location2.sido2,
-      location2_gugun: location2.gugun2,
+      location1_sido: location.sido1,
+      location1_gugun: location.gugun1,
+      location2_sido: location.sido2,
+      location2_gugun: location.gugun2,
       role: 'student',
       avatar_url:
         'https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/sign/avatars/default_profile.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhdmF0YXJzL2RlZmF1bHRfcHJvZmlsZS5wbmciLCJpYXQiOjE2OTMyNDM2OTUsImV4cCI6MTcyNDc3OTY5NX0.KRdjhdXKjTM1GbM_7KPyU-GSspnWID29bEjWwQvg83s&t=2023-08-28T17%3A28%3A17.316Z',
@@ -302,7 +246,6 @@ const SignUpForm = () => {
       }
     }
   };
-
   return (
     <SContainer>
       {/* {errMsg && <p ref={errRef}>{errMsg}</p>} */}
@@ -332,30 +275,17 @@ const SignUpForm = () => {
                 <SEmailButton type="button" disabled={!email || !validEmail} onClick={() => duplicationCheck(email)}>
                   중복확인
                 </SEmailButton>
-                <BsXCircleFill className="reset_input_btn" onClick={deleteEmail} />
+                {email && <BsXCircleFill className="reset_input_btn" onClick={deleteEmail} />}
               </SEmailInputWrapper>
               <SPGuideMessage $guideMessageColor={'안내'}>
                 <FaInfoCircle style={{ marginRight: '5px' }} />
                 최종 회원가입 승인메일을 보낼 예정이오니 실제 열람가능한 이메일을 기입해주시기 바랍니다.
               </SPGuideMessage>
-              {!!email && !validEmail && (
-                <SPGuideMessage>
-                  <FaInfoCircle style={{ marginRight: '5px' }} />
-                  이메일 형식으로 입력해주세요
-                </SPGuideMessage>
-              )}
-              {!!email && validEmail && doneDuplicationCheck && duplicatedEmail && (
-                <SPGuideMessage>
-                  <FaInfoCircle style={{ marginRight: '5px' }} />
-                  중복된 이메일 입니다. 새로운 이메일을 입력하세요
-                </SPGuideMessage>
-              )}
-              {!!email && validEmail && doneDuplicationCheck && !duplicatedEmail && (
-                <SPGuideMessage $guideMessageColor={!duplicatedEmail && '확인'}>
-                  <BsFillCheckCircleFill style={{ marginRight: '5px' }} />
-                  입력된 이메일을 사용할 수 있습니다!
-                </SPGuideMessage>
-              )}
+              <SPGuideMessage $guideMessageColor={!duplicatedEmail ? '확인' : ''}>
+                {!!email && !validEmail && '이메일 형식으로 입력해주세요'}
+                {!!email && validEmail && doneDuplicationCheck && duplicatedEmail && '이미 가입된 이메일 입니다. 새로운 이메일을 입력하세요'}
+                {!!email && validEmail && doneDuplicationCheck && !duplicatedEmail && '입력된 이메일을 사용할 수 있습니다!'}
+              </SPGuideMessage>
             </SFormItem>
 
             {/* [x] 비밀번호 작성란 */}
@@ -377,12 +307,7 @@ const SignUpForm = () => {
                 {!isPasswordHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsPasswordHidden(true)} />}
                 {isPasswordHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsPasswordHidden(false)} />}
               </SpasswordLabel>
-              {!!pwd && !validPwd && (
-                <SPGuideMessage>
-                  <FaInfoCircle style={{ marginRight: '5px' }} />
-                  대소문자, 숫자, 특수문자(!@#$%)를 모두 포함하여 6자 이상 24자 이하의 비밀번호를 입력해주세요
-                </SPGuideMessage>
-              )}
+              <SPGuideMessage>{!!pwd && !validPwd && '소문자, 숫자, 특수문자(!@#$%)를 모두 포함하여 6자 이상 24자 이하의 비밀번호를 입력해주세요'}</SPGuideMessage>
             </SFormItem>
 
             {/* [x] 비밀번호 확인 작성란 */}
@@ -404,12 +329,8 @@ const SignUpForm = () => {
                 {!isMatchPwHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsMatchPwHidden(true)} />}
                 {isMatchPwHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsMatchPwHidden(false)} />}
               </SpasswordLabel>
-              {!!matchPwd && !validMatch && (
-                <SPGuideMessage>
-                  <FaInfoCircle style={{ marginRight: '5px' }} />
-                  처음에 입력한 비밀번호와 동일해야합니다.
-                </SPGuideMessage>
-              )}
+
+              <SPGuideMessage>{!!matchPwd && !validMatch && '처음에 입력한 비밀번호와 동일해야합니다.'}</SPGuideMessage>
             </SFormItem>
 
             {/* [x] 이름 작성란 */}
@@ -427,16 +348,11 @@ const SignUpForm = () => {
                 placeholder="실명을 입력하세요"
                 autoComplete="off"
               />
-              {!!username && !validUsername && (
-                <SPGuideMessage>
-                  <FaInfoCircle style={{ marginRight: '5px' }} />
-                  2자 이상 6자미만의 한국실명 또는 2자이상 20자 미만의 영문실명을 입력하세요.
-                </SPGuideMessage>
-              )}
+              <SPGuideMessage>{!!username && !validUsername && '2자 이상 6자미만의 한국실명 또는 2자이상 20자 미만의 영문실명을 입력하세요.'}</SPGuideMessage>
             </SFormItem>
 
             {/* [x] 생년월일 선택란 */}
-            <SFormItem>
+            <SFormItem style={{ marginBottom: '23px' }}>
               <span>생년월일</span>
 
               <SDropdownField>
@@ -495,7 +411,7 @@ const SignUpForm = () => {
             </SFormItem>
 
             {/* [x] 성별 선택란 */}
-            <SFormItem>
+            <SFormItem style={{ marginBottom: '23px' }}>
               <span>성별</span>
               <SRadioField>
                 <SRadioLabel htmlFor="female" $isGenderChecked={checkedGender.female}>
@@ -513,96 +429,20 @@ const SignUpForm = () => {
             <SFormItem>
               <SFormItemHeader>
                 <span>활동선호지역</span>
-                {location1.sido1 === location2.sido2 && location1.gugun1 === location2.gugun2 && (
-                  <SPGuideMessage>
-                    <Sicon>
+                {/* <Sicon>
                       <FaInfoCircle style={{ marginRight: '5px' }} />
-                    </Sicon>
-                    <p>선택1과 선택2에 각각 다른 지역을 선택해주세요</p>
-                  </SPGuideMessage>
-                )}
+                    </Sicon> */}
+                <SPGuideMessage>{location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}</SPGuideMessage>
               </SFormItemHeader>
               {/* [x] 1지역 선택란  */}
               <SFormItemBody>
                 <SFormItemBodySection>
-                  <span>선택1</span>
-                  <SDropdownField>
-                    <SDropdownWrapper>
-                      <SDropDownHeader id="location1SidoDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, sido1: !prev.sido1 }))}>
-                        <span>{location1.sido1}</span>
-                        <FaAngleDown />
-                      </SDropDownHeader>
-                      {isLocationOpen.sido1 && (
-                        <SOptionContainer $selectOptionsType={'location1'}>
-                          <Select>
-                            {cities.AREA0.map((option, index) => (
-                              <SOption key={option} $selectedOption={location1.sido1 === option} onClick={() => selectLocation1Option(option, 'sido1', index.toString())}>
-                                {option}
-                              </SOption>
-                            ))}
-                          </Select>
-                        </SOptionContainer>
-                      )}
-                    </SDropdownWrapper>
-                    <SDropdownWrapper>
-                      <SDropDownHeader id="location1gugunDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, gugun1: !prev.gugun1 }))}>
-                        <span>{location1.gugun1}</span>
-                        <FaAngleDown />
-                      </SDropDownHeader>
-                      {isLocationOpen.gugun1 && (
-                        <SOptionContainer $selectOptionsType={'location1'}>
-                          <Select>
-                            {gugun1Options.map((option, index) => (
-                              <SOption key={option} $selectedOption={location1.gugun1 === option} onClick={() => selectLocation1Option(option, 'gugun1', index.toString())}>
-                                {option}
-                              </SOption>
-                            ))}
-                          </Select>
-                        </SOptionContainer>
-                      )}
-                    </SDropdownWrapper>
-                  </SDropdownField>
+                  <span>지역1</span>
+                  <SelectLocation $locationType={'locationType1'} $setLocation={setLoaction} />
                 </SFormItemBodySection>
-
-                {/* [x] 2지역 선택란  */}
                 <SFormItemBodySection>
-                  <span>선택2</span>
-                  <SDropdownField>
-                    <SDropdownWrapper>
-                      <SDropDownHeader id="location2SidoDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, sido2: !prev.sido2 }))}>
-                        <span>{location2.sido2}</span>
-                        <FaAngleDown />
-                      </SDropDownHeader>
-                      {isLocationOpen.sido2 && (
-                        <SOptionContainer $selectOptionsType={'location2'}>
-                          <Select>
-                            {cities.AREA0.map((option, index) => (
-                              <SOption key={option} $selectedOption={location2.sido2 === option} onClick={() => selectLocation2Option(option, 'sido2', index.toString())}>
-                                {option}
-                              </SOption>
-                            ))}
-                          </Select>
-                        </SOptionContainer>
-                      )}
-                    </SDropdownWrapper>
-                    <SDropdownWrapper>
-                      <SDropDownHeader id="location2gugunDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, gugun2: !prev.gugun2 }))}>
-                        <span>{location2.gugun2}</span>
-                        <FaAngleDown />
-                      </SDropDownHeader>
-                      {isLocationOpen.gugun2 && (
-                        <SOptionContainer $selectOptionsType={'location2'}>
-                          <Select>
-                            {gugun2Options.map((option, index) => (
-                              <SOption key={option} $selectedOption={location2.gugun2 === option} onClick={() => selectLocation2Option(option, 'gugun2', index.toString())}>
-                                {option}
-                              </SOption>
-                            ))}
-                          </Select>
-                        </SOptionContainer>
-                      )}
-                    </SDropdownWrapper>
-                  </SDropdownField>
+                  <span>지역2</span>
+                  <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} />
                 </SFormItemBodySection>
               </SFormItemBody>
             </SFormItem>
@@ -667,7 +507,7 @@ const SUnderForm = styled.div`
   min-width: 360px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 10px;
 `;
 
 const SFormItem = styled.div`
@@ -874,10 +714,7 @@ const SButton = styled.button<{ disabled: boolean }>`
     if (props.disabled === true) return '#e7e7e7';
     else return '#FE902F';
   }};
-  /* color: ${(props) => {
-    if (props.disabled === true) return '#131212';
-    else return '#fff';
-  }}; */
+
   color: #fff;
   cursor: ${(props) => {
     if (props.disabled === true) return 'not-allowed';
@@ -897,15 +734,9 @@ const SFormItemHeader = styled.div`
   }
 `;
 
-const Sicon = styled.div`
-  width: 20px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const SPGuideMessage = styled.p<{ $guideMessageColor?: string }>`
+  min-width: 10px;
+  height: 18px;
   display: flex;
   font-size: 13px;
   color: ${({ $guideMessageColor }) => {

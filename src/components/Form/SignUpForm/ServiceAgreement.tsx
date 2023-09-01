@@ -49,32 +49,34 @@ const ServiceAgreement: React.FC<TypeServiceAgreement> = ({ $setIsAllChecked }) 
         <Label htmlFor="allAgreed">전체동의</Label>
       </CheckTeramsAndConditions>
       <SPartitionLine />
-      <CheckTeramsAndConditions>
-        <SCheckBox type="checkbox" id="aboveFourteen" name="aboveFourteen" onChange={check} checked={checkList.includes('aboveFourteen') ? true : false} />
-        <SCheckLabel htmlFor="aboveFourteen">{checkList.includes('aboveFourteen') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel>
-        <Label htmlFor="aboveFourteen">(필수) 만 14세 이상입니다.</Label>
-        <Span>보기</Span>
-      </CheckTeramsAndConditions>
-      <CheckTeramsAndConditions>
-        <SCheckBox type="checkbox" id="usageRule" name="usageRule" onChange={check} checked={checkList.includes('usageRule') ? true : false} />
-        <SCheckLabel htmlFor="usageRule">{checkList.includes('usageRule') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel> <Label htmlFor="aboveFourteen">(필수) 이용약관 동의</Label>
-        <Span>보기</Span>
-      </CheckTeramsAndConditions>
-      <CheckTeramsAndConditions>
-        <SCheckBox type="checkbox" id="aboutRefund" name="aboutRefund" onChange={check} checked={checkList.includes('aboutRefund') ? true : false} />{' '}
-        <SCheckLabel htmlFor="aboutRefund">{checkList.includes('aboutRefund') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel>
-        <Label htmlFor="aboutRefund">(필수) 튜터랑 매칭방식 및 환불 규정 동의</Label>
-        <Span>보기</Span>
-      </CheckTeramsAndConditions>
-      <CheckTeramsAndConditions>
-        <SCheckBox type="checkbox" id="privateInfoDealing" name="privateInfoDealing" onChange={check} checked={checkList.includes('privateInfoDealing') ? true : false} />{' '}
-        <SCheckLabel htmlFor="privateInfoDealing">{checkList.includes('privateInfoDealing') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel>
-        <Label htmlFor="privateInfoDealing">(필수) 개인정보 취급방침 동의</Label>
-        <Span>보기</Span>
-      </CheckTeramsAndConditions>
-      {/* <SButton type="button" disabled={!isAllChecked} onClick={moveToSignUpForm}>
+      <SCheckboxContainer>
+        <CheckTeramsAndConditions>
+          <SCheckBox type="checkbox" id="aboveFourteen" name="aboveFourteen" onChange={check} checked={checkList.includes('aboveFourteen') ? true : false} />
+          <SCheckLabel htmlFor="aboveFourteen">{checkList.includes('aboveFourteen') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel>
+          <Label htmlFor="aboveFourteen">(필수) 만 14세 이상입니다.</Label>
+          <Span>보기</Span>
+        </CheckTeramsAndConditions>
+        <CheckTeramsAndConditions>
+          <SCheckBox type="checkbox" id="usageRule" name="usageRule" onChange={check} checked={checkList.includes('usageRule') ? true : false} />
+          <SCheckLabel htmlFor="usageRule">{checkList.includes('usageRule') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel> <Label htmlFor="aboveFourteen">(필수) 이용약관 동의</Label>
+          <Span>보기</Span>
+        </CheckTeramsAndConditions>
+        <CheckTeramsAndConditions>
+          <SCheckBox type="checkbox" id="aboutRefund" name="aboutRefund" onChange={check} checked={checkList.includes('aboutRefund') ? true : false} />{' '}
+          <SCheckLabel htmlFor="aboutRefund">{checkList.includes('aboutRefund') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel>
+          <Label htmlFor="aboutRefund">(필수) 튜터랑 매칭방식 및 환불 규정 동의</Label>
+          <Span>보기</Span>
+        </CheckTeramsAndConditions>
+        <CheckTeramsAndConditions>
+          <SCheckBox type="checkbox" id="privateInfoDealing" name="privateInfoDealing" onChange={check} checked={checkList.includes('privateInfoDealing') ? true : false} />{' '}
+          <SCheckLabel htmlFor="privateInfoDealing">{checkList.includes('privateInfoDealing') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel>
+          <Label htmlFor="privateInfoDealing">(필수) 개인정보 취급방침 동의</Label>
+          <Span>보기</Span>
+        </CheckTeramsAndConditions>
+        {/* <SButton type="button" disabled={!isAllChecked} onClick={moveToSignUpForm}>
         계속하기
       </SButton> */}
+      </SCheckboxContainer>
     </SContainer>
   );
 };
@@ -87,11 +89,14 @@ const SContainer = styled.section`
   width: 100%;
   max-width: 650px;
   min-width: 360;
-  height: 550px;
+  height: 500px;
   padding: 0px 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+  @media screen and (max-width: 420px) {
+    height: 440px;
+  }
 `;
 
 const SPartitionLine = styled.div`
@@ -125,7 +130,7 @@ const SHeader = styled.header`
     font-weight: 700;
   }
   @media screen and (max-width: 420px) {
-    height: 130px;
+    height: 120px;
     & h2 {
       font-size: 25px;
       font-weight: 600;
@@ -147,6 +152,14 @@ const CheckTeramsAndConditions = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  gap: 15px;
+`;
+
+const SCheckboxContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 15px;
 `;

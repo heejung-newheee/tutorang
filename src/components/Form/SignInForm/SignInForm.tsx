@@ -7,20 +7,19 @@ import { useNavigate } from 'react-router-dom';
 import { css, styled } from 'styled-components';
 import { googleicon, kakaotalk, navericon } from '../../../assets';
 import supabase from '../../../supabase';
-import FormHeader from '../FormHeader';
-import { FORM_CONSTANT_TITLE_SIGNIN } from '../formConstant';
-import './../inputBackgroundSetting.css';
+import { SButton, SContainer, SForm, SFormContainer, SFormItem, SInput, SPGuideMessage, SPartitionLine } from '../AuthForm.styled';
+import FormHeader from '../common/FormHeader';
+import { FORM_CONSTANT_TITLE_SIGNIN } from '../common/formConstant';
+import './../common/icon.css';
+import './../common/inputBackgroundSetting.css';
 
 const EMAIL_REGEX = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 const SignInForm = () => {
-  // const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [validationCheck, setValidationCheck] = useState(false);
   const [guideMessage, setGuideMessage] = useState({ email: '', password: '' });
-  // const [isAuthenticated, setIsAuthenticated] =useState(false)
-  // const [session, setSession] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,23 +29,22 @@ const SignInForm = () => {
       setGuideMessage({ email: '이메일 형식을 맞춰서 입력해주세요', password: '' });
       return false;
     }
-    // setLoading(true);
+
     const isAuthenticated = await emailCheckFromDB(email);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-      console.log('무슨에러임?', error);
-      console.log('무슨에러임?', error.message);
       if (error.message === 'Email not confirmed') {
         setGuideMessage({ email: '해당 이메일에서 회원가입승인 링크를 눌러주세요!', password: '' });
+      } else if (isAuthenticated) {
+        setGuideMessage({ email: '', password: '비밀번호를 다시한 번 확인해주세요' });
       } else {
-        isAuthenticated ? setGuideMessage({ email: '', password: '비밀번호를 다시한 번 확인해주세요' }) : setGuideMessage({ email: '해당 이메일로 회원가입되어있지 않습니다.', password: '' });
+        setGuideMessage({ email: '해당 이메일로 회원가입되어있지 않습니다.', password: '' });
       }
     } else {
       setEmail('');
       setPassword('');
       navigate('/');
     }
-    // setLoading(false);
   };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,12 +67,6 @@ const SignInForm = () => {
     });
     if (error) alert(error.message);
     console.log(data);
-    // if (!data) {
-    //   setLoading(true);
-    // } else {
-    //   setLoading(false);
-    //   navigate('/');
-    // }
   };
 
   const googleLogin = async () => {
@@ -103,11 +95,8 @@ const SignInForm = () => {
       return profile.email === enteredEmail;
     });
     const isMyEmailHere = myEmailFromDB === undefined ? false : true;
-    console.log('????????', isMyEmailHere);
-    // setDuplicatedEmail(isMyEmailHere);
-    // setIsAuthenticated(true);
-    return isMyEmailHere;
     console.log(error?.message);
+    return isMyEmailHere;
   };
 
   useEffect(() => {
@@ -127,7 +116,7 @@ const SignInForm = () => {
           <SFormItem>
             <label htmlFor="email">이메일</label>
             <SInput type="text" id="email" placeholder="이메일을 입력하세요" name="email" value={email} onChange={handleInput} />
-            <BsXCircleFill className="reset_signin_input_btn" onClick={() => setEmail('')} />
+            {email && <BsXCircleFill className="reset_signin_input_btn" onClick={() => setEmail('')} />}
             <SPGuideMessage>{guideMessage.email && guideMessage.email}</SPGuideMessage>
           </SFormItem>
 
@@ -135,7 +124,7 @@ const SignInForm = () => {
           <SFormItem>
             <label htmlFor="password">비밀번호</label>
             <SInput type="password" id="password" placeholder="비밀번호를 입력하세요" name="password" value={password} onChange={handleInput} />
-            <BsXCircleFill className="reset_signin_input_btn" onClick={() => setPassword('')} />
+            {password && <BsXCircleFill className="reset_signin_input_btn" onClick={() => setPassword('')} />}
             <SPGuideMessage>{guideMessage.password && guideMessage.password}</SPGuideMessage>
           </SFormItem>
 
@@ -170,70 +159,25 @@ const SignInForm = () => {
 
 export default SignInForm;
 
-const SContainer = styled.div``;
-
-const SPartitionLine = styled.div`
-  position: relative;
-  width: 100%;
-  height: 1px;
-  background-color: #eaeaea;
-  & p {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: -10px;
-    & span {
-      background-color: #fff;
-    }
-  }
-`;
-
-const SFormContainer = styled.div`
-  height: 600px;
-  /* padding: 50px 20px; */
-  @media screen and (max-width: 420px) {
-    height: 460px;
-  }
-`;
-
-const SForm = styled.form`
-  box-sizing: border-box;
-  padding: 80px 20px;
-  margin: 0 auto;
-  max-width: 650px;
-  min-width: 360px;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  @media screen and (max-width: 420px) {
-    padding: 50px 20px;
-    gap: 25px;
-  }
-`;
-
 const SsnsIcon = styled.img<{ $iconType?: string }>`
-  /* width: 40px;
-  height: 40px; */
   box-sizing: border-box;
   ${({ $iconType }) => {
     if ($iconType === 'google')
       return css`
-        width: 72px;
-        height: 72px;
+        width: 67px;
+        height: 67px;
         @media screen and (max-width: 420px) {
-          width: 58px;
-          height: 58px;
+          width: 53px;
+          height: 53px;
         }
       `;
     else {
       return css`
-        width: 70px;
-        height: 70px;
+        width: 65px;
+        height: 65px;
         @media screen and (max-width: 420px) {
-          width: 56px;
-          height: 56px;
+          width: 51px;
+          height: 51px;
         }
       `;
     }
@@ -246,58 +190,6 @@ const SsnsIcon = styled.img<{ $iconType?: string }>`
   }}
 `;
 
-const SFormItem = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const SInput = styled.input`
-  padding: 5px 50px 5px 12px;
-  box-sizing: border-box;
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  font-size: 16px;
-  border: 1px solid #696969;
-  border-radius: 3px;
-  outline: none;
-  font-size: 16px;
-  @media screen and (max-width: 420px) {
-    height: 45px;
-    line-height: 45px;
-  }
-`;
-
-const SPGuideMessage = styled.p`
-  color: #ff003e;
-`;
-
-const SButton = styled.button<{ disabled: boolean }>`
-  box-sizing: border-box;
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  font-size: 16px;
-  border-radius: 3px;
-  background-color: ${(props) => {
-    if (props.disabled === true) return '#e7e7e7';
-    else return '#FE902F';
-  }};
-  color: #fff;
-  cursor: ${(props) => {
-    if (props.disabled === true) return 'not-allowed';
-    else return 'pointer';
-  }};
-  margin-top: 70px;
-  @media screen and (max-width: 420px) {
-    margin-top: 35px;
-    height: 45px;
-    line-height: 45px;
-  }
-`;
-
 const SUnderFormButton = styled.div`
   display: flex;
   width: 100%;
@@ -306,10 +198,6 @@ const SUnderFormButton = styled.div`
     margin-top: 14px;
     height: 30px;
     font-size: 16px;
-    /* display: flex; */
-    /* justify-content: end; */
-    /* align-items: center; */
-    /* padding: 0; */
     color: #808080;
     cursor: pointer;
   }
