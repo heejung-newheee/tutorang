@@ -31,6 +31,9 @@ const UserInfo = () => {
   };
   const studentMatch = matchData?.filter((item) => item.user_id === user.id);
   const tutorMatch = matchData?.filter((item) => item.tutor_id === user.id);
+  console.log(user);
+
+  console.log(data);
 
   return (
     <>
@@ -89,14 +92,7 @@ const UserInfo = () => {
         </S.ProfileBox>
 
         <div style={{ height: '120px' }}></div>
-        {data && data.length > 0 ? (
-          <>
-            <TutorInfo match={data} />
-            <StudentInfo match={data} />
-          </>
-        ) : (
-          <div>매칭 데이터가 없습니다.</div>
-        )}
+        {data && data.length > 0 ? <>{user.role === 'tutor' ? <TutorInfo match={data} /> : <StudentInfo match={data} />}</> : <div>매칭 데이터가 없습니다.</div>}
       </S.MypageContainer>
     </>
   );
