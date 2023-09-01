@@ -10,8 +10,8 @@ interface CityData {
 const cities: CityData = { AREA0, 서울, 인천, 대전, 광주, 대구, 울산, 부산, 경기, 강원, 충북, 충남, 전북, 전남, 경북, 경남, 제주 };
 
 type Props = {
-  isDropdown: boolean;
-  setisDropdown: (item: boolean) => void;
+  isDistrictDropdown: boolean;
+  setisDistrictDropdown: (item: boolean) => void;
   checkedcity: string;
   handleDropAndSi: (item: string, version: string) => void;
   setCheckedGunGu: Dispatch<SetStateAction<string>>;
@@ -20,7 +20,7 @@ type Props = {
   handleCloseModal: () => void;
 };
 
-const CityModal = ({ isDropdown, setisDropdown, checkedcity, handleDropAndSi, setCheckedGunGu, checkedGunGu, handelCloseModalAndSelect, handleCloseModal }: Props) => {
+const CityModal = ({ isDistrictDropdown, setisDistrictDropdown, checkedcity, handleDropAndSi, setCheckedGunGu, checkedGunGu, handelCloseModalAndSelect, handleCloseModal }: Props) => {
   return (
     <S.InnerModalBox>
       <S.Title>
@@ -37,14 +37,14 @@ const CityModal = ({ isDropdown, setisDropdown, checkedcity, handleDropAndSi, se
         ))}
       </S.PcSiWrap>
       {/* 모바일  */}
-      <S.MobileSiWrap onClick={() => setisDropdown(!isDropdown)} $isOpen={false}>
+      <S.MobileSiWrap onClick={() => setisDistrictDropdown(!isDistrictDropdown)} $isOpen={false}>
         {' '}
         <div>
           <span>{checkedcity}</span>
-          <S.ChevronSpan $isDropdown={isDropdown}></S.ChevronSpan>
+          <S.ChevronSpan $isDistrictDropdown={isDistrictDropdown}></S.ChevronSpan>
         </div>
       </S.MobileSiWrap>
-      {isDropdown ? (
+      {isDistrictDropdown ? (
         <S.HiddenDropMenu>
           {cities['AREA0'].map((item, index) => (
             <div key={index} onClick={() => handleDropAndSi(item, 'mobile')}>
@@ -69,7 +69,7 @@ const CityModal = ({ isDropdown, setisDropdown, checkedcity, handleDropAndSi, se
       ) : null}
       {/* 군/구 */}
       <S.GunGuBox>
-        {!isDropdown &&
+        {!isDistrictDropdown &&
           cities[checkedcity]?.map((item) => (
             <div key={Math.random() * 22229999} onClick={() => setCheckedGunGu(item)}>
               <Checkbox

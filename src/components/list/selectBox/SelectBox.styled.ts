@@ -135,16 +135,15 @@ export const InnerHidden = styled.div<{ $isChevronOpen: boolean; $dddddd: boolea
 `;
 
 export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean; $dddddd: boolean }>`
-  width: 50%;
-  min-width: 320px;
-  white-space: nowrap;
+  width: 100%;
+  display: grid;
   margin: 30px 0;
   padding: 0 20px;
-  display: ${(props) => (props.$dddddd ? 'block' : 'none')};
+  grid-template-columns: repeat(2, 1fr);
   animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   @media all and (max-width: 768px) {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 `;
 
@@ -154,7 +153,6 @@ export const PriceClassType = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 60px;
-  margin-top: 50px;
 
   & > span {
     border-left: 3px solid #fe902f;

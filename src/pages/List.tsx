@@ -6,7 +6,7 @@ import TutorListCompo from '../components/list/tutorCompo/TutorListCompo';
 import LastTutorListCompo from '../components/list/tutorCompo/LastTutorListCompo';
 import SelectBox from '../components/list/selectBox/SelectBox';
 import CityModal from '../components/list/location/CityModal';
-import { handleAgeFilter, handleCityModalFilter, handleGenderFilter, handleLevelFilter, SelectedFilters } from '../components/list/utility';
+import { handleCityModalFilter, SelectedFilters } from '../components/list/utility';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 const List = () => {
@@ -15,7 +15,7 @@ const List = () => {
   const [checkedcity, setCheckedCity] = useState<string>('전체');
   const [checkedGunGu, setCheckedGunGu] = useState<string>('전체');
   //모달 시/군/구 드롭다운
-  const [isDropdown, setisDropdown] = useState(false);
+  const [isDistrictDropdown, setisDistrictDropdown] = useState(false);
 
   //유저가 선택한 목록 - 필터 바에 들어갈 값[]
   const [selectedArr, setSelectedArr] = useState<string[][]>([]);
@@ -31,51 +31,13 @@ const List = () => {
     age: [],
     classStyle: 'onLine',
   };
+
   //유저가 선택한 목록 - 검색 api에 들어갈 값{}
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>(initialSelectedFilters);
   //검색
   const [searchText, setSearchText] = useState('');
 
   console.log(selectedFilters, selectedArr);
-  //체크박스 클릭
-  const handleFilterdObj = (item: string, category: string) => {
-    switch (category) {
-      //성별
-      case 'gender':
-        handleGenderFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
-        break;
-
-      //난이도
-      case 'level':
-        handleLevelFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
-        break;
-
-      //나이
-      case 'age':
-        handleAgeFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  const handleDropAndSi = (item: string, version: string) => {
-    //시, 군구 setState
-    setCheckedCity(item);
-    setCheckedGunGu('');
-    //체크박스 닫기
-    version === 'pc' ? null : setisDropdown(!isDropdown);
-  };
-
-  const handelCloseModalAndSelect = () => {
-    handleCityModalFilter(setSelectedFilters, selectedFilters, setSelectedArr, checkedcity, checkedGunGu);
-    closeModal();
-  };
-
-  const handleCloseModal = () => {
-    closeModal();
-  };
 
   //튜터 api 호출
   const PAGE_SIZE = 6;
@@ -100,16 +62,16 @@ const List = () => {
     //   query = query.gte('age', minAge).lte('age', maxAge);
     // }
 
-    // if (searchText) {
-    //   query = query.textSearch('tutor_name', `${searchText}`);
-    // }
-    // if (minPrice >= 0 && maxPrice) {
-    //   if (classStyle === 'onLine') {
-    //     query = query.gte('tuition_fee_online', 0).lte('tuition_fee_online', 100000);
-    //   } else {
-    //     query = query.gte('tuition_fee_offline', minPrice).lte('tuition_fee_offline', maxPrice);
-    //   }
-    // }
+    if (searchText) {
+      query = query.textSearch('tutor_name', `${searchText}`);
+    }
+    if (minPrice >= 0 && maxPrice) {
+      if (classStyle === 'onLine') {
+        query = query.gte('tuition_fee_online', 0).lte('tuition_fee_online', 100000);
+      } else {
+        query = query.gte('tuition_fee_offline', minPrice).lte('tuition_fee_offline', maxPrice);
+      }
+    }
 
     // query.filter(`languages && ARRAY[${selectedLanguages.map(lang => `'${lang}'`).join(', ')}]`);
 
@@ -185,11 +147,33 @@ const List = () => {
     };
   };
 
+  //Debouncing
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
+  //Debouncing
   const debouncedOnChange = debounce<typeof onChange>(onChange, 500);
+
+  //시, 군구
+  const handleDropAndSi = (item: string, version: string) => {
+    //시, 군구 setState
+    setCheckedCity(item);
+    setCheckedGunGu('');
+    //체크박스 닫기
+    version === 'pc' ? null : setisDistrictDropdown(!isDistrictDropdown);
+  };
+
+  //시, 군구
+  const handelCloseModalAndSelect = () => {
+    handleCityModalFilter(setSelectedFilters, selectedFilters, setSelectedArr, checkedcity, checkedGunGu);
+    closeModal();
+  };
+
+  //시, 군구
+  const handleCloseModal = () => {
+    closeModal();
+  };
 
   return (
     <Container>
@@ -201,7 +185,7 @@ const List = () => {
       </SearchWrap>
       {/* 필터박스 */}
 
-      <SelectBox handleFilterdObj={handleFilterdObj} openModal={openModal} selectedArr={selectedArr} setSelectedArr={setSelectedArr} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
+      <SelectBox initialSelectedFilters={initialSelectedFilters} openModal={openModal} selectedArr={selectedArr} setSelectedArr={setSelectedArr} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
       {/* 강사 리스트 */}
       <TutorList>
         {data?.pages.map((i, first) => i?.map((userInfo, second) => (second === i.length - 1 && data?.pages.length - 1 === first ? <LastTutorListCompo LastelementRef={LastelementRef} userInfo={userInfo} /> : <TutorListCompo userInfo={userInfo} />)))}
@@ -215,8 +199,8 @@ const List = () => {
           }}
         >
           <CityModal
-            isDropdown={isDropdown}
-            setisDropdown={setisDropdown}
+            isDistrictDropdown={isDistrictDropdown}
+            setisDistrictDropdown={setisDistrictDropdown}
             checkedcity={checkedcity}
             handleDropAndSi={handleDropAndSi}
             setCheckedGunGu={setCheckedGunGu}
