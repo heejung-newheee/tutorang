@@ -27,11 +27,10 @@ const MatchingTutor = ({ matchList }: pageProps) => {
       queryClient.invalidateQueries(['matching']);
     },
   });
-  const cancelMatch = async (id: string) => {
-    cancelMatchMutation.mutate(id);
+  const handleCancelMatch = async (id: string) => {
+    if (window.confirm('요청을 취소 하시겠습니까?')) cancelMatchMutation.mutate(id);
   };
 
-  // console.log(matchList);
   const [activeTab, setActiveTab] = useState<number>(0);
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setActiveTab(newValue);
@@ -69,7 +68,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                     </div>
                     <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
                     <div>
-                      <MatchBtn onClick={() => item.id !== null && cancelMatch(item.id)}>요청 취소</MatchBtn>
+                      <MatchBtn onClick={() => item.id !== null && handleCancelMatch(item.id)}>요청 취소</MatchBtn>
                     </div>
                   </InfoItem>
                 </InfoList>

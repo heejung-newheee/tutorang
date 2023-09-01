@@ -58,7 +58,7 @@ const Header = () => {
     if (tutor) {
       dispatch(tutorInfo(tutor));
     }
-  }, [user, matchData, tutor, dispatch]);
+  }, [user, tutor, matchData, dispatch]);
 
   const handleHome = () => {
     navigate('/');
