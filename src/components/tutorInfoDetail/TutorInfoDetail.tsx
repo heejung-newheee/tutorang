@@ -1,21 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import * as S from './TutorInfoDetail.styled';
-import { getTutors, matchTutor } from '../../api/tutor';
+import { matchTutor } from '../../api/tutor';
 import { icon_check, icon_class, icon_info, icon_like, icon_location_gray, icon_school, icon_verify, starEmpty, starFull, starHalf } from '../../assets';
 import { Button } from '..';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../redux/modules';
 import { useReviewAverage } from '../../hooks';
-import { Session } from '@supabase/supabase-js';
-import { useEffect, useState } from 'react';
-import supabase from '../../supabase';
+
 import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../../api/chat';
 import { useNavigate } from 'react-router-dom';
 import { matchReview } from '../../api/review';
 import { RootState } from '../../redux/config/configStore';
+import { tutorMatchedCount } from '../../api/match';
 
 const TUTOR_QUERY_KEY = ['tutorDetail'];
 const REVIEW_QUERY_KEY = ['reviewTutorDetail'];
+const MATCHING_QUERY_KEY = ['matchingCount'];
 
 type TutorDetailProps = {
   id: string | undefined;
@@ -25,22 +25,22 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
   if (!id) return;
   const dispatch = useDispatch();
   const { data: tutor, isLoading: tutorLoading, isError: tutorError, error } = useQuery(TUTOR_QUERY_KEY, () => matchTutor(id));
+  const matchingCount = useQuery(MATCHING_QUERY_KEY, () => tutorMatchedCount(id));
   const loginUser = useSelector((state: RootState) => state.user.user);
 
   // 대화하기
-  const [session, setSession] = useState<Session | null>(null);
-  const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const handleStartChat = async (tutorId: string) => {
-    if (!(tutorId && session)) return;
+    if (!tutorId) return;
 
     if (!loginUser) {
       dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
+      return;
     }
 
     try {
-      const chatRoom = await getChatRoomWithTutor(session.user.id, tutorId);
+      const chatRoom = await getChatRoomWithTutor(loginUser?.id, tutorId);
 
       if (chatRoom.length > 0) {
         navigate(`/chat2?room_id=${chatRoom[0].room_id}`);
@@ -56,17 +56,6 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false);
-    });
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-  }, []);
 
   // 리뷰
   const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(REVIEW_QUERY_KEY, () => matchReview(id));
@@ -88,12 +77,14 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
     return <img src={starEmpty} alt={`Empty Star`} />;
   };
 
+  // 매칭 수
+
   // 신고하기
   const handleOpenReport = () => {
     dispatch(openModal({ type: 'report' }));
   };
 
-  if (tutorLoading || isLoading || reviewLoading) {
+  if (tutorLoading || reviewLoading) {
     return <div>로딩중</div>;
   }
 
@@ -209,7 +200,7 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
           </S.OverviewItem>
           <S.OverviewItem>
             <S.OverviewItemIcon src={icon_class} alt="매칭 아이콘" />
-            <S.OverviewItemNumber>30번</S.OverviewItemNumber>
+            <S.OverviewItemNumber>{matchingCount.data?.length}번</S.OverviewItemNumber>
             <span>매칭 횟수</span>
           </S.OverviewItem>
         </S.OverviewList>
