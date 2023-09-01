@@ -101,12 +101,29 @@ export const 경북 = [
   '청송군',
   '칠곡군',
 ];
+
+////////
+type Price = {
+  optionPrice: string;
+  min: number;
+  max: number;
+};
+
 export const 경남 = ['전체', '거제시', '김해시', '마산시', '밀양시', '사천시', '양산시', '진주시', '진해시', '창원시', '통영시', '거창군', '고성군', '남해군', '산청군', '의령군', '창녕군', '하동군', '함안군', '함양군', '합천군'];
 export const 제주 = ['전체', '서귀포시', '제주시', '남제주군', '북제주군'];
 
 export const gender: string[] = ['전체', '여성', '남성'];
 export const level: string[] = ['전체', '초급', '중급', '고급'];
 export const age: string[] = ['전체', '10대', '20대', '30대', '40대', '50대'];
+
+export const price: Price[] = [
+  { optionPrice: '전체', min: 0, max: 2000 },
+  { optionPrice: '전체', min: 0, max: 2000 },
+  { optionPrice: '전체', min: 0, max: 2000 },
+  { optionPrice: '전체', min: 0, max: 2000 },
+  { optionPrice: '전체', min: 0, max: 2000 },
+  { optionPrice: '전체', min: 0, max: 2000 },
+];
 
 export const handleAgeNum = (item: string) => {
   let ageNum = 0;
