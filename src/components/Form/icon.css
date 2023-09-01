@@ -1,0 +1,71 @@
+.reset_input_btn {
+  position: absolute;
+  right: 130px;
+  top: 17px;
+  fill: #cdcdcd;
+  z-index: 2
+}
+
+
+.reset_signin_input_btn {
+  position: absolute;
+  top: 44px;
+  right: 20px;
+  fill: #cdcdcd;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.reset_input_btn:hover {
+  cursor: pointer;
+  fill: #696969;
+}
+
+.password_show_hidden_button {
+  position: absolute;
+  top: 44px;
+  right: 18px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 3
+}
+
+@media screen and (max-width: 420px) {
+  .reset_input_btn {
+    position: absolute;
+    right: 118px;
+    top: 15px;
+  }
+
+  .password_show_hidden_button {
+    top: 41px;
+  }
+}
+
+.pw_button_hidden_color {
+  fill: #cdcdcd;
+}
+
+.pw_button_shown_color {
+  fill: #696969;
+}
+
+
+.certification_icon {
+  width: 25px;
+  height: 25px;
+  fill: #FE902F;
+}
+
+.certification_delete_icon {
+  margin-left: 2px;
+  width: 25px;
+  height: 25px;
+  fill: #FE902F;
+  cursor: pointer
+}
+
+.agree_checkbox {
+  font-size: 20px;
+  fill: #3D3D3D;
+}

@@ -1,21 +1,30 @@
-import { BrowserRouter } from 'react-router-dom';
-import { Routes } from 'react-router-dom';
-import { Route } from 'react-router-dom';
-import Main from '../pages/Main';
-import Detail from '../pages/Detail';
-import Mypage from '../pages/Mypage';
-import SignIn from '../pages/SignIn';
-import SignUp from '../pages/SignUp';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Layout, SignInForm, SignUpForm } from '../components';
+import CreateProfileForm from '../components/Form/profileForm/CreateProfileForm';
+import RegistTutorForm from '../components/Form/registTutorForm/RegistTutorForm';
+import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
+import { AuthMain, Detail, List, Main, Mypage } from '../pages';
+import Chat from '../pages/Chat';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/detail" element={<Detail />} />
-        <Route path="/mypage" element={<Mypage />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route element={<GlobalLayout />}>
+          <Route path="/" element={<Main />} />
+          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/detail/:id" element={<Detail />} />
+          <Route element={<Layout />}>
+            <Route path="/list" element={<List />} />
+            <Route path="/additional-information" element={<CreateProfileForm />} />
+            <Route path="/tutor-registration" element={<RegistTutorForm />} />
+            <Route element={<AuthMain />}>
+              <Route path="/signin" element={<SignInForm />} />
+              <Route path="/signup" element={<SignUpForm />} />
+            </Route>
+            <Route path="/chat" element={<Chat />} />
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );

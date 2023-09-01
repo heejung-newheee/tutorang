@@ -1,0 +1,59 @@
+.flicking-arrow-prev.is-circle, .flicking-arrow-next.is-circle {
+    background-color: transparent;
+}
+
+.flicking-arrow-prev::before, .flicking-arrow-prev::after, .flicking-arrow-next::before, .flicking-arrow-next::after {
+    content: "";
+    width: 24px;
+    height: 3px;
+    position: absolute;
+    background-color: #f2a65e;
+}
+
+.flicking-arrow-prev.is-circle::before, .flicking-arrow-prev.is-circle::after, .flicking-arrow-next.is-circle::before, .flicking-arrow-next.is-circle::after {
+    background-color: #555;
+}
+
+.flicking-arrow-next::after {
+    top: calc(50% - 1px);
+    right: 1px;
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transform-origin: 100% 50%;
+    -ms-transform-origin: 100% 50%;
+    transform-origin: 100% 50%;
+}
+
+.flicking-arrow-next::before {
+    top: 50%;
+    right: 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transform-origin: 100% 50%;
+    -ms-transform-origin: 100% 50%;
+    transform-origin: 100% 50%;
+}
+
+.flicking-arrow-prev::after {
+    top: calc(50% - 1px);
+    left: 1px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    -webkit-transform-origin: 0% 50%;
+    -ms-transform-origin: 0% 50%;
+    transform-origin: 0% 50%;
+}
+
+.flicking-arrow-prev::before {
+    top: 50%;
+    left: 0;
+    -webkit-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-transform-origin: 0% 50%;
+    -ms-transform-origin: 0% 50%;
+    transform-origin: 0% 50%;
+}
