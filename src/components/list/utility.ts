@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 export const AREA0 = ['전체', '서울', '인천', '대전', '광주', '대구', '울산', '부산', '경기', '강원', '충북', '충남', '전북', '전남', '경북', '경남', '제주'];
 
 export const 서울 = [
@@ -162,4 +164,148 @@ export const debounce = <T extends (...args: any[]) => any>(fn: T, delay: number
     }, delay);
     return result;
   };
+};
+
+//list - handleFilterdObj
+
+export const handleGenderFilter = (item: string, setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
+  if (item === '전체') {
+    //전체 클릭 - 모든 값 초기화
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: [] });
+    setSelectedArr((pre: string[][]) => [...pre.filter((item) => item[0] !== 'gender')]);
+    return;
+    //전체를 제외한 클릭
+  } else if (item !== '전체') {
+    //값이 없을때 - 추가
+    if (selectedFilters?.gender.find((i: string) => i === item) === undefined) {
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: [...pre.gender, item] });
+      setSelectedArr((pre: string[][]) => [...pre, ['gender', item]]);
+      return;
+      //값이 있을때 - 삭제
+    } else {
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: pre.gender.filter((i: string) => i !== item) });
+      setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
+      return;
+    }
+  }
+  return;
+};
+
+export const handleLevelFilter = (item: string, setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
+  if (item === '전체') {
+    //전체 클릭 - 모든 값 초기화
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, level: [] });
+    setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'level')]);
+    //전체를 제외한 클릭
+  } else if (item !== '전체') {
+    //값이 없을때 - 추가
+    if (selectedFilters?.level.find((i: string) => i === item) === undefined) {
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, level: [...pre.level, item] });
+      setSelectedArr((pre: string[][]) => [...pre, ['level', item]]);
+      //값이 있을때 - 삭제
+    } else {
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, level: pre.level.filter((i: string) => i !== item) });
+      setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
+    }
+  }
+  return;
+};
+
+export const handleAgeFilter = (item: string, setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
+  let ageNum = handleAgeNum(item);
+
+  if (item === '전체') {
+    //전체 클릭 - 모든 값 초기화
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: [] });
+    setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'age')]);
+  } else if (item !== '전체') {
+    //값이 없을때 - 추가
+    if (selectedFilters?.age.find((i: number) => i === ageNum) === undefined) {
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: [...pre.age, Number(ageNum)] });
+      setSelectedArr((pre: string[][]) => [...pre, ['age', item]]);
+      //값이 있을때 - 삭제
+    } else {
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: pre.age.filter((i: number) => i !== ageNum) });
+      setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
+    }
+  }
+  return;
+};
+
+//list - 지역 모달
+
+export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>, checkedcity: string, checkedGunGu: string) => {
+  if (checkedcity === '전체') {
+    //전체면 필터객체에서 삭제
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location1: '', location2: '' });
+    setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location1'));
+    setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
+  } else {
+    //지역명이 있으면 업데이트
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location1: checkedcity, location2: '' });
+
+    setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'location1'), ['location1', checkedcity]]);
+    setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
+  }
+
+  if (checkedGunGu === '전체') {
+    //전체면 필터객체에서 삭제
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location2: '' });
+    setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location2'));
+  } else if (checkedGunGu) {
+    //지역명이 있으면 업데이트
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location2: checkedGunGu });
+
+    setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'location2'), ['location2', checkedGunGu]]);
+  }
+  return;
+};
+
+//selectBox
+
+export const handleDeleteFilterBar = (item: string[], setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
+  switch (item[0]) {
+    //성별
+    case 'gender':
+      console.log(item);
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: pre.gender.filter((i: string) => i !== item[1]) });
+      setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
+      break;
+
+    //난이도
+    case 'level':
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, level: pre.level.filter((i: string) => i !== item[1]) });
+      setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
+      break;
+
+    //나이
+    case 'age':
+      let ageNum = handleAgeNum(item[1]);
+
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: pre.age.filter((i: number) => i !== ageNum) });
+      setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
+      break;
+
+    //지역1
+    case 'location1':
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location1: '', location2: '' });
+      setSelectedArr((pre) => pre.filter((i) => i[0] !== 'location1'));
+      setSelectedArr((pre) => pre.filter((i) => i[0] !== 'location2'));
+      break;
+
+    //지역2
+    case 'location2':
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location2: '' });
+      setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
+      break;
+
+    //가격
+    case 'price':
+      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, minPrice: 0, maxPrice: 100000, priceType: '전체' });
+      break;
+
+    default:
+      break;
+  }
 };

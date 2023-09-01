@@ -2,24 +2,17 @@ import styled from 'styled-components';
 
 export const InnerModalBox = styled.div`
   width: 70%;
-  max-width: 600px;
+  max-width: 650px;
   height: 80%;
   background-color: #fafafa;
-  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  padding: 0 10px;
   padding-bottom: 70px;
   padding-top: 20px;
   position: relative;
-
-  & > h1 {
-    font-weight: bold;
-    font-size: 17px;
-    margin-bottom: 10px;
-    color: #fe902f;
-  }
 
   @media all and (min-width: 0px) and (max-width: 600px) {
     width: 100%;
@@ -27,41 +20,41 @@ export const InnerModalBox = styled.div`
   }
 `;
 
+export const Title = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-weight: 700;
+
+  & > img {
+    width: 15px;
+    margin-right: 10px;
+  }
+`;
+
 //pc버전
 export const PcSiWrap = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 10px 0 30px;
-  text-align: center;
   margin-bottom: 30px;
+  width: 100%;
+  border-left: 1px solid #e2e2e2;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
 
   @media all and (max-width: 768px) {
     display: none;
   }
 `;
 //pc버전 글자
-export const PcSiString = styled.p<{ $color: boolean }>`
-  color: ${(props) => (props.$color === true ? '#fe902f' : 'black')};
-  margin: 5px 15px;
-  text-align: center;
-  cursor: pointer;
-`;
-
-//x버튼 - 모바일 전용
-export const XButton = styled.span`
-  width: 30px;
-  height: 30px;
+export const PcSiTitleBlock = styled.div<{ $color: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
-  right: 10px;
-  top: 15px;
+  text-align: center;
+  padding: 15px;
+  box-shadow: 1px 0 0 0 #e2e2e2, 0px 1px 0 0 #e2e2e2, 1px 1px 0 0 #e2e2e2, 0px 0 0 0 #e2e2e2 inset, 0 1px 0 0 #e2e2e2 inset;
   cursor: pointer;
-
-  @media all and (min-width: 768px) {
-    display: none;
-  }
+  color: ${(props) => (props.$color === true ? '#fe902f' : 'black')};
 `;
 
 //모바일
@@ -74,6 +67,7 @@ export const MobileSiWrap = styled.div<{ $isOpen: boolean }>`
   display: flex;
   display: none;
   cursor: pointer;
+
   & > div {
     display: flex;
     align-items: center;
@@ -95,15 +89,23 @@ export const ChevronSpan = styled.div<{ $isDropdown: boolean }>`
 //모바일버전 시버튼 클릭하면 나오는 창
 export const HiddenDropMenu = styled.div`
   width: 250px;
+  height: 50%;
   padding: 10px 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 1px solid #fe902f;
   border-radius: 7px;
-  height: 50%;
   overflow-y: scroll;
+  /* display: none; */
 
+  @media all and (max-width: 768px) {
+    display: block;
+  }
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
   & > div {
     width: 100%;
     border-bottom: 1px solid #dbdbdb;
@@ -123,11 +125,14 @@ export const GunGuBox = styled.div`
   overflow-y: scroll;
   width: 100%;
 
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+
   & > div {
     width: 100%;
     border-bottom: 1px solid #dbdbdb;
     padding: 12px 25px;
-    /* cursor: pointer; */
   }
 
   //체크박스 클릭
@@ -151,7 +156,7 @@ export const GunGuBox = styled.div`
   }
 `;
 
-//모바일 전용
+//모바일 전용 - 선택버튼
 export const Btn = styled.button`
   position: absolute;
   bottom: 0;
@@ -163,6 +168,23 @@ export const Btn = styled.button`
   background-color: #fe902f;
   font-size: 15px;
   color: white;
+
+  @media all and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+//x버튼 - 모바일 전용
+export const XButton = styled.span`
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  cursor: pointer;
 
   @media all and (min-width: 768px) {
     display: none;

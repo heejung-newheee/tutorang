@@ -1,5 +1,50 @@
 import styled, { keyframes } from 'styled-components';
 
+export const FilterContainer = styled.div<{ $isChevronOpen: boolean }>`
+  width: 100%;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+  height: ${(props) => (props.$isChevronOpen ? '100%' : 'auto')};
+`;
+
+export const LocationDiv = styled.div`
+  width: 100%;
+  height: 50px;
+  background-color: #fe902f;
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  color: #ffffff;
+  padding-left: 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  cursor: pointer;
+
+  & > span {
+    display: flex;
+    align-items: center;
+  }
+
+  & > span > img {
+    height: 15px;
+    margin-right: 10px;
+  }
+`;
+
+export const FilterStart = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+
+  border-bottom: 1px solid #eaeaea;
+
+  & > img {
+    height: 15px;
+    margin-right: 10px;
+  }
+`;
+
 export const FilterBox = styled.div`
   width: 100%;
   margin-top: 30px;
@@ -14,7 +59,17 @@ export const FilterBox = styled.div`
   } */
 `;
 
-export const InnerBox = styled.div<{ $isIn: boolean }>`
+export const FilterUl = styled.ul`
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: auto;
+  display: flex;
+  overflow: scroll;
+  padding: 0 30px;
+`;
+
+export const FilterLi = styled.li<{ $isIn: boolean }>`
   display: flex;
   align-items: center;
   height: 34px;
@@ -30,27 +85,14 @@ export const InnerBox = styled.div<{ $isIn: boolean }>`
   position: relative;
 `;
 
-const slide = keyframes`
-	0%{
-    transform: translateX(-100px);
-    opacity: 0;
-    }
-    100%{
-    transform: translateX(0px);
-    opacity: 1;
-    }
-`;
-
 const slideDown = keyframes`
   from {
     max-height: 0;
     opacity: 0;
-    overflow: hidden;
   }
   to {
     max-height: 1000px;
     opacity: 1;
-    overflow: visible;
   }
 `;
 
@@ -58,22 +100,21 @@ const slideUp = keyframes`
   from {
     max-height: 1000px;
     opacity: 1;
-    overflow: visible;
   }
   to {
     max-height: 0;
     opacity: 0;
-    overflow: hidden;
   }
 `;
 
-export const InnerHidden = styled.div<{ $isChevronOpen: boolean }>`
+export const InnerHidden = styled.div<{ $isChevronOpen: boolean; $dddddd: boolean }>`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  white-space: nowrap;
+
   margin: 20px 0;
   padding: 0 20px;
+
   animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   @media all and (max-width: 768px) {
@@ -93,31 +134,17 @@ export const InnerHidden = styled.div<{ $isChevronOpen: boolean }>`
   }
 `;
 
-export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean }>`
+export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean; $dddddd: boolean }>`
   width: 50%;
-  /* max-width: 400px; */
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  /* background-color: #f5f3f3; */
+  min-width: 320px;
   white-space: nowrap;
-  margin: 20px 0;
+  margin: 30px 0;
   padding: 0 20px;
+  display: ${(props) => (props.$dddddd ? 'block' : 'none')};
   animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   @media all and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
-  }
-
-  & > div {
-    width: 50%;
-    padding: 10px;
-
-    & > input {
-      cursor: pointer;
-    }
-    & > label {
-      cursor: pointer;
-    }
   }
 `;
 
@@ -126,7 +153,8 @@ export const PriceClassType = styled.div`
   color: #fe902f;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 60px;
+  margin-top: 50px;
 
   & > span {
     border-left: 3px solid #fe902f;
@@ -151,12 +179,12 @@ export const FilterBar = styled.div`
   justify-content: space-between;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 5px;
-  /* background-color: #f5f3f3; */
-  /* border-bottom: 1px solid #eaeaea; */
-  /* border-top: 1px solid #eaeaea; */
-
   overflow-x: scroll;
   white-space: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 `;
 
 export const ResetDiv = styled.div`
@@ -175,6 +203,10 @@ export const FiterWrap = styled.div`
   display: flex;
   overflow-x: scroll;
   position: relative;
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 `;
 
 export const FiterWrapButton = styled.div`
@@ -188,6 +220,10 @@ export const FiterWrapButton = styled.div`
   display: flex;
   align-items: center;
   display: block;
+
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 
   & > div {
     display: flex;
