@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const NavContainer = styled.header`
@@ -33,7 +33,7 @@ export const WidthLimitContainer = styled.div`
   }
 `;
 
-export const LogoWrap = styled.div`
+export const LogoWrap = styled(Link)`
   display: flex;
   align-items: center;
 
@@ -50,9 +50,6 @@ export const LogoWrap = styled.div`
     color: black;
     margin-right: 10px;
   }
-  @media all and (max-width: 768px) {
-    display: none;
-  }
 `;
 export const Hamberger = styled.button`
   display: none;
@@ -63,7 +60,7 @@ export const Hamberger = styled.button`
   }
 `;
 
-export const MiddleLogo = styled.div`
+export const MiddleLogo = styled(Link)`
   font-weight: 900;
   font-size: 20px;
   color: black;
@@ -128,6 +125,17 @@ export const LoginBtnSignUp = styled.button`
   }
 `;
 
+export const HeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media all and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const Gnb = styled.div``;
+
 // export const HiddenBarDiv = styled.div`
 //   position: fixed;
 //   width: 30%;
@@ -137,3 +145,25 @@ export const LoginBtnSignUp = styled.button`
 //   top: 0;
 //   background-color: aquamarine;
 // `;
+
+// Mobile UI
+export const MobileMenuWrapper = styled.div`
+  padding: 24px;
+`;
+
+export const GnbMobile = styled.ul``;
+export const GnbMobileItem = styled.ul`
+  font-size: 18px;
+  padding: 10px 0;
+  font-weight: 600;
+`;
+
+export const SignMobileWrapper = styled.div`
+  display: flex;
+  gap: 18px;
+  margin-bottom: 16px;
+
+  & button {
+    font-size: 16px;
+  }
+`;
