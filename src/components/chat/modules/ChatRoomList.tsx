@@ -45,14 +45,11 @@ const ChatRoomList = ({ userId }: { userId: string }) => {
     const trimmedText = searchInput.trim();
     return chatRoomList.filter((chatRoom) => {
       const usersExcludeMe = chatRoom.chat_room_participants.filter((participant) => participant.user_id !== userId);
-      console.log(usersExcludeMe);
       if (usersExcludeMe.length === 0) return false;
       if (!usersExcludeMe[0].profiles.username) return false;
       return usersExcludeMe[0].profiles.username.search(trimmedText) > -1;
     });
   }, [chatRoomList, searchInput, userId]);
-
-  console.log(filterdChatRoomList);
 
   const sortedChatRoomList = filterdChatRoomList?.sort((a, b) => {
     const a_updated_at = +new Date(a.last_message.length > 0 ? a.last_message[0].created_at : a.created_at!);

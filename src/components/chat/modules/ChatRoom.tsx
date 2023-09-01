@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Fragment } from 'react';
 import supabase from '../../../supabase';
 import useChatContext from '../../../hooks/useChatContext';
 import { IoIosSend } from 'react-icons/io';
@@ -12,11 +12,16 @@ const isTutoringMessage = (type: string) => {
   return ['request', 'accept', 'reject'].includes(type);
 };
 
-const getTimeString = (isoDateString: string) => {
+const getTimeText = (isoDateString: string) => {
   const isoDate = new Date(isoDateString);
-  const options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'numeric', hour12: false };
-  const localTime = new Intl.DateTimeFormat(navigator.language, options).format(isoDate);
-  return localTime;
+  const options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'numeric' };
+  return new Intl.DateTimeFormat(navigator.language, options).format(isoDate);
+};
+
+const getDateText = (isoDateString: string): string => {
+  const isoDate = new Date(isoDateString);
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Intl.DateTimeFormat(navigator.language, options).format(isoDate);
 };
 
 const ChatRoom = ({ userId }: { userId: string }) => {
@@ -100,9 +105,26 @@ const ChatRoom = ({ userId }: { userId: string }) => {
 
       <S.ChatArea ref={chatAreaRef}>
         <S.ChatList>
-          {chatMessages.map((message) => (
-            <ChatMessage message={message} isMine={message.user_id === userId} key={message.message_id} />
-          ))}
+          {chatMessages.map((message, index) => {
+            let result;
+            const currentDateNumber = getDateText(message.created_at);
+
+            if (index === 0 || currentDateNumber !== getDateText(chatMessages[index - 1].created_at)) {
+              result = (
+                <li style={{ textAlign: 'center', position: 'relative' }}>
+                  <hr style={{ position: 'absolute', top: '50%', left: 0, width: '100%', margin: 0, height: '1px', border: 'none', borderTop: '1px solid #ccc' }} />
+                  <span style={{ color: '#808080', zIndex: 1, position: 'relative', backgroundColor: '#ffffff', padding: '0 0.5rem' }}>{getDateText(message.created_at)}</span>
+                </li>
+              );
+            }
+
+            return (
+              <Fragment key={message.message_id}>
+                {result}
+                <ChatMessage message={message} isMine={message.user_id === userId} key={message.message_id} />
+              </Fragment>
+            );
+          })}
         </S.ChatList>
       </S.ChatArea>
 
@@ -135,7 +157,7 @@ export const ChatMessage = ({ message, isMine }: { message: Tables<'chat_message
       ) : (
         <S.ChatTextMessageContent $isMine={isMine}>{message.content}</S.ChatTextMessageContent>
       )}
-      <S.ChatMessageTime>{getTimeString(message.created_at)}</S.ChatMessageTime>
+      <S.ChatMessageTime>{getTimeText(message.created_at)}</S.ChatMessageTime>
     </S.ChatMessage>
   );
 };

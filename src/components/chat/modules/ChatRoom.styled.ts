@@ -35,6 +35,7 @@ export const HeaderButton = styled.button<{ color?: 'red' | 'blue' }>`
 export const ChatArea = styled.div`
   overflow-y: auto;
   flex: 1;
+  scroll-behavior: smooth;
 `;
 
 export const ChatList = styled.ul`
