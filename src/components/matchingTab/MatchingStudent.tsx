@@ -6,6 +6,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { matchingAccept, matchingCancel, matchingReject } from '../../api/match';
 import { styled } from 'styled-components';
 import './custom.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/config/configStore';
+import { createChatRoom, getChatRoomWithTutor, inviteChatRoom, sendTutoringMessage } from '../../api/chat';
+
 interface pageProps {
   matchList: Views<'matching_tutor_data'>[];
 }
@@ -20,6 +24,7 @@ const TabPanel = (props: any) => {
   );
 };
 const MatchingTutor = ({ matchList }: pageProps) => {
+  const user = useSelector((state: RootState) => state.user.user);
   const queryClient = useQueryClient();
   const acceptMatchMutation = useMutation(matchingAccept, {
     onSuccess: () => {
@@ -27,8 +32,22 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     },
   });
 
-  const acceptMatch = async (id: string) => {
+  const acceptMatch = async (id: string, student_id: string) => {
+    if (!user) return;
     acceptMatchMutation.mutate(id);
+    try {
+      const room = await getChatRoomWithTutor(user.id, student_id);
+      if (room.length > 0) {
+        console.log('룸이 있음');
+        await sendTutoringMessage(room[0].room_id, 'accept');
+        return;
+      }
+      const newRoom = await createChatRoom();
+      await inviteChatRoom(newRoom.room_id, student_id);
+      await sendTutoringMessage(newRoom.room_id, 'accept');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const rejectMatchMutation = useMutation(matchingReject, {
@@ -37,8 +56,23 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     },
   });
 
-  const rejectMatch = async (id: string) => {
+  const rejectMatch = async (id: string, student_id: string) => {
+    if (!user) return;
     rejectMatchMutation.mutate(id);
+    try {
+      const room = await getChatRoomWithTutor(user.id, student_id);
+
+      if (room.length > 0) {
+        await sendTutoringMessage(room[0].room_id, 'reject');
+        return;
+      }
+
+      const newRoom = await createChatRoom();
+      await inviteChatRoom(newRoom.room_id, student_id);
+      await sendTutoringMessage(newRoom.room_id, 'reject');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // console.log(matchList);
@@ -79,8 +113,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                     </div>
                     <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
                     <div>
-                      <MatchBtn onClick={() => item.id !== null && acceptMatch(item.id)}>수락</MatchBtn>
-                      <MatchBtn onClick={() => item.id !== null && rejectMatch(item.id)}>거절</MatchBtn>
+                      <MatchBtn onClick={() => item.id !== null && acceptMatch(item.id, item.user_id!)}>수락</MatchBtn>
+                      <MatchBtn onClick={() => item.id !== null && rejectMatch(item.id, item.user_id!)}>거절</MatchBtn>
                     </div>
                   </InfoItem>
                 </InfoList>

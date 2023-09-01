@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
@@ -12,17 +12,20 @@ import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import * as S from './Header.styled';
 import { openModal } from '../../../redux/modules';
+import { RootState } from '../../../redux/config/configStore';
 
 type HEADERMENU = { title: string; path: string }[];
 
 const HeaderMenu: HEADERMENU = [
   { title: '튜터찾기', path: '/list' },
-  { title: '채팅', path: '/chat2' },
+  { title: '채팅', path: '/chat' },
 ];
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const loginUser = useSelector((state: RootState) => state.user.user);
 
   const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
   const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor_info_join'], tutorInfoJoin);
@@ -55,7 +58,7 @@ const Header = () => {
     if (tutor) {
       dispatch(tutorInfo(tutor));
     }
-  }, [user, matchData, tutor, dispatch]);
+  }, [user, tutor, matchData, dispatch]);
 
   const handleHome = () => {
     navigate('/');
@@ -108,16 +111,21 @@ const Header = () => {
 
           {/* 미디어쿼리 */}
           <S.LoginBtn>
-            <Link to="/mypage">마이페이지 </Link>
-            <NavLink to="/signin">로그인 | 회원가입</NavLink>
-            <S.LoginBtnSignUp
-              onClick={() => {
-                signOut();
-                navigate('/');
-              }}
-            >
-              LogOut
-            </S.LoginBtnSignUp>
+            {loginUser ? (
+              <>
+                <Link to="/mypage">마이페이지 </Link>
+                <S.LoginBtnSignUp
+                  onClick={() => {
+                    signOut();
+                    navigate('/');
+                  }}
+                >
+                  LogOut
+                </S.LoginBtnSignUp>
+              </>
+            ) : (
+              <NavLink to="/signin">로그인 | 회원가입</NavLink>
+            )}
           </S.LoginBtn>
         </S.WidthLimitContainer>
       </S.NavContainer>

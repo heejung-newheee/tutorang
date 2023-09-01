@@ -5,31 +5,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import { openModal, setReview } from '../../redux/modules';
 import { Button } from '..';
+import { icon_more, starEmpty, starFull } from '../../assets';
+import { useState } from 'react';
 
-const REVIEW_QUERY_KEY = ['reviewTutorDetail'];
+const REVIEW_QUERY_KEY = 'reviewTutorDetail';
 
 type ReviewProps = {
-  id: string | undefined;
+  id: string;
 };
 
 const Review = ({ id }: ReviewProps) => {
-  if (!id) return;
   const dispatch = useDispatch();
 
-  const { data: reviews, isLoading: reviewLoading, isError: reviewError, error } = useQuery(REVIEW_QUERY_KEY, () => matchReview(id));
+  const [openMenuId, setOpenMenuId] = useState(0);
+  const { data: reviews, isLoading: reviewLoading, isError: reviewError, error } = useQuery([REVIEW_QUERY_KEY, id], () => matchReview(id));
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const queryClient = useQueryClient();
-
-  const mutationReviewDelete = useMutation(reviewDelete, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(REVIEW_QUERY_KEY);
-    },
-  });
-
   // 리뷰 작성
   const handleOpenReviewCreateForm = () => {
+    if (!loginUser) {
+      dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
+      return;
+    }
+
     dispatch(openModal({ type: 'reviewCreate', targetId: id }));
   };
   // 리뷰 업데이트
@@ -39,7 +38,54 @@ const Review = ({ id }: ReviewProps) => {
 
   // 리뷰 삭제
   const handleReviewDelete = (id: number) => {
-    mutationReviewDelete.mutate(id);
+    dispatch(openModal({ type: 'confirmRemove', targetId: id }));
+  };
+
+  // 별점 후기
+  const starRating = (rating: number) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push(<img key={i} src={starFull} alt={`Full Star`} />);
+      } else {
+        stars.push(<img key={i} src={starEmpty} alt={`Empty Star`} />);
+      }
+    }
+    return stars;
+  };
+
+  const handleIsOpen = (reviewId: number) => {
+    setOpenMenuId(reviewId === openMenuId ? 0 : reviewId);
+  };
+
+  const createDate = (createTime: string) => {
+    if (!createTime) return;
+
+    const nowTime = new Date();
+    const createdTime = new Date(createTime);
+
+    const timeDiff = Math.abs(nowTime.getTime() - createdTime.getTime());
+    const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
+
+    let timeMessage = `ㆍ${hoursDiff}시간 전`;
+
+    if (hoursDiff < 1) {
+      timeMessage = `ㆍ방금`;
+    }
+
+    if (hoursDiff > 24) {
+      timeMessage = ``;
+    }
+
+    const getTime = createTime.split('T')[0]; // date만 추출
+
+    const [year, month, day] = getTime.split('-');
+    const formattedMonth = Number(month).toString();
+    const formattedDay = Number(day).toString();
+
+    const formattedDate = `${year}.${formattedMonth}.${formattedDay}`; // "-"를 "."으로 변경
+
+    return [formattedDate, <S.Time>{timeMessage}</S.Time>];
   };
 
   if (reviewLoading) {
@@ -64,35 +110,57 @@ const Review = ({ id }: ReviewProps) => {
         </S.TitleContainer>
 
         <S.ReviewContainer>
-          {reviews?.map((review) => {
-            return (
-              <S.ReviewItem key={review.id}>
-                <S.ReviewTitle>{review.title}</S.ReviewTitle>
-                <S.ReviewDescription>{review.content}</S.ReviewDescription>
+          {reviews.length > 0 ? (
+            <>
+              {reviews?.map((review) => {
+                const rating = review.rating || 0;
+                return (
+                  <S.ReviewItem key={review.id}>
+                    <div>
+                      <S.ReviewTitle>{review.title}</S.ReviewTitle>
+                      <S.ReviewDescription>{review.content}</S.ReviewDescription>
 
-                {loginUser?.id === review.user_id ? (
-                  <div>
-                    <button
-                      onClick={() => {
-                        handleOpenReviewUpdateForm();
-                        // 수정할 리뷰 데이터 전달
-                        dispatch(setReview(review));
-                      }}
-                    >
-                      수정
-                    </button>
-                    <button
-                      onClick={() => {
-                        handleReviewDelete(review.id);
-                      }}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                ) : null}
-              </S.ReviewItem>
-            );
-          })}
+                      <S.AuthorInfo>
+                        {review.author}ㆍ{createDate(review.created_at)}
+                      </S.AuthorInfo>
+                    </div>
+                    <div>
+                      {loginUser?.id === review.user_id ? (
+                        <S.ButtonMoreWrapper>
+                          <button onClick={() => handleIsOpen(review.id)}>
+                            <img src={icon_more} />
+                          </button>
+                          <S.moreMenu className={review.id === openMenuId ? 'active' : ''}>
+                            <S.moreMenuItem
+                              onClick={() => {
+                                handleOpenReviewUpdateForm();
+                                // 수정할 리뷰 데이터 전달
+                                dispatch(setReview(review));
+                                handleIsOpen(review.id);
+                              }}
+                            >
+                              수정
+                            </S.moreMenuItem>
+                            <S.moreMenuItem
+                              onClick={() => {
+                                handleReviewDelete(review.id);
+                                handleIsOpen(review.id);
+                              }}
+                            >
+                              삭제
+                            </S.moreMenuItem>
+                          </S.moreMenu>
+                        </S.ButtonMoreWrapper>
+                      ) : null}
+                      <S.ReviewStar>{starRating(rating)}</S.ReviewStar>
+                    </div>
+                  </S.ReviewItem>
+                );
+              })}
+            </>
+          ) : (
+            <div>후기가 없습니다.</div>
+          )}
         </S.ReviewContainer>
       </S.Container>
     </>

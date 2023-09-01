@@ -36,28 +36,14 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
   const messageSubscriptionRef = useRef<RealtimeChannel | null>(null);
   const participantSubscriptionRef = useRef<RealtimeChannel | null>(null);
 
-  const handleChangeChatRoom = useCallback(async (room_id: string) => {
-    if (!room_id) return;
-    try {
-      const room = (await getChatRoom(room_id)) as RoomType;
-      if (!room) return;
-      setChatRoom(room);
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
-
   const handleGetChatRooms = useCallback(async () => {
     const chatRooms = (await getJoinedChatRooms()) as RoomWithLastMessageType[];
     if (chatRooms && chatRooms.length > 0) {
-      console.log('chatRooms', chatRooms);
       setChatRoomList(chatRooms);
     }
   }, [setChatRoomList]);
 
   const handleGetMessages = useCallback(async () => {
-    console.log('handleGetMessages', room_id);
-
     if (!room_id) {
       setChatRoom(null);
       setChatMessages([]);
@@ -65,7 +51,10 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
     }
 
     try {
+      const room = (await getChatRoom(room_id)) as RoomType;
       const messages = await getMessagesInChatRoom(room_id);
+      if (!room) return;
+      setChatRoom(room);
       setChatMessages(messages);
     } catch (err) {
       console.error(err);
@@ -80,14 +69,7 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
     handleGetChatRooms();
   }, [handleGetChatRooms]);
 
-  useEffect(() => {
-    if (!room_id) {
-      setChatRoom(null);
-      setChatMessages([]);
-      return;
-    }
-    handleChangeChatRoom(room_id);
-  }, [room_id, handleChangeChatRoom]);
+  useEffect(() => {}, [room_id]);
 
   useEffect(() => {
     if (!chatRoom) return;
@@ -95,13 +77,11 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
   }, [chatRoom]);
 
   useEffect(() => {
-    console.log('change chatRoomList', chatRoomList);
     if (chatRoomList.length === chatRoomListIdsRef.current.length) return;
     chatRoomListIdsRef.current = chatRoomList.map((room) => room.room_id);
   }, [chatRoomList]);
 
   useEffect(() => {
-    console.log('Message Subscription Start');
     messageSubscriptionRef.current = supabase
       .channel(`message_channel_${userId}}`)
       .on(
@@ -112,11 +92,8 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
           table: 'chat_messages',
         },
         (payload) => {
-          console.log('New Message: ', payload);
-
           const newMessage = payload.new as Tables<'chat_messages'>;
           // 현재 채팅방에 메시지 업데이트
-          console.log(chatRoomIdRef.current, newMessage.room_id);
           if (chatRoomIdRef.current === newMessage.room_id) {
             setChatMessages((messages) => {
               if (!messages.find((message) => message.message_id === newMessage.message_id)) {
@@ -144,8 +121,6 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
   }, [userId]);
 
   useEffect(() => {
-    console.log('Chat Participant Subscription Start');
-
     participantSubscriptionRef.current = supabase
       .channel(`participant_channel_${userId}}`)
       .on(
@@ -156,8 +131,6 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
           table: 'chat_room_participants',
         },
         async (payload) => {
-          console.log('Change received!', payload);
-
           if (payload.eventType === 'INSERT') {
             const newParticipant = payload.new as Tables<'chat_room_participants'>;
             if (newParticipant.user_id === userId) {

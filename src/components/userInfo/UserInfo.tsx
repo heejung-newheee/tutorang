@@ -8,10 +8,13 @@ import { useQuery } from '@tanstack/react-query';
 import { icon_edit, icon_location } from '../../assets';
 import { openModal } from '../../redux/modules';
 import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../api/review';
+import { useEffect } from 'react';
+import { matchingList } from '../../redux/modules/matching';
 
 const UserInfo = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
+
   const matchData = useSelector((state: RootState) => state.match.match);
   const { data, isLoading, isError } = useQuery(['matching_tutor_data'], matchingTutorData);
 

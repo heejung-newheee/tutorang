@@ -6,7 +6,7 @@ export const ReviewList = styled.div`
   flex-direction: column;
   gap: 3rem;
 
-  max-width: 840px;
+  max-width: 890px;
   margin: 0 auto;
 `;
 
