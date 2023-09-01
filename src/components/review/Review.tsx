@@ -22,14 +22,6 @@ const Review = ({ id }: ReviewProps) => {
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const queryClient = useQueryClient();
-
-  const mutationReviewDelete = useMutation(reviewDelete, {
-    onSuccess: () => {
-      queryClient.invalidateQueries([REVIEW_QUERY_KEY, id]);
-    },
-  });
-
   // 리뷰 작성
   const handleOpenReviewCreateForm = () => {
     if (!loginUser) {
@@ -47,7 +39,6 @@ const Review = ({ id }: ReviewProps) => {
   // 리뷰 삭제
   const handleReviewDelete = (id: number) => {
     dispatch(openModal({ type: 'confirmRemove', targetId: id }));
-    // mutationReviewDelete.mutate(id);
   };
 
   // 별점 후기

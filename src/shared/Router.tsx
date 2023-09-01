@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Layout, ScrollTop, SignInForm, SignUpForm } from '../components';
+import { Layout, SignInForm, SignUpForm } from '../components';
 import CreateProfileForm from '../components/Form/profileForm/CreateProfileForm';
 import RegistTutorForm from '../components/Form/registTutorForm/RegistTutorForm';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';

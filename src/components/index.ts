@@ -16,5 +16,4 @@ export { default as ReviewUpdateForm } from './Form/reviewForm/ReviewUpdateForm'
 export { default as Review } from './review/Review';
 export { default as TutorInfoDetail } from './tutorInfoDetail/TutorInfoDetail';
 export { default as StarTutorSlider } from './slider/starTutorSlider/StarTutorSlider';
-export { default as ScrollTop } from './scrollTop/ScrollTop';
 export { default as RemoveConfirm } from './dialog/confirm/RemoveConfirm';
