@@ -24,6 +24,7 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
   if (!id) return;
   const dispatch = useDispatch();
   const { data: tutor, isLoading: tutorLoading, isError: tutorError, error } = useQuery(TUTOR_QUERY_KEY, () => matchTutor(id));
+
   // 대화하기
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setLoading] = useState(true);

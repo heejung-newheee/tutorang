@@ -4,12 +4,14 @@ type ModalState = {
   type: string;
   isOpen?: boolean;
   targetId?: string | null;
+  message?: string | null;
 };
 
 const initialState: ModalState = {
   type: '',
   isOpen: false,
   targetId: '',
+  message: '',
 };
 
 const modalSlice = createSlice({
@@ -19,6 +21,7 @@ const modalSlice = createSlice({
     openModal: (state, action: PayloadAction<ModalState>) => {
       state.type = action.payload.type;
       state.targetId = action.payload.targetId;
+      state.message = action.payload.message;
       state.isOpen = true;
     },
 
