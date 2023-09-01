@@ -13,6 +13,8 @@ export { default as icon_info } from './icon_info.svg';
 export { default as icon_like } from './icon_like.svg';
 export { default as icon_location } from './icon_location.svg';
 export { default as icon_school } from './icon_school.svg';
+export { default as icon_tutor } from './icon_tutor.svg';
+export { default as play_button } from './play_button.svg';
 export { default as kakaotalk } from './kakao-talk.png';
 export { default as navericon } from './navericon.png';
 export { default as twitter } from './twitter.png';

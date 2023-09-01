@@ -85,7 +85,7 @@ const UserInfo = () => {
           </S.Container>
         </S.ProfileBox>
 
-        <div style={{ height: '170px' }}></div>
+        <div style={{ height: '120px' }}></div>
         {data && data.length > 0 ? (
           <>
             <TutorInfo match={data} />

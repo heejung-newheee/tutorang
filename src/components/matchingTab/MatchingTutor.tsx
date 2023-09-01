@@ -5,6 +5,7 @@ import { InfoItem, InfoList, MatchBtn } from '../userInfo/UserInfo.styled';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { matchingCancel } from '../../api/match';
 import { styled } from 'styled-components';
+import './custom.css';
 
 interface pageProps {
   matchList: Views<'matching_tutor_data'>[];
