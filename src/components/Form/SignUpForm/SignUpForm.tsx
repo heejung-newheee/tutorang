@@ -29,6 +29,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
 const SignUpForm = () => {
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const [isMatchPwHidden, setIsMatchPwHidden] = useState(true);
 
   const emailRef = useRef<HTMLInputElement>(null);
   // const errRef = useRef<HTMLParagraphElement>(null);
@@ -389,7 +390,7 @@ const SignUpForm = () => {
               <SpasswordLabel htmlFor="confirm_pwd" style={{ position: 'relative' }}>
                 <span>비밀번호 확인</span>
                 <SInput
-                  type={isPasswordHidden ? 'password' : 'text'}
+                  type={isMatchPwHidden ? 'password' : 'text'}
                   id="confirm_pwd"
                   onChange={(e) => setMatchPwd(e.target.value)}
                   required
@@ -400,8 +401,8 @@ const SignUpForm = () => {
                   placeholder="비밀번호 확인 입력하세요"
                   autoComplete="off"
                 />
-                {!isPasswordHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsPasswordHidden(true)} />}
-                {isPasswordHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsPasswordHidden(false)} />}
+                {!isMatchPwHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsMatchPwHidden(true)} />}
+                {isMatchPwHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsMatchPwHidden(false)} />}
               </SpasswordLabel>
               {!!matchPwd && !validMatch && (
                 <SPGuideMessage>
@@ -816,6 +817,7 @@ const SDropDownHeader = styled.div`
   padding: 0 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-radius: 3px;
   cursor: pointer;
   @media screen and (max-width: 420px) {
