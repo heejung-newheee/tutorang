@@ -110,7 +110,7 @@ const ChatRoomPreview = ({ room, userId }: { room: RoomWithLastMessageType; user
 
   return (
     <S.ChatRoomPreviewContainer key={room.room_id} $isCurrentRoom={room.room_id === currentRoomId}>
-      <S.ChatRoomPreviewLink to={`/chat2?room_id=${room.room_id}`}>
+      <S.ChatRoomPreviewLink to={`/chat?room_id=${room.room_id}`}>
         <S.ProfileImageWrapper>
           <S.ProfileImage src={profile?.avatar_url || defaultProfileImgUrl} alt="avatar" width={54} height={54} />
         </S.ProfileImageWrapper>
