@@ -22,3 +22,4 @@ export { default as bubble } from './talk_bubble.png';
 export { default as tabPanel_1 } from './tab-panel-1.png';
 export { default as tabPanel_3 } from './tab-panel-3.png';
 export { default as main_banner } from './main-banner.png';
+export { default as icon_more } from './icon_dot_edit.svg';

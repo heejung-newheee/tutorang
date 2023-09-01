@@ -5,7 +5,6 @@ import RegistTutorForm from '../components/Form/registTutorForm/RegistTutorForm'
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import { AuthMain, Detail, List, Main, Mypage } from '../pages';
 import Chat from '../pages/Chat';
-import Chat2 from '../pages/Chat2';
 
 const Router = () => {
   return (
@@ -24,7 +23,6 @@ const Router = () => {
               <Route path="/signup" element={<SignUpForm />} />
             </Route>
             <Route path="/chat" element={<Chat />} />
-            <Route path="/chat2" element={<Chat2 />} />
           </Route>
         </Route>
       </Routes>

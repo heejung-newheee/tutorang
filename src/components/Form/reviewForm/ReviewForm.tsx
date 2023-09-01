@@ -69,7 +69,7 @@ const ReviewForm = () => {
     const newReview: reviews = {
       reviewed_id: tutorId,
       user_id: loginUser?.id,
-      author: loginUser?.username,
+      author: loginUser.username,
       title: title as string,
       content: content as string,
       rating,

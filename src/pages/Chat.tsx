@@ -1,24 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import supabase from '../supabase';
-import SendbirdChat from '../components/sandbird/SendbirdChat';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/config/configStore';
+import Chat from '../components/chat';
 
-const Chat = () => {
-  const [searchParams] = useSearchParams();
-  const [isLoading, setLoading] = useState(true);
-  const [session, setSession] = useState(null);
+const Chat2 = () => {
+  const user = useSelector((state: RootState) => state.user.user);
 
-  const channel_url = searchParams.get('channel_url');
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false);
-    });
-  }, []);
-  if (isLoading) return <div>Loading...</div>;
-  if (!session) return <div>Need Login</div>;
-  return <SendbirdChat channel_url={channel_url || ''} userId={session?.user.id} />;
+  if (!user) return <div>You need to log in</div>;
+  return <Chat userId={user.id} />;
 };
 
-export default Chat;
+export default Chat2;

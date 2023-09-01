@@ -1,5 +1,5 @@
 import * as S from './Modal.styled';
-import { Alert, Confirm, Report, ReviewForm, ReviewUpdateForm } from '..';
+import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm } from '..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import ModalPortal from './ModalPortal';
@@ -13,6 +13,7 @@ const GlobalModal = () => {
 
   const MODAL_TYPES = {
     confirm: 'confirm',
+    confirmRemove: 'confirmRemove',
     alert: 'alert',
     report: 'report',
     reviewCreate: 'reviewCreate',
@@ -26,6 +27,10 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.confirm,
       component: <Confirm />,
+    },
+    {
+      type: MODAL_TYPES.confirmRemove,
+      component: <RemoveConfirm />,
     },
     {
       type: MODAL_TYPES.alert,

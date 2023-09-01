@@ -49,3 +49,9 @@ export const matchingReject = async (id: string) => {
   const { data, error } = await supabase.from('matching').update({ status: 'reject' }).eq('id', id).select();
   if (error) throw error;
 };
+
+export const tutorMatchedCount = async (id: string) => {
+  const { data, error } = await supabase.from('matching').select().match({ tutor_id: id, status: 'complete' });
+  if (error) throw error;
+  return data;
+};
