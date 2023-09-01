@@ -32,7 +32,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
   };
 
   const [activeTab, setActiveTab] = useState<number>(0);
-  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setActiveTab(newValue);
   };
 

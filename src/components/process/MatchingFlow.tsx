@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Container, Section, SectionTitle } from '../../pages/Main';
-import { styled } from 'styled-components';
 import * as S from './MatchingFlow.styled';
 import { bubble, tabPanel_1, tabPanel_3 } from '../../assets';
 interface TabViewProps {
@@ -110,16 +109,4 @@ const TabTitle4 = () => {
       </S.TabBubble>
     </S.TabBubbleWrap>
   );
-};
-const Tab1 = () => {
-  return <div>tab1111111111</div>;
-};
-const Tab2 = () => {
-  return <div>tab2222222222</div>;
-};
-const Tab3 = () => {
-  return <div>tab3333333333</div>;
-};
-const Tab4 = () => {
-  return <div>tab4444444444</div>;
 };

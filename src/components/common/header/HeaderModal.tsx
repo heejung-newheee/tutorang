@@ -2,7 +2,6 @@ import * as S from './Header.styled';
 import styled, { keyframes } from 'styled-components';
 import { closeModal } from '../../../redux/modules';
 import { useDispatch } from 'react-redux';
-import logo from '../../../assets/logo.png';
 
 const HeaderModal = () => {
   const dispatch = useDispatch();

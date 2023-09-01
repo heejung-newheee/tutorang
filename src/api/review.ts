@@ -64,7 +64,7 @@ export const useCreateReviewMutation = () => {
       return { previousReview };
     },
 
-    onError: (error, newReviewData, context) => {
+    onError: (error, _, context) => {
       console.log(error);
       queryClient.setQueriesData(REVIEW_QUERY_KEY, context?.previousReview);
     },

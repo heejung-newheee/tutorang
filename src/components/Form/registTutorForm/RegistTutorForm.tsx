@@ -34,7 +34,6 @@ const RegistTutorForm = () => {
   const [enrollmentStatus, setEnrollmentStatus] = useState('');
   const user = useSelector((state: RootState) => state.user.user);
   const navigate = useNavigate();
-  console.log('user', user);
 
   const onChangeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.name === 'university') setUniversity(event.target.value);
@@ -53,7 +52,6 @@ const RegistTutorForm = () => {
         });
         setCheckPersonalityItems(updatedPersonalityItems);
       }
-      console.log(checkPersonalityItems);
     }
     if (checkBoxType === 'language') {
       if (isChecked) {
@@ -66,7 +64,6 @@ const RegistTutorForm = () => {
         });
         setCheckLanguageItems(updatedPersonalityItems);
       }
-      console.log(checkLanguageItems);
     }
     if (checkBoxType === 'classLevel') {
       if (isChecked) {
@@ -79,7 +76,6 @@ const RegistTutorForm = () => {
         });
         setCheckClassLevelItems(updatedPersonalityItems);
       }
-      console.log(checkClassLevelItems);
     }
   };
 
@@ -127,7 +123,6 @@ const RegistTutorForm = () => {
       tuition_fee_online: tuitionFeeOnline,
       tuition_fee_offline: tuitionFeeOffline,
     };
-    // console.log('formData로 뭐가 들어오나요? =>', formData);
     const { error } = await supabase.from('tutor_info').insert(formData);
     if (error) console.log(error.message);
     else {

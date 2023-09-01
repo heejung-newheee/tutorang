@@ -99,7 +99,7 @@ export const ChatMessage = styled.li<{ $isMine: boolean; $isCustom: boolean }>`
   align-items: flex-end;
 `;
 
-export const ChatTextMessageContent = styled.p<{ $isMine: boolean }>`
+export const ChatTextMessageContent = styled.div<{ $isMine: boolean }>`
   display: inline-block;
   background-color: #e0e0e0;
   color: #000000;
@@ -114,7 +114,7 @@ export const ChatTextMessageContent = styled.p<{ $isMine: boolean }>`
     `}
 `;
 
-export const ChatCustomMessageContent = styled.p<{ $customType: string }>`
+export const ChatCustomMessageContent = styled.div<{ $customType: string }>`
   text-align: center;
   display: inline-block;
   background-color: #e0e0e0;

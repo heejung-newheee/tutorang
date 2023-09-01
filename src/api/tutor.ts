@@ -42,8 +42,7 @@ export const getTopReviewer = async () => {
   return data;
 };
 
-export const fetchTutorAll = async ({ queryKey }: { queryKey: string[] }) => {
-  const [_, tutor] = queryKey;
+export const fetchTutorAll = async () => {
   const res = await supabase.from('tutor_info').select('*');
   return res.data;
 };

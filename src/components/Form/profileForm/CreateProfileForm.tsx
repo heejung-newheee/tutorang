@@ -5,8 +5,7 @@ import { FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO } from '../formConstant';
 import SelectLocation from './SelectLocation';
 
 const CreateProfileForm = () => {
-  const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
-  if (location) console.log(location);
+  const [_, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
   return (
     <SContainer>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO} />
