@@ -1,12 +1,13 @@
 import { useParams } from 'react-router-dom';
 import { Review, StarTutorSlider, TutorInfoDetail } from '../components';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../redux/modules';
 
 const Detail = () => {
-  const { id } = useParams();
   const dispatch = useDispatch();
+  const { id } = useParams();
+  if (!id) return;
 
   useEffect(() => {
     return () => {

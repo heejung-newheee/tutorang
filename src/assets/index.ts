@@ -18,3 +18,4 @@ export { default as play_button } from './play_button.svg';
 export { default as kakaotalk } from './kakao-talk.png';
 export { default as navericon } from './navericon.png';
 export { default as twitter } from './twitter.png';
+export { default as icon_more } from './icon_dot_edit.svg';

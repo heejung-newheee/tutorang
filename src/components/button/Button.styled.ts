@@ -68,7 +68,7 @@ export const Button = styled.button<ButtonProps>`
       case 'Small':
         return css`
           display: inline-block;
-          max-width: 120px;
+          min-width: 120px;
           text-align: center;
           color: ${colors.white};
         `;
