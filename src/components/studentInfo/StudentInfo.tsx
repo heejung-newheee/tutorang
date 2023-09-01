@@ -29,23 +29,15 @@ const StudentInfo = ({ match }: pageProps) => {
   if (!board || !like || !tutors) {
     return null;
   }
-  console.log('LikeTutorsSlider---user', user);
-  console.log('LikeTutorsSlider---tutors', tutors);
 
-  // 좋아요한 튜터 아이디만 가져오기
   const likedList = like.filter((item: Tables<'like'>) => item.user_id === user!.id).map((item) => item.liked_id);
-  // 튜터 아이디를 포함하고있는 tutor_info 리스트 가져오기
   const likedUser = tutors!.filter((item: Views<'tutor_info_join'>) => likedList.includes(item.tutor_id ?? ''));
 
-  console.log('likedList', likedList);
-  console.log('likedUser', likedUser);
-  // 내가 보낸 요청 내역
   const matchingData = Array.isArray(match) ? match : [match];
   const matchList = matchingData.filter((item: Views<'matching_tutor_data'>) => item.user_id === user!.id);
 
   return (
     <div>
-      <InfoTitle>학생 대시보드</InfoTitle>
       <InfoSection>
         <Container>
           <InfoTitle>찜한 강사 리스트</InfoTitle>
@@ -62,24 +54,6 @@ const StudentInfo = ({ match }: pageProps) => {
         <Container>
           <InfoTitle>수업했던 튜터</InfoTitle>
           {matchList.length > 0 ? <CompleteClass matchList={matchList} /> : <InfoNull>튜터링 완료한 내역이 없습니다</InfoNull>}
-        </Container>
-      </InfoSection>
-      <InfoSection>
-        <Container>
-          <InfoTitle>문의 리스트</InfoTitle>
-          {board!
-            .filter((board: Tables<'board'>) => {
-              return board.user_id === user!.id;
-            })
-            .map((item: Tables<'board'>) => {
-              return (
-                <div key={item.id}>
-                  <div>{item.title}</div>
-                  <div>{item.content}</div>
-                  <div>{item.created_at.split('T')[0]}</div>
-                </div>
-              );
-            })}
         </Container>
       </InfoSection>
     </div>
