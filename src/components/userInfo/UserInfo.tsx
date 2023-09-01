@@ -89,14 +89,7 @@ const UserInfo = () => {
         </S.ProfileBox>
 
         <div style={{ height: '120px' }}></div>
-        {data && data.length > 0 ? (
-          <>
-            <TutorInfo match={data} />
-            <StudentInfo match={data} />
-          </>
-        ) : (
-          <div>매칭 데이터가 없습니다.</div>
-        )}
+        {data && data.length > 0 ? <>{user.role === 'tutor' ? <TutorInfo match={data} /> : <StudentInfo match={data} />}</> : <div>매칭 데이터가 없습니다.</div>}
       </S.MypageContainer>
     </>
   );
