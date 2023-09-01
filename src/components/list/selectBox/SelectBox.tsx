@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { gender, level, age, handleDeleteFilterBar, price, Price } from '../utility';
+import { gender, level, age, handleDeleteFilterBar, price, Price, handleGenderFilter, handleLevelFilter, handleAgeFilter } from '../utility';
 import * as S from './SelectBox.styled';
 import { Slider } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -23,7 +23,7 @@ const obj: FilterMenuObj = {
 // });
 
 type Props = {
-  handleFilterdObj: (item: string, category: string) => void;
+  initialSelectedFilters: SelectedFilters;
   openModal: () => void;
   selectedArr: string[][];
   setSelectedArr: Dispatch<SetStateAction<string[][]>>;
@@ -34,7 +34,7 @@ type Props = {
 //price debounce
 // let timerId: ReturnType<typeof setTimeout> | null = null;
 
-const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, selectedFilters, setSelectedFilters }: Props) => {
+const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelectedArr, selectedFilters, setSelectedFilters }: Props) => {
   const [filteredMenu, setfilteredMenu] = useState('');
   const [isChevronOpen, setIsChevronOpen] = useState(false);
 
@@ -63,24 +63,37 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
   //초기화
   const reset = () => {
     setSelectedArr([]);
-    setSelectedFilters({
-      gender: [],
-      level: [],
-      minPrice: 0,
-      maxPrice: 100000,
-      priceType: '전체',
-      location1: '',
-      location2: '',
-      age: [],
-      classStyle: 'onLine',
-    });
+    setSelectedFilters(initialSelectedFilters);
 
     setMaxPriceNum(0);
     setMinPriceNum(0);
   };
 
-  //price가격 업데이트
-  const handelInputPrice = (item: Price) => {
+  //체크박스 클릭
+  const handleFilterdObj = (item: string, category: string) => {
+    switch (category) {
+      //성별
+      case 'gender':
+        handleGenderFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
+        break;
+
+      //난이도
+      case 'level':
+        handleLevelFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
+        break;
+
+      //나이
+      case 'age':
+        handleAgeFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  //체크박스 클릭 - price가격 업데이트
+  const handleFilterdObjPrice = (item: Price) => {
     console.log(item);
     setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: item.min });
     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
@@ -224,7 +237,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
                     },
                   }}
                   id={`check-${item.optionPrice}`}
-                  onClick={() => handelInputPrice(item)}
+                  onClick={() => handleFilterdObjPrice(item)}
                   checked={isChecked(item.optionPrice)}
                   inputProps={{ 'aria-label': 'controlled' }}
                 />
