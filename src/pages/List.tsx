@@ -37,30 +37,26 @@ const List = () => {
   //검색
   const [searchText, setSearchText] = useState('');
 
-  console.log(selectedFilters, selectedArr);
-
   //튜터 api 호출
   const PAGE_SIZE = 6;
 
   const api = async (page = 1) => {
     const { gender, level, minPrice, maxPrice, location1, location2, age, classStyle } = selectedFilters;
 
-    // const selectedLanguages = ['한국어', '일본어']; // 유저가 선택한 언어들
-
     let query = supabase.from('tutor_info_join').select('*');
 
-    // if (gender.length !== 0) {
-    //   query = query.in('gender', [...gender]);
-    // }
-    // if (level.length !== 0) {
-    //   query = query.in('level', [...level]);
-    // }
+    if (gender.length !== 0) {
+      query = query.in('gender', [...gender]);
+    }
+    if (level.length !== 0) {
+      query = query.in('level', [...level]);
+    }
 
-    // if (age.length !== 0) {
-    //   const minAge = age.sort()[0];
-    //   const maxAge = age.sort()[age.length - 1];
-    //   query = query.gte('age', minAge).lte('age', maxAge);
-    // }
+    if (age.length !== 0) {
+      const minAge = age.sort()[0];
+      const maxAge = age.sort()[age.length - 1];
+      query = query.gte('age', minAge).lte('age', maxAge);
+    }
 
     if (searchText) {
       query = query.textSearch('tutor_name', `${searchText}`);
@@ -73,12 +69,9 @@ const List = () => {
       }
     }
 
-    // query.filter(`languages && ARRAY[${selectedLanguages.map(lang => `'${lang}'`).join(', ')}]`);
-
     if (location1) {
       query = query.or(`location1_sido.eq.${location1},location2_sido.eq.${location1}`);
 
-      console.log(location2, 'location2');
       if (location2 !== '') {
         query = query.or(`location2_gugun.eq.${location2},location2_gugun.eq.${location2}`);
       }
@@ -86,7 +79,6 @@ const List = () => {
 
     const { data, error } = await query.range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
     console.log(error, 'tutor-list-api-error');
-    console.log(data, 'tutor-list-api');
 
     return data;
   };
@@ -120,7 +112,7 @@ const List = () => {
         return null;
       }
       if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries, observer) => {
+      observer.current = new IntersectionObserver((entries, _) => {
         if (entries[0].isIntersecting) {
           fetchNextPage();
         }
@@ -130,8 +122,6 @@ const List = () => {
     },
     [hasNextPage],
   );
-
-  console.log(data);
 
   //Debouncing
   const debounce = <T extends (...args: any[]) => any>(fn: T, delay: number) => {

@@ -3,7 +3,7 @@ import { Tabs, Tab } from '@mui/material';
 import { Views } from '../../supabase/database.types';
 import { InfoItem, InfoList, MatchBtn } from '../userInfo/UserInfo.styled';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { matchingAccept, matchingCancel, matchingReject } from '../../api/match';
+import { matchingAccept, matchingReject } from '../../api/match';
 import { styled } from 'styled-components';
 import './custom.css';
 import { useSelector } from 'react-redux';
@@ -38,7 +38,6 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     try {
       const room = await getChatRoomWithTutor(user.id, student_id);
       if (room.length > 0) {
-        console.log('룸이 있음');
         await sendTutoringMessage(room[0].room_id, 'accept');
         return;
       }
@@ -75,9 +74,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     }
   };
 
-  // console.log(matchList);
   const [activeTab, setActiveTab] = useState<number>(0);
-  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setActiveTab(newValue);
   };
 

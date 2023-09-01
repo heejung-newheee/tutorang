@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { Container, Section, SectionSubTitle, SectionTitle } from '../../../pages/Main';
+import { Container, Section, SectionTitle } from '../../../pages/Main';
 import * as S from './UserReviewList.styled';
 import { openModal } from '../../../redux/modules';
 import { play_button } from '../../../assets';

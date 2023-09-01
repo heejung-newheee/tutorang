@@ -1,12 +1,8 @@
-import React from 'react';
 import { Container } from '../Form/reviewForm/ReviewForm.styled';
 import YouTube, { YouTubeProps } from 'react-youtube';
 import { closeModal } from '../../redux/modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
-type YoutubeIdType = {
-  id: string;
-};
 const opts: YouTubeProps['opts'] = {
   height: '390',
   width: '640',
@@ -28,10 +24,9 @@ const opts: YouTubeProps['opts'] = {
 };
 
 const YoutubeModal = () => {
-  const { targetId: id } = useSelector((state: RootState) => state.modal);
-  console.log(id);
-
   const dispatch = useDispatch();
+  const { targetId: id } = useSelector((state: RootState) => state.modal);
+  if (!id) return;
   const handleClose = () => {
     dispatch(closeModal());
   };
@@ -42,7 +37,7 @@ const YoutubeModal = () => {
   return (
     <Container>
       <button onClick={handleClose}>닫기</button>
-      <YouTube videoId={id!} opts={opts} onReady={onPlayerReady} />
+      <YouTube videoId={id as string} opts={opts} onReady={onPlayerReady} />
     </Container>
   );
 };

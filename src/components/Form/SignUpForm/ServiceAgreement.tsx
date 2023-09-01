@@ -12,7 +12,6 @@ const ServiceAgreement: React.FC<TypeServiceAgreement> = ({ $setIsAllChecked }) 
   };
 
   const check = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.checked);
     e.target.checked ? setCheckList([...checkList, e.target.name]) : setCheckList(checkList.filter((checked) => checked !== e.target.name));
   };
 

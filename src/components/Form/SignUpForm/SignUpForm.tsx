@@ -93,7 +93,6 @@ const SignUpForm = () => {
       return profile.email === unverifiedEmail;
     });
     const isMyEmailHere = myEmailFromDB === undefined ? false : true;
-    console.log('????????', isMyEmailHere);
     setDuplicatedEmail(isMyEmailHere);
     setDoneDuplicationCheck(true);
 
@@ -137,7 +136,6 @@ const SignUpForm = () => {
     if (checkedGender.male === checkedGender.female && event.target.name === 'female') setCheckedGender((prev) => ({ ...prev, female: true }));
     if (checkedGender.male !== checkedGender.female && event.target.name === 'male') setCheckedGender((prev) => ({ male: !prev.male, female: !prev.female }));
     if (checkedGender.male === checkedGender.female && event.target.name === 'male') setCheckedGender((prev) => ({ ...prev, male: true }));
-    console.log(event.target.value);
   };
 
   useEffect(() => {
@@ -184,7 +182,6 @@ const SignUpForm = () => {
   }, [location1, location2]);
 
   const selectDateOption = (value: string, dateType: string) => {
-    console.log(value, dateType);
     if (dateType === 'year') {
       setBirth((prev) => ({ ...prev, year: value }));
       setIsDateOpen((prev) => ({ ...prev, year: !prev.year }));
