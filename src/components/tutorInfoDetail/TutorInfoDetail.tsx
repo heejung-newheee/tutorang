@@ -42,7 +42,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
       const chatRoom = await getChatRoomWithTutor(loginUser?.id, tutorId);
 
       if (chatRoom.length > 0) {
-        navigate(`/chat2?room_id=${chatRoom[0].room_id}`);
+        navigate(`/chat?room_id=${chatRoom[0].room_id}`);
         return;
       }
 
@@ -50,7 +50,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
 
       await inviteChatRoom(newRoom.room_id, tutorId);
 
-      navigate(`/chat2?room_id=${newRoom.room_id}`);
+      navigate(`/chat?room_id=${newRoom.room_id}`);
     } catch (error) {
       console.error(error);
     }
