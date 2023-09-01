@@ -14,13 +14,13 @@ const obj: FilterMenuObj = {
   age,
 };
 
-const theme = createTheme({
-  palette: {
-    secondary: {
-      main: '#fe902f;', // 변경하고자 하는 색상 지정
-    },
-  },
-});
+// const theme = createTheme({
+//   palette: {
+//     secondary: {
+//       main: '#fe902f;', // 변경하고자 하는 색상 지정
+//     },
+//   },
+// });
 
 type Props = {
   handleFilterdObj: (item: string, category: string) => void;
@@ -82,7 +82,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
   //price가격 업데이트
   const handelInputPrice = (item: Price) => {
     console.log(item);
-    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: Number(minPriceNum) });
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: item.min });
     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
     setSelectedArr((pre) => [...pre, ['price', item.optionPrice]]);
     // setSelectedArr((pre) => [...pre, ['price', `${minPriceNum?.toLocaleString('ko-KR')}~${item?.toLocaleString('ko-KR')}`]]);
@@ -212,6 +212,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
                 </svg>
               </div>
             </S.PriceClassType>
+            <div></div>
 
             {price.map((item: Price) => (
               <div>
@@ -222,12 +223,12 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
                       color: '#fe902f',
                     },
                   }}
-                  id={`check-${item}`}
+                  id={`check-${item.optionPrice}`}
                   onClick={() => handelInputPrice(item)}
                   checked={isChecked(item.optionPrice)}
                   inputProps={{ 'aria-label': 'controlled' }}
                 />
-                <label htmlFor={`check-${item}`}>{item.optionPrice}</label>
+                <label htmlFor={`check-${item.optionPrice}`}>{item.optionPrice}</label>
               </div>
             ))}
 
