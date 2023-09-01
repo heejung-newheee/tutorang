@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
 import FormHeader from '../FormHeader';
 import { FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO } from '../formConstant';
 import SelectLocation from './SelectLocation';
 
 const CreateProfileForm = () => {
+  const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
+  if (location) console.log(location);
   return (
     <SContainer>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO} />
@@ -21,11 +24,11 @@ const CreateProfileForm = () => {
           <SFormItemBody>
             <SFormItemBodySection>
               <span>지역1</span>
-              <SelectLocation />
+              <SelectLocation $locationType={'locationType1'} $setLocation={setLoaction} />
             </SFormItemBodySection>
             <SFormItemBodySection>
               <span>지역2</span>
-              <SelectLocation />
+              <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} />
             </SFormItemBodySection>
           </SFormItemBody>
         </SFormItem>
