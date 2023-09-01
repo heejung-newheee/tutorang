@@ -1,7 +1,8 @@
 import { useDispatch } from 'react-redux';
-import { Container, Section, SectionTitle } from '../../../pages/Main';
+import { Container, Section, SectionSubTitle, SectionTitle } from '../../../pages/Main';
 import * as S from './UserReviewList.styled';
 import { openModal } from '../../../redux/modules';
+import { play_button } from '../../../assets';
 
 const UserReviewList = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,8 @@ const UserReviewList = () => {
   return (
     <Section>
       <Container>
-        <SectionTitle style={{ textAlign: 'center' }}>이용 후기</SectionTitle>
+        <SectionTitle style={{ textAlign: 'center' }}>매칭 후기</SectionTitle>
+        <SectionSubTitle style={{ textAlign: 'center' }}>가벼운 마음으로 시작했다가, 지금은 Ing~</SectionSubTitle>
         <S.ReviewList>
           <S.ReviewItem>
             <S.ReviewItemContent>
@@ -19,8 +21,9 @@ const UserReviewList = () => {
               <S.ReviewItemText>튜러랑 매칭 후 이용후기 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 </S.ReviewItemText>
               <S.ReviewItemAuthor>박금별(25)</S.ReviewItemAuthor>
             </S.ReviewItemContent>
-            <S.ReviewVideoBox>
-              <S.ReviewItemImage onClick={() => handleYoutubePlayer('NUtFwYGyeTY')} src="https://i1.ytimg.com/vi/NUtFwYGyeTY/sddefault.jpg"></S.ReviewItemImage>
+            <S.ReviewVideoBox onClick={() => handleYoutubePlayer('NUtFwYGyeTY')}>
+              <S.ReviewItemImage src="https://i1.ytimg.com/vi/NUtFwYGyeTY/sddefault.jpg" />
+              <S.PlayBtn src={play_button} alt="play button" />
             </S.ReviewVideoBox>
           </S.ReviewItem>
           <S.ReviewItem style={{ flexDirection: 'row-reverse' }}>
@@ -29,8 +32,9 @@ const UserReviewList = () => {
               <S.ReviewItemText>튜러랑 매칭 후 이용후기 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 </S.ReviewItemText>
               <S.ReviewItemAuthor>박금별(25)</S.ReviewItemAuthor>
             </S.ReviewItemContent>
-            <S.ReviewVideoBox>
-              <S.ReviewItemImage onClick={() => handleYoutubePlayer('uFWskJdruQ8')} src="https://i1.ytimg.com/vi/uFWskJdruQ8/sddefault.jpg"></S.ReviewItemImage>
+            <S.ReviewVideoBox onClick={() => handleYoutubePlayer('uFWskJdruQ8')}>
+              <S.ReviewItemImage src="https://i1.ytimg.com/vi/uFWskJdruQ8/sddefault.jpg" />
+              <S.PlayBtn src={play_button} alt="play button" />
             </S.ReviewVideoBox>
           </S.ReviewItem>
           <S.ReviewItem>
@@ -39,8 +43,9 @@ const UserReviewList = () => {
               <S.ReviewItemText>튜러랑 매칭 후 이용후기 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 튜러랑 매칭 후 이용후기 튜러랑 매칭 후 </S.ReviewItemText>
               <S.ReviewItemAuthor>박금별(25)</S.ReviewItemAuthor>
             </S.ReviewItemContent>
-            <S.ReviewVideoBox>
-              <S.ReviewItemImage onClick={() => handleYoutubePlayer('jXOWzFr-a_Q')} src="https://i1.ytimg.com/vi/jXOWzFr-a_Q/sddefault.jpg"></S.ReviewItemImage>
+            <S.ReviewVideoBox onClick={() => handleYoutubePlayer('jXOWzFr-a_Q')}>
+              <S.ReviewItemImage src="https://i1.ytimg.com/vi/jXOWzFr-a_Q/sddefault.jpg" />
+              <S.PlayBtn src={play_button} alt="play button" />
             </S.ReviewVideoBox>
           </S.ReviewItem>
         </S.ReviewList>

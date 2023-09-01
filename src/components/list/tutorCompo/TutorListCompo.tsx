@@ -6,6 +6,7 @@ import supabase from '../../../supabase';
 import { useEffect, useState } from 'react';
 import school from '../../../assets/school.png';
 import location from '../../../assets/location-icon.png';
+import { colors } from '../../../style/theme/colors';
 
 type Props = {
   userInfo: Views<'tutor_info_join'>;
@@ -112,11 +113,11 @@ const TutorContainer = styled(Link)`
 `;
 
 const InFoWrap = styled.div`
-  /* background-color: #fe902f; */
+  /* background-color: ${colors.primary}; */
 
   & > div:first-child {
     margin: 5px 0;
-    border-left: 3px solid #fe902f;
+    border-left: 3px solid ${colors.primary};
     margin-left: 10px;
     font-weight: 600;
     /* background-color: aqua;s */
