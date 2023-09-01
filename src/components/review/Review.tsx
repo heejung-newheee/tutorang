@@ -75,6 +75,12 @@ const Review = ({ id }: ReviewProps) => {
                 <S.ReviewTitle>{review.title}</S.ReviewTitle>
                 <S.ReviewDescription>{review.content}</S.ReviewDescription>
 
+                <div>
+                  <figure>
+                    <img></img>
+                  </figure>
+                  <p>{review.author}</p>
+                </div>
                 {loginUser?.id === review.user_id ? (
                   <div>
                     <button
