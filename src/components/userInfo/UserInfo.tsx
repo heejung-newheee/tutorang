@@ -31,6 +31,9 @@ const UserInfo = () => {
   };
   const studentMatch = matchData?.filter((item) => item.user_id === user.id);
   const tutorMatch = matchData?.filter((item) => item.tutor_id === user.id);
+  console.log(user);
+
+  console.log(data);
 
   return (
     <>

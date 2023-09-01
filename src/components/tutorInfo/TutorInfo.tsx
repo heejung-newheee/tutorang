@@ -59,18 +59,7 @@ const TutorInfo = ({ match }: pageProps) => {
   return (
     <>
       {tutorInfo && (
-        <div>
-          <InfoSection>
-            <InfoTitle>강사 대시보드</InfoTitle>
-            <button>수업 내용 수정</button>
-            <div>수업레벨 : Lv 2</div>
-            <div>별점 : ⭐⭐⭐⭐ </div>
-            <div>수업소개 : {tutorInfo!.class_info}</div>
-            <div>시간당 : {tutorInfo!.tuition_fee_offline}원</div>
-            <div>시간당 : {tutorInfo!.tuition_fee_online}원</div>
-            {/* <div style={{ fontSize: '0.8rem', color: '#ggg' }}> 마지막 정보 업데이트 {tutorInfo?.update ? <span>{tutorInfo.update}</span> : <span>{created}</span>}</div> */}
-          </InfoSection>
-
+        <>
           <InfoSection>
             <Container>
               <InfoTitle>매칭 내역</InfoTitle>
@@ -103,14 +92,7 @@ const TutorInfo = ({ match }: pageProps) => {
               )}
             </Container>
           </InfoSection>
-          <InfoSection>
-            <Container>
-              <InfoTitle>수익차트</InfoTitle>
-              <br />
-              아직 내용 없음
-            </Container>
-          </InfoSection>
-        </div>
+        </>
       )}
     </>
   );
