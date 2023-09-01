@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
+import { colors } from '../../style/theme/colors';
 
 export const TutorCard = styled(Link)`
-  width: 335px;
   margin-right: 30px;
   border-radius: 8px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -10,23 +10,24 @@ export const TutorCard = styled(Link)`
 `;
 export const TutorImg = styled.div`
   width: 100%;
-  height: 265px;
+  height: 230px;
   overflow: hidden;
   img {
     width: 100%;
+    height: 100%;
     overflow: hidden;
     object-fit: cover;
   }
 `;
 export const TutorInfo = styled.div`
-  padding: 25px;
+  padding: 18px;
 `;
 export const TutorTitle = styled.h5`
   font-size: 17px;
   font-weight: bold;
-  border-left: 3px solid #fe902f;
+  border-left: 3px solid ${colors.primary};
   padding-left: 8px;
-  margin-bottom: 25px;
+  margin-bottom: 12px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -37,6 +38,11 @@ export const TutorName = styled.div`
 `;
 export const TutorContent = styled.div`
   font-size: 13px;
+`;
+export const InfoIcon = styled.img`
+  width: 15px;
+  position: relative;
+  top: 3px;
 `;
 export const Tag = styled.div`
   display: flex;

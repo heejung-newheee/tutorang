@@ -25,33 +25,7 @@ export const Inner = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  padding: 48px 60px 0 60px;
-`;
-
-export const Textarea = styled.textarea`
-  position: relative;
-  top: 0;
-  width: 100%;
-  height: 260px;
-  margin-top: 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  border: none;
-  background-color: #f9f9f9;
-  padding: 16px;
-  color: ${colors.black};
-  resize: none;
-
-  &::placeholder {
-    color: ${colors.gray};
-  }
-`;
-
-export const Title = styled.h3`
-  font-size: 24px;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 8px;
+  padding: 40px;
 `;
 
 export const Description = styled.p`
@@ -60,14 +34,75 @@ export const Description = styled.p`
   text-align: center;
 `;
 
-export const ButtonWrapper = styled.div`
+export const StarList = styled.ul`
   display: flex;
+  flex-wrap: nowrap;
+  gap: 5px;
+  justify-content: center;
+  margin-bottom: 32px;
+`;
 
-  & Button {
-    height: 80px;
+export const StarItem = styled.li`
+  img {
+    width: 38px;
+    filter: invert(78%) sepia(45%) saturate(4904%) hue-rotate(337deg) brightness(102%) contrast(99%);
+  }
+`;
+export const Title = styled.h3`
+  font-size: 20px;
+  font-weight: 700;
+  color: #2c2c2c;
+  padding: 0 0 0 10px;
+  border-left: solid 3px ${colors.primary};
+`;
+
+export const ReviewLabel = styled.label`
+  display: block;
+  margin-top: 20px;
+  padding-bottom: 8px;
+`;
+export const ReviewInput = styled.input`
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  border: 0;
+  border-radius: 5px;
+  outline: none;
+  padding: 16px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  color: ${colors.black};
+`;
+
+export const Textarea = styled.textarea`
+  width: 100%;
+  height: 200px;
+  border-radius: 5px;
+  font-size: 16px;
+  border: none;
+  background-color: #f9f9f9;
+  padding: 16px;
+  color: ${colors.black};
+  resize: none;
+  outline: none;
+
+  &::placeholder {
+    color: ${colors.gray};
   }
 `;
 
-export const StarList = styled.ul`
+export const ButtonWrapper = styled.div`
   display: flex;
+  & Button {
+    margin-top: 30px;
+  }
+`;
+export const CloseBtn = styled.button`
+  width: 100%;
+  text-align: right;
+  height: 30px;
+  img {
+    height: 100%;
+  }
 `;

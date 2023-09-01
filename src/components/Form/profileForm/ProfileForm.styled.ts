@@ -49,7 +49,7 @@ export const EditFormTop = styled.div`
   justify-content: space-between;
 `;
 export const CloseBtn = styled.button`
-  height: 22px;
+  height: 30px;
   img {
     height: 100%;
   }
