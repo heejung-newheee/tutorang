@@ -5,6 +5,7 @@ import { RootState } from '../../redux/config/configStore';
 import ModalPortal from './ModalPortal';
 import HeaderModal from '../common/header/HeaderModal';
 import EditProfileForm from '../Form/profileForm/EditProfileForm';
+import YoutubeModal from '../youtube/YoutubeModal';
 
 const GlobalModal = () => {
   const { type, isOpen } = useSelector((state: RootState) => state.modal);
@@ -18,6 +19,7 @@ const GlobalModal = () => {
     reviewUpdate: 'reviewUpdate',
     navbabr: 'navbabr',
     editProfiles: 'editProfiles',
+    reviewYoutube: 'reviewYoutube',
   };
 
   const MODAL_COMPONENTS = [
@@ -48,6 +50,10 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.navbabr,
       component: <HeaderModal />,
+    },
+    {
+      type: MODAL_TYPES.reviewYoutube,
+      component: <YoutubeModal />,
     },
   ];
 

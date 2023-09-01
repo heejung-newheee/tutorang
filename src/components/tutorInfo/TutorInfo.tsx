@@ -10,6 +10,7 @@ import MatchingStudent from '../matchingTab/MatchingStudent';
 import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { starEmpty, starFull } from '../../assets';
 
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
@@ -42,13 +43,25 @@ const TutorInfo = ({ match }: pageProps) => {
   const reviewData = review?.filter((item) => {
     return user!.id === item.reviewed_id;
   });
-  const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.user_id) : null;
+  console.log(reviewData);
 
+  const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.user_id) : null;
+  const starRating = (rating: number) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push(<img key={i} src={starFull} alt={`Full Star`} />);
+      } else {
+        stars.push(<img key={i} src={starEmpty} alt={`Empty Star`} />);
+      }
+    }
+    return stars;
+  };
   return (
     <>
       {tutorInfo && (
         <div>
-          <InfoSection data-aos="fade-up">
+          <InfoSection>
             <InfoTitle>강사 대시보드</InfoTitle>
             <button>수업 내용 수정</button>
             <div>수업레벨 : Lv 2</div>
@@ -59,33 +72,39 @@ const TutorInfo = ({ match }: pageProps) => {
             {/* <div style={{ fontSize: '0.8rem', color: '#ggg' }}> 마지막 정보 업데이트 {tutorInfo?.update ? <span>{tutorInfo.update}</span> : <span>{created}</span>}</div> */}
           </InfoSection>
 
-          <InfoSection data-aos="fade-up">
+          <InfoSection>
             <Container>
               <InfoTitle>매칭 내역</InfoTitle>
               {matchList.length > 0 ? <MatchingStudent matchList={matchList} /> : <InfoNull>매칭 내역이 없습니다</InfoNull>}
             </Container>
           </InfoSection>
-          <InfoSection data-aos="fade-up">
+          <InfoSection>
             <Container>
               <InfoTitle>수강생 후기</InfoTitle>
               {reviewData.length > 0 ? (
                 <S.StudentList>
-                  {reviewData &&
-                    reviewData.map((review) => {
-                      return (
-                        <S.StudentItem key={review.id}>
-                          <div>{review.title}</div>
-                          <div>{review.content}</div>
-                        </S.StudentItem>
-                      );
-                    })}
+                  {reviewData.map((review) => {
+                    const rating = review.rating || 0; // rating 값이 없는 경우 0으로 처리
+                    return (
+                      <S.StudentItem key={review.id}>
+                        <S.StudentReview>
+                          <S.StReviewTitle>{review.title}</S.StReviewTitle>
+                          <S.StReviewContent>{review.content}</S.StReviewContent>
+                          <S.StReviewAuth>
+                            {review.author} / {review.created_at.split('T')[0]}
+                          </S.StReviewAuth>
+                        </S.StudentReview>
+                        <S.ReviewRating>{starRating(rating)}</S.ReviewRating>
+                      </S.StudentItem>
+                    );
+                  })}
                 </S.StudentList>
               ) : (
                 <InfoNull>후기가 없습니다</InfoNull>
               )}
             </Container>
           </InfoSection>
-          <InfoSection data-aos="fade-up">
+          <InfoSection>
             <Container>
               <InfoTitle>수익차트</InfoTitle>
               <br />
