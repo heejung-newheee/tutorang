@@ -3,7 +3,7 @@ import * as S from './TutorInfoDetail.styled';
 import { getTutors, matchTutor } from '../../api/tutor';
 import { icon_check, icon_class, icon_info, icon_like, icon_location_gray, icon_school, icon_verify, starEmpty, starFull, starHalf } from '../../assets';
 import { Button } from '..';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../redux/modules';
 import { useReviewAverage } from '../../hooks';
 import { Session } from '@supabase/supabase-js';
@@ -12,6 +12,7 @@ import supabase from '../../supabase';
 import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../../api/chat';
 import { useNavigate } from 'react-router-dom';
 import { matchReview } from '../../api/review';
+import { RootState } from '../../redux/config/configStore';
 
 const TUTOR_QUERY_KEY = ['tutorDetail'];
 const REVIEW_QUERY_KEY = ['reviewTutorDetail'];
@@ -24,14 +25,22 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
   if (!id) return;
   const dispatch = useDispatch();
   const { data: tutor, isLoading: tutorLoading, isError: tutorError, error } = useQuery(TUTOR_QUERY_KEY, () => matchTutor(id));
+  const loginUser = useSelector((state: RootState) => state.user.user);
+
   // 대화하기
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const handleStartChat = async (targetId: string) => {
-    if (!(targetId && session)) return;
+    // if (!(targetId && session)) return;
+    if (!targetId) return;
 
+    if (!loginUser) {
+      dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
+    }
+
+    if (!session) return;
     try {
       const chatRooms = await getChatRoomWithTutor(targetId);
 
@@ -173,13 +182,9 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
           </S.TutorProfile>
 
           <S.ButtonWrapper>
-            {/* session 대신 로그인 상태로 변경해도 될까요?*/}
-            {session && (
-              //handleStartChat(id) : usePrams id 값을 매개변수로 사용중
-              <Button variant="solid" color="primary" size="Medium" onClick={() => handleStartChat(id)}>
-                튜터랑 대화하기
-              </Button>
-            )}
+            <Button variant="solid" color="primary" size="Medium" onClick={() => handleStartChat(id)}>
+              튜터랑 대화하기
+            </Button>
             <span>바로 상담가능</span>
           </S.ButtonWrapper>
         </S.Container>
