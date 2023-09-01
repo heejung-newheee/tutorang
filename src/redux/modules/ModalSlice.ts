@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 type ModalState = {
   type: string;
   isOpen?: boolean;
-  targetId?: string | null;
+  targetId?: string | number | null;
   message?: string | null;
 };
 
