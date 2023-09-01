@@ -19,7 +19,7 @@ const TutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
       <Flicking key={uniqueKey} panelsPerView={panels} align="prev" circular={true} plugins={_plugins} style={{ padding: '0 50px' }}>
         {tutorList.map((tutor: Views<'tutor_info_join'>) => {
           return (
-            <S.Tutor to={`/detail/${tutor.tutor_id}`} key={tutor.tutor_info_id}>
+            <S.Tutor to={`/detail/${tutor.tutor_id}`} key={tutor.tutor_id}>
               <ProfilesCard tutor={tutor} key={tutor.tutor_id} />
             </S.Tutor>
           );

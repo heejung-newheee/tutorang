@@ -1,3 +1,4 @@
+import * as S from './Header.styled';
 import styled, { keyframes } from 'styled-components';
 import { closeModal } from '../../../redux/modules';
 import { useDispatch } from 'react-redux';
@@ -17,24 +18,21 @@ const HeaderModal = () => {
           e.stopPropagation();
         }}
       >
-        <div>
-          {' '}
-          <div>
-            <img src={logo} alt="logo"></img>
-            <h1>Logo</h1>
-            <div>
-              <li>튜터찾기</li>
-              <li>매칭후기</li>
-              <li>매칭후기</li>
-              <li>커뮤니티</li>
-              <li>고객센터</li>
-            </div>
-          </div>
-          <div>
-            <button>login</button>
-            <button>logout</button>
-          </div>
-        </div>
+        <S.MobileMenuWrapper>
+          <S.SignMobileWrapper>
+            <button>로그인</button>
+            <button>로그아웃</button>
+          </S.SignMobileWrapper>
+          <nav>
+            <S.GnbMobile>
+              <S.GnbMobileItem>튜터찾기</S.GnbMobileItem>
+              <S.GnbMobileItem>매칭후기</S.GnbMobileItem>
+              <S.GnbMobileItem>매칭후기</S.GnbMobileItem>
+              <S.GnbMobileItem>커뮤니티</S.GnbMobileItem>
+              <S.GnbMobileItem>고객센터</S.GnbMobileItem>
+            </S.GnbMobile>
+          </nav>
+        </S.MobileMenuWrapper>
       </div>
     </ModalContainer>
   );

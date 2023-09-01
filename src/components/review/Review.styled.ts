@@ -32,7 +32,7 @@ export const BadgeReviewCount = styled.span`
   color: ${colors.primary};
 `;
 
-export const ReviewItem = styled.li`
+export const ReviewItem = styled.div`
   position: relative;
   display: flex;
   justify-content: space-between;
