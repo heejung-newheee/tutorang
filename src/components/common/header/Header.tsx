@@ -18,7 +18,7 @@ type HEADERMENU = { title: string; path: string }[];
 
 const HeaderMenu: HEADERMENU = [
   { title: '튜터찾기', path: '/list' },
-  { title: '채팅', path: '/chat2' },
+  { title: '채팅', path: '/chat' },
 ];
 
 const Header = () => {
