@@ -12,8 +12,8 @@ const UserReviewList = () => {
   return (
     <Section>
       <Container>
-        <SectionTitle style={{ textAlign: 'center' }}>매칭 후기</SectionTitle>
-        <SectionSubTitle style={{ textAlign: 'center' }}>가벼운 마음으로 시작했다가, 지금은 Ing~</SectionSubTitle>
+        <SectionTitle style={{ textAlign: 'center' }}>생생한 후기를 들어보세요</SectionTitle>
+        {/* <SectionSubTitle style={{ textAlign: 'center' }}>가벼운 마음으로 시작했다가, 지금은 Ing~</SectionSubTitle> */}
         <S.ReviewList>
           <S.ReviewItem>
             <S.ReviewItemContent>
