@@ -34,8 +34,8 @@ const SignInForm = () => {
     const isAuthenticated = await emailCheckFromDB(email);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-      console.log('무슨에러임?', error);
-      console.log('무슨에러임?', error.message);
+      console.log('error', error);
+      console.log('error', error.message);
       if (error.message === 'Email not confirmed') {
         setGuideMessage({ email: '해당 이메일에서 회원가입승인 링크를 눌러주세요!', password: '' });
       } else {
@@ -52,10 +52,8 @@ const SignInForm = () => {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === 'email') {
       setEmail(e.target.value);
-      console.log(e.target.value);
     } else if (e.target.name === 'password') {
       setPassword(e.target.value);
-      console.log(e.target.value);
     }
   };
 
@@ -64,21 +62,14 @@ const SignInForm = () => {
   };
 
   const kakaoLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
     });
     if (error) alert(error.message);
-    console.log(data);
-    // if (!data) {
-    //   setLoading(true);
-    // } else {
-    //   setLoading(false);
-    //   navigate('/');
-    // }
   };
 
   const googleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         queryParams: {
@@ -88,7 +79,6 @@ const SignInForm = () => {
       },
     });
     if (error) alert(error.message);
-    console.log(data);
   };
 
   const naverLogin = () => {
@@ -97,17 +87,15 @@ const SignInForm = () => {
 
   const emailCheckFromDB = async (enteredEmail: string) => {
     // unverifiedEmail 을 supabase의 db 에서 확인
-    const { data: profiles, error } = await supabase.from('profiles').select('email');
+    const { data: profiles } = await supabase.from('profiles').select('email');
 
     const myEmailFromDB = profiles?.find((profile) => {
       return profile.email === enteredEmail;
     });
     const isMyEmailHere = myEmailFromDB === undefined ? false : true;
-    console.log('????????', isMyEmailHere);
     // setDuplicatedEmail(isMyEmailHere);
     // setIsAuthenticated(true);
     return isMyEmailHere;
-    console.log(error?.message);
   };
 
   useEffect(() => {

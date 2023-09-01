@@ -57,7 +57,7 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
 
   //필터값 삭제
   const DeleteFilterBar = (item: string[]) => {
-    handleDeleteFilterBar(item, setSelectedFilters, selectedFilters, setSelectedArr);
+    handleDeleteFilterBar(item, setSelectedFilters, setSelectedArr);
   };
 
   //초기화
@@ -94,7 +94,6 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
 
   //체크박스 클릭 - price가격 업데이트
   const handleFilterdObjPrice = (item: Price) => {
-    console.log(item);
     setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: item.min });
     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
     setSelectedArr((pre) => [...pre, ['price', item.optionPrice]]);

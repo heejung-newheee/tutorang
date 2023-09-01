@@ -1,4 +1,4 @@
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { Tab, TabList } from 'react-tabs';
 import { styled } from 'styled-components';
 
 export const TabListButton = styled(TabList)`

@@ -27,11 +27,8 @@ const ImgFileUpload: React.FC<TypeImgFileUpload> = ({ $fileType, $setCertificati
    * @param setPreviewImgfile  makeVisiblePreviewImg함수에 넘겨줄 인자 - 사용자가 선택한 파일을 미리볼 수 있는 previewImgfile 갱신해주는 함수(useState로 관리되고 있는 set함수)
    */
   const handleChangeImg = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('내확인좀 하리', event.target.files);
     const selectedFile = event.target.files?.[0];
-    console.log(selectedFile);
     if (selectedFile && $fileType === 'tutorCertificationImg') {
-      console.log('여기서 이미지 파일 넘겨주고 있는거 맞지?', selectedFile);
       setImgFile(selectedFile);
       $setCertificationImgFile(selectedFile);
     }

@@ -1,4 +1,4 @@
-import { icon_location, icon_location_gray, icon_school } from '../../assets';
+import { icon_location_gray, icon_school } from '../../assets';
 import { Views } from '../../supabase/database.types';
 import * as S from './ProfilesCard.styled';
 
@@ -7,11 +7,8 @@ interface pageProps {
 }
 
 const ProfilesCard = ({ tutor }: pageProps) => {
-  // console.log(tutor); // 튜터 정보 넘겨주셔서 사용하시면 됩니당
-
   return (
     <>
-      {/* <S.TutorCard to={`/detail/${tutor.tutor_id}`} key={tutor.tutor_info_id}> */}
       <S.TutorImg>
         <img src={tutor.tutor_img || undefined} alt="" />
       </S.TutorImg>

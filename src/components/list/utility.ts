@@ -250,7 +250,7 @@ export const handleAgeFilter = (item: string, setSelectedFilters: Dispatch<SetSt
 };
 
 //list - 지역 모달
-export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>, checkedcity: string, checkedGunGu: string) => {
+export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, _: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>, checkedcity: string, checkedGunGu: string) => {
   if (checkedcity === '전체') {
     //전체면 필터객체에서 삭제
     setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location1: '', location2: '' });
@@ -278,11 +278,10 @@ export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateActio
 };
 
 //selectBox
-export const handleDeleteFilterBar = (item: string[], setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
+export const handleDeleteFilterBar = (item: string[], setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
   switch (item[0]) {
     //성별
     case 'gender':
-      console.log(item);
       setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: pre.gender.filter((i: string) => i !== item[1]) });
       setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
       break;

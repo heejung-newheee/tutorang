@@ -72,12 +72,11 @@ const ReviewUpdateForm = () => {
 
     if (!loginUser) return;
     if (!tutorId) {
-      console.log('등록할 튜터의 Id가 없습니다.');
       return;
     }
 
     const updatedReview: reviews = {
-      reviewed_id: tutorId,
+      reviewed_id: tutorId as string,
       user_id: loginUser?.id,
       author: loginUser?.username,
       title: title as string,

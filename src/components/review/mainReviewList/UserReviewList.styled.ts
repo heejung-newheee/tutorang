@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import { play_button } from '../../../assets';
 
 export const ReviewList = styled.div`
   display: flex;
