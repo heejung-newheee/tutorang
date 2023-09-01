@@ -1,5 +1,50 @@
 import styled, { keyframes } from 'styled-components';
 
+export const FilterContainer = styled.div<{ $isChevronOpen: boolean }>`
+  width: 100%;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+  height: ${(props) => (props.$isChevronOpen ? '100%' : 'auto')};
+`;
+
+export const LocationDiv = styled.div`
+  width: 100%;
+  height: 50px;
+  background-color: #fe902f;
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  color: #ffffff;
+  padding-left: 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  cursor: pointer;
+
+  & > span {
+    display: flex;
+    align-items: center;
+  }
+
+  & > span > img {
+    height: 15px;
+    margin-right: 10px;
+  }
+`;
+
+export const FilterStart = styled.div`
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+
+  border-bottom: 1px solid #eaeaea;
+
+  & > img {
+    height: 15px;
+    margin-right: 10px;
+  }
+`;
+
 export const FilterBox = styled.div`
   width: 100%;
   margin-top: 30px;
@@ -14,7 +59,17 @@ export const FilterBox = styled.div`
   } */
 `;
 
-export const InnerBox = styled.div<{ $isIn: boolean }>`
+export const FilterUl = styled.ul`
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  height: auto;
+  display: flex;
+  overflow: scroll;
+  padding: 0 30px;
+`;
+
+export const FilterLi = styled.li<{ $isIn: boolean }>`
   display: flex;
   align-items: center;
   height: 34px;
@@ -34,15 +89,10 @@ const slideDown = keyframes`
   from {
     max-height: 0;
     opacity: 0;
-    /* visibility:visible;s */
-    /* display: block; */
   }
   to {
     max-height: 1000px;
     opacity: 1;
-    /* visibility:hidden; */
-
-
   }
 `;
 
@@ -50,15 +100,10 @@ const slideUp = keyframes`
   from {
     max-height: 1000px;
     opacity: 1;
-    /* visibility:hidden; */
-
   }
   to {
     max-height: 0;
     opacity: 0;
-    /* display: block; */
-    /* visibility:visible; */
-
   }
 `;
 
@@ -66,17 +111,10 @@ export const InnerHidden = styled.div<{ $isChevronOpen: boolean; $dddddd: boolea
   width: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  white-space: nowrap;
+
   margin: 20px 0;
   padding: 0 20px;
-  /* height: ${(props) => (props.$dddddd ? 'auto' : 1)}; */
-  display: ${(props) => (props.$dddddd ? 'block' : 'none')};
-  /* visibility: ${(props) => (props.$dddddd ? 'visible' : 'hidden')}; */
 
-  /* display: ${(props) => (props.$dddddd ? 'block' : 'none')};
-  opacity: ${(props) => (props.$dddddd ? 1 : 0)};
-  transition: all 2s ease-in; */
-  /* overflow: hidden; */
   animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   @media all and (max-width: 768px) {
@@ -98,33 +136,15 @@ export const InnerHidden = styled.div<{ $isChevronOpen: boolean; $dddddd: boolea
 
 export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean; $dddddd: boolean }>`
   width: 50%;
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  min-width: 320px;
   white-space: nowrap;
-  margin: 20px 0;
-  display: ${(props) => (props.$dddddd ? 'block' : 'none')};
-
+  margin: 30px 0;
   padding: 0 20px;
-  /* display: ${(props) => (props.$dddddd ? 'block' : 'none')}; */
-
-  /* display: ${(props) => (props.$isChevronOpen ? 'block' : 'none')}; */
-  /* animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease; */
+  display: ${(props) => (props.$dddddd ? 'block' : 'none')};
   animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   @media all and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
-  }
-
-  & > div {
-    width: 50%;
-    padding: 10px;
-
-    & > input {
-      cursor: pointer;
-    }
-    & > label {
-      cursor: pointer;
-    }
   }
 `;
 
@@ -133,7 +153,8 @@ export const PriceClassType = styled.div`
   color: #fe902f;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 60px;
+  margin-top: 50px;
 
   & > span {
     border-left: 3px solid #fe902f;
@@ -158,11 +179,9 @@ export const FilterBar = styled.div`
   justify-content: space-between;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 5px;
-  /* background-color: #f5f3f3; */
-  /* border-bottom: 1px solid #eaeaea; */
-  /* border-top: 1px solid #eaeaea; */
   overflow-x: scroll;
   white-space: nowrap;
+
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }

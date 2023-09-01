@@ -83,6 +83,8 @@ const List = () => {
   const api = async (page = 1) => {
     const { gender, level, minPrice, maxPrice, location1, location2, age, classStyle } = selectedFilters;
 
+    // const selectedLanguages = ['한국어', '일본어']; // 유저가 선택한 언어들
+
     let query = supabase.from('tutor_info_join').select('*');
 
     // if (gender.length !== 0) {
@@ -98,9 +100,9 @@ const List = () => {
     //   query = query.gte('age', minAge).lte('age', maxAge);
     // }
 
-    if (searchText) {
-      query = query.textSearch('tutor_name', `${searchText}`);
-    }
+    // if (searchText) {
+    //   query = query.textSearch('tutor_name', `${searchText}`);
+    // }
     // if (minPrice >= 0 && maxPrice) {
     //   if (classStyle === 'onLine') {
     //     query = query.gte('tuition_fee_online', 0).lte('tuition_fee_online', 100000);
@@ -108,6 +110,8 @@ const List = () => {
     //     query = query.gte('tuition_fee_offline', minPrice).lte('tuition_fee_offline', maxPrice);
     //   }
     // }
+
+    // query.filter(`languages && ARRAY[${selectedLanguages.map(lang => `'${lang}'`).join(', ')}]`);
 
     if (location1) {
       query = query.or(`location1_sido.eq.${location1},location2_sido.eq.${location1}`);

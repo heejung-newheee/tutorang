@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { gender, level, age, handleDeleteFilterBar } from '../utility';
 import * as S from './SelectBox.styled';
-import styled, { keyframes } from 'styled-components';
 import { Slider } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
@@ -138,72 +137,67 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
 
   return (
     <>
-      <LocationDiv onClick={openModal}>
+      <S.LocationDiv onClick={openModal}>
         <span>
           <img src={icon_location} />
           <p> 지역을 통해서 찾기</p>
         </span>
-      </LocationDiv>
+      </S.LocationDiv>
 
-      {/* <DDDD>지역을 통해서 찾기</DDDD> */}
-      <FilterContainer $isChevronOpen={isChevronOpen}>
-        <FilterStart>
+      <S.FilterContainer $isChevronOpen={isChevronOpen}>
+        <S.FilterStart>
           {' '}
           <img src={filterIcon} />
           필터로 자세히 찾기
-        </FilterStart>
+        </S.FilterStart>
 
-        <S.FilterBox>
-          <S.InnerBox $isIn={isColorTrue('gender')} onClick={() => handleHiddenBox('gender')}>
+        <S.FilterUl>
+          <S.FilterLi $isIn={isColorTrue('gender')} onClick={() => handleHiddenBox('gender')}>
             성별
             <S.ChevronSpan $chevron={ischevronOpen('gender')}></S.ChevronSpan>
-          </S.InnerBox>
+          </S.FilterLi>
 
-          <S.InnerBox $isIn={isColorTrue('level')} onClick={() => handleHiddenBox('level')}>
+          <S.FilterLi $isIn={isColorTrue('level')} onClick={() => handleHiddenBox('level')}>
             난이도
             <S.ChevronSpan $chevron={ischevronOpen('level')}></S.ChevronSpan>
-          </S.InnerBox>
+          </S.FilterLi>
 
-          <S.InnerBox $isIn={isColorTrue('age')} onClick={() => handleHiddenBox('age')}>
+          <S.FilterLi $isIn={isColorTrue('age')} onClick={() => handleHiddenBox('age')}>
             연령대
             <S.ChevronSpan $chevron={ischevronOpen('age')}></S.ChevronSpan>
-          </S.InnerBox>
+          </S.FilterLi>
 
-          <S.InnerBox $isIn={selectedArr.some((i) => i[0] === 'price') ? true : false} onClick={() => handleHiddenBox('price')}>
+          <S.FilterLi $isIn={selectedArr.some((i) => i[0] === 'price') ? true : false} onClick={() => handleHiddenBox('price')}>
             가격
             <S.ChevronSpan $chevron={ischevronOpen('price')}></S.ChevronSpan>
-          </S.InnerBox>
-        </S.FilterBox>
+          </S.FilterLi>
+        </S.FilterUl>
 
-        {/* <S.InnerBox onClick={openModal} $isIn={isColorTrue('location1')}>
-            지역
-            <button>+</button>
-          </S.InnerBox> */}
         {/* 체크박스 - 가격 제외*/}
         {filteredMenu !== 'price' && isChevronOpen ? (
-          <S.InnerHidden $isChevronOpen={isChevronOpen} $dddddd={filteredMenu !== 'price' && isChevronOpen}>
-            {/* <div> {filteredMenu}</div>
-            <div></div> */}
-
-            {obj[filteredMenu]?.map((item: string) => (
-              <div key={Math.random() * 22229999}>
-                <Checkbox
-                  sx={{
-                    color: 'gray',
-                    '&.Mui-checked': {
-                      color: '#fe902f',
-                    },
-                  }}
-                  id={`check-${item}`}
-                  onClick={() => handleFilterdObj(item, filteredMenu)}
-                  checked={isChecked(item)}
-                  inputProps={{ 'aria-label': 'controlled' }}
-                />
-                <label htmlFor={`check-${item}`}>{item}</label>
-              </div>
-            ))}
-          </S.InnerHidden>
+          <>
+            <S.InnerHidden key={Math.random() * 22229999} $isChevronOpen={isChevronOpen} $dddddd={filteredMenu !== 'price' && isChevronOpen}>
+              {obj[filteredMenu]?.map((item: string) => (
+                <div>
+                  <Checkbox
+                    sx={{
+                      color: 'gray',
+                      '&.Mui-checked': {
+                        color: '#fe902f',
+                      },
+                    }}
+                    id={`check-${item}`}
+                    onClick={() => handleFilterdObj(item, filteredMenu)}
+                    checked={isChecked(item)}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                  />
+                  <label htmlFor={`check-${item}`}>{item}</label>
+                </div>
+              ))}
+            </S.InnerHidden>
+          </>
         ) : null}
+
         {/* 체크박스 - 가격*/}
         {filteredMenu === 'price' && isChevronOpen ? (
           <S.InnerHiddenPrice $isChevronOpen={isChevronOpen} $dddddd={filteredMenu === 'price' && isChevronOpen}>
@@ -223,7 +217,7 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
             </ThemeProvider>
           </S.InnerHiddenPrice>
         ) : null}
-      </FilterContainer>
+      </S.FilterContainer>
 
       {/* 필터 바 */}
       {selectedArr.length > 0 && selectedArr.filter((i) => i[1] === '전체').length !== selectedArr.length ? (
@@ -256,52 +250,3 @@ const SelectBox = ({ handleFilterdObj, openModal, selectedArr, setSelectedArr, s
 };
 
 export default SelectBox;
-
-const FilterContainer = styled.div<{ $isChevronOpen: boolean }>`
-  width: 100%;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
-  height: ${(props) => (props.$isChevronOpen ? '100%' : 'auto')};
-`;
-
-const LocationDiv = styled.div`
-  width: 100%;
-  height: 50px;
-  background-color: #fe902f;
-  display: flex;
-  align-items: center;
-  margin-top: 40px;
-  color: #ffffff;
-  padding-left: 20px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  cursor: pointer;
-
-  /* border-bottom: 1px solid #eaeaea; */
-
-  & > span {
-    display: flex;
-    align-items: center;
-  }
-
-  & > span > img {
-    height: 15px;
-    margin-right: 10px;
-  }
-`;
-
-const FilterStart = styled.div`
-  width: 100%;
-  height: 50px;
-  /* background-color: #fe902f; */
-  display: flex;
-  align-items: center;
-  /* margin-top: 100px; */
-  padding-left: 20px;
-
-  border-bottom: 1px solid #eaeaea;
-
-  & > img {
-    height: 15px;
-    margin-right: 10px;
-  }
-`;
