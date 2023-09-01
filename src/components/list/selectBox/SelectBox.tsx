@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { gender, level, age, handleDeleteFilterBar, price, Price, handleGenderFilter, handleLevelFilter, handleAgeFilter } from '../utility';
 import * as S from './SelectBox.styled';
-import { Slider } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+// import { Slider } from '@mui/material';
+// import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
 import { SelectedFilters, FilterMenuObj } from '../utility';
 import filterIcon from '../../../assets/funnel.png';
@@ -38,9 +38,9 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
   const [filteredMenu, setfilteredMenu] = useState('');
   const [isChevronOpen, setIsChevronOpen] = useState(false);
 
-  const [minPriceNum, setMinPriceNum] = useState<undefined | number>(0);
-  const [maxPriceNum, setMaxPriceNum] = useState<undefined | number>(100000);
-  const [Value, setValue] = useState<number>(0);
+  // const [minPriceNum, setMinPriceNum] = useState<undefined | number>(0);
+  // const [maxPriceNum, setMaxPriceNum] = useState<undefined | number>(100000);
+  // const [Value, setValue] = useState<number>(0);
 
   //체크박스 노출여부
   const handleHiddenBox = (category: string) => {
@@ -65,8 +65,8 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
     setSelectedArr([]);
     setSelectedFilters(initialSelectedFilters);
 
-    setMaxPriceNum(0);
-    setMinPriceNum(0);
+    // setMaxPriceNum(0);
+    // setMinPriceNum(0);
   };
 
   //체크박스 클릭

@@ -250,7 +250,6 @@ export const handleAgeFilter = (item: string, setSelectedFilters: Dispatch<SetSt
 };
 
 //list - 지역 모달
-
 export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>, checkedcity: string, checkedGunGu: string) => {
   if (checkedcity === '전체') {
     //전체면 필터객체에서 삭제
@@ -279,7 +278,6 @@ export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateActio
 };
 
 //selectBox
-
 export const handleDeleteFilterBar = (item: string[], setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
   switch (item[0]) {
     //성별
