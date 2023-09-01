@@ -49,7 +49,7 @@ const StudentInfo = ({ match }: pageProps) => {
       <InfoSection>
         <Container>
           <InfoTitle>찜한 강사 리스트</InfoTitle>
-          {likedUser.length > 0 ? <TutorSlider tutorList={likedUser} panels={3} /> : <InfoNull>찜한 강사가 없습니다</InfoNull>}
+          {likedUser.length > 0 ? <TutorSlider uniqueKey="studentinfo" tutorList={likedUser} panels={3} /> : <InfoNull>찜한 강사가 없습니다</InfoNull>}
         </Container>
       </InfoSection>
       <InfoSection>

@@ -63,9 +63,15 @@ const ImgFileUpload: React.FC<TypeImgFileUpload> = ({ $fileType, $setCertificati
 export default ImgFileUpload;
 
 const SCertifiFilesArea = styled.div`
+  box-sizing: border-box;
+  position: relative;
   display: flex;
   flex-direction: row;
-  position: relative;
+  align-items: center;
+  height: 50px;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+  }
 `;
 
 const SCertifiIcon = styled.label`
@@ -74,7 +80,7 @@ const SCertifiIcon = styled.label`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 10px;
+  margin-right: 5px;
   cursor: pointer;
 `;
 
@@ -82,7 +88,7 @@ const SCertifiFilesP = styled.p<{ $role?: string }>`
   box-sizing: border-box;
   min-width: 245px;
   width: 100%;
-  height: 100%;
+  height: 50px;
   display: flex;
   align-items: center;
   padding: 10px 5px 10px 10px;
@@ -95,12 +101,18 @@ const SCertifiFilesP = styled.p<{ $role?: string }>`
   }};
   border-radius: 3px;
   color: #aeaeae;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+  }
 `;
 const SLabel = styled.label<{ id?: string }>`
   background-color: #f7f7f7;
   width: 100%;
-  height: 40px;
+  height: 50px;
   cursor: pointer;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+  }
 `;
 
 const SIconFileDelete = styled.div`

@@ -1,3 +1,4 @@
+import { icon_location, icon_location_gray, icon_school } from '../../assets';
 import { Views } from '../../supabase/database.types';
 import * as S from './ProfilesCard.styled';
 
@@ -19,17 +20,18 @@ const ProfilesCard = ({ tutor }: pageProps) => {
         <S.TutorName>{tutor.tutor_name}</S.TutorName>
         <S.TutorContent>
           <div>
-            {tutor.location1_gugun} | {tutor.location2_gugun}
+            <S.InfoIcon src={icon_location_gray} alt="" /> {tutor.location1_gugun} | {tutor.location2_gugun}
           </div>
           <div>
+            <S.InfoIcon src={icon_school} alt="" />
             {tutor.university} | {tutor.major}
           </div>
           <S.Tag>
             {tutor.personality && tutor.personality.length > 0 ? (
               <>
-                <div>#{tutor.personality[0]}</div>
-                <div>#{tutor.personality[1]}</div>
-                <div>#{tutor.personality[2]}</div>
+                {tutor.personality[0] ? <div>#{tutor.personality[0]}</div> : <br />}
+                {tutor.personality[1] ? <div>#{tutor.personality[1]}</div> : <br />}
+                {tutor.personality[2] ? <div>#{tutor.personality[2]}</div> : <br />}
               </>
             ) : (
               <div></div>

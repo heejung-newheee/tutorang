@@ -4,10 +4,13 @@ import { useEffect, useState } from 'react';
 import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
+import FormHeader from '../FormHeader';
+import { FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE } from '../formConstant';
 import Checkbox from './Checkbox';
 import ImgFileUpload from './ImgFileUpload';
 import SelectEnrollmentStatus from './SelectEnrollmentStatus';
@@ -30,6 +33,7 @@ const RegistTutorForm = () => {
   const [certificationImgFile, setCertificationImgFile] = useState<File | undefined>();
   const [enrollmentStatus, setEnrollmentStatus] = useState('');
   const user = useSelector((state: RootState) => state.user.user);
+  const navigate = useNavigate();
   console.log('user', user);
 
   const onChangeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,7 +84,6 @@ const RegistTutorForm = () => {
   };
 
   const storeAndGetProfileImg = async () => {
-    console.log('이메일이 있단 말인가???', email);
     const imgIdentity = v4();
     // let pdfUrlList: string | undefined;
     if (certificationImgFile && certificationImgFile !== undefined) {
@@ -127,6 +130,10 @@ const RegistTutorForm = () => {
     // console.log('formData로 뭐가 들어오나요? =>', formData);
     const { error } = await supabase.from('tutor_info').insert(formData);
     if (error) console.log(error.message);
+    else {
+      alert('튜터신청이 완료되었습니다! 관리자의 승인을 기다려주세염');
+      navigate(-1);
+    }
   };
 
   useEffect(() => {
@@ -146,12 +153,12 @@ const RegistTutorForm = () => {
 
   return (
     <SContainer>
-      <h1>RegistTutorForm</h1>
+      <FormHeader $keyword={FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE} />
+      <SPartitionLine />
       <SForm onSubmit={handleSubmit}>
+        {/* [x] 학위/자격증명 */}
         <SFormItem>
-          <div>
-            <h3>학위/자격 증명</h3>
-          </div>
+          <SFormItemTitle>학위/자격 증명</SFormItemTitle>
           <SFormCertificateItems>
             <SCertificateItem>
               <label htmlFor="university">대학교</label>
@@ -161,7 +168,7 @@ const RegistTutorForm = () => {
               </SItemSchool>
             </SCertificateItem>
             <SCertificateItem>
-              <label htmlFor="">학과</label>
+              <label htmlFor="major">학과</label>
               <SInput type="text" id="major" name="major" value={major} onChange={onChangeInputHandler}></SInput>
             </SCertificateItem>
             <SCertificateItem>
@@ -170,29 +177,30 @@ const RegistTutorForm = () => {
             </SCertificateItem>
           </SFormCertificateItems>
         </SFormItem>
+
+        {/* [x] 성격 */}
         <SFormItem>
-          <span>성격 (최대 3개 선택)</span>
+          <SFormItemTitle>성격 (최대 3개 선택)</SFormItemTitle>
           <SItems>
             {PERSONALITY_LIST.map((personality) => (
               <Checkbox key={personality.value} $checkboxType={'personality'} option={personality} handleCheckedItems={handleCheckedItems} checkItems={checkPersonalityItems} />
             ))}
           </SItems>
         </SFormItem>
+
+        {/* [x] 사용가능 언어 (한/중/일) */}
         <SFormItem>
-          <span>가능언어</span>
+          <SFormItemTitle>가능언어</SFormItemTitle>
           <SItems>
             {AVAILABLE_LANGUAGE_LIST.map((language) => (
               <Checkbox key={language.value} $checkboxType={'language'} option={language} handleCheckedItems={handleCheckedItems} checkItems={checkLanguageItems} />
             ))}
           </SItems>
         </SFormItem>
+
+        {/* [x] 수업 레벨 (초급/중급/고급) */}
         <SFormItem>
-          <SItemClassLevelHeader>
-            <span>수업 level</span>
-            {/* <FaInfoCircle style={{ marginLeft: '10px', cursor: 'pointer' }} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} />
-             isHovered && (
-            )} */}
-          </SItemClassLevelHeader>
+          <SFormItemTitle>수업 level</SFormItemTitle>
           <SItems>
             {CLASSLEVEL_LIST.map((classLevel) => (
               <Checkbox key={classLevel.value} $checkboxType={'classLevel'} option={classLevel} handleCheckedItems={handleCheckedItems} checkItems={checkClassLevelItems} />
@@ -207,12 +215,16 @@ const RegistTutorForm = () => {
             </SPGuideMessage>
           </SGuideBox>
         </SFormItem>
+
+        {/* [x] 수업소개 */}
         <SFormItem>
-          <span>수업소개</span>
+          <SFormItemTitle>수업소개</SFormItemTitle>
           <STextarea name="class_Info" id="class_Info" value={classInfo} onChange={(e) => setClassInfo(e.target.value)}></STextarea>
         </SFormItem>
+
+        {/* [x] 수업료 설정 */}
         <SFormItem>
-          <span>자세한 수업료 기준 (₩/30분)</span>
+          <SFormItemTitle>자세한 수업료 기준 (₩/30분)</SFormItemTitle>
           <STuitionItems>
             <STuitionItem>
               <SItemHeader>
@@ -230,6 +242,7 @@ const RegistTutorForm = () => {
             </STuitionItem>
           </STuitionItems>
         </SFormItem>
+
         <SButton type="submit" disabled={validationCheck}>
           튜터 신청 완료
         </SButton>
@@ -240,23 +253,31 @@ const RegistTutorForm = () => {
 
 export default RegistTutorForm;
 
-const SContainer = styled.section`
-  /* margin-top: 100px; */
-  max-width: 1200px;
+const SContainer = styled.div``;
+
+const SForm = styled.form`
+  box-sizing: border-box;
+  padding: 80px 20px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 650px;
   min-width: 360px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  gap: 40px;
+  @media screen and (max-width: 420px) {
+    padding: 50px 20px;
+  }
 `;
 
-const SForm = styled.form`
-  /* height: 500px; */
-  box-sizing: border-box;
-  padding: 30px;
+const SFormItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 5px;
+`;
+
+const SFormItemTitle = styled.span`
+  font-weight: 500;
 `;
 const SItemSchool = styled.div`
   display: flex;
@@ -266,16 +287,11 @@ const SItemSchool = styled.div`
 const SFormCertificateItems = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 20px;
   padding: 20px 10px;
   border: 1px solid #696969;
   border-radius: 3px;
-`;
-
-const SFormItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
 `;
 
 const SCertificateItem = styled.div`
@@ -284,9 +300,6 @@ const SCertificateItem = styled.div`
   gap: 5px;
 `;
 
-const SItemClassLevelHeader = styled.div`
-  position: relative;
-`;
 const SGuideBox = styled.div`
   margin-top: 10px;
   display: flex;
@@ -312,13 +325,17 @@ const SItems = styled.div`
 const SInput = styled.input`
   box-sizing: border-box;
   width: 100%;
-  height: 40px;
-  line-height: 40px;
+  height: 50px;
+  line-height: 50px;
   border: 1px solid #696969;
   border-radius: 3px;
   outline: none;
-  padding: 8px;
+  padding: 8px 10px;
   font-size: 16px;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 
 const STextarea = styled.textarea`
@@ -362,7 +379,8 @@ const STuitionItem = styled.div`
 const SItemHeader = styled.div``;
 
 const SButton = styled.button<{ disabled: boolean }>`
-  height: 40px;
+  height: 50px;
+  font-size: 16px;
   background-color: ${(props) => {
     if (props.disabled === true) return '#e7e7e7';
     else return '#FE902F';
@@ -373,4 +391,26 @@ const SButton = styled.button<{ disabled: boolean }>`
     else return 'pointer';
   }};
   border-radius: 3px;
+  margin-top: 20px;
+  /* @media screen and (max-width: 420px) {
+    width: 100%;
+  } */
+`;
+
+const SPartitionLine = styled.div`
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background-color: #eaeaea;
+  & p {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -10px;
+    & span {
+      background-color: #fff;
+    }
+  }
 `;

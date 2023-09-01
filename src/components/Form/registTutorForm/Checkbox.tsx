@@ -47,7 +47,7 @@ const SLabel = styled.label<{ $labelType: string; $isChecked: boolean; $ableMore
       return '32%';
     }
   }};
-  height: 40px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,11 +71,7 @@ const SLabel = styled.label<{ $labelType: string; $isChecked: boolean; $ableMore
   cursor: pointer;
   border-radius: 3px;
 
-  /* cursor: ${({ $ableMoreCheck, $isChecked }) => ((!$ableMoreCheck && $isChecked) || $ableMoreCheck ? 'pointer' : 'default')}; */
-  // if (!$ableMoreCheck && $isChecked) return 'pointer';
-  // else if ($ableMoreCheck) return 'pointer';
-  // else if (!$ableMoreCheck && !$isChecked) return 'defalut';
-  // else {
-  //   return 'defalut';
-  // }
+  @media screen and (max-width: 420px) {
+    height: 45px;
+  }
 `;

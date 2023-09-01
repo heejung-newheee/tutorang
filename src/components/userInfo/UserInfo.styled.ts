@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { colors } from '../../style/theme/colors';
 
 export const MypageContainer = styled.section`
   /* padding: 10px; */
@@ -6,7 +7,7 @@ export const MypageContainer = styled.section`
 `;
 export const ProfileBox = styled.section`
   text-align: center;
-  background-color: #fe902f;
+  background-color: ${colors.primary};
   position: relative;
   height: 528px;
   padding-top: 45px;
@@ -63,11 +64,28 @@ export const TutorLocationBox = styled.div`
   }
 `;
 
+// export const Summary = styled.div`
+//   width: 100%;
+//   max-width: 1200px;
+//   height: 244px;
+//   padding: 62px;
+//   border-radius: 40px;
+//   background-color: #fff;
+//   margin: 40px 0;
+//   justify-content: space-between;
+//   align-items: center;
+//   display: flex;
+//   text-align: center;
+//   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+//   position: absolute;
+//   bottom: -170px;
+// `;
+
 export const Summary = styled.div`
   width: 100%;
-  max-width: 1200px;
-  height: 244px;
-  padding: 62px;
+  max-width: 800px;
+  min-height: 180px;
+  padding: 30px 50px;
   border-radius: 40px;
   background-color: #fff;
   margin: 40px 0;
@@ -77,7 +95,9 @@ export const Summary = styled.div`
   text-align: center;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   position: absolute;
-  bottom: -170px;
+  left: 50%;
+  bottom: -125px;
+  transform: translate(-50%, 0);
 `;
 export const SummaryItem = styled.div`
   width: 33.3333%;
@@ -85,19 +105,19 @@ export const SummaryItem = styled.div`
     border-right: solid 1px #c8c8c8;
   }
   p:first-child {
-    padding-top: 25px;
+    /* padding-top: 25px; */
     padding-bottom: 30px;
     font-size: 31px;
     font-weight: bold;
   }
   p:last-child {
-    padding-bottom: 25px;
+    /* padding-bottom: 25px; */
     font-size: 13px;
   }
 `;
 
 export const InfoSection = styled.section`
-  background-color: #f8f8f8;
+  background-color: ${colors.gray_100};
   padding: 55px 0;
   margin: 40px 0;
 `;
@@ -130,8 +150,8 @@ export const MatchBtn = styled.button`
   border: solid 1px #000;
   transition: all 0.4s;
   &:hover {
-    background-color: #fe902f;
+    background-color: ${colors.primary};
     color: #fff;
-    border: solid 1px #fe902f;
+    border: solid 1px ${colors.primary};
   }
 `;

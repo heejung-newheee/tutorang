@@ -15,12 +15,11 @@ const StarTutorSlider = () => {
     console.log(tutors.error);
     return;
   }
-
   return (
     <S.Container>
       <S.Inner>
         <S.Title>인기강사</S.Title>
-        <TutorSlider tutorList={tutors.data} panels={3} />
+        <TutorSlider tutorList={tutors.data} panels={4} uniqueKey="startTutors" />
       </S.Inner>
     </S.Container>
   );
