@@ -36,6 +36,11 @@ export const getTutorMostReview = async () => {
   if (error) throw error;
   return data;
 };
+export const getTopReviewer = async () => {
+  const { data, error } = await supabase.from('tutor_top_reviewer').select().limit(5);
+  if (error) throw error;
+  return data;
+};
 
 export const fetchTutorAll = async ({ queryKey }: { queryKey: string[] }) => {
   const [_, tutor] = queryKey;
@@ -55,7 +60,7 @@ export const tutorInfoJoin = async () => {
 
 // 해당 (튜터) 데이터만 조회
 export const matchTutor = async (tutorId: string) => {
-  const { data, error } = await supabase.from('tutor_info_join').select().match({ tutor_id: tutorId });
+  const { data, error } = await supabase.from('tutor_info_join').select().match({ tutor_id: tutorId }).single();
   if (error) throw error;
   return data;
 };

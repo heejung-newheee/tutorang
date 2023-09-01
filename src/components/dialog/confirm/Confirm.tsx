@@ -1,9 +1,11 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as S from './Confirm.styled';
 import { closeModal } from '../../../redux/modules';
+import { RootState } from '../../../redux/config/configStore';
 
 const Confirm = () => {
   const dispatch = useDispatch();
+  const { message } = useSelector((state: RootState) => state.modal);
 
   const handleClose = () => {
     dispatch(closeModal());
@@ -16,6 +18,7 @@ const Confirm = () => {
           e.stopPropagation();
         }}
       >
+        {message}
         <button onClick={handleClose}>취소</button>
         <button>확인</button>
       </S.Inner>

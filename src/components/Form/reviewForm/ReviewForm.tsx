@@ -2,11 +2,10 @@ import * as S from './ReviewForm.styled';
 import { useInput } from '../../../hooks';
 import { Button } from '../..';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeModal, setReview } from '../../../redux/modules';
-import { starEmpty, starFull } from '../../../assets';
+import { closeModal } from '../../../redux/modules';
+import { close, starEmpty, starFull } from '../../../assets';
 import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { reviewRequest } from '../../../api/review';
+import { useCreateReviewMutation } from '../../../api/review';
 import { RootState } from '../../../redux/config/configStore';
 import { reviews } from '../../../supabase/database.types';
 
@@ -17,15 +16,10 @@ type initialStateType = {
 
 const ReviewForm = () => {
   const dispatch = useDispatch();
-  const queryClient = useQueryClient();
   const loginUser = useSelector((state: RootState) => state.user.user);
   const { targetId: tutorId } = useSelector((state: RootState) => state.modal);
 
-  const mutation = useMutation(reviewRequest, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['review']);
-    },
-  });
+  const createReview = useCreateReviewMutation();
 
   const initialState: initialStateType = {
     title: '',
@@ -82,7 +76,7 @@ const ReviewForm = () => {
     };
 
     try {
-      await mutation.mutate(newReview);
+      await createReview.mutate(newReview);
     } catch (error) {
       console.error('error submit review : ', error);
     }
@@ -98,29 +92,31 @@ const ReviewForm = () => {
     <S.Container>
       <S.Inner>
         <S.ContentWrapper>
-          <button onClick={handleClose}>닫기</button>
+          <S.CloseBtn onClick={handleClose}>
+            <img src={close} alt="close button" />
+          </S.CloseBtn>
 
           <form onSubmit={handleReviewSubmit}>
-            <S.Title>리뷰 남기기</S.Title>
             <S.StarList>
               {stars.map((star) => {
                 return (
-                  <li key={star} onMouseEnter={() => handleStarMouseEnter(star)} onMouseLeave={() => handleStarMouseLeave()} onClick={() => handleStarOnClick(star)}>
+                  <S.StarItem key={star} onMouseEnter={() => handleStarMouseEnter(star)} onMouseLeave={() => handleStarMouseLeave()} onClick={() => handleStarOnClick(star)}>
                     {starRating(star)}
-                  </li>
+                  </S.StarItem>
                 );
               })}
             </S.StarList>
+            <S.Title>리뷰 남기기</S.Title>
             <div>
-              <label htmlFor="">제목</label>
-              <input required name="title" value={title as string} onChange={onChange} />
+              <S.ReviewLabel htmlFor="">제목</S.ReviewLabel>
+              <S.ReviewInput required name="title" value={title as string} onChange={onChange} />
             </div>
             <div>
-              <label htmlFor="">내용</label>
+              <S.ReviewLabel htmlFor="">내용</S.ReviewLabel>
               <S.Textarea name="content" value={content as string} onChange={onChange} />
             </div>
             <S.ButtonWrapper>
-              <Button variant="solid" color="black" size="Large">
+              <Button variant="solid" color={'primary'} size="Large">
                 등록하기
               </Button>
             </S.ButtonWrapper>

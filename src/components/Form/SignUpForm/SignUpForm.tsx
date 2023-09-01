@@ -3,14 +3,17 @@
 // [ ] 날짜 select box 열렸을 때 아이콘 방향 틀어야함
 
 import { useEffect, useRef, useState } from 'react';
-import { BsFillCheckCircleFill, BsXCircleFill } from 'react-icons/bs';
+import { BsFillCheckCircleFill, BsFillEyeFill, BsFillEyeSlashFill, BsXCircleFill } from 'react-icons/bs';
 import { FaAngleDown, FaInfoCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { AREA0, AREA1, AREA10, AREA11, AREA12, AREA13, AREA14, AREA15, AREA16, AREA2, AREA3, AREA4, AREA5, AREA6, AREA7, AREA8, AREA9 } from '../../../api/cities';
 import supabase from '../../../supabase';
+import FormHeader from '../FormHeader';
+import { FORM_CONSTANT_TITLE_SIGNUP } from '../formConstant';
 import '../icon.css';
 import '../inputBackgroundSetting.css';
+import ServiceAgreement from './ServiceAgreement';
 interface CityData {
   [key: string]: string[];
 }
@@ -23,12 +26,12 @@ const USERNAME_EN_REGEX = /^[a-z|A-Z|+\s]{2,20}$/;
 const EMAIL_REGEX = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
 
-type TSignUpFormProps = {
-  setFormComponent: React.Dispatch<React.SetStateAction<string>>;
-};
-const SignUpForm: React.FC<TSignUpFormProps> = () => {
+const SignUpForm = () => {
+  const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
   const emailRef = useRef<HTMLInputElement>(null);
-  const errRef = useRef<HTMLParagraphElement>(null);
+  // const errRef = useRef<HTMLParagraphElement>(null);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -52,7 +55,7 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
   const [validUsername, setValidUsername] = useState(false);
   const [usernameFocus, setUsernameFocus] = useState(false);
 
-  const [errMsg, setErrMsg] = useState('');
+  // const [errMsg, setErrMsg] = useState('');
   // const [success, setSuccess] = useState(false)
 
   const [checkedGender, setCheckedGender] = useState({ female: false, male: false });
@@ -158,9 +161,9 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
     setValidUsername(result);
   }, [username]);
 
-  useEffect(() => {
-    setErrMsg('');
-  }, [email, pwd, matchPwd]);
+  // useEffect(() => {
+  //   setErrMsg('');
+  // }, [email, pwd, matchPwd]);
 
   useEffect(() => {
     const checkedValidBirth = !!birth.year && !!birth.month && !!birth.day;
@@ -251,7 +254,7 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!validEmail || !validPwd || !validMatch || !validUsername || !validBirth || !validGender || !validLocation || !doneDuplicationCheck || duplicatedEmail) {
+    if (!validEmail || !validPwd || !validMatch || !validUsername || !validBirth || !validGender || !validLocation || !doneDuplicationCheck || duplicatedEmail || !isAllChecked) {
       alert('모든 항목이 입력되었는지 다시 한 번 확인해주세요!');
       return false;
     }
@@ -298,349 +301,378 @@ const SignUpForm: React.FC<TSignUpFormProps> = () => {
       }
     }
   };
-  // const test = () => {
-  //   let gender = '';
-  //   if (checkedGender.male !== checkedGender.female && checkedGender.male === true) gender = '남성';
-  //   else if (checkedGender.male !== checkedGender.female && checkedGender.female === true) gender = '여성';
-  //   const age = calculateAge();
-  //   const trimmedBirth = birth.year + '-' + birth.month + '-' + birth.day;
-  //   //만나이 계산
-
-  //   const testFetchData = {
-  //     email,
-  //     pwd,
-  //     username,
-  //     birth: trimmedBirth,
-  //     age,
-  //     gender,
-  //     location1_sido: location1.sido1,
-  //     location1_gugun: location1.gugun1,
-  //     location2_sido: location2.sido2,
-  //     location2_gugun: location2.gugun2,
-  //     role: 'student',
-  //   };
-  //   console.log('💟', testFetchData);
-  // };
 
   return (
     <SContainer>
-      {errMsg && <p ref={errRef}>{errMsg}</p>}
-      <h1>회원가입</h1>
-      <SForm onSubmit={handleSubmit}>
-        {/* [x] 이메일 작성란 */}
-        <SFormItem>
-          <label htmlFor="email">이메일</label>
-          <SEmailInputWrapper style={{ minWidth: '360px' }}>
-            <SInput
-              type="text"
-              id="email"
-              ref={emailRef}
-              autoComplete="off"
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              onFocus={() => setEmailFocus(true)}
-              onBlur={() => setEmailFocus(false)}
-              $color={emailFocus && !!email && !validEmail}
-              $noFocusedColor={!!email && !validEmail}
-              placeholder="이메일을 입력하세요"
-            />
-            {/* email */}
-            <SEmailButton type="button" disabled={!email || !validEmail} onClick={() => duplicationCheck(email)}>
-              중복확인
-            </SEmailButton>
-            <BsXCircleFill className="reset_input_btn" onClick={deleteEmail} />
-          </SEmailInputWrapper>
-          <SPGuideMessage $guideMessageColor={'안내'}>
-            <FaInfoCircle style={{ marginRight: '5px' }} />
-            기입된 이메일로 최종 회원가입 승인메일을 보낼 예정이오니 실제 열람가능한 이메일을 기입해주시기 바랍니다.
-          </SPGuideMessage>
-          {!!email && !validEmail && (
-            <SPGuideMessage>
-              <FaInfoCircle style={{ marginRight: '5px' }} />
-              이메일 형식으로 입력해주세요
-            </SPGuideMessage>
-          )}
-          {!!email && validEmail && doneDuplicationCheck && duplicatedEmail && (
-            <SPGuideMessage>
-              <FaInfoCircle style={{ marginRight: '5px' }} />
-              중복된 이메일 입니다. 새로운 이메일을 입력하세요
-            </SPGuideMessage>
-          )}
-          {!!email && validEmail && doneDuplicationCheck && !duplicatedEmail && (
-            <SPGuideMessage $guideMessageColor={!duplicatedEmail && '확인'}>
-              <BsFillCheckCircleFill style={{ marginRight: '5px' }} />
-              입력된 이메일을 사용할 수 있습니다!
-            </SPGuideMessage>
-          )}
-        </SFormItem>
-
-        {/* [x] 비밀번호 작성란 */}
-        <SFormItem>
-          <label htmlFor="password">비밀번호</label>
-          <SInput
-            type="password"
-            id="password"
-            onChange={(e) => setPwd(e.target.value)}
-            required
-            onFocus={() => setPwdFocus(true)}
-            onBlur={() => setPwdFocus(false)}
-            $color={pwdFocus && !!pwd && !validPwd}
-            $noFocusedColor={!!pwd && !validPwd}
-            placeholder="비밀번호를 입력하세요"
-            autoComplete="off"
-          />
-          {!!pwd && !validPwd && (
-            <SPGuideMessage>
-              <FaInfoCircle style={{ marginRight: '5px' }} />
-              대소문자, 숫자, 특수문자(!@#$%)를 모두 포함하여 24자 이상의 비밀번호를 입력해주세요
-            </SPGuideMessage>
-          )}
-        </SFormItem>
-
-        {/* [x] 비밀번호 확인 작성란 */}
-        <SFormItem>
-          <label htmlFor="confirm_pwd">비밀번호 확인</label>
-          <SInput
-            type="password"
-            id="confirm_pwd"
-            onChange={(e) => setMatchPwd(e.target.value)}
-            required
-            onFocus={() => setMatchFocus(true)}
-            onBlur={() => setMatchFocus(false)}
-            $color={matchFocus && !!matchPwd && !validMatch}
-            $noFocusedColor={!!matchPwd && !validMatch}
-            placeholder="비밀번호 확인 입력하세요"
-            autoComplete="off"
-          />
-          {!!matchPwd && !validMatch && (
-            <SPGuideMessage>
-              <FaInfoCircle style={{ marginRight: '5px' }} />
-              처음에 입력한 비밀번호와 동일해야합니다.
-            </SPGuideMessage>
-          )}
-        </SFormItem>
-
-        {/* [x] 이름 작성란 */}
-        <SFormItem>
-          <label htmlFor="username">이름</label>
-          <SInput
-            type="text"
-            id="username"
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            onFocus={() => setUsernameFocus(true)}
-            onBlur={() => setUsernameFocus(false)}
-            $color={usernameFocus && !!username && !validUsername}
-            $noFocusedColor={!!username && !validUsername}
-            placeholder="실명을 입력하세요"
-            autoComplete="off"
-          />
-          {!!username && !validUsername && (
-            <SPGuideMessage>
-              <FaInfoCircle style={{ marginRight: '5px' }} />
-              2자 이상 6자미만의 한국실명 또는 2자이상 20자 미만의 영문실명을 입력하세요.
-            </SPGuideMessage>
-          )}
-        </SFormItem>
-
-        {/* [x] 생년월일 선택란 */}
-        <SFormItem>
-          <span>생년월일</span>
-
-          <SDropdownField>
-            <SDropdownWrapper>
-              <SDropDownHeader id="birthYearDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, year: !prev.year }))}>
-                <span>{birth.year || '년도'}</span>
-                <FaAngleDown />
-              </SDropDownHeader>
-              {isDateOpen.year && (
-                <SOptionContainer>
-                  <Select>
-                    {birthYearOptions.map((option) => (
-                      <SOption key={option} $selectedOption={birth.year === option.toString()} onClick={() => selectDateOption(option.toString(), 'year')}>
-                        {option}
-                      </SOption>
-                    ))}
-                  </Select>
-                </SOptionContainer>
+      {/* {errMsg && <p ref={errRef}>{errMsg}</p>} */}
+      <FormHeader $keyword={FORM_CONSTANT_TITLE_SIGNUP} />
+      <SPartitionLine />
+      <SFormContainer>
+        <SForm onSubmit={handleSubmit}>
+          <SUnderForm>
+            {/* [x] 이메일 작성란 */}
+            <SFormItem>
+              <label htmlFor="email">이메일</label>
+              <SEmailInputWrapper>
+                <SInput
+                  type="text"
+                  id="email"
+                  ref={emailRef}
+                  autoComplete="off"
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  onFocus={() => setEmailFocus(true)}
+                  onBlur={() => setEmailFocus(false)}
+                  $color={emailFocus && !!email && !validEmail}
+                  $noFocusedColor={!!email && !validEmail}
+                  placeholder="이메일을 입력하세요"
+                />
+                {/* email */}
+                <SEmailButton type="button" disabled={!email || !validEmail} onClick={() => duplicationCheck(email)}>
+                  중복확인
+                </SEmailButton>
+                <BsXCircleFill className="reset_input_btn" onClick={deleteEmail} />
+              </SEmailInputWrapper>
+              <SPGuideMessage $guideMessageColor={'안내'}>
+                <FaInfoCircle style={{ marginRight: '5px' }} />
+                최종 회원가입 승인메일을 보낼 예정이오니 실제 열람가능한 이메일을 기입해주시기 바랍니다.
+              </SPGuideMessage>
+              {!!email && !validEmail && (
+                <SPGuideMessage>
+                  <FaInfoCircle style={{ marginRight: '5px' }} />
+                  이메일 형식으로 입력해주세요
+                </SPGuideMessage>
               )}
-            </SDropdownWrapper>
-            <SDropdownWrapper>
-              <SDropDownHeader id="birthMonthDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, month: !prev.month }))}>
-                <span>{birth.month || '월'}</span>
-                <FaAngleDown />
-              </SDropDownHeader>
-              {isDateOpen.month && (
-                <SOptionContainer>
-                  <Select>
-                    {birthMonthOptions.map((option) => (
-                      <SOption key={option} $selectedOption={birth.month === option} onClick={() => selectDateOption(option, 'month')}>
-                        {option}
-                      </SOption>
-                    ))}
-                  </Select>
-                </SOptionContainer>
+              {!!email && validEmail && doneDuplicationCheck && duplicatedEmail && (
+                <SPGuideMessage>
+                  <FaInfoCircle style={{ marginRight: '5px' }} />
+                  중복된 이메일 입니다. 새로운 이메일을 입력하세요
+                </SPGuideMessage>
               )}
-            </SDropdownWrapper>
-            <SDropdownWrapper>
-              <SDropDownHeader id="birthDayDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, day: !prev.day }))}>
-                <span>{birth.day || '일'}</span>
-                <FaAngleDown />
-              </SDropDownHeader>
-              {isDateOpen.day && (
-                <SOptionContainer>
-                  <Select>
-                    {birthDayOptions.map((option) => (
-                      <SOption key={option} $selectedOption={birth.day === option} onClick={() => selectDateOption(option, 'day')}>
-                        {option}
-                      </SOption>
-                    ))}
-                  </Select>
-                </SOptionContainer>
+              {!!email && validEmail && doneDuplicationCheck && !duplicatedEmail && (
+                <SPGuideMessage $guideMessageColor={!duplicatedEmail && '확인'}>
+                  <BsFillCheckCircleFill style={{ marginRight: '5px' }} />
+                  입력된 이메일을 사용할 수 있습니다!
+                </SPGuideMessage>
               )}
-            </SDropdownWrapper>
-          </SDropdownField>
-        </SFormItem>
+            </SFormItem>
 
-        {/* [x] 성별 선택란 */}
-        <SFormItem>
-          <span>성별</span>
-          <SRadioField>
-            <SRadioLabel htmlFor="female" $isGenderChecked={checkedGender.female}>
-              여성
-            </SRadioLabel>
-            <SHiddenInput type="radio" id="female" name="female" value="female" checked={checkedGender.female} onChange={genderChangeHandler} />
-            <SRadioLabel htmlFor="male" $isGenderChecked={checkedGender.male}>
-              남성
-            </SRadioLabel>
-            <SHiddenInput type="radio" id="male" name="male" value="male" checked={checkedGender.male} onChange={genderChangeHandler} />
-          </SRadioField>
-        </SFormItem>
+            {/* [x] 비밀번호 작성란 */}
+            <SFormItem>
+              <SpasswordLabel htmlFor="password" style={{ position: 'relative' }}>
+                <span>비밀번호</span>
+                <SInput
+                  type={isPasswordHidden ? 'password' : 'text'}
+                  id="password"
+                  onChange={(e) => setPwd(e.target.value)}
+                  required
+                  onFocus={() => setPwdFocus(true)}
+                  onBlur={() => setPwdFocus(false)}
+                  $color={pwdFocus && !!pwd && !validPwd}
+                  $noFocusedColor={!!pwd && !validPwd}
+                  placeholder="비밀번호를 입력하세요"
+                  autoComplete="off"
+                />
+                {!isPasswordHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsPasswordHidden(true)} />}
+                {isPasswordHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsPasswordHidden(false)} />}
+              </SpasswordLabel>
+              {!!pwd && !validPwd && (
+                <SPGuideMessage>
+                  <FaInfoCircle style={{ marginRight: '5px' }} />
+                  대소문자, 숫자, 특수문자(!@#$%)를 모두 포함하여 6자 이상 24자 이하의 비밀번호를 입력해주세요
+                </SPGuideMessage>
+              )}
+            </SFormItem>
 
-        {/* [x] 지역 선택란 */}
-        <SFormItem>
-          <span>활동선호지역</span>
-          {location1.sido1 === location2.sido2 && location1.gugun1 === location2.gugun2 && (
-            <SPGuideMessage>
-              <FaInfoCircle style={{ marginRight: '5px' }} />
-              선택1과 선택2에 각각 다른 지역을 선택해주세요
-            </SPGuideMessage>
-          )}
-          {/* [x] 1지역 선택란  */}
-          <span>선택1</span>
-          <SDropdownField>
-            <SDropdownWrapper>
-              <SDropDownHeader id="location1SidoDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, sido1: !prev.sido1 }))}>
-                <span>{location1.sido1}</span>
-                <FaAngleDown />
-              </SDropDownHeader>
-              {isLocationOpen.sido1 && (
-                <SOptionContainer $selectOptionsType={'location1'}>
-                  <Select>
-                    {cities.AREA0.map((option, index) => (
-                      <SOption key={option} $selectedOption={location1.sido1 === option} onClick={() => selectLocation1Option(option, 'sido1', index.toString())}>
-                        {option}
-                      </SOption>
-                    ))}
-                  </Select>
-                </SOptionContainer>
+            {/* [x] 비밀번호 확인 작성란 */}
+            <SFormItem>
+              <SpasswordLabel htmlFor="confirm_pwd" style={{ position: 'relative' }}>
+                <span>비밀번호 확인</span>
+                <SInput
+                  type={isPasswordHidden ? 'password' : 'text'}
+                  id="confirm_pwd"
+                  onChange={(e) => setMatchPwd(e.target.value)}
+                  required
+                  onFocus={() => setMatchFocus(true)}
+                  onBlur={() => setMatchFocus(false)}
+                  $color={matchFocus && !!matchPwd && !validMatch}
+                  $noFocusedColor={!!matchPwd && !validMatch}
+                  placeholder="비밀번호 확인 입력하세요"
+                  autoComplete="off"
+                />
+                {!isPasswordHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsPasswordHidden(true)} />}
+                {isPasswordHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsPasswordHidden(false)} />}
+              </SpasswordLabel>
+              {!!matchPwd && !validMatch && (
+                <SPGuideMessage>
+                  <FaInfoCircle style={{ marginRight: '5px' }} />
+                  처음에 입력한 비밀번호와 동일해야합니다.
+                </SPGuideMessage>
               )}
-            </SDropdownWrapper>
-            <SDropdownWrapper>
-              <SDropDownHeader id="location1gugunDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, gugun1: !prev.gugun1 }))}>
-                <span>{location1.gugun1}</span>
-                <FaAngleDown />
-              </SDropDownHeader>
-              {isLocationOpen.gugun1 && (
-                <SOptionContainer $selectOptionsType={'location1'}>
-                  <Select>
-                    {gugun1Options.map((option, index) => (
-                      <SOption key={option} $selectedOption={location1.gugun1 === option} onClick={() => selectLocation1Option(option, 'gugun1', index.toString())}>
-                        {option}
-                      </SOption>
-                    ))}
-                  </Select>
-                </SOptionContainer>
-              )}
-            </SDropdownWrapper>
-          </SDropdownField>
+            </SFormItem>
 
-          {/* [x] 2지역 선택란  */}
-          <span>선택2</span>
-          <SDropdownField>
-            <SDropdownWrapper>
-              <SDropDownHeader id="location2SidoDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, sido2: !prev.sido2 }))}>
-                <span>{location2.sido2}</span>
-                <FaAngleDown />
-              </SDropDownHeader>
-              {isLocationOpen.sido2 && (
-                <SOptionContainer $selectOptionsType={'location2'}>
-                  <Select>
-                    {cities.AREA0.map((option, index) => (
-                      <SOption key={option} $selectedOption={location2.sido2 === option} onClick={() => selectLocation2Option(option, 'sido2', index.toString())}>
-                        {option}
-                      </SOption>
-                    ))}
-                  </Select>
-                </SOptionContainer>
+            {/* [x] 이름 작성란 */}
+            <SFormItem>
+              <label htmlFor="username">이름</label>
+              <SInput
+                type="text"
+                id="username"
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                onFocus={() => setUsernameFocus(true)}
+                onBlur={() => setUsernameFocus(false)}
+                $color={usernameFocus && !!username && !validUsername}
+                $noFocusedColor={!!username && !validUsername}
+                placeholder="실명을 입력하세요"
+                autoComplete="off"
+              />
+              {!!username && !validUsername && (
+                <SPGuideMessage>
+                  <FaInfoCircle style={{ marginRight: '5px' }} />
+                  2자 이상 6자미만의 한국실명 또는 2자이상 20자 미만의 영문실명을 입력하세요.
+                </SPGuideMessage>
               )}
-            </SDropdownWrapper>
-            <SDropdownWrapper>
-              <SDropDownHeader id="location2gugunDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, gugun2: !prev.gugun2 }))}>
-                <span>{location2.gugun2}</span>
-                <FaAngleDown />
-              </SDropDownHeader>
-              {isLocationOpen.gugun2 && (
-                <SOptionContainer $selectOptionsType={'location2'}>
-                  <Select>
-                    {gugun2Options.map((option, index) => (
-                      <SOption key={option} $selectedOption={location2.gugun2 === option} onClick={() => selectLocation2Option(option, 'gugun2', index.toString())}>
-                        {option}
-                      </SOption>
-                    ))}
-                  </Select>
-                </SOptionContainer>
-              )}
-            </SDropdownWrapper>
-          </SDropdownField>
-        </SFormItem>
+            </SFormItem>
 
-        <SButton type="submit" disabled={!validEmail || !validPwd || !validMatch || !validUsername || !validBirth || !validGender || !validLocation || !doneDuplicationCheck || duplicatedEmail ? true : false}>
-          sign Up
-        </SButton>
-      </SForm>
+            {/* [x] 생년월일 선택란 */}
+            <SFormItem>
+              <span>생년월일</span>
+
+              <SDropdownField>
+                <SDropdownWrapper>
+                  <SDropDownHeader id="birthYearDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, year: !prev.year }))}>
+                    <span>{birth.year || '년도'}</span>
+                    <FaAngleDown />
+                  </SDropDownHeader>
+                  {isDateOpen.year && (
+                    <SOptionContainer>
+                      <Select>
+                        {birthYearOptions.map((option) => (
+                          <SOption key={option} $selectedOption={birth.year === option.toString()} onClick={() => selectDateOption(option.toString(), 'year')}>
+                            {option}
+                          </SOption>
+                        ))}
+                      </Select>
+                    </SOptionContainer>
+                  )}
+                </SDropdownWrapper>
+                <SDropdownWrapper>
+                  <SDropDownHeader id="birthMonthDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, month: !prev.month }))}>
+                    <span>{birth.month || '월'}</span>
+                    <FaAngleDown />
+                  </SDropDownHeader>
+                  {isDateOpen.month && (
+                    <SOptionContainer>
+                      <Select>
+                        {birthMonthOptions.map((option) => (
+                          <SOption key={option} $selectedOption={birth.month === option} onClick={() => selectDateOption(option, 'month')}>
+                            {option}
+                          </SOption>
+                        ))}
+                      </Select>
+                    </SOptionContainer>
+                  )}
+                </SDropdownWrapper>
+                <SDropdownWrapper>
+                  <SDropDownHeader id="birthDayDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, day: !prev.day }))}>
+                    <span>{birth.day || '일'}</span>
+                    <FaAngleDown />
+                  </SDropDownHeader>
+                  {isDateOpen.day && (
+                    <SOptionContainer>
+                      <Select>
+                        {birthDayOptions.map((option) => (
+                          <SOption key={option} $selectedOption={birth.day === option} onClick={() => selectDateOption(option, 'day')}>
+                            {option}
+                          </SOption>
+                        ))}
+                      </Select>
+                    </SOptionContainer>
+                  )}
+                </SDropdownWrapper>
+              </SDropdownField>
+            </SFormItem>
+
+            {/* [x] 성별 선택란 */}
+            <SFormItem>
+              <span>성별</span>
+              <SRadioField>
+                <SRadioLabel htmlFor="female" $isGenderChecked={checkedGender.female}>
+                  여성
+                </SRadioLabel>
+                <SHiddenInput type="radio" id="female" name="female" value="female" checked={checkedGender.female} onChange={genderChangeHandler} />
+                <SRadioLabel htmlFor="male" $isGenderChecked={checkedGender.male}>
+                  남성
+                </SRadioLabel>
+                <SHiddenInput type="radio" id="male" name="male" value="male" checked={checkedGender.male} onChange={genderChangeHandler} />
+              </SRadioField>
+            </SFormItem>
+
+            {/* [x] 지역 선택란 */}
+            <SFormItem>
+              <SFormItemHeader>
+                <span>활동선호지역</span>
+                {location1.sido1 === location2.sido2 && location1.gugun1 === location2.gugun2 && (
+                  <SPGuideMessage>
+                    <Sicon>
+                      <FaInfoCircle style={{ marginRight: '5px' }} />
+                    </Sicon>
+                    <p>선택1과 선택2에 각각 다른 지역을 선택해주세요</p>
+                  </SPGuideMessage>
+                )}
+              </SFormItemHeader>
+              {/* [x] 1지역 선택란  */}
+              <SFormItemBody>
+                <SFormItemBodySection>
+                  <span>선택1</span>
+                  <SDropdownField>
+                    <SDropdownWrapper>
+                      <SDropDownHeader id="location1SidoDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, sido1: !prev.sido1 }))}>
+                        <span>{location1.sido1}</span>
+                        <FaAngleDown />
+                      </SDropDownHeader>
+                      {isLocationOpen.sido1 && (
+                        <SOptionContainer $selectOptionsType={'location1'}>
+                          <Select>
+                            {cities.AREA0.map((option, index) => (
+                              <SOption key={option} $selectedOption={location1.sido1 === option} onClick={() => selectLocation1Option(option, 'sido1', index.toString())}>
+                                {option}
+                              </SOption>
+                            ))}
+                          </Select>
+                        </SOptionContainer>
+                      )}
+                    </SDropdownWrapper>
+                    <SDropdownWrapper>
+                      <SDropDownHeader id="location1gugunDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, gugun1: !prev.gugun1 }))}>
+                        <span>{location1.gugun1}</span>
+                        <FaAngleDown />
+                      </SDropDownHeader>
+                      {isLocationOpen.gugun1 && (
+                        <SOptionContainer $selectOptionsType={'location1'}>
+                          <Select>
+                            {gugun1Options.map((option, index) => (
+                              <SOption key={option} $selectedOption={location1.gugun1 === option} onClick={() => selectLocation1Option(option, 'gugun1', index.toString())}>
+                                {option}
+                              </SOption>
+                            ))}
+                          </Select>
+                        </SOptionContainer>
+                      )}
+                    </SDropdownWrapper>
+                  </SDropdownField>
+                </SFormItemBodySection>
+
+                {/* [x] 2지역 선택란  */}
+                <SFormItemBodySection>
+                  <span>선택2</span>
+                  <SDropdownField>
+                    <SDropdownWrapper>
+                      <SDropDownHeader id="location2SidoDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, sido2: !prev.sido2 }))}>
+                        <span>{location2.sido2}</span>
+                        <FaAngleDown />
+                      </SDropDownHeader>
+                      {isLocationOpen.sido2 && (
+                        <SOptionContainer $selectOptionsType={'location2'}>
+                          <Select>
+                            {cities.AREA0.map((option, index) => (
+                              <SOption key={option} $selectedOption={location2.sido2 === option} onClick={() => selectLocation2Option(option, 'sido2', index.toString())}>
+                                {option}
+                              </SOption>
+                            ))}
+                          </Select>
+                        </SOptionContainer>
+                      )}
+                    </SDropdownWrapper>
+                    <SDropdownWrapper>
+                      <SDropDownHeader id="location2gugunDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, gugun2: !prev.gugun2 }))}>
+                        <span>{location2.gugun2}</span>
+                        <FaAngleDown />
+                      </SDropDownHeader>
+                      {isLocationOpen.gugun2 && (
+                        <SOptionContainer $selectOptionsType={'location2'}>
+                          <Select>
+                            {gugun2Options.map((option, index) => (
+                              <SOption key={option} $selectedOption={location2.gugun2 === option} onClick={() => selectLocation2Option(option, 'gugun2', index.toString())}>
+                                {option}
+                              </SOption>
+                            ))}
+                          </Select>
+                        </SOptionContainer>
+                      )}
+                    </SDropdownWrapper>
+                  </SDropdownField>
+                </SFormItemBodySection>
+              </SFormItemBody>
+            </SFormItem>
+          </SUnderForm>
+          <SPartitionLine />
+          <ServiceAgreement $setIsAllChecked={setIsAllChecked} />
+          <SUnderFormSubmitButtonContainer>
+            <SButton type="submit" disabled={!validEmail || !validPwd || !validMatch || !validUsername || !validBirth || !validGender || !validLocation || !doneDuplicationCheck || duplicatedEmail || !isAllChecked ? true : false}>
+              가입완료
+            </SButton>
+          </SUnderFormSubmitButtonContainer>
+        </SForm>
+      </SFormContainer>
     </SContainer>
   );
 };
 export default SignUpForm;
 
-const SContainer = styled.section`
-  margin-top: 100px;
-  max-width: 1200px;
-  min-width: 360px;
+const SContainer = styled.div``;
+
+const SPartitionLine = styled.div`
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background-color: #eaeaea;
+  & p {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -10px;
+    & span {
+      background-color: #fff;
+    }
+  }
 `;
+
+const SFormContainer = styled.div`
+  /* height: 1600px; */
+`;
+
 const SForm = styled.form`
-  /* height: 500px; */
-  padding: 20px;
+  box-sizing: border-box;
+  padding: 80px 0px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  /* gap: 40px; */
+  @media screen and (max-width: 420px) {
+    padding: 50px 0px;
+  }
+`;
+
+const SUnderForm = styled.div`
+  box-sizing: border-box;
+  padding: 0px 20px 80px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 650px;
+  min-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 `;
 
 const SFormItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
-`;
-const SDropdownField = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-`;
-const SRadioField = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
+  gap: 5px 12px;
 `;
 
 const SEmailInputWrapper = styled.div`
@@ -649,19 +681,26 @@ const SEmailInputWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
+  width: 100%;
+  min-width: 320px;
+  @media screen and (max-width: 420px) {
+    min-width: 220px;
+  }
+`;
+
+const SpasswordLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 `;
 
 const SEmailButton = styled.button<{ disabled: boolean }>`
-  width: 70px;
-  height: 40px;
+  min-width: 100px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  border-radius: 3px;
   /* cursor: default; */
-  cursor: ${({ disabled }) => {
-    if (disabled) {
-      return 'default';
-    } else {
-      return 'pointer';
-    }
-  }};
   background-color: ${({ disabled }) => {
     if (disabled) {
       return '#fe902f57';
@@ -670,93 +709,129 @@ const SEmailButton = styled.button<{ disabled: boolean }>`
     }
   }};
   color: #fff;
-  border-radius: 3px;
+  cursor: ${({ disabled }) => {
+    if (disabled) {
+      return 'default';
+    } else {
+      return 'pointer';
+    }
+  }};
+  @media screen and (max-width: 420px) {
+    min-width: 90px;
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 
 const SInput = styled.input<{ $color: boolean; $noFocusedColor: boolean; id?: string }>`
-  border: 1px solid #696969;
   box-sizing: border-box;
-  /* background-color: #fff !important; */
-  color: #000;
-  vertical-align: middle;
-  border-radius: 3px;
-  padding: 5px;
   width: 100%;
   min-width: ${({ id }) => {
     if (id === 'email') {
-      return '260px';
+      return '220px';
     } else {
-      return '340px';
+      return '320px';
     }
   }};
-  height: 40px;
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  vertical-align: middle;
+  border: 1px solid #696969;
+  border-radius: 3px;
+  color: #000;
+  padding: ${({ id }) => {
+    if (id === 'email' || id === 'confirm_pwd' || id === 'password') {
+      return '5px 40px 5px 12px';
+    } else {
+      return '5px 12px 5px 12px';
+    }
+  }};
+
   &:focus {
     outline: none;
   }
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
 `;
+
+/* input Radio */
 const SHiddenInput = styled.input`
   position: absolute;
   opacity: 0;
   width: 0;
 `;
 
+const SRadioField = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+`;
+
 const SRadioLabel = styled.label<{ $isGenderChecked: boolean }>`
   /* width 100%로 해도 되나 */
   box-sizing: border-box;
   width: 100%;
-  height: 40px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   border: ${(props) => {
     if (props.$isGenderChecked === true) {
-      return '2.5px solid #FE902F';
+      return '1px solid #FE902F';
     } else {
       return '1px solid #696969';
     }
   }};
-  color: #696969;
-  cursor: pointer;
-  border-radius: 3px;
-`;
-
-const SPGuideMessage = styled.p<{ $guideMessageColor?: string }>`
-  font-size: 13px;
-  color: ${({ $guideMessageColor }) => {
-    if ($guideMessageColor === '확인') {
-      return '#1b7b18';
-    } else if ($guideMessageColor === '안내') {
-      return '#696969';
+  color: ${(props) => {
+    if (props.$isGenderChecked === true) {
+      return ' #FE902F';
     } else {
-      return '#d71f1f';
+      return '#696969';
     }
   }};
+
+  cursor: pointer;
+  border-radius: 3px;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+  }
 `;
 
+/* select box (drop down)  */
 const SDropdownWrapper = styled.div`
   // 이거 width 100%로 해도 되는건가..
+  position: relative;
   width: 100%;
   border: 1px solid #696969;
   border-radius: 3px;
-  position: relative;
 `;
 
 const SDropDownHeader = styled.div`
-  padding: 12px;
-  cursor: pointer;
+  box-sizing: border-box;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
   display: flex;
   justify-content: space-between;
+  border-radius: 3px;
+  cursor: pointer;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 
 const SOptionContainer = styled.div<{ $selectOptionsType?: string }>`
-  /* display: none; */
-  background-color: #fff;
-  border: 1px solid #696969;
   display: block;
   position: absolute;
+  left: 0;
   width: 100%;
   max-height: 180px;
-  left: 0;
+  background-color: #fff;
+  border: 1px solid #696969;
   overflow-y: scroll;
   z-index: ${({ $selectOptionsType }) => {
     if ($selectOptionsType === 'location1') return '3';
@@ -767,16 +842,32 @@ const Select = styled.ul``;
 
 const SOption = styled.li<{ $selectedOption: boolean }>`
   box-sizing: border-box;
-  padding: 12px;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
   background-color: ${(props) => {
     if (props.$selectedOption === true) return '#eee';
     else return '#fff';
   }};
+  cursor: pointer;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
+`;
+const SUnderFormSubmitButtonContainer = styled.div`
+  max-width: 650px;
+  width: 100%;
+  padding: 0 20px;
 `;
 
 const SButton = styled.button<{ disabled: boolean }>`
-  height: 40px;
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
+  margin: 0 auto;
   background-color: ${(props) => {
     if (props.disabled === true) return '#e7e7e7';
     else return '#FE902F';
@@ -791,4 +882,60 @@ const SButton = styled.button<{ disabled: boolean }>`
     else return 'pointer';
   }};
   border-radius: 3px;
+  font-size: 16px;
+`;
+
+const SFormItemHeader = styled.div`
+  display: flex;
+  align-items: center;
+  height: 30px;
+  gap: 10px;
+  & span {
+    vertical-align: bottom;
+  }
+`;
+
+const Sicon = styled.div`
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SPGuideMessage = styled.p<{ $guideMessageColor?: string }>`
+  display: flex;
+  font-size: 13px;
+  color: ${({ $guideMessageColor }) => {
+    if ($guideMessageColor === '확인') {
+      return '#1b7b18';
+    } else if ($guideMessageColor === '안내') {
+      return '#696969';
+    } else {
+      return '#d71f1f';
+    }
+  }};
+`;
+
+const SFormItemBody = styled.div`
+  border: 1px solid #696969;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 20px 10px;
+  width: 100%;
+  gap: 25px;
+`;
+
+const SFormItemBodySection = styled.section`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+const SDropdownField = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
 `;

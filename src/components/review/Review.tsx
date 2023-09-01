@@ -6,6 +6,8 @@ import { RootState } from '../../redux/config/configStore';
 import { openModal, setReview } from '../../redux/modules';
 import { Button } from '..';
 
+const REVIEW_QUERY_KEY = ['reviewTutorDetail'];
+
 type ReviewProps = {
   id: string | undefined;
 };
@@ -14,7 +16,7 @@ const Review = ({ id }: ReviewProps) => {
   if (!id) return;
   const dispatch = useDispatch();
 
-  const { data: reviews, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], () => matchReview(id));
+  const { data: reviews, isLoading: reviewLoading, isError: reviewError, error } = useQuery(REVIEW_QUERY_KEY, () => matchReview(id));
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
@@ -22,12 +24,17 @@ const Review = ({ id }: ReviewProps) => {
 
   const mutationReviewDelete = useMutation(reviewDelete, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['review']);
+      queryClient.invalidateQueries(REVIEW_QUERY_KEY);
     },
   });
 
   // 리뷰 작성
   const handleOpenReviewCreateForm = () => {
+    if (!loginUser) {
+      dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
+      return;
+    }
+
     dispatch(openModal({ type: 'reviewCreate', targetId: id }));
   };
   // 리뷰 업데이트
@@ -39,6 +46,15 @@ const Review = ({ id }: ReviewProps) => {
   const handleReviewDelete = (id: number) => {
     mutationReviewDelete.mutate(id);
   };
+
+  if (reviewLoading) {
+    return <div>로딩중</div>;
+  }
+
+  if (reviewError) {
+    console.log(error);
+    return;
+  }
 
   return (
     <>
@@ -59,6 +75,12 @@ const Review = ({ id }: ReviewProps) => {
                 <S.ReviewTitle>{review.title}</S.ReviewTitle>
                 <S.ReviewDescription>{review.content}</S.ReviewDescription>
 
+                <div>
+                  <figure>
+                    <img></img>
+                  </figure>
+                  <p>{review.author}</p>
+                </div>
                 {loginUser?.id === review.user_id ? (
                   <div>
                     <button

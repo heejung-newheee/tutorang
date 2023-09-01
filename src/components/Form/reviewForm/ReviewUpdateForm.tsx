@@ -10,6 +10,8 @@ import { reviewUpdate } from '../../../api/review';
 import { RootState } from '../../../redux/config/configStore';
 import { Tables, reviews } from '../../../supabase/database.types';
 
+const REVIEW_QUERY_KEY = ['reviewTutorDetail'];
+
 type initialStateType = {
   title: string;
   content: string;
@@ -25,7 +27,7 @@ const ReviewUpdateForm = () => {
 
   const mutationReviewUpdate = useMutation(reviewUpdate, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['review']);
+      queryClient.invalidateQueries(REVIEW_QUERY_KEY);
     },
   });
 

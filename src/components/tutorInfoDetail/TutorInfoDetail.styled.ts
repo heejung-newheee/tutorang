@@ -40,14 +40,14 @@ export const ClassTitle = styled.h3`
 
 export const InfoWrapper = styled.div`
   margin-bottom: 58px;
+`;
 
-  & p {
-    display: flex;
-    align-items: center;
-    font-size: 13px;
-    color: ${colors.black_200};
-    margin-bottom: 10px;
-  }
+export const InfoItem = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: ${colors.black_200};
+  margin-bottom: 10px;
 `;
 
 export const TutorNameWrapper = styled.div`
@@ -158,8 +158,8 @@ export const badgeLevel = styled.span`
   display: flex;
   justify-content: center;
   background-color: ${colors.gray_200};
-  width: 22px;
-  padding: 2px;
+  /* width: 22px; */
+  padding: 2px 8px;
   border-radius: 30px;
   margin-left: 6px;
 `;

@@ -5,6 +5,7 @@ import { InfoItem, InfoList, MatchBtn } from '../userInfo/UserInfo.styled';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { matchingAccept, matchingCancel, matchingReject } from '../../api/match';
 import { styled } from 'styled-components';
+import './custom.css';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import { createChatRoom, getChatRoomWithTutor, inviteChatRoom, sendTutoringMessage } from '../../api/chat';

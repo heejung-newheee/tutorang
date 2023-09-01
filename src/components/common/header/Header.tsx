@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
@@ -10,20 +10,22 @@ import { tutorInfo } from '../../../redux/modules/tutorSlice';
 import logo from '../../../assets/logo.png';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
-import * as Styled from './Header.styled';
+import * as S from './Header.styled';
 import { openModal } from '../../../redux/modules';
+import { RootState } from '../../../redux/config/configStore';
 
 type HEADERMENU = { title: string; path: string }[];
 
 const HeaderMenu: HEADERMENU = [
-  { title: 'Home', path: '/' },
-  { title: '튜텨찾기', path: '/list' },
+  { title: '튜터찾기', path: '/list' },
   { title: '채팅', path: '/chat2' },
 ];
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const loginUser = useSelector((state: RootState) => state.user.user);
 
   const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
   const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor_info_join'], tutorInfoJoin);
@@ -81,40 +83,52 @@ const Header = () => {
   }
   return (
     <>
-      <Styled.NavContainer>
-        <Styled.WidthLimitContainer>
-          <Styled.LogoWrap>
-            <Styled.NavLogoImg src={logo} alt="logo"></Styled.NavLogoImg>
-            <h1 onClick={handleHome}>튜터랑</h1>
+      <S.NavContainer>
+        <S.WidthLimitContainer>
+          <S.LogoWrap>
+            <S.NavLogoImg src={logo} alt="logo"></S.NavLogoImg>
+            <S.LogoH1 onClick={handleHome}>튜터랑</S.LogoH1>
             {HeaderMenu.map((item, index) => (
-              <Styled.NavLinkSt key={index} to={item.path}>
+              <S.NavLinkSt key={index} to={item.path}>
                 {item.title}
-              </Styled.NavLinkSt>
+              </S.NavLinkSt>
             ))}
-          </Styled.LogoWrap>
+          </S.LogoWrap>
           {/* 미디어쿼리 */}
-          <Styled.MiddleLogo onClick={handleHome}>
+          <S.MiddleLogo onClick={handleHome}>
             <div>
-              <Styled.NavLogoImg src={logo} alt="logo"></Styled.NavLogoImg>
+              <S.NavLogoImg src={logo} alt="logo"></S.NavLogoImg>
               Logo
             </div>
-          </Styled.MiddleLogo>
+          </S.MiddleLogo>
 
-          <Styled.Hamberger onClick={handleHiddenDiv}>
+          <S.Hamberger onClick={handleHiddenDiv}>
             <svg xmlns="http://www.w3.org/2000/svg" fill=" #fe902f" height="1.2em" viewBox="0 0 448 512">
               <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
             </svg>
-          </Styled.Hamberger>
-          {/* <Styled.HiddenBarDiv></Styled.HiddenBarDiv> */}
+          </S.Hamberger>
+          {/* <S.HiddenBarDiv></S.HiddenBarDiv> */}
 
           {/* 미디어쿼리 */}
-          <Styled.LoginBtn>
-            <Link to="/mypage">마이페이지 </Link>
-            <NavLink to="/signin">로그인 | 회원가입</NavLink>
-            <Styled.LoginBtnSignUp onClick={() => signOut()}>LogOut</Styled.LoginBtnSignUp>
-          </Styled.LoginBtn>
-        </Styled.WidthLimitContainer>
-      </Styled.NavContainer>
+          <S.LoginBtn>
+            {loginUser ? (
+              <>
+                <Link to="/mypage">마이페이지 </Link>
+                <S.LoginBtnSignUp
+                  onClick={() => {
+                    signOut();
+                    navigate('/');
+                  }}
+                >
+                  LogOut
+                </S.LoginBtnSignUp>
+              </>
+            ) : (
+              <NavLink to="/signin">로그인 | 회원가입</NavLink>
+            )}
+          </S.LoginBtn>
+        </S.WidthLimitContainer>
+      </S.NavContainer>
     </>
   );
 };
