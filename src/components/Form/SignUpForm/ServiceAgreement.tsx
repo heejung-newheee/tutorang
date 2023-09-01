@@ -48,7 +48,7 @@ const ServiceAgreement: React.FC<TypeServiceAgreement> = ({ $setIsAllChecked }) 
         </SCheckLabel>{' '}
         <Label htmlFor="allAgreed">전체동의</Label>
       </CheckTeramsAndConditions>
-
+      <SPartitionLine />
       <CheckTeramsAndConditions>
         <SCheckBox type="checkbox" id="aboveFourteen" name="aboveFourteen" onChange={check} checked={checkList.includes('aboveFourteen') ? true : false} />
         <SCheckLabel htmlFor="aboveFourteen">{checkList.includes('aboveFourteen') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel>
@@ -83,16 +83,33 @@ export default ServiceAgreement;
 
 // signUp에 SUnderForm이랑 css 비슷하게 가
 const SContainer = styled.section`
-  height: 480px;
-  /* margin: 0 auto; */
-  max-width: 846px;
+  box-sizing: border-box;
   width: 100%;
+  max-width: 650px;
+  min-width: 360;
+  height: 550px;
   padding: 0px 20px;
   display: flex;
-  /* justify-content: center; */
-  /* align-items: center; */
   flex-direction: column;
   gap: 20px;
+`;
+
+const SPartitionLine = styled.div`
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background-color: #eaeaea;
+  & p {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -10px;
+    & span {
+      background-color: #fff;
+    }
+  }
 `;
 
 const SHeader = styled.header`
@@ -106,6 +123,13 @@ const SHeader = styled.header`
   & h2 {
     font-size: 32px;
     font-weight: 700;
+  }
+  @media screen and (max-width: 420px) {
+    height: 130px;
+    & h2 {
+      font-size: 25px;
+      font-weight: 600;
+    }
   }
 `;
 

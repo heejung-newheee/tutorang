@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { AREA0, AREA1, AREA10, AREA11, AREA12, AREA13, AREA14, AREA15, AREA16, AREA2, AREA3, AREA4, AREA5, AREA6, AREA7, AREA8, AREA9 } from '../../../api/cities';
 import supabase from '../../../supabase';
+import FormHeader from '../FormHeader';
+import { FORM_CONSTANT_TITLE_SIGNUP } from '../formConstant';
 import '../icon.css';
 import '../inputBackgroundSetting.css';
 import ServiceAgreement from './ServiceAgreement';
@@ -299,37 +301,11 @@ const SignUpForm = () => {
       }
     }
   };
-  // const test = () => {
-  //   let gender = '';
-  //   if (checkedGender.male !== checkedGender.female && checkedGender.male === true) gender = '남성';
-  //   else if (checkedGender.male !== checkedGender.female && checkedGender.female === true) gender = '여성';
-  //   const age = calculateAge();
-  //   const trimmedBirth = birth.year + '-' + birth.month + '-' + birth.day;
-  //   //만나이 계산
-
-  //   const testFetchData = {
-  //     email,
-  //     pwd,
-  //     username,
-  //     birth: trimmedBirth,
-  //     age,
-  //     gender,
-  //     location1_sido: location1.sido1,
-  //     location1_gugun: location1.gugun1,
-  //     location2_sido: location2.sido2,
-  //     location2_gugun: location2.gugun2,
-  //     role: 'student',
-  //   };
-  //   console.log('💟', testFetchData);
-  // };
 
   return (
     <SContainer>
       {/* {errMsg && <p ref={errRef}>{errMsg}</p>} */}
-      <SHeader>
-        <h1>회원가입</h1>
-        <p>쉽고 빠르게 튜터를 만나보는 1:1 매칭 서비스 튜터랑</p>
-      </SHeader>
+      <FormHeader $keyword={FORM_CONSTANT_TITLE_SIGNUP} />
       <SPartitionLine />
       <SFormContainer>
         <SForm onSubmit={handleSubmit}>
@@ -337,7 +313,7 @@ const SignUpForm = () => {
             {/* [x] 이메일 작성란 */}
             <SFormItem>
               <label htmlFor="email">이메일</label>
-              <SEmailInputWrapper style={{ minWidth: '360px' }}>
+              <SEmailInputWrapper>
                 <SInput
                   type="text"
                   id="email"
@@ -359,7 +335,7 @@ const SignUpForm = () => {
               </SEmailInputWrapper>
               <SPGuideMessage $guideMessageColor={'안내'}>
                 <FaInfoCircle style={{ marginRight: '5px' }} />
-                기입된 이메일로 최종 회원가입 승인메일을 보낼 예정이오니 실제 열람가능한 이메일을 기입해주시기 바랍니다.
+                최종 회원가입 승인메일을 보낼 예정이오니 실제 열람가능한 이메일을 기입해주시기 바랍니다.
               </SPGuideMessage>
               {!!email && !validEmail && (
                 <SPGuideMessage>
@@ -383,23 +359,23 @@ const SignUpForm = () => {
 
             {/* [x] 비밀번호 작성란 */}
             <SFormItem>
-              <label htmlFor="password" style={{ position: 'relative' }}>
-                비밀번호
-              </label>
-              <SInput
-                type={isPasswordHidden ? 'password' : 'text'}
-                id="password"
-                onChange={(e) => setPwd(e.target.value)}
-                required
-                onFocus={() => setPwdFocus(true)}
-                onBlur={() => setPwdFocus(false)}
-                $color={pwdFocus && !!pwd && !validPwd}
-                $noFocusedColor={!!pwd && !validPwd}
-                placeholder="비밀번호를 입력하세요"
-                autoComplete="off"
-              />
-              {!isPasswordHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsPasswordHidden(true)} />}
-              {isPasswordHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsPasswordHidden(false)} />}
+              <SpasswordLabel htmlFor="password" style={{ position: 'relative' }}>
+                <span>비밀번호</span>
+                <SInput
+                  type={isPasswordHidden ? 'password' : 'text'}
+                  id="password"
+                  onChange={(e) => setPwd(e.target.value)}
+                  required
+                  onFocus={() => setPwdFocus(true)}
+                  onBlur={() => setPwdFocus(false)}
+                  $color={pwdFocus && !!pwd && !validPwd}
+                  $noFocusedColor={!!pwd && !validPwd}
+                  placeholder="비밀번호를 입력하세요"
+                  autoComplete="off"
+                />
+                {!isPasswordHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsPasswordHidden(true)} />}
+                {isPasswordHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsPasswordHidden(false)} />}
+              </SpasswordLabel>
               {!!pwd && !validPwd && (
                 <SPGuideMessage>
                   <FaInfoCircle style={{ marginRight: '5px' }} />
@@ -410,19 +386,23 @@ const SignUpForm = () => {
 
             {/* [x] 비밀번호 확인 작성란 */}
             <SFormItem>
-              <label htmlFor="confirm_pwd">비밀번호 확인</label>
-              <SInput
-                type="password"
-                id="confirm_pwd"
-                onChange={(e) => setMatchPwd(e.target.value)}
-                required
-                onFocus={() => setMatchFocus(true)}
-                onBlur={() => setMatchFocus(false)}
-                $color={matchFocus && !!matchPwd && !validMatch}
-                $noFocusedColor={!!matchPwd && !validMatch}
-                placeholder="비밀번호 확인 입력하세요"
-                autoComplete="off"
-              />
+              <SpasswordLabel htmlFor="confirm_pwd" style={{ position: 'relative' }}>
+                <span>비밀번호 확인</span>
+                <SInput
+                  type={isPasswordHidden ? 'password' : 'text'}
+                  id="confirm_pwd"
+                  onChange={(e) => setMatchPwd(e.target.value)}
+                  required
+                  onFocus={() => setMatchFocus(true)}
+                  onBlur={() => setMatchFocus(false)}
+                  $color={matchFocus && !!matchPwd && !validMatch}
+                  $noFocusedColor={!!matchPwd && !validMatch}
+                  placeholder="비밀번호 확인 입력하세요"
+                  autoComplete="off"
+                />
+                {!isPasswordHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsPasswordHidden(true)} />}
+                {isPasswordHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsPasswordHidden(false)} />}
+              </SpasswordLabel>
               {!!matchPwd && !validMatch && (
                 <SPGuideMessage>
                   <FaInfoCircle style={{ marginRight: '5px' }} />
@@ -642,25 +622,6 @@ export default SignUpForm;
 
 const SContainer = styled.div``;
 
-const SHeader = styled.header`
-  width: 100%;
-  height: 175px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  gap: 10px;
-  & h1 {
-    font-size: 32px;
-    font-weight: 700;
-  }
-  & p {
-    font-size: 20px;
-    color: #4a4a4a;
-  }
-`;
-
 const SPartitionLine = styled.div`
   position: relative;
   width: 100%;
@@ -684,39 +645,34 @@ const SFormContainer = styled.div`
 `;
 
 const SForm = styled.form`
-  padding: 100px 0px;
-  display: flex;
+  box-sizing: border-box;
+  padding: 80px 0px;
   margin: 0 auto;
+  display: flex;
   flex-direction: column;
   align-items: center;
   /* gap: 40px; */
+  @media screen and (max-width: 420px) {
+    padding: 50px 0px;
+  }
 `;
 
 const SUnderForm = styled.div`
-  padding: 0px 20px 100px;
+  box-sizing: border-box;
+  padding: 0px 20px 80px;
   margin: 0 auto;
-  max-width: 846px;
   width: 100%;
-  // 약관 동의 때문에 기존에 signIn
+  max-width: 650px;
+  min-width: 360px;
   display: flex;
   flex-direction: column;
-  gap: 45px;
+  gap: 40px;
 `;
 
 const SFormItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px 12px;
-`;
-const SDropdownField = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-`;
-const SRadioField = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
+  gap: 5px 12px;
 `;
 
 const SEmailInputWrapper = styled.div`
@@ -725,19 +681,26 @@ const SEmailInputWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
+  width: 100%;
+  min-width: 320px;
+  @media screen and (max-width: 420px) {
+    min-width: 220px;
+  }
+`;
+
+const SpasswordLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 `;
 
 const SEmailButton = styled.button<{ disabled: boolean }>`
   min-width: 100px;
-  height: 40px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  border-radius: 3px;
   /* cursor: default; */
-  cursor: ${({ disabled }) => {
-    if (disabled) {
-      return 'default';
-    } else {
-      return 'pointer';
-    }
-  }};
   background-color: ${({ disabled }) => {
     if (disabled) {
       return '#fe902f57';
@@ -746,50 +709,72 @@ const SEmailButton = styled.button<{ disabled: boolean }>`
     }
   }};
   color: #fff;
-  border-radius: 3px;
-  font-size: 16px;
+  cursor: ${({ disabled }) => {
+    if (disabled) {
+      return 'default';
+    } else {
+      return 'pointer';
+    }
+  }};
+  @media screen and (max-width: 420px) {
+    min-width: 90px;
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 
 const SInput = styled.input<{ $color: boolean; $noFocusedColor: boolean; id?: string }>`
-  border: 1px solid #696969;
   box-sizing: border-box;
-  /* background-color: #fff !important; */
-  color: #000;
-  vertical-align: middle;
-  border-radius: 3px;
-  padding: ${({ id }) => {
+  width: 100%;
+  min-width: ${({ id }) => {
     if (id === 'email') {
-      return '5px 45px 5px 12px';
+      return '220px';
+    } else {
+      return '320px';
+    }
+  }};
+  width: 100%;
+  height: 50px;
+  font-size: 16px;
+  vertical-align: middle;
+  border: 1px solid #696969;
+  border-radius: 3px;
+  color: #000;
+  padding: ${({ id }) => {
+    if (id === 'email' || id === 'confirm_pwd' || id === 'password') {
+      return '5px 40px 5px 12px';
     } else {
       return '5px 12px 5px 12px';
     }
   }};
-  width: 100%;
-  min-width: ${({ id }) => {
-    if (id === 'email') {
-      return '260px';
-    } else {
-      return '340px';
-    }
-  }};
-  height: 40px;
-  line-height: 40px;
-  font-size: 16px;
+
   &:focus {
     outline: none;
   }
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
 `;
+
+/* input Radio */
 const SHiddenInput = styled.input`
   position: absolute;
   opacity: 0;
   width: 0;
 `;
 
+const SRadioField = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+`;
+
 const SRadioLabel = styled.label<{ $isGenderChecked: boolean }>`
   /* width 100%로 해도 되나 */
   box-sizing: border-box;
   width: 100%;
-  height: 40px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -810,33 +795,43 @@ const SRadioLabel = styled.label<{ $isGenderChecked: boolean }>`
 
   cursor: pointer;
   border-radius: 3px;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+  }
 `;
 
+/* select box (drop down)  */
 const SDropdownWrapper = styled.div`
   // 이거 width 100%로 해도 되는건가..
+  position: relative;
   width: 100%;
   border: 1px solid #696969;
   border-radius: 3px;
-  position: relative;
 `;
 
 const SDropDownHeader = styled.div`
-  padding: 8px;
-  cursor: pointer;
+  box-sizing: border-box;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
   display: flex;
   justify-content: space-between;
   border-radius: 3px;
+  cursor: pointer;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 
 const SOptionContainer = styled.div<{ $selectOptionsType?: string }>`
-  /* display: none; */
-  background-color: #fff;
-  border: 1px solid #696969;
   display: block;
   position: absolute;
+  left: 0;
   width: 100%;
   max-height: 180px;
-  left: 0;
+  background-color: #fff;
+  border: 1px solid #696969;
   overflow-y: scroll;
   z-index: ${({ $selectOptionsType }) => {
     if ($selectOptionsType === 'location1') return '3';
@@ -847,23 +842,30 @@ const Select = styled.ul``;
 
 const SOption = styled.li<{ $selectedOption: boolean }>`
   box-sizing: border-box;
-  padding: 12px;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
   background-color: ${(props) => {
     if (props.$selectedOption === true) return '#eee';
     else return '#fff';
   }};
-  height: 40px;
+  cursor: pointer;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 const SUnderFormSubmitButtonContainer = styled.div`
-  max-width: 846px;
+  max-width: 650px;
   width: 100%;
   padding: 0 20px;
 `;
 
 const SButton = styled.button<{ disabled: boolean }>`
-  height: 40px;
-  line-height: 40px;
+  height: 50px;
+  line-height: 50px;
   width: 100%;
   margin: 0 auto;
   background-color: ${(props) => {
@@ -931,4 +933,9 @@ const SFormItemBodySection = styled.section`
   width: 100%;
   display: flex;
   flex-direction: column;
+`;
+const SDropdownField = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
 `;
