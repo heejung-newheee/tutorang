@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaAngleDown } from 'react-icons/fa';
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { styled } from 'styled-components';
 
 const TUITION_FEE_ONLINE = [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000];
@@ -40,7 +40,7 @@ const SelectTuitionFee: React.FC<SelectTuitionFeeType> = ({ $tuitionType, $selec
     <SDropdownWrapper ref={dropContainerRef}>
       <SDropDownHeader id={$tuitionType + 'Selectbox'} onClick={() => setIsDropMenuOpen((prev) => !prev)}>
         <SpanDefaultText $selectedOption={selectedOption}>{selectedOption === 0 ? '선택하세요' : selectedOption}</SpanDefaultText>
-        <FaAngleDown />
+        {isDropMenuOpen ? <FaAngleDown /> : <FaAngleUp />}
       </SDropDownHeader>
       {isDropMenuOpen && (
         <SOptionContainer $tuitionType={$tuitionType}>
@@ -71,11 +71,20 @@ const SDropdownWrapper = styled.div`
 `;
 
 const SDropDownHeader = styled.div`
-  padding: 8px;
-  cursor: pointer;
+  box-sizing: border-box;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
+
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-radius: 3px;
+  cursor: pointer;
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 const SpanDefaultText = styled.span<{ $selectedOption: number }>`
   width: 100%;
@@ -100,9 +109,12 @@ const Select = styled.ul``;
 
 // const SOption = styled.li<{ $selectedOption: boolean }>`
 const SOption = styled.li<{ $optionValue: number; $selectedOption: number }>`
+  display: flex;
+  align-items: center;
   box-sizing: border-box;
-  height: 40px;
-  padding: 8px;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
   cursor: pointer;
   background-color: ${({ $optionValue, $selectedOption }) => {
     if ($optionValue === $selectedOption) {
@@ -111,6 +123,10 @@ const SOption = styled.li<{ $optionValue: number; $selectedOption: number }>`
       return '#fff';
     }
   }};
+  @media screen and (max-width: 420px) {
+    height: 45px;
+    line-height: 45px;
+  }
 `;
 /* background-color: ${(props) => {
     if (props.$selectedOption === true) return '#eee';
