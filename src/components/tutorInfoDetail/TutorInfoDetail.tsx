@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import * as S from './TutorInfoDetail.styled';
 import { matchTutor } from '../../api/tutor';
 import { icon_check, icon_class, icon_info, icon_like, icon_location_gray, icon_school, icon_verify, starEmpty, starFull, starHalf } from '../../assets';
-import { Button } from '..';
+import { BookMark, Button } from '..';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../redux/modules';
 import { useReviewAverage } from '../../hooks';
@@ -101,7 +101,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
             <div>
               <S.Figure>
                 <img src={`${tutor.tutor_img}`} alt={`${tutor.tutor_name} 프로필 이미지`} />
-                <button>찜하기</button>
+                <BookMark />
               </S.Figure>
               <S.reportButton onClick={handleOpenReport}>
                 <img src={icon_info} />
