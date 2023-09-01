@@ -43,7 +43,6 @@ const TutorInfo = ({ match }: pageProps) => {
   const reviewData = review?.filter((item) => {
     return user!.id === item.reviewed_id;
   });
-  console.log(reviewData);
 
   const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.user_id) : null;
   const starRating = (rating: number) => {

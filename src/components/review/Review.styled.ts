@@ -10,10 +10,6 @@ export const Container = styled.div`
 export const ReviewContainer = styled.ul`
   width: ${size.globalInner};
   margin: 0 auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  padding: 36px 48px;
-  background-color: ${colors.white};
 `;
 
 export const TitleContainer = styled.div`
@@ -37,7 +33,15 @@ export const BadgeReviewCount = styled.span`
 `;
 
 export const ReviewItem = styled.li`
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 20px;
+  padding: 33px 41px;
+  background-color: ${colors.white};
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
 `;
 
 export const ReviewTitle = styled.p`
@@ -49,4 +53,56 @@ export const ReviewDescription = styled.p`
   font-size: 16px;
   line-height: 28px;
   color: ${colors.black_opacity_60};
+`;
+
+export const ReviewStar = styled.li`
+  filter: invert(63%) sepia(97%) saturate(1441%) hue-rotate(336deg) brightness(100%) contrast(102%);
+
+  & img {
+    width: 36px;
+  }
+`;
+
+export const AuthorInfo = styled.div`
+  margin-top: 38px;
+  color: #555454;
+  opacity: 0.6;
+  font-size: 15px;
+`;
+
+export const ButtonMoreWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  z-index: 9;
+  top: 33px;
+  right: 41px;
+`;
+
+export const moreMenu = styled.ul`
+  display: none;
+  background-color: ${colors.white};
+  border: 1px solid ${colors.primary};
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 8px;
+
+  &.active {
+    display: inline-block;
+  }
+`;
+
+export const moreMenuItem = styled.li`
+  padding: 8px 32px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${colors.gray_100};
+  }
+`;
+
+export const Time = styled.span`
+  color: #555454;
+  opacity: 0.6;
 `;

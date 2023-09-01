@@ -175,6 +175,10 @@ export const OverviewList = styled.section`
   grid-template-columns: 1fr 1fr 1fr;
   max-width: ${size.globalInner};
   margin: 0 auto;
+  padding: 64px 104px;
+  background-color: ${colors.white};
+  box-shadow: 0 4px 4px rgb(0 0 0 / 15%);
+  border-radius: 8px;
 `;
 
 export const OverviewItem = styled.div`

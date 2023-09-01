@@ -13,19 +13,18 @@ import { matchReview } from '../../api/review';
 import { RootState } from '../../redux/config/configStore';
 import { tutorMatchedCount } from '../../api/match';
 
-const TUTOR_QUERY_KEY = ['tutorDetail'];
-const REVIEW_QUERY_KEY = ['reviewTutorDetail'];
-const MATCHING_QUERY_KEY = ['matchingCount'];
+const TUTOR_QUERY_KEY = 'tutorDetail';
+const REVIEW_QUERY_KEY = 'reviewTutorDetail';
+const MATCHING_QUERY_KEY = 'matchingCount';
 
 type TutorDetailProps = {
-  id: string | undefined;
+  id: string;
 };
 
-const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
-  if (!id) return;
+const TutorInfoDetail = ({ id }: TutorDetailProps) => {
   const dispatch = useDispatch();
-  const { data: tutor, isLoading: tutorLoading, isError: tutorError, error } = useQuery(TUTOR_QUERY_KEY, () => matchTutor(id));
-  const matchingCount = useQuery(MATCHING_QUERY_KEY, () => tutorMatchedCount(id));
+  const { data: tutor, isLoading: tutorLoading, isError: tutorError, error } = useQuery([TUTOR_QUERY_KEY, id], () => matchTutor(id));
+  const matchingCount = useQuery([MATCHING_QUERY_KEY, id], () => tutorMatchedCount(id));
   const loginUser = useSelector((state: RootState) => state.user.user);
 
   // 대화하기
@@ -58,7 +57,7 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
   };
 
   // 리뷰
-  const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(REVIEW_QUERY_KEY, () => matchReview(id));
+  const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery([REVIEW_QUERY_KEY, id], () => matchReview(id));
   const reviewRatings = review?.map((review) => review.rating);
   const filteredReviewRatings = reviewRatings?.filter((value) => typeof value === 'number') as number[];
 
@@ -209,4 +208,4 @@ const TutorInfoDeatail = ({ id }: TutorDetailProps) => {
   );
 };
 
-export default TutorInfoDeatail;
+export default TutorInfoDetail;
