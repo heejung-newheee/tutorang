@@ -3,15 +3,12 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { getAllReviewCount } from '../api/review';
 import { getAllTutorCount, getTopReviewer } from '../api/tutor';
-import ProfileForm from '../components/Form/profileForm/CreateProfileForm';
-import supabase from '../supabase';
-import { TTutorWithUser } from '../supabase/database.types';
-import TutorSlider from '../components/slider/tutorSlider/TutorSlider';
-import UserReviewList from '../components/review/mainReviewList/UserReviewList';
-import { OverviewContainer, OverviewItem, OverviewItemIcon, OverviewItemNumber, OverviewList } from '../components/tutorInfoDetail/TutorInfoDetail.styled';
 import { icon_class, icon_like, icon_tutor, main_banner } from '../assets';
-import { colors } from '../style/theme/colors';
 import MatchingFlow from '../components/process/MatchingFlow';
+import UserReviewList from '../components/review/mainReviewList/UserReviewList';
+import TutorSlider from '../components/slider/tutorSlider/TutorSlider';
+import { OverviewItem, OverviewItemIcon, OverviewItemNumber } from '../components/tutorInfoDetail/TutorInfoDetail.styled';
+import { colors } from '../style/theme/colors';
 
 const Main = () => {
   const tutorCount = useQuery(['tutorCount'], () => getAllTutorCount());

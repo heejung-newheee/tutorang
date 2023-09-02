@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaAngleDown } from 'react-icons/fa';
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { styled } from 'styled-components';
 
 type TypeSelectBirthType = {
@@ -95,7 +95,7 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
       <SDropdownWrapper ref={yearDropContainerRef}>
         <SDropDownHeader id="birthYearDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, year: !prev.year }))}>
           <span>{birth.year || '년도'}</span>
-          <FaAngleDown />
+          {isDateOpen.year ? <FaAngleDown /> : <FaAngleUp />}
         </SDropDownHeader>
         {isDateOpen.year && (
           <SOptionContainer>
@@ -112,7 +112,7 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
       <SDropdownWrapper ref={monthDropContainerRef}>
         <SDropDownHeader id="birthMonthDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, month: !prev.month }))}>
           <span>{birth.month || '월'}</span>
-          <FaAngleDown />
+          {isDateOpen.month ? <FaAngleDown /> : <FaAngleUp />}
         </SDropDownHeader>
         {isDateOpen.month && (
           <SOptionContainer>
@@ -129,7 +129,7 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
       <SDropdownWrapper ref={dayDropContainerRef}>
         <SDropDownHeader id="birthDayDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, day: !prev.day }))}>
           <span>{birth.day || '일'}</span>
-          <FaAngleDown />
+          {isDateOpen.day ? <FaAngleDown /> : <FaAngleUp />}
         </SDropDownHeader>
         {isDateOpen.day && (
           <SOptionContainer>

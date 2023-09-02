@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { BsXCircleFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
 import { styled } from 'styled-components';
@@ -19,7 +19,6 @@ const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDo
   useEffect(() => {
     emailRef.current!.focus();
   }, []);
-  const [emailFocus, setEmailFocus] = useState(false);
 
   const duplicationCheck = async (unverifiedEmail: string) => {
     // unverifiedEmail 을 supabase의 db 에서 확인
@@ -46,19 +45,7 @@ const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDo
     <>
       <label htmlFor="email">이메일</label>
       <SEmailInputWrapper>
-        <SInput
-          type="text"
-          id="email"
-          ref={emailRef}
-          autoComplete="off"
-          onChange={(e) => $setEmail(e.target.value)}
-          required
-          onFocus={() => setEmailFocus(true)}
-          onBlur={() => setEmailFocus(false)}
-          $color={emailFocus && !!$email && !$validEmail}
-          $noFocusedColor={!!$email && !$validEmail}
-          placeholder="이메일을 입력하세요"
-        />
+        <SInput type="text" id="email" ref={emailRef} autoComplete="off" onChange={(e) => $setEmail(e.target.value)} required placeholder="이메일을 입력하세요" />
         {/* email */}
         <SEmailButton type="button" disabled={!$email || !$validEmail} onClick={() => duplicationCheck($email)}>
           중복확인
@@ -83,7 +70,7 @@ const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDo
 export default EnterEmail;
 
 // 공용으로 뺄까
-const SInput = styled.input<{ $color: boolean; $noFocusedColor: boolean; id?: string }>`
+const SInput = styled.input<{ id?: string }>`
   box-sizing: border-box;
   width: 100%;
   min-width: ${({ id }) => {

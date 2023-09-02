@@ -105,6 +105,7 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
 export default SelectLocation;
 
 const SDropdownWrapper = styled.div`
+  background-color: #fff;
   // 이거 width 100%로 해도 되는건가..
   box-sizing: border-box;
   width: 100%;

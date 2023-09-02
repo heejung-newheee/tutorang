@@ -8,15 +8,10 @@ import FormHeader from '../common/FormHeader';
 import GenderRadiobox from '../common/GenderRadiobox';
 import SelectBirth from '../common/SelectBirth';
 import SelectLocation from '../common/SelectLocation';
-import { FORM_CONSTANT_TITLE_SIGNUP } from '../common/formConstant';
+import ServiceAgreement from '../common/ServiceAgreement';
+import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNUP, PWD_REGEX, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../common/formConstant';
 import './../common/icon.css';
 import './../common/inputBackgroundSetting.css';
-import ServiceAgreement from './ServiceAgreement';
-
-const USERNAME_KR_REGEX = /^[가-힣|]{2,6}$/;
-const USERNAME_EN_REGEX = /^[a-z|A-Z|+\s]{2,20}$/;
-const EMAIL_REGEX = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
 
 const SignUpForm = () => {
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
@@ -178,7 +173,7 @@ const SignUpForm = () => {
             {/* [x] 비밀번호 작성란 */}
             <SFormItem>
               <SpasswordLabel htmlFor="password" style={{ position: 'relative' }}>
-                <span>비밀번호</span>
+                <SFormItemTitle>비밀번호</SFormItemTitle>
                 <SInput
                   type={isPasswordHidden ? 'password' : 'text'}
                   id="password"
@@ -200,7 +195,7 @@ const SignUpForm = () => {
             {/* [x] 비밀번호 확인 작성란 */}
             <SFormItem>
               <SpasswordLabel htmlFor="confirm_pwd" style={{ position: 'relative' }}>
-                <span>비밀번호 확인</span>
+                <SFormItemTitle>비밀번호 확인</SFormItemTitle>
                 <SInput
                   type={isMatchPwHidden ? 'password' : 'text'}
                   id="confirm_pwd"
@@ -222,7 +217,9 @@ const SignUpForm = () => {
 
             {/* [x] 이름 작성란 */}
             <SFormItem>
-              <label htmlFor="username">이름</label>
+              <label htmlFor="username">
+                <SFormItemTitle>이름</SFormItemTitle>
+              </label>
               <SInput
                 type="text"
                 id="username"
@@ -240,20 +237,20 @@ const SignUpForm = () => {
 
             {/* [x] 생년월일 선택란 */}
             <SFormItem style={{ marginBottom: '23px' }}>
-              <span>생년월일</span>
+              <SFormItemTitle>생년월일</SFormItemTitle>
               <SelectBirth $setBirth={setBirth} />
             </SFormItem>
 
             {/* [x] 성별 선택란 */}
             <SFormItem style={{ marginBottom: '23px' }}>
-              <span>성별</span>
+              <SFormItemTitle>성별</SFormItemTitle>
               <GenderRadiobox $checkedGender={checkedGender} $setCheckedGender={setCheckedGender} />
             </SFormItem>
 
             {/* [x] 지역 선택란 */}
             <SFormItem>
               <SFormItemHeader>
-                <span>활동선호지역</span>
+                <SFormItemTitle>활동선호지역</SFormItemTitle>
                 <SPGuideMessage>
                   {location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}
                   {(location.sido1 === '전체' || location.sido2 === '전체') && '지역1, 지역2 모두 특정지역 선택 필수'}
@@ -435,20 +432,26 @@ const SPGuideMessage = styled.p<{ $guideMessageColor?: string }>`
   }};
 `;
 
+// [ ]
 const SFormItemBody = styled.div`
-  border: 1px solid #696969;
   border-radius: 3px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 20px 10px;
   width: 100%;
-  gap: 25px;
+  gap: 15px;
 `;
 
 const SFormItemBodySection = styled.section`
+  border-radius: 3px;
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 5px;
+`;
+
+const SFormItemTitle = styled.span`
+  /* border-left: 5px solid #fe902f;
+  padding-left: 10px; */
 `;

@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout, SignInForm, SignUpForm } from '../components';
-import CreateProfileForm from '../components/Form/profileForm/CreateProfileForm';
+import CreateAdditionalInformationForm from '../components/Form/profileForm/CreateAdditionalInformationForm';
 import RegistTutorForm from '../components/Form/registTutorForm/RegistTutorForm';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import { AuthMain, Detail, List, Main, Mypage } from '../pages';
@@ -16,7 +16,7 @@ const Router = () => {
           <Route path="/detail/:id" element={<Detail />} />
           <Route element={<Layout />}>
             <Route path="/list" element={<List />} />
-            <Route path="/additional-information" element={<CreateProfileForm />} />
+            <Route path="/additional-information" element={<CreateAdditionalInformationForm />} />
             <Route path="/tutor-registration" element={<RegistTutorForm />} />
             <Route element={<AuthMain />}>
               <Route path="/signin" element={<SignInForm />} />
