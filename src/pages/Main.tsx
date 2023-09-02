@@ -22,7 +22,7 @@ const Main = () => {
     return <span>Error</span>;
   }
   if (!topReviewer) {
-    alert('ddd');
+    alert('인기순위 튜터 리스트가 없습니다.');
   }
 
   return (
