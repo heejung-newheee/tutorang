@@ -14,7 +14,9 @@ import { matchMyReview } from '../../api/review';
 import { icon_more, starEmpty, starFull } from '../../assets';
 import { openModal, setReview } from '../../redux/modules';
 import * as S from './StudentInfo.styled';
+import { Loading } from '..';
 
+const REVIEW_QUERY_KEY = ['reviewTutorDetail'];
 const BOARD_QUERY_KEY = ['board'];
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
@@ -27,10 +29,10 @@ const StudentInfo = ({ match }: pageProps) => {
 
   const { data: board, isLoading: boardLoading, isError: boardError } = useQuery([BOARD_QUERY_KEY], getBoard);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
-  const myReview = useQuery(['myReviewData'], () => matchMyReview(user!.id));
+  const myReview = useQuery(REVIEW_QUERY_KEY, () => matchMyReview(user!.id));
 
   if (boardLoading || likeLoading) {
-    return <div>로딩중~~~~~~~~~~~</div>;
+    return <Loading />;
   }
   if (boardError || likeError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
@@ -49,8 +51,8 @@ const StudentInfo = ({ match }: pageProps) => {
   });
 
   // 리뷰 업데이트
-  const handleOpenReviewUpdateForm = (id: number): void => {
-    dispatch(openModal({ type: 'reviewUpdate', targetId: id }));
+  const handleOpenReviewUpdateForm = (): void => {
+    dispatch(openModal({ type: 'reviewUpdate', targetId: user?.id }));
   };
 
   // 리뷰 삭제
@@ -114,7 +116,7 @@ const StudentInfo = ({ match }: pageProps) => {
                       <S.moreMenu className={review.id === openMenuId ? 'active' : ''}>
                         <S.moreMenuItem
                           onClick={() => {
-                            handleOpenReviewUpdateForm(review.id);
+                            handleOpenReviewUpdateForm();
                             // 수정할 리뷰 데이터 전달
                             dispatch(setReview(review));
                             handleIsOpen(review.id);

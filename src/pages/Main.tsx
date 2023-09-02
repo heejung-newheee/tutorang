@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { getAllReviewCount } from '../api/review';
 import { getAllTutorCount, getTopReviewer } from '../api/tutor';
 import { icon_class, icon_like, icon_tutor, main_banner } from '../assets';
+import { Loading } from '../components';
 import MatchingFlow from '../components/process/MatchingFlow';
 import UserReviewList from '../components/review/mainReviewList/UserReviewList';
 import TutorSlider from '../components/slider/tutorSlider/TutorSlider';
@@ -16,7 +17,7 @@ const Main = () => {
   const { data: topReviewer, isLoading, isError } = useQuery(['topReviewer'], () => getTopReviewer());
 
   if (isLoading) {
-    return <span>Loading...</span>;
+    return <Loading />;
   }
   if (isError) {
     return <span>Error</span>;
