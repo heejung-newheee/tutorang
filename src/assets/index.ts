@@ -25,3 +25,6 @@ export { default as main_banner } from './main-banner.png';
 export { default as icon_more } from './icon_dot_edit.svg';
 export { default as icon_bookMark_full } from './icon_bookMark_full.svg';
 export { default as icon_bookMark_empty } from './icon_bookMark.svg';
+export { default as filterIcon } from './funnel.png';
+export { default as marker_location } from './marker-location.png';
+export { default as tutorang_logo } from './logo.png';

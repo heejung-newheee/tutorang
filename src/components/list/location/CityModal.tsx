@@ -2,7 +2,7 @@ import { AREA0, 서울, 인천, 대전, 광주, 대구, 울산, 부산, 경기, 
 import { Dispatch, SetStateAction } from 'react';
 import * as S from './CityModal.styled';
 import Checkbox from '@mui/material/Checkbox';
-import location from '../../../assets/marker-location.png';
+import { marker_location } from '../../../assets';
 
 interface CityData {
   [key: string]: string[];
@@ -24,7 +24,7 @@ const CityModal = ({ isDistrictDropdown, setisDistrictDropdown, checkedcity, han
   return (
     <S.InnerModalBox>
       <S.Title>
-        <img src={location} alt="" />
+        <img src={marker_location} alt="" />
         지역을 통해 찾기
       </S.Title>
 

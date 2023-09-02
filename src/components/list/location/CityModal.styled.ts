@@ -1,18 +1,18 @@
 import styled from 'styled-components';
+import { colors } from '../../../style/theme/colors';
 
 export const InnerModalBox = styled.div`
   width: 70%;
   max-width: 650px;
   height: 80%;
-  background-color: #fafafa;
+  padding: 0 10px;
+  padding-bottom: 70px;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  padding: 0 10px;
-  padding-bottom: 70px;
-  padding-top: 20px;
-  position: relative;
+  background-color: ${colors.gray_100};
 
   @media all and (min-width: 0px) and (max-width: 600px) {
     width: 100%;
@@ -22,9 +22,9 @@ export const InnerModalBox = styled.div`
 
 export const Title = styled.div`
   width: 100%;
+  padding: 10px;
   display: flex;
   align-items: center;
-  padding: 10px;
   font-weight: 700;
 
   & > img {
@@ -35,11 +35,11 @@ export const Title = styled.div`
 
 //pc버전
 export const PcSiWrap = styled.div`
-  margin-bottom: 30px;
   width: 100%;
-  border-left: 1px solid #e2e2e2;
+  margin-bottom: 30px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  border-left: 1px solid ${colors.gray_200};
 
   @media all and (max-width: 768px) {
     display: none;
@@ -47,25 +47,25 @@ export const PcSiWrap = styled.div`
 `;
 //pc버전 글자
 export const PcSiTitleBlock = styled.div<{ $color: boolean }>`
+  padding: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 15px;
   box-shadow: 1px 0 0 0 #e2e2e2, 0px 1px 0 0 #e2e2e2, 1px 1px 0 0 #e2e2e2, 0px 0 0 0 #e2e2e2 inset, 0 1px 0 0 #e2e2e2 inset;
   cursor: pointer;
-  color: ${(props) => (props.$color === true ? '#fe902f' : 'black')};
+
+  color: ${(props) => (props.$color === true ? `${colors.primary}` : 'black')};
 `;
 
 //모바일
 export const MobileSiWrap = styled.div<{ $isOpen: boolean }>`
-  border: 1px solid #fe902f;
   width: 250px;
   padding: 20px;
   margin: 40px 0 20px 0px;
-  border-radius: 5px;
-  display: flex;
   display: none;
+  border: 1px solid ${colors.primary};
+  border-radius: 5px;
   cursor: pointer;
 
   & > div {
@@ -94,10 +94,9 @@ export const HiddenDropMenu = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid #fe902f;
+  border: 1px solid ${colors.primary};
   border-radius: 7px;
   overflow-y: scroll;
-  /* display: none; */
 
   @media all and (max-width: 768px) {
     display: block;
@@ -108,11 +107,11 @@ export const HiddenDropMenu = styled.div`
   }
   & > div {
     width: 100%;
-    border-bottom: 1px solid #dbdbdb;
     padding: 12px 25px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-bottom: 1px solid ${colors.gray_200};
     cursor: pointer;
   }
   & > div:last-child {
@@ -122,17 +121,13 @@ export const HiddenDropMenu = styled.div`
 
 //군/구
 export const GunGuBox = styled.div`
-  overflow-y: scroll;
   width: 100%;
-
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera*/
-  }
+  overflow-y: scroll;
 
   & > div {
     width: 100%;
-    border-bottom: 1px solid #dbdbdb;
     padding: 12px 25px;
+    border-bottom: 1px solid ${colors.gray_200};
   }
 
   //체크박스 클릭
@@ -158,16 +153,16 @@ export const GunGuBox = styled.div`
 
 //모바일 전용 - 선택버튼
 export const Btn = styled.button`
-  position: absolute;
-  bottom: 0;
   width: 100%;
   height: 60px;
+  position: absolute;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fe902f;
+  background-color: ${colors.primary};
+  color: ${colors.white};
   font-size: 15px;
-  color: white;
 
   @media all and (min-width: 768px) {
     display: none;
@@ -193,23 +188,23 @@ export const XButton = styled.span`
 
 //pc전용
 export const PcBtn = styled.div`
-  position: absolute;
-  bottom: 0;
   width: 100%;
   height: 60px;
+  position: absolute;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fe902f;
+  background-color: ${colors.primary};
 
   & > button {
     width: 50%;
     height: 100%;
-    color: white;
+    color: ${colors.white};
     font-size: 15px;
   }
   & > button:first-child {
-    background-color: #e3e3e3;
+    background-color: ${colors.gray_200};
   }
   @media all and (min-width: 0px) and (max-width: 768px) {
     display: none;

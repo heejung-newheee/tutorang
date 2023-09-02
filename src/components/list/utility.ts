@@ -115,6 +115,7 @@ export const 제주 = ['전체', '서귀포시', '제주시', '남제주군', '�
 export const gender: string[] = ['전체', '여성', '남성'];
 export const level: string[] = ['전체', '초급', '중급', '고급'];
 export const age: string[] = ['전체', '10대', '20대', '30대', '40대', '50대'];
+export const speakingLanguage: string[] = ['전체', '한국어', '일본어', '중국어'];
 
 export const price: Price[] = [
   { optionPrice: '전체', min: 0, max: 100000 },
@@ -163,14 +164,15 @@ export type SelectedFilters = {
   location2: string;
   age: number[];
   classStyle: string;
+  speakingLanguage: string[];
 };
 
 export type FilterMenuObj = {
   [key: string]: string[];
 };
 
-//debounceing
-export const debounce = <T extends (...args: any[]) => any>(fn: T, delay: number) => {
+//Debouncing
+export const SearchDebounce = <T extends (...args: any[]) => any>(fn: T, delay: number) => {
   let timeout: ReturnType<typeof setTimeout>;
 
   return (...args: Parameters<T>): ReturnType<T> => {
@@ -249,6 +251,26 @@ export const handleAgeFilter = (item: string, setSelectedFilters: Dispatch<SetSt
   return;
 };
 
+export const handleLanguageFilter = (item: string, setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
+  if (item === '전체') {
+    //전체 클릭 - 모든 값 초기화
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, speakingLanguage: [] });
+    setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'speakingLanguage')]);
+    //전체를 제외한 클릭
+  } else if (item !== '전체') {
+    //값이 없을때 - 추가
+    if (selectedFilters?.speakingLanguage.find((i: string) => i === item) === undefined) {
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, speakingLanguage: [...pre.speakingLanguage, item] });
+      setSelectedArr((pre: string[][]) => [...pre, ['speakingLanguage', item]]);
+      //값이 있을때 - 삭제
+    } else {
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, speakingLanguage: pre.speakingLanguage.filter((i: string) => i !== item) });
+      setSelectedArr((pre) => pre.filter((i) => i[1] !== item));
+    }
+  }
+  return;
+};
+
 //list - 지역 모달
 export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, _: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>, checkedcity: string, checkedGunGu: string) => {
   if (checkedcity === '전체') {
@@ -317,6 +339,12 @@ export const handleDeleteFilterBar = (item: string[], setSelectedFilters: Dispat
     case 'price':
       setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
       setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, minPrice: 0, maxPrice: 100000, priceType: '전체' });
+      break;
+
+    //언어
+    case 'speakingLanguage':
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, speakingLanguage: pre.speakingLanguage.filter((i: string) => i !== item[1]) });
+      setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
       break;
 
     default:

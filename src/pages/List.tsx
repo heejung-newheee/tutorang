@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
-import supabase from '../supabase';
+import * as S from '../components/list/List.styled';
 import { useModal } from '../hooks';
 import TutorListCompo from '../components/list/tutorCompo/TutorListCompo';
 import LastTutorListCompo from '../components/list/tutorCompo/LastTutorListCompo';
 import SelectBox from '../components/list/selectBox/SelectBox';
 import CityModal from '../components/list/location/CityModal';
-import { handleCityModalFilter, SelectedFilters } from '../components/list/utility';
+import { handleCityModalFilter, SelectedFilters, SearchDebounce } from '../components/list/utility';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { getTutorListPageData } from '../api/list';
 
 const List = () => {
   const { Modal, isOpen, openModal, closeModal } = useModal();
@@ -30,6 +30,7 @@ const List = () => {
     location2: '',
     age: [],
     classStyle: 'onLine',
+    speakingLanguage: [],
   };
 
   //유저가 선택한 목록 - 검색 api에 들어갈 값{}
@@ -37,53 +38,12 @@ const List = () => {
   //검색
   const [searchText, setSearchText] = useState('');
 
+  console.log(selectedArr, selectedFilters);
+
   //튜터 api 호출
-  const PAGE_SIZE = 6;
+  const PAGE_SIZE = 5;
 
-  const api = async (page = 1) => {
-    const { gender, level, minPrice, maxPrice, location1, location2, age, classStyle } = selectedFilters;
-
-    let query = supabase.from('tutor_info_join').select('*');
-
-    if (gender.length !== 0) {
-      query = query.in('gender', [...gender]);
-    }
-    if (level.length !== 0) {
-      query = query.in('level', [...level]);
-    }
-
-    if (age.length !== 0) {
-      const minAge = age.sort()[0];
-      const maxAge = age.sort()[age.length - 1];
-      query = query.gte('age', minAge).lte('age', maxAge);
-    }
-
-    if (searchText) {
-      query = query.textSearch('tutor_name', `${searchText}`);
-    }
-    if (minPrice >= 0 && maxPrice) {
-      if (classStyle === 'onLine') {
-        query = query.gte('tuition_fee_online', 0).lte('tuition_fee_online', 100000);
-      } else {
-        query = query.gte('tuition_fee_offline', minPrice).lte('tuition_fee_offline', maxPrice);
-      }
-    }
-
-    if (location1) {
-      query = query.or(`location1_sido.eq.${location1},location2_sido.eq.${location1}`);
-
-      if (location2 !== '') {
-        query = query.or(`location2_gugun.eq.${location2},location2_gugun.eq.${location2}`);
-      }
-    }
-
-    const { data, error } = await query.range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
-    console.log(error, 'tutor-list-api-error');
-
-    return data;
-  };
-
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteQuery(['tutor-list'], ({ pageParam }) => api(pageParam), {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch, isLoading } = useInfiniteQuery(['tutor-list'], ({ pageParam }) => getTutorListPageData(pageParam, selectedFilters, searchText), {
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage?.length === PAGE_SIZE) {
         return allPages.length + 1; // 다음 페이지 번호 반환
@@ -124,26 +84,12 @@ const List = () => {
   );
 
   //Debouncing
-  const debounce = <T extends (...args: any[]) => any>(fn: T, delay: number) => {
-    let timeout: ReturnType<typeof setTimeout>;
-
-    return (...args: Parameters<T>): ReturnType<T> => {
-      let result: any;
-      if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        result = fn(...args);
-      }, delay);
-      return result;
-    };
-  };
-
-  //Debouncing
   const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
   //Debouncing
-  const debouncedOnChange = debounce<typeof onChange>(onChange, 500);
+  const debouncedOnChange = SearchDebounce<typeof onChange>(onChange, 500);
 
   //시, 군구
   const handleDropAndSi = (item: string, version: string) => {
@@ -165,25 +111,34 @@ const List = () => {
     closeModal();
   };
 
+  if (isLoading) {
+    return <div style={{ width: '100%', height: '100vh', backgroundColor: 'salmon' }}>Loading...</div>;
+  }
+
   return (
-    <Container>
-      <SearchWrap>
+    <S.Container>
+      <S.SearchWrap>
         <svg xmlns="http://www.w3.org/2000/svg" fill="#fe902f" height="1em" viewBox="0 0 512 512">
           <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
         </svg>
         <input type="text" onChange={debouncedOnChange} />
-      </SearchWrap>
+      </S.SearchWrap>
       {/* 필터박스 */}
 
       <SelectBox initialSelectedFilters={initialSelectedFilters} openModal={openModal} selectedArr={selectedArr} setSelectedArr={setSelectedArr} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
       {/* 강사 리스트 */}
-      <TutorList>
-        {data?.pages.map((i, first) => i?.map((userInfo, second) => (second === i.length - 1 && data?.pages.length - 1 === first ? <LastTutorListCompo LastelementRef={LastelementRef} userInfo={userInfo} /> : <TutorListCompo userInfo={userInfo} />)))}
-      </TutorList>
+      <S.TutorList>
+        {data?.pages.map((i, first) =>
+          i?.map((userInfo, second) => (second === i.length - 1 && data?.pages.length - 1 === first ? <LastTutorListCompo key={second} LastelementRef={LastelementRef} userInfo={userInfo} /> : <TutorListCompo key={second} userInfo={userInfo} />)),
+        )}
+      </S.TutorList>
+
+      {/* 강사 데이터가 존재하지 않음 */}
+      {data?.pages[0].length === 0 ? <S.ShowIsDataNone>강사 목록이 없습니다</S.ShowIsDataNone> : null}
 
       {/* 모달 */}
       <Modal isOpen={isOpen} closeModal={closeModal}>
-        <InnerModal
+        <S.InnerModal
           onClick={(e: React.MouseEvent<HTMLElement>) => {
             e.stopPropagation();
           }}
@@ -198,78 +153,10 @@ const List = () => {
             handelCloseModalAndSelect={handelCloseModalAndSelect}
             handleCloseModal={handleCloseModal}
           />
-        </InnerModal>
+        </S.InnerModal>
       </Modal>
-    </Container>
+    </S.Container>
   );
 };
 
 export default List;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: all 0.5s ease-in-out;
-`;
-
-const TutorList = styled.div`
-  margin-top: 50px;
-  width: 100%;
-  padding: 0 20px;
-  margin-top: 100px;
-  display: grid;
-  justify-content: center;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-
-  @media only screen and (max-width: 900px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media only screen and (max-width: 500px) {
-    grid-template-columns: repeat(1, 1fr);
-  }
-
-  & > div {
-    word-break: break-all;
-  }
-
-  & > div img {
-    width: 100%;
-  }
-`;
-
-/////모달
-const InnerModal = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  @media all and (min-width: 0px) and (max-width: 600px) {
-    align-items: end;
-  }
-`;
-
-////Search
-const SearchWrap = styled.div`
-  width: 100%;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  margin-top: 120px;
-  color: #ffffff;
-  padding-left: 20px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-
-  & > input {
-    outline: none;
-    border: none;
-    width: 100%;
-    height: 100%;
-    padding-left: 20px;
-    font-size: 1em;
-  }
-`;
