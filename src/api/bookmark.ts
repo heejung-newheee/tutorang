@@ -41,7 +41,7 @@ export const useCreateBookMarkMutation = () => {
       return { previousBookMark };
     },
 
-    onError: (error, newBookMark, context) => {
+    onError: (error, _, context) => {
       console.log(error);
       queryClient.setQueriesData(BOOKMARK_QUERY_KEY, context?.previousBookMark);
     },
@@ -67,7 +67,7 @@ export const useDeleteBookMarkMutation = () => {
       return { previousBookMark };
     },
 
-    onError: (error, newBookMark, context) => {
+    onError: (error, _, context) => {
       console.log(error);
       queryClient.setQueriesData(BOOKMARK_QUERY_KEY, context?.previousBookMark);
     },

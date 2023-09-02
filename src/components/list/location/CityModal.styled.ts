@@ -79,11 +79,11 @@ export const MobileSiWrap = styled.div<{ $isOpen: boolean }>`
   }
 `;
 //꺽세모양
-export const ChevronSpan = styled.div<{ $isDropdown: boolean }>`
+export const ChevronSpan = styled.div<{ $isDistrictDropdown: boolean }>`
   width: 12px;
   height: 12px;
   margin-left: 3px;
-  background-image: ${(props) => (props.$isDropdown === false ? `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_up-12.svg)` : `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_down-12.svg)`)};
+  background-image: ${(props) => (props.$isDistrictDropdown === false ? `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_up-12.svg)` : `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_down-12.svg)`)};
 `;
 
 //모바일버전 시버튼 클릭하면 나오는 창

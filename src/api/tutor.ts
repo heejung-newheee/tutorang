@@ -37,15 +37,9 @@ export const getTutorMostReview = async () => {
   return data;
 };
 export const getTopReviewer = async () => {
-  const { data, error } = await supabase.from('tutor_top_reviewer').select().limit(5);
+  const { data, error } = await supabase.from('tutor_top_reviewer').select().limit(10);
   if (error) throw error;
   return data;
-};
-
-export const fetchTutorAll = async ({ queryKey }: { queryKey: string[] }) => {
-  const [_, tutor] = queryKey;
-  const res = await supabase.from('tutor_info').select('*');
-  return res.data;
 };
 
 export const fetchTutorFilter = async () => {

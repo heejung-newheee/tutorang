@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { colors } from '../../style/theme/colors';
 
 // 찜한 강사 리스트
 export const LikeTutorList = styled.ul`
@@ -26,5 +27,34 @@ export const TutorItem = styled.li`
   border-radius: 5px;
   img {
     width: 100%;
+  }
+`;
+
+// 내가쓴 리뷰
+export const ReviewEditBtn = styled.div`
+  position: relative;
+  button {
+    position: absolute;
+    right: 0;
+  }
+`;
+export const moreMenu = styled.ul`
+  display: none;
+  background-color: ${colors.white};
+  border: 1px solid ${colors.primary};
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 28px;
+  &.active {
+    display: inline-block;
+  }
+`;
+
+export const moreMenuItem = styled.li`
+  padding: 8px 32px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${colors.gray_100};
   }
 `;

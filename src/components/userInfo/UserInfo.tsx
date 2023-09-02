@@ -8,15 +8,13 @@ import { useQuery } from '@tanstack/react-query';
 import { icon_edit, icon_location } from '../../assets';
 import { openModal } from '../../redux/modules';
 import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../api/review';
-import { useEffect } from 'react';
-import { matchingList } from '../../redux/modules/matching';
 
 const UserInfo = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
 
   const matchData = useSelector((state: RootState) => state.match.match);
-  const { data, isLoading, isError } = useQuery(['matching_tutor_data'], matchingTutorData);
+  const { data } = useQuery(['matching_tutor_data'], matchingTutorData);
 
   // TODO count가 null이라면????????
   // TODO 리덕스 로딩
@@ -89,14 +87,7 @@ const UserInfo = () => {
         </S.ProfileBox>
 
         <div style={{ height: '120px' }}></div>
-        {data && data.length > 0 ? (
-          <>
-            <TutorInfo match={data} />
-            <StudentInfo match={data} />
-          </>
-        ) : (
-          <div>매칭 데이터가 없습니다.</div>
-        )}
+        {data && data.length > 0 ? <>{user.role === 'tutor' ? <TutorInfo match={data} /> : <StudentInfo match={data} />}</> : <div>매칭 데이터가 없습니다.</div>}
       </S.MypageContainer>
     </>
   );

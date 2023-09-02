@@ -12,7 +12,6 @@ const EditProfileForm = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
 
-  // console.log(user);
   const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
 
   const [checkedGender, setCheckedGender] = useState<string>('');
@@ -61,7 +60,6 @@ const EditProfileForm = () => {
 
         // TODO await 수정하기
         const { data } = await supabase.storage.from('avatars').getPublicUrl(`profiles/${user!.id}/${imgName}`);
-        console.log(data.publicUrl);
         await supabase.from('profiles').update({ avatar_url: data.publicUrl }).eq('id', user?.id);
       }
 

@@ -17,6 +17,7 @@ export const TutorProfile = styled.div`
 `;
 
 export const Figure = styled.figure`
+  position: relative;
   display: flex;
   width: 100%;
   max-width: 280px;
@@ -28,6 +29,17 @@ export const Figure = styled.figure`
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  & button {
+    position: absolute;
+    z-index: 99;
+    top: 18px;
+    right: 12px;
+  }
+  & button img {
+    width: 24px;
+    height: 24px;
   }
 `;
 

@@ -50,10 +50,8 @@ const SignInForm = () => {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === 'email') {
       setEmail(e.target.value);
-      console.log(e.target.value);
     } else if (e.target.name === 'password') {
       setPassword(e.target.value);
-      console.log(e.target.value);
     }
   };
 
@@ -62,15 +60,14 @@ const SignInForm = () => {
   };
 
   const kakaoLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
     });
     if (error) alert(error.message);
-    console.log(data);
   };
 
   const googleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         queryParams: {
@@ -80,7 +77,6 @@ const SignInForm = () => {
       },
     });
     if (error) alert(error.message);
-    console.log(data);
   };
 
   const naverLogin = () => {
@@ -89,13 +85,12 @@ const SignInForm = () => {
 
   const emailCheckFromDB = async (enteredEmail: string) => {
     // unverifiedEmail 을 supabase의 db 에서 확인
-    const { data: profiles, error } = await supabase.from('profiles').select('email');
+    const { data: profiles } = await supabase.from('profiles').select('email');
 
     const myEmailFromDB = profiles?.find((profile) => {
       return profile.email === enteredEmail;
     });
     const isMyEmailHere = myEmailFromDB === undefined ? false : true;
-    console.log(error?.message);
     return isMyEmailHere;
   };
 

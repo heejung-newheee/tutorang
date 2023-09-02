@@ -1,14 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
-import { fetchData } from '../../../api/user';
 import { matchingList } from '../../../redux/modules/matching';
 import { tutorInfoJoin } from '../../../api/tutor';
 import { tutorInfo } from '../../../redux/modules/tutorSlice';
 import logo from '../../../assets/logo.png';
-import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import * as S from './Header.styled';
 import { openModal } from '../../../redux/modules';
@@ -27,42 +25,18 @@ const Header = () => {
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const { data: allUser, isLoading: userIsLoading, isError: userIsError } = useQuery(['profiles'], fetchData);
-  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor_info_join'], tutorInfoJoin);
+  const { data: tutor } = useQuery(['tutor_info_join'], tutorInfoJoin);
 
   // matching 테이블 모든 데이터
-  const { data: matchData, isLoading, isError } = useQuery(['matching'], () => getMatchData());
-  // console.log('matchData', matchData);
-  // console.log('tutor_info_join', tutor);
-
-  const [email, setEmail] = useState<string>();
-
-  const getUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    setEmail(user?.email);
-  };
-  const user = allUser?.find((item) => {
-    return item.email === email;
-  });
-
+  const { data: matchData } = useQuery(['matching'], () => getMatchData());
   useEffect(() => {
-    getUser();
-    if (user) {
-      dispatch(setUser(user));
-    }
     if (matchData) {
       dispatch(matchingList(matchData));
     }
     if (tutor) {
       dispatch(tutorInfo(tutor));
     }
-  }, [user, tutor, matchData, dispatch]);
-
-  const handleHome = () => {
-    navigate('/');
-  };
+  }, [tutor, matchData, dispatch]);
 
   // TODO 로그아웃 함수 --> 일단은 main에 넣어둠
   const signOut = async () => {
@@ -75,30 +49,28 @@ const Header = () => {
     dispatch(openModal({ type: 'navbabr' }));
   };
 
-  if (userIsLoading) {
-    return <div>로딩중~~~~~~~~~~~스피너~~</div>;
-  }
-  if (userIsError) {
-    return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
-  }
   return (
     <>
       <S.NavContainer>
         <S.WidthLimitContainer>
-          <S.LogoWrap>
-            <S.NavLogoImg src={logo} alt="logo"></S.NavLogoImg>
-            <S.LogoH1 onClick={handleHome}>튜터랑</S.LogoH1>
-            {HeaderMenu.map((item, index) => (
-              <S.NavLinkSt key={index} to={item.path}>
-                {item.title}
-              </S.NavLinkSt>
-            ))}
-          </S.LogoWrap>
+          <S.HeaderLeft>
+            <S.LogoWrap to="/">
+              <S.NavLogoImg src={logo} alt="logo"></S.NavLogoImg>
+              <S.LogoH1>튜터랑</S.LogoH1>
+            </S.LogoWrap>
+            <S.Gnb>
+              {HeaderMenu.map((item, index) => (
+                <S.NavLinkSt key={index} to={item.path}>
+                  {item.title}
+                </S.NavLinkSt>
+              ))}
+            </S.Gnb>
+          </S.HeaderLeft>
           {/* 미디어쿼리 */}
-          <S.MiddleLogo onClick={handleHome}>
+          <S.MiddleLogo to="/">
             <div>
               <S.NavLogoImg src={logo} alt="logo"></S.NavLogoImg>
-              Logo
+              튜터랑
             </div>
           </S.MiddleLogo>
 
@@ -120,7 +92,7 @@ const Header = () => {
                     navigate('/');
                   }}
                 >
-                  LogOut
+                  로그아웃
                 </S.LoginBtnSignUp>
               </>
             ) : (

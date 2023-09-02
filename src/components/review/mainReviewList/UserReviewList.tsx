@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { Container, Section, SectionSubTitle, SectionTitle } from '../../../pages/Main';
+import { Container, Section, SectionTitle } from '../../../pages/Main';
 import * as S from './UserReviewList.styled';
 import { openModal } from '../../../redux/modules';
 import { play_button } from '../../../assets';
@@ -12,7 +12,7 @@ const UserReviewList = () => {
   return (
     <Section>
       <Container>
-        <SectionTitle style={{ textAlign: 'center' }}>생생한 후기를 들어보세요</SectionTitle>
+        <SectionTitle style={{ position: 'relative', left: '50%', transform: 'translate(-50%, 0px)' }}>생생한 후기를 들어보세요</SectionTitle>
         {/* <SectionSubTitle style={{ textAlign: 'center' }}>가벼운 마음으로 시작했다가, 지금은 Ing~</SectionSubTitle> */}
         <S.ReviewList>
           <S.ReviewItem>

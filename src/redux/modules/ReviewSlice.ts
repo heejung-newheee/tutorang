@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Tables, reviews } from '../../supabase/database.types';
+import { Tables } from '../../supabase/database.types';
 
 const initialState: Tables<'review'> = {
   content: '',
@@ -17,7 +17,8 @@ const reviewSlice = createSlice({
   initialState,
   reducers: {
     setReview: (state, action: PayloadAction<Tables<'review'>>) => {
-      return (state = action.payload);
+      state = action.payload;
+      return state;
     },
   },
 });

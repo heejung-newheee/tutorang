@@ -101,12 +101,29 @@ export const 경북 = [
   '청송군',
   '칠곡군',
 ];
+
+////////
+export type Price = {
+  optionPrice: string;
+  min: number;
+  max: number;
+};
+
 export const 경남 = ['전체', '거제시', '김해시', '마산시', '밀양시', '사천시', '양산시', '진주시', '진해시', '창원시', '통영시', '거창군', '고성군', '남해군', '산청군', '의령군', '창녕군', '하동군', '함안군', '함양군', '합천군'];
 export const 제주 = ['전체', '서귀포시', '제주시', '남제주군', '북제주군'];
 
 export const gender: string[] = ['전체', '여성', '남성'];
 export const level: string[] = ['전체', '초급', '중급', '고급'];
 export const age: string[] = ['전체', '10대', '20대', '30대', '40대', '50대'];
+
+export const price: Price[] = [
+  { optionPrice: '전체', min: 0, max: 100000 },
+  { optionPrice: '5,000 ~ 10,000', min: 5000, max: 10000 },
+  { optionPrice: '10,000 ~ 20,000', min: 10000, max: 20000 },
+  { optionPrice: '20,000 ~ 30,000', min: 20000, max: 30000 },
+  { optionPrice: '30,000 ~ 40,000', min: 30000, max: 40000 },
+  { optionPrice: '50,000 ~', min: 50000, max: 100000 },
+];
 
 export const handleAgeNum = (item: string) => {
   let ageNum = 0;
@@ -233,8 +250,7 @@ export const handleAgeFilter = (item: string, setSelectedFilters: Dispatch<SetSt
 };
 
 //list - 지역 모달
-
-export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>, checkedcity: string, checkedGunGu: string) => {
+export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, _: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>, checkedcity: string, checkedGunGu: string) => {
   if (checkedcity === '전체') {
     //전체면 필터객체에서 삭제
     setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location1: '', location2: '' });
@@ -262,12 +278,10 @@ export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateActio
 };
 
 //selectBox
-
-export const handleDeleteFilterBar = (item: string[], setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
+export const handleDeleteFilterBar = (item: string[], setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
   switch (item[0]) {
     //성별
     case 'gender':
-      console.log(item);
       setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, gender: pre.gender.filter((i: string) => i !== item[1]) });
       setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
       break;

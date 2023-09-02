@@ -3,7 +3,7 @@ import { useInput } from '../../../hooks';
 import { Button } from '../..';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal } from '../../../redux/modules';
-import { starEmpty, starFull } from '../../../assets';
+import { close, starEmpty, starFull } from '../../../assets';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { reviewUpdate } from '../../../api/review';
@@ -72,12 +72,11 @@ const ReviewUpdateForm = () => {
 
     if (!loginUser) return;
     if (!tutorId) {
-      console.log('등록할 튜터의 Id가 없습니다.');
       return;
     }
 
     const updatedReview: reviews = {
-      reviewed_id: tutorId,
+      reviewed_id: tutorId as string,
       user_id: loginUser?.id,
       author: loginUser?.username,
       title: title as string,
@@ -102,24 +101,32 @@ const ReviewUpdateForm = () => {
     <S.Container>
       <S.Inner>
         <S.ContentWrapper>
-          <button onClick={handleClose}>닫기</button>
+          <S.CloseBtn onClick={handleClose}>
+            <img src={close} alt="close button" />
+          </S.CloseBtn>
 
           <form onSubmit={handleReviewUpdateSubmit}>
-            <S.Title>리뷰 수정하기</S.Title>
             <S.StarList>
               {stars.map((star) => {
                 return (
-                  <li key={star} onMouseEnter={() => handleStarMouseEnter(star)} onMouseLeave={() => handleStarMouseLeave()} onClick={() => handleStarOnClick(star)}>
+                  <S.StarItem key={star} onMouseEnter={() => handleStarMouseEnter(star)} onMouseLeave={() => handleStarMouseLeave()} onClick={() => handleStarOnClick(star)}>
                     {starRating(star)}
-                  </li>
+                  </S.StarItem>
                 );
               })}
             </S.StarList>
+            <S.Title>리뷰 수정하기</S.Title>
+            <div>
+              <S.ReviewLabel htmlFor="">제목</S.ReviewLabel>
+              <S.ReviewInput required name="title" value={title as string} onChange={onChange} />
+            </div>
+            <div>
+              <S.ReviewLabel htmlFor="">내용</S.ReviewLabel>
+              <S.Textarea name="content" value={content as string} onChange={onChange} />
+            </div>
 
-            <input required name="title" value={title as string} onChange={onChange} />
-            <S.Textarea name="content" value={content as string} onChange={onChange} />
             <S.ButtonWrapper>
-              <Button variant="solid" color="black" size="Large">
+              <Button variant="solid" color={'primary'} size="Large">
                 수정하기
               </Button>
             </S.ButtonWrapper>

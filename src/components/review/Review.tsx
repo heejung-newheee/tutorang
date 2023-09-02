@@ -1,6 +1,6 @@
 import * as S from './Review.styled';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { matchReview, reviewDelete } from '../../api/review';
+import { useQuery } from '@tanstack/react-query';
+import { matchReview } from '../../api/review';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import { openModal, setReview } from '../../redux/modules';
@@ -67,25 +67,25 @@ const Review = ({ id }: ReviewProps) => {
     const timeDiff = Math.abs(nowTime.getTime() - createdTime.getTime());
     const hoursDiff = Math.floor(timeDiff / (1000 * 60 * 60));
 
-    let timeMessage = `ㆍ${hoursDiff}시간 전`;
+    let timeMessage = '';
 
     if (hoursDiff < 1) {
       timeMessage = `ㆍ방금`;
+    } else if (hoursDiff < 24) {
+      timeMessage = `ㆍ${hoursDiff}시간 전`;
+    } else {
+      const getTime = createTime.split('T')[0]; // date만 추출
+
+      const [year, month, day] = getTime.split('-');
+      const formattedMonth = Number(month).toString();
+      const formattedDay = Number(day).toString();
+
+      const formattedDate = `${year}.${formattedMonth}.${formattedDay}`; // "-"를 "."으로 변경
+
+      timeMessage = formattedDate;
     }
 
-    if (hoursDiff > 24) {
-      timeMessage = ``;
-    }
-
-    const getTime = createTime.split('T')[0]; // date만 추출
-
-    const [year, month, day] = getTime.split('-');
-    const formattedMonth = Number(month).toString();
-    const formattedDay = Number(day).toString();
-
-    const formattedDate = `${year}.${formattedMonth}.${formattedDay}`; // "-"를 "."으로 변경
-
-    return [formattedDate, <S.Time>{timeMessage}</S.Time>];
+    return timeMessage;
   };
 
   if (reviewLoading) {
@@ -96,7 +96,6 @@ const Review = ({ id }: ReviewProps) => {
     console.log(error);
     return;
   }
-
   return (
     <>
       <S.Container>
@@ -121,7 +120,8 @@ const Review = ({ id }: ReviewProps) => {
                       <S.ReviewDescription>{review.content}</S.ReviewDescription>
 
                       <S.AuthorInfo>
-                        {review.author}ㆍ{createDate(review.created_at)}
+                        {review.author}
+                        <S.Time>{createDate(review.created_at)}</S.Time>
                       </S.AuthorInfo>
                     </div>
                     <div>
