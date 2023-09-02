@@ -55,5 +55,7 @@
 | 리뷰작성 | /review | `POST` |author: string,content: string,created_at: string;id: number;rating: number,reviewed_id: string,title: string,user_id: string | |
 | 글수정 | /review/:id | `PATCH` | author: string,content: string,created_at: string;id: number;rating: number,reviewed_id: string,title: string,user_id: string | |
 | 글삭제 | /review/:id | `DELETE` | | |
+| 채팅 | /chat_rooms | `POST` | created_at: string,name: string,room_id: string | |
+| 채팅 | /chat_rooms | `GET` | |  created_at: string,name: string,room_id: string|
 
 ![image](https://github.com/heejung-newheee/tutorang/assets/126348461/a174852a-7bce-4b90-84c5-5fe263ea5c19)
