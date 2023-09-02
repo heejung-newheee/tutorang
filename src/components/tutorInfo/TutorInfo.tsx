@@ -24,7 +24,7 @@ const TutorInfo = ({ match }: pageProps) => {
     AOS.init();
   }, []);
   const boardData = useQuery(['boardData'], getBoard);
-  console.log(boardData.data);
+  // console.log(boardData.data);
 
   const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutoInfoJoin'], tutorInfoJoin);
 
@@ -43,7 +43,7 @@ const TutorInfo = ({ match }: pageProps) => {
   if (tutorError || reviewError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
-  if (!tutor || !review || !matchList) {
+  if (!tutor || !review || !matchList || !boardData.data) {
     return null;
   }
 

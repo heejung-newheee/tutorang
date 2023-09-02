@@ -25,12 +25,11 @@ const ProfilesCard = ({ tutor }: pageProps) => {
           </div>
           <S.Tag>
             {tutor.personality?.map((personal) => {
-              return <div>#{personal}</div>;
+              return <div key={personal}>#{personal}</div>;
             })}
           </S.Tag>
         </S.TutorContent>
       </S.TutorInfo>
-      {/* </S.TutorCard> */}
     </>
   );
 };
