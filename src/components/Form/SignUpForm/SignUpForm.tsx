@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import { BsFillEyeFill, BsFillEyeSlashFill, BsXCircleFill } from 'react-icons/bs';
-import { FaInfoCircle } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import supabase from '../../../supabase';
+import EnterEmail from '../common/EnterEmail';
 import FormHeader from '../common/FormHeader';
+import GenderRadiobox from '../common/GenderRadiobox';
 import SelectBirth from '../common/SelectBirth';
 import SelectLocation from '../common/SelectLocation';
 import { FORM_CONSTANT_TITLE_SIGNUP } from '../common/formConstant';
@@ -22,16 +23,11 @@ const SignUpForm = () => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [isMatchPwHidden, setIsMatchPwHidden] = useState(true);
 
-  const emailRef = useRef<HTMLInputElement>(null);
-  // const errRef = useRef<HTMLParagraphElement>(null);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [validEmail, setValidEmail] = useState(false);
-  const [emailFocus, setEmailFocus] = useState(false);
-
-  // doneDuplicationCheck얘는 useEffect dependency가 email일 때 false되도록.
-  // 중복확인했을 때 다시 true되도록
+  // doneDuplicationCheck얘는 useEffect dependency가 email일 때 false되도록. 중복확인했을 때 다시 true되도록
   const [duplicatedEmail, setDuplicatedEmail] = useState(true);
   const [doneDuplicationCheck, setDoneDuplicationCheck] = useState(false);
 
@@ -47,14 +43,9 @@ const SignUpForm = () => {
   const [validUsername, setValidUsername] = useState(false);
   const [usernameFocus, setUsernameFocus] = useState(false);
 
-  // const [errMsg, setErrMsg] = useState('');
-  // const [success, setSuccess] = useState(false)
-
   const [checkedGender, setCheckedGender] = useState({ female: false, male: false });
   const [validGender, setValidGender] = useState(false);
 
-  // const [location1, setLoaction1] = useState({ sido1: '시/도 선택', gugun1: '구/군 선택' });
-  // const [location2, setLoaction2] = useState({ sido2: '시/도 선택', gugun2: '구/군 선택' });
   const [location, setLoaction] = useState({ sido1: '시/도 선택', gugun1: '구/군 선택', sido2: '시/도 선택', gugun2: '구/군 선택' });
   const [validLocation, setValidLocation] = useState(false);
 
@@ -64,39 +55,6 @@ const SignUpForm = () => {
     day: '',
   });
   const [validBirth, setValidBirth] = useState(false);
-
-  const duplicationCheck = async (unverifiedEmail: string) => {
-    // unverifiedEmail 을 supabase의 db 에서 확인
-    const { data: profiles, error } = await supabase.from('profiles').select('email');
-    const myEmailFromDB = profiles?.find((profile) => {
-      return profile.email === unverifiedEmail;
-    });
-    const isMyEmailHere = myEmailFromDB === undefined ? false : true;
-    console.log('????????', isMyEmailHere);
-    setDuplicatedEmail(isMyEmailHere);
-    setDoneDuplicationCheck(true);
-
-    console.log(error?.message);
-  };
-
-  const deleteEmail = () => {
-    setEmail('');
-    if (emailRef.current) {
-      emailRef.current.value = '';
-    }
-  };
-
-  const genderChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (checkedGender.male !== checkedGender.female && event.target.name === 'female') setCheckedGender((prev) => ({ male: !prev.male, female: !prev.female }));
-    if (checkedGender.male === checkedGender.female && event.target.name === 'female') setCheckedGender((prev) => ({ ...prev, female: true }));
-    if (checkedGender.male !== checkedGender.female && event.target.name === 'male') setCheckedGender((prev) => ({ male: !prev.male, female: !prev.female }));
-    if (checkedGender.male === checkedGender.female && event.target.name === 'male') setCheckedGender((prev) => ({ ...prev, male: true }));
-    console.log(event.target.value);
-  };
-
-  useEffect(() => {
-    emailRef.current!.focus();
-  }, []);
 
   useEffect(() => {
     const result = EMAIL_REGEX.test(email);
@@ -115,10 +73,6 @@ const SignUpForm = () => {
     const result = USERNAME_KR_REGEX.test(username) || USERNAME_EN_REGEX.test(username);
     setValidUsername(result);
   }, [username]);
-
-  // useEffect(() => {
-  //   setErrMsg('');
-  // }, [email, pwd, matchPwd]);
 
   useEffect(() => {
     const checkedValidBirth = !!birth.year && !!birth.month && !!birth.day;
@@ -200,10 +154,9 @@ const SignUpForm = () => {
       }
     }
   };
-
+  console.log(email);
   return (
     <SContainer>
-      {/* {errMsg && <p ref={errRef}>{errMsg}</p>} */}
       <FormHeader $keyword={FORM_CONSTANT_TITLE_SIGNUP} />
       <SPartitionLine />
       <SFormContainer>
@@ -211,38 +164,15 @@ const SignUpForm = () => {
           <SUnderForm>
             {/* [x] 이메일 작성란 */}
             <SFormItem>
-              <label htmlFor="email">이메일</label>
-              <SEmailInputWrapper>
-                <SInput
-                  type="text"
-                  id="email"
-                  ref={emailRef}
-                  autoComplete="off"
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  onFocus={() => setEmailFocus(true)}
-                  onBlur={() => setEmailFocus(false)}
-                  $color={emailFocus && !!email && !validEmail}
-                  $noFocusedColor={!!email && !validEmail}
-                  placeholder="이메일을 입력하세요"
-                />
-                {/* email */}
-                <SEmailButton type="button" disabled={!email || !validEmail} onClick={() => duplicationCheck(email)}>
-                  중복확인
-                </SEmailButton>
-                {email && <BsXCircleFill className="reset_input_btn" onClick={deleteEmail} />}
-              </SEmailInputWrapper>
-              <SPGuideMessage $guideMessageColor={'안내'}>
-                <p style={{ display: 'flex', justifyContent: 'center', alignContent: 'center', width: '18px', height: '18px', lineHeight: '18px' }}>
-                  <FaInfoCircle className="info_icon" />
-                </p>
-                최종 회원가입 승인메일을 보낼 예정이오니 실제 열람가능한 이메일을 기입해주시기 바랍니다.
-              </SPGuideMessage>
-              <SPGuideMessage $guideMessageColor={!duplicatedEmail ? '확인' : ''}>
-                {!!email && !validEmail && '이메일 형식으로 입력해주세요'}
-                {!!email && validEmail && doneDuplicationCheck && duplicatedEmail && '이미 가입된 이메일 입니다. 새로운 이메일을 입력하세요'}
-                {!!email && validEmail && doneDuplicationCheck && !duplicatedEmail && '입력된 이메일을 사용할 수 있습니다!'}
-              </SPGuideMessage>
+              <EnterEmail
+                $setDuplicatedEmail={setDuplicatedEmail}
+                $setDoneDuplicationCheck={setDoneDuplicationCheck}
+                $setEmail={setEmail}
+                $email={email}
+                $validEmail={validEmail}
+                $duplicatedEmail={duplicatedEmail}
+                $doneDuplicationCheck={doneDuplicationCheck}
+              />
             </SFormItem>
 
             {/* [x] 비밀번호 작성란 */}
@@ -317,25 +247,13 @@ const SignUpForm = () => {
             {/* [x] 성별 선택란 */}
             <SFormItem style={{ marginBottom: '23px' }}>
               <span>성별</span>
-              <SRadioField>
-                <SRadioLabel htmlFor="female" $isGenderChecked={checkedGender.female}>
-                  여성
-                </SRadioLabel>
-                <SHiddenInput type="radio" id="female" name="female" value="female" checked={checkedGender.female} onChange={genderChangeHandler} />
-                <SRadioLabel htmlFor="male" $isGenderChecked={checkedGender.male}>
-                  남성
-                </SRadioLabel>
-                <SHiddenInput type="radio" id="male" name="male" value="male" checked={checkedGender.male} onChange={genderChangeHandler} />
-              </SRadioField>
+              <GenderRadiobox $checkedGender={checkedGender} $setCheckedGender={setCheckedGender} />
             </SFormItem>
 
             {/* [x] 지역 선택란 */}
             <SFormItem>
               <SFormItemHeader>
                 <span>활동선호지역</span>
-                {/* <Sicon>
-                      <FaInfoCircle style={{ marginRight: '5px' }} />
-                    </Sicon> */}
                 <SPGuideMessage>
                   {location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}
                   {(location.sido1 === '전체' || location.sido2 === '전체') && '지역1, 지역2 모두 특정지역 선택 필수'}
@@ -354,8 +272,11 @@ const SignUpForm = () => {
               </SFormItemBody>
             </SFormItem>
           </SUnderForm>
+
           <SPartitionLine />
+
           <ServiceAgreement $setIsAllChecked={setIsAllChecked} />
+
           <SUnderFormSubmitButtonContainer>
             <SButton type="submit" disabled={!validEmail || !validPwd || !validMatch || !validUsername || !validBirth || !validGender || !validLocation || !doneDuplicationCheck || duplicatedEmail || !isAllChecked ? true : false}>
               가입완료
@@ -423,52 +344,10 @@ const SFormItem = styled.div`
   gap: 5px 12px;
 `;
 
-const SEmailInputWrapper = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 10px;
-  width: 100%;
-  min-width: 320px;
-  @media screen and (max-width: 420px) {
-    min-width: 220px;
-  }
-`;
-
 const SpasswordLabel = styled.label`
   display: flex;
   flex-direction: column;
   gap: 5px;
-`;
-
-const SEmailButton = styled.button<{ disabled: boolean }>`
-  min-width: 100px;
-  height: 50px;
-  line-height: 50px;
-  font-size: 16px;
-  border-radius: 3px;
-  /* cursor: default; */
-  background-color: ${({ disabled }) => {
-    if (disabled) {
-      return '#fe902f57';
-    } else {
-      return '#FE902F';
-    }
-  }};
-  color: #fff;
-  cursor: ${({ disabled }) => {
-    if (disabled) {
-      return 'default';
-    } else {
-      return 'pointer';
-    }
-  }};
-  @media screen and (max-width: 420px) {
-    min-width: 90px;
-    height: 45px;
-    line-height: 45px;
-  }
 `;
 
 const SInput = styled.input<{ $color: boolean; $noFocusedColor: boolean; id?: string }>`
@@ -502,49 +381,6 @@ const SInput = styled.input<{ $color: boolean; $noFocusedColor: boolean; id?: st
   @media screen and (max-width: 420px) {
     height: 45px;
     line-height: 45px;
-  }
-`;
-
-/* input Radio */
-const SHiddenInput = styled.input`
-  position: absolute;
-  opacity: 0;
-  width: 0;
-`;
-
-const SRadioField = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-`;
-
-const SRadioLabel = styled.label<{ $isGenderChecked: boolean }>`
-  /* width 100%로 해도 되나 */
-  box-sizing: border-box;
-  width: 100%;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: ${(props) => {
-    if (props.$isGenderChecked === true) {
-      return '1px solid #FE902F';
-    } else {
-      return '1px solid #696969';
-    }
-  }};
-  color: ${(props) => {
-    if (props.$isGenderChecked === true) {
-      return ' #FE902F';
-    } else {
-      return '#696969';
-    }
-  }};
-
-  cursor: pointer;
-  border-radius: 3px;
-  @media screen and (max-width: 420px) {
-    height: 45px;
   }
 `;
 
