@@ -11,7 +11,6 @@ import MatchingTutor from '../matchingTab/MatchingTutor';
 import { fetchLike } from '../../api/like';
 import { ContentsDataBox, DataAuth, DataContent, DataStar, DataTitle, StudentItem } from '../tutorInfo/TutorInfo.styled';
 import { matchMyReview } from '../../api/review';
-import { ButtonMoreWrapper } from '../review/Review.styled';
 import { icon_more, starEmpty, starFull } from '../../assets';
 import { openModal, setReview } from '../../redux/modules';
 import * as S from './StudentInfo.styled';
@@ -23,7 +22,6 @@ interface pageProps {
 const StudentInfo = ({ match }: pageProps) => {
   const dispatch = useDispatch();
   const [openMenuId, setOpenMenuId] = useState<number>(0);
-  const [openButton, setOpenButton] = useState<boolean>(false);
   const user = useSelector((state: RootState) => state.user.user);
   const tutors = useSelector((state: RootState) => state.tutor.tutor);
 
