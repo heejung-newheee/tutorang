@@ -39,8 +39,8 @@ const Main = () => {
       <Section style={{ backgroundColor: '#ffffff' }}>
         <Container>
           <SectionTitle>인기있는 튜터를 만나보세요</SectionTitle>
-          <TutorSlider tutorList={topReviewer} panels={4} uniqueKey="main" />
         </Container>
+        <TutorSlider tutorList={topReviewer} panels={5} uniqueKey="main" />
       </Section>
       <Section style={{ backgroundColor: '#f8f8f8' }}>
         <Container>

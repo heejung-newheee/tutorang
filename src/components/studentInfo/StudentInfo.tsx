@@ -79,8 +79,8 @@ const StudentInfo = ({ match }: pageProps) => {
       <InfoSection>
         <Container>
           <InfoTitle>찜한 강사 리스트</InfoTitle>
-          {likedUser.length > 0 ? <TutorSlider uniqueKey="studentInfo" tutorList={likedUser} panels={4} /> : <InfoNull>찜한 강사가 없습니다</InfoNull>}
         </Container>
+        {likedUser.length > 0 ? <TutorSlider uniqueKey="studentInfo" tutorList={likedUser} panels={6} /> : <InfoNull>찜한 강사가 없습니다</InfoNull>}
       </InfoSection>
       <InfoSection>
         <Container>

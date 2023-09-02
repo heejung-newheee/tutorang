@@ -46,12 +46,15 @@ export const InfoIcon = styled.img`
 `;
 export const Tag = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 7px;
   margin-top: 10px;
   div {
     padding: 0 11px;
+    font-size: 12px;
     line-height: 26px;
     border-radius: 13px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 4px 0px;
+    white-space: nowrap;
   }
 `;
