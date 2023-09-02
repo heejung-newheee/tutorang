@@ -28,16 +28,16 @@ export const SPartitionLine = styled.div`
 export const SContainer = styled.div``;
 
 export const SFormContainer = styled.div`
-  height: 550px;
+  height: 420px;
   /* padding: 50px 20px; */
   @media screen and (max-width: 420px) {
-    height: 450px;
+    height: 400px;
   }
 `;
 
 export const SForm = styled.form`
   box-sizing: border-box;
-  padding: 80px 20px;
+  padding: 40px 20px 35px;
   margin: 0 auto;
   max-width: 650px;
   min-width: 360px;
@@ -45,8 +45,8 @@ export const SForm = styled.form`
   flex-direction: column;
   gap: 10px;
   @media screen and (max-width: 420px) {
-    padding: 50px 20px;
-    gap: 10px;
+    padding: 30px 20px;
+    gap: 8px;
   }
 `;
 
@@ -61,8 +61,8 @@ export const SInput = styled.input`
   padding: 5px 50px 5px 12px;
   box-sizing: border-box;
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  height: 45px;
+  line-height: 45px;
   font-size: 16px;
   border: 1px solid #696969;
   border-radius: 3px;
@@ -90,7 +90,7 @@ export const SButton = styled.button<{ disabled: boolean }>`
     if (props.disabled === true) return 'not-allowed';
     else return 'pointer';
   }};
-  margin-top: 50px;
+  margin-top: 20px;
   @media screen and (max-width: 420px) {
     margin-top: 25px;
     height: 45px;

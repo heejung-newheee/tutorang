@@ -312,14 +312,14 @@ const SFormContainer = styled.div`
 
 const SForm = styled.form`
   box-sizing: border-box;
-  padding: 80px 0px;
+  padding: 40px 0px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   /* gap: 40px; */
   @media screen and (max-width: 420px) {
-    padding: 50px 0px;
+    padding: 30px 0px;
   }
 `;
 

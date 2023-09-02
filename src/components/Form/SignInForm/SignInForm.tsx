@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { css, styled } from 'styled-components';
 import { googleicon, kakaotalk, navericon } from '../../../assets';
 import supabase from '../../../supabase';
-import { SButton, SContainer, SForm, SFormContainer, SFormItem, SInput, SPGuideMessage, SPartitionLine } from '../AuthForm.styled';
+import { SButton, SContainer, SForm, SFormContainer, SFormItem, SInput, SPGuideMessage, SPartitionLine } from '../common/AuthForm.styled';
 import FormHeader from '../common/FormHeader';
 import { FORM_CONSTANT_TITLE_SIGNIN } from '../common/formConstant';
 import './../common/icon.css';
@@ -159,17 +159,17 @@ const SsnsIcon = styled.img<{ $iconType?: string }>`
   ${({ $iconType }) => {
     if ($iconType === 'google')
       return css`
-        width: 67px;
-        height: 67px;
+        width: 57px;
+        height: 57px;
         @media screen and (max-width: 420px) {
-          width: 53px;
-          height: 53px;
+          width: 50px;
+          height: 50px;
         }
       `;
     else {
       return css`
-        width: 65px;
-        height: 65px;
+        width: 58px;
+        height: 58px;
         @media screen and (max-width: 420px) {
           width: 51px;
           height: 51px;
@@ -204,14 +204,15 @@ const SButtonRelationArea = styled.div`
 
 const SFooter = styled.footer`
   width: 100%;
-  height: 280px;
+  // 지금 layout 전반적으로 footer 크기 정해놓은 것 때문에 height 없애놓았음
+  /* height: 180px; */
   @media screen and (max-width: 420px) {
-    height: 200px;
+    height: 100px;
   }
 `;
 
 const SsnsIconContainer = styled.div`
-  padding: 55px 0;
+  padding: 45px 0;
   display: flex;
   justify-content: center;
   align-items: center;
