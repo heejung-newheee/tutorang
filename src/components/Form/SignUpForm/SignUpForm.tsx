@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { BsFillEyeFill, BsFillEyeSlashFill, BsXCircleFill } from 'react-icons/bs';
-import { FaAngleDown, FaInfoCircle } from 'react-icons/fa';
+import { FaInfoCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import supabase from '../../../supabase';
 import FormHeader from '../common/FormHeader';
+import SelectBirth from '../common/SelectBirth';
 import SelectLocation from '../common/SelectLocation';
 import { FORM_CONSTANT_TITLE_SIGNUP } from '../common/formConstant';
 import './../common/icon.css';
@@ -57,20 +58,12 @@ const SignUpForm = () => {
   const [location, setLoaction] = useState({ sido1: '시/도 선택', gugun1: '구/군 선택', sido2: '시/도 선택', gugun2: '구/군 선택' });
   const [validLocation, setValidLocation] = useState(false);
 
-  const now = new Date();
-
   const [birth, setBirth] = useState({
     year: '',
     month: '',
     day: '',
   });
   const [validBirth, setValidBirth] = useState(false);
-
-  const [isDateOpen, setIsDateOpen] = useState({
-    year: false,
-    month: false,
-    day: false,
-  });
 
   const duplicationCheck = async (unverifiedEmail: string) => {
     // unverifiedEmail 을 supabase의 db 에서 확인
@@ -92,31 +85,6 @@ const SignUpForm = () => {
       emailRef.current.value = '';
     }
   };
-
-  const birthYearOptions = [];
-  for (let y = now.getFullYear(); y >= 1930; y -= 1) {
-    birthYearOptions.push(y);
-  }
-
-  // 월, 일 2자리
-  const birthMonthOptions = [];
-  for (let m = 1; m <= 12; m += 1) {
-    if (m < 10) {
-      birthMonthOptions.push('0' + m.toString());
-    } else {
-      birthMonthOptions.push(m.toString());
-    }
-  }
-
-  const birthDayOptions = [];
-  const date = new Date(+birth.year, +birth.month, 0).getDate();
-  for (let d = 1; d <= date; d += 1) {
-    if (d < 10) {
-      birthDayOptions.push('0' + d.toString());
-    } else {
-      birthDayOptions.push(d.toString());
-    }
-  }
 
   const genderChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (checkedGender.male !== checkedGender.female && event.target.name === 'female') setCheckedGender((prev) => ({ male: !prev.male, female: !prev.female }));
@@ -169,21 +137,7 @@ const SignUpForm = () => {
     setValidLocation(checkedValidLocation1 && checkedValidLocation2 && !checkedSameLocation);
   }, [location]);
 
-  const selectDateOption = (value: string, dateType: string) => {
-    console.log(value, dateType);
-    if (dateType === 'year') {
-      setBirth((prev) => ({ ...prev, year: value }));
-      setIsDateOpen((prev) => ({ ...prev, year: !prev.year }));
-    }
-    if (dateType === 'month') {
-      setBirth((prev) => ({ ...prev, month: value }));
-      setIsDateOpen((prev) => ({ ...prev, month: !prev.month }));
-    }
-    if (dateType === 'day') {
-      setBirth((prev) => ({ ...prev, day: value }));
-      setIsDateOpen((prev) => ({ ...prev, day: !prev.day }));
-    }
-  };
+  const now = new Date();
 
   const calculateAge = () => {
     const thisYear = now.getFullYear();
@@ -246,6 +200,7 @@ const SignUpForm = () => {
       }
     }
   };
+
   return (
     <SContainer>
       {/* {errMsg && <p ref={errRef}>{errMsg}</p>} */}
@@ -278,7 +233,9 @@ const SignUpForm = () => {
                 {email && <BsXCircleFill className="reset_input_btn" onClick={deleteEmail} />}
               </SEmailInputWrapper>
               <SPGuideMessage $guideMessageColor={'안내'}>
-                <FaInfoCircle style={{ marginRight: '5px' }} />
+                <p style={{ display: 'flex', justifyContent: 'center', alignContent: 'center', width: '18px', height: '18px', lineHeight: '18px' }}>
+                  <FaInfoCircle className="info_icon" />
+                </p>
                 최종 회원가입 승인메일을 보낼 예정이오니 실제 열람가능한 이메일을 기입해주시기 바랍니다.
               </SPGuideMessage>
               <SPGuideMessage $guideMessageColor={!duplicatedEmail ? '확인' : ''}>
@@ -304,8 +261,8 @@ const SignUpForm = () => {
                   placeholder="비밀번호를 입력하세요"
                   autoComplete="off"
                 />
-                {!isPasswordHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsPasswordHidden(true)} />}
-                {isPasswordHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsPasswordHidden(false)} />}
+                {pwd && !isPasswordHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsPasswordHidden(true)} />}
+                {pwd && isPasswordHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsPasswordHidden(false)} />}
               </SpasswordLabel>
               <SPGuideMessage>{!!pwd && !validPwd && '소문자, 숫자, 특수문자(!@#$%)를 모두 포함하여 6자 이상 24자 이하의 비밀번호를 입력해주세요'}</SPGuideMessage>
             </SFormItem>
@@ -326,8 +283,8 @@ const SignUpForm = () => {
                   placeholder="비밀번호 확인 입력하세요"
                   autoComplete="off"
                 />
-                {!isMatchPwHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsMatchPwHidden(true)} />}
-                {isMatchPwHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsMatchPwHidden(false)} />}
+                {matchPwd && !isMatchPwHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsMatchPwHidden(true)} />}
+                {matchPwd && isMatchPwHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsMatchPwHidden(false)} />}
               </SpasswordLabel>
 
               <SPGuideMessage>{!!matchPwd && !validMatch && '처음에 입력한 비밀번호와 동일해야합니다.'}</SPGuideMessage>
@@ -354,60 +311,7 @@ const SignUpForm = () => {
             {/* [x] 생년월일 선택란 */}
             <SFormItem style={{ marginBottom: '23px' }}>
               <span>생년월일</span>
-
-              <SDropdownField>
-                <SDropdownWrapper>
-                  <SDropDownHeader id="birthYearDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, year: !prev.year }))}>
-                    <span>{birth.year || '년도'}</span>
-                    <FaAngleDown />
-                  </SDropDownHeader>
-                  {isDateOpen.year && (
-                    <SOptionContainer>
-                      <Select>
-                        {birthYearOptions.map((option) => (
-                          <SOption key={option} $selectedOption={birth.year === option.toString()} onClick={() => selectDateOption(option.toString(), 'year')}>
-                            {option}
-                          </SOption>
-                        ))}
-                      </Select>
-                    </SOptionContainer>
-                  )}
-                </SDropdownWrapper>
-                <SDropdownWrapper>
-                  <SDropDownHeader id="birthMonthDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, month: !prev.month }))}>
-                    <span>{birth.month || '월'}</span>
-                    <FaAngleDown />
-                  </SDropDownHeader>
-                  {isDateOpen.month && (
-                    <SOptionContainer>
-                      <Select>
-                        {birthMonthOptions.map((option) => (
-                          <SOption key={option} $selectedOption={birth.month === option} onClick={() => selectDateOption(option, 'month')}>
-                            {option}
-                          </SOption>
-                        ))}
-                      </Select>
-                    </SOptionContainer>
-                  )}
-                </SDropdownWrapper>
-                <SDropdownWrapper>
-                  <SDropDownHeader id="birthDayDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, day: !prev.day }))}>
-                    <span>{birth.day || '일'}</span>
-                    <FaAngleDown />
-                  </SDropDownHeader>
-                  {isDateOpen.day && (
-                    <SOptionContainer>
-                      <Select>
-                        {birthDayOptions.map((option) => (
-                          <SOption key={option} $selectedOption={birth.day === option} onClick={() => selectDateOption(option, 'day')}>
-                            {option}
-                          </SOption>
-                        ))}
-                      </Select>
-                    </SOptionContainer>
-                  )}
-                </SDropdownWrapper>
-              </SDropdownField>
+              <SelectBirth $setBirth={setBirth} />
             </SFormItem>
 
             {/* [x] 성별 선택란 */}
@@ -432,7 +336,10 @@ const SignUpForm = () => {
                 {/* <Sicon>
                       <FaInfoCircle style={{ marginRight: '5px' }} />
                     </Sicon> */}
-                <SPGuideMessage>{location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}</SPGuideMessage>
+                <SPGuideMessage>
+                  {location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}
+                  {(location.sido1 === '전체' || location.sido2 === '전체') && '지역1, 지역2 모두 특정지역 선택 필수'}
+                </SPGuideMessage>
               </SFormItemHeader>
               {/* [x] 1지역 선택란  */}
               <SFormItemBody>
@@ -641,64 +548,6 @@ const SRadioLabel = styled.label<{ $isGenderChecked: boolean }>`
   }
 `;
 
-/* select box (drop down)  */
-const SDropdownWrapper = styled.div`
-  // 이거 width 100%로 해도 되는건가..
-  position: relative;
-  width: 100%;
-  border: 1px solid #696969;
-  border-radius: 3px;
-`;
-
-const SDropDownHeader = styled.div`
-  box-sizing: border-box;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 3px;
-  cursor: pointer;
-  @media screen and (max-width: 420px) {
-    height: 45px;
-    line-height: 45px;
-  }
-`;
-
-const SOptionContainer = styled.div<{ $selectOptionsType?: string }>`
-  display: block;
-  position: absolute;
-  left: 0;
-  width: 100%;
-  max-height: 180px;
-  background-color: #fff;
-  border: 1px solid #696969;
-  overflow-y: scroll;
-  z-index: ${({ $selectOptionsType }) => {
-    if ($selectOptionsType === 'location1') return '3';
-    else return '1';
-  }};
-`;
-const Select = styled.ul``;
-
-const SOption = styled.li<{ $selectedOption: boolean }>`
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 10px;
-  background-color: ${(props) => {
-    if (props.$selectedOption === true) return '#eee';
-    else return '#fff';
-  }};
-  cursor: pointer;
-  @media screen and (max-width: 420px) {
-    height: 45px;
-    line-height: 45px;
-  }
-`;
 const SUnderFormSubmitButtonContainer = styled.div`
   max-width: 650px;
   width: 100%;
@@ -738,7 +587,7 @@ const SPGuideMessage = styled.p<{ $guideMessageColor?: string }>`
   min-width: 10px;
   height: 18px;
   display: flex;
-  font-size: 13px;
+  font-size: 12px;
   color: ${({ $guideMessageColor }) => {
     if ($guideMessageColor === '확인') {
       return '#1b7b18';
@@ -766,9 +615,4 @@ const SFormItemBodySection = styled.section`
   width: 100%;
   display: flex;
   flex-direction: column;
-`;
-const SDropdownField = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
 `;

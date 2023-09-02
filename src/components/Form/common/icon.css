@@ -3,9 +3,14 @@
   right: 130px;
   top: 17px;
   fill: #cdcdcd;
-  z-index: 2
+  z-index: 2;
 }
 
+.info_icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .reset_signin_input_btn {
   position: absolute;
