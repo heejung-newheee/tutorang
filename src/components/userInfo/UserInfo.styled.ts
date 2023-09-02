@@ -118,7 +118,7 @@ export const SummaryItem = styled.div`
 
 export const InfoSection = styled.section`
   background-color: ${colors.gray_100};
-  padding: 55px 0;
+  padding: 55px 10px;
   margin: 40px 0;
 `;
 export const InfoList = styled.ul``;
@@ -134,8 +134,11 @@ export const InfoItem = styled.li`
 `;
 export const InfoTitle = styled.h2`
   font-size: 28px;
+  line-height: 1;
   font-weight: bold;
   margin-bottom: 40px;
+  padding-left: 15px;
+  border-left: solid 6px ${colors.primary};
 `;
 export const InfoNull = styled.p`
   color: #bebebe;

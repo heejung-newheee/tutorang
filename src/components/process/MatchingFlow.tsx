@@ -20,7 +20,7 @@ const MatchingFlow = () => {
   return (
     <Section style={{ backgroundColor: '#f8f8f8' }}>
       <Container>
-        <SectionTitle style={{ textAlign: 'center', margin: '0 auto' }}>가까운 튜터와 대화 후, 매칭하고 만나기까지</SectionTitle>
+        <SectionTitle style={{ position: 'relative', left: '50%', transform: 'translate(-50%, 0px)' }}>가까운 튜터와 대화 후, 매칭하고 만나기까지</SectionTitle>
         <S.FlowTabWrap>
           <S.FlowTabList>
             {tabs.map((el, idx) => (

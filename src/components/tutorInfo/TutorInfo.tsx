@@ -2,25 +2,32 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchReview } from '../../api/user';
 import * as S from './TutorInfo.styled';
 import { RootState } from '../../redux/config/configStore';
-import { useSelector } from 'react-redux';
-import { fetchTutorAll } from '../../api/tutor';
-import { Views } from '../../supabase/database.types';
+import { useDispatch, useSelector } from 'react-redux';
+import { tutorInfoJoin } from '../../api/tutor';
+import { Tables, Views } from '../../supabase/database.types';
 import { Container, InfoNull, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
 import MatchingStudent from '../matchingTab/MatchingStudent';
 import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { starEmpty, starFull } from '../../assets';
+import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify, starEmpty, starFull } from '../../assets';
+import { Age, Icon, TutorName, InfoItem, TagList, PriceList, PriceItem, Dot } from '../tutorInfoDetail/TutorInfoDetail.styled';
+import { openModal } from '../../redux/modules';
+import { getBoard } from '../../api/board';
 
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
 }
 const TutorInfo = ({ match }: pageProps) => {
+  const dispatch = useDispatch();
   useEffect(() => {
     AOS.init();
   }, []);
+  const boardData = useQuery(['boardData'], getBoard);
+  console.log(boardData.data);
 
-  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutor-info'], fetchTutorAll);
+  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery(['tutoInfoJoin'], tutorInfoJoin);
+
   const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery(['review'], fetchReview);
 
   const user = useSelector((state: RootState) => state.user.user);
@@ -44,7 +51,12 @@ const TutorInfo = ({ match }: pageProps) => {
     return user!.id === item.reviewed_id;
   });
 
-  const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.user_id) : null;
+  const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.tutor_id) : null;
+
+  const handleEditTutorInfo = () => {
+    dispatch(openModal({ type: 'editTutorInfo' }));
+  };
+
   const starRating = (rating: number) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -62,6 +74,78 @@ const TutorInfo = ({ match }: pageProps) => {
         <>
           <InfoSection>
             <Container>
+              <InfoTitle>수업 소개</InfoTitle>
+              <S.TutorClassWarp>
+                <S.TutorClassTop>
+                  <div>
+                    <TutorName>
+                      {tutorInfo.tutor_name} <Age>(나이)</Age>
+                    </TutorName>
+                    {/* <verify> */}
+                    <Icon src={icon_verify} />
+                    학력인증
+                    {/* </verify> */}
+                  </div>
+                  <S.ClassEditBtn onClick={handleEditTutorInfo}>
+                    <img src={icon_edit_wh} alt="" />
+                  </S.ClassEditBtn>
+                </S.TutorClassTop>
+                <S.TutorClass>
+                  <S.ClassDetail>
+                    <InfoItem>
+                      <Icon src={icon_location_gray} /> {tutorInfo.location1_sido} | {tutorInfo.location1_gugun}
+                      <Icon src={icon_location_gray} /> {tutorInfo.location2_sido} | {tutorInfo.location2_gugun}
+                    </InfoItem>
+                    <InfoItem>
+                      <Icon src={icon_school} /> {tutorInfo.university} | {tutorInfo.major}
+                    </InfoItem>
+                    <InfoItem>
+                      <Icon src={icon_check} />
+                      {tutorInfo.speaking_language?.map((language) => {
+                        return <span key={language}> {language} </span>;
+                      })}
+                      가능
+                    </InfoItem>
+                    <InfoItem>
+                      <Icon src={icon_check} />
+                      언어 난이도
+                      {tutorInfo.class_level?.map((level) => {
+                        return <S.langLevel key={level}>{level}</S.langLevel>;
+                      })}
+                    </InfoItem>
+                    <TagList>
+                      {tutorInfo.personality?.map((personal) => {
+                        return <li key={personal}>#{personal}</li>;
+                      })}
+                    </TagList>
+                    <PriceList className="class-price">
+                      <PriceItem>
+                        <span>
+                          <Dot />
+                          30분 화상 만남
+                        </span>
+                        <span>{tutorInfo.tuition_fee_online}</span>
+                      </PriceItem>
+                      <PriceItem>
+                        <span>
+                          <Dot />
+                          30분 직접 만남
+                        </span>
+                        <span>{tutorInfo.tuition_fee_offline}</span>
+                      </PriceItem>
+                    </PriceList>
+                  </S.ClassDetail>
+                  <S.ClassIntro>
+                    <p>수업소개</p>
+                    {tutorInfo.class_info}
+                  </S.ClassIntro>
+                </S.TutorClass>
+              </S.TutorClassWarp>
+            </Container>
+          </InfoSection>
+
+          <InfoSection>
+            <Container>
               <InfoTitle>매칭 내역</InfoTitle>
               {matchList.length > 0 ? <MatchingStudent matchList={matchList} /> : <InfoNull>매칭 내역이 없습니다</InfoNull>}
             </Container>
@@ -76,11 +160,11 @@ const TutorInfo = ({ match }: pageProps) => {
                     return (
                       <S.StudentItem key={review.id}>
                         <S.StudentReview>
-                          <S.StReviewTitle>{review.title}</S.StReviewTitle>
-                          <S.StReviewContent>{review.content}</S.StReviewContent>
-                          <S.StReviewAuth>
+                          <S.DataTitle>{review.title}</S.DataTitle>
+                          <S.DataContent>{review.content}</S.DataContent>
+                          <S.DataAuth>
                             {review.author} / {review.created_at.split('T')[0]}
-                          </S.StReviewAuth>
+                          </S.DataAuth>
                         </S.StudentReview>
                         <S.ReviewRating>{starRating(rating)}</S.ReviewRating>
                       </S.StudentItem>
@@ -90,6 +174,34 @@ const TutorInfo = ({ match }: pageProps) => {
               ) : (
                 <InfoNull>후기가 없습니다</InfoNull>
               )}
+            </Container>
+          </InfoSection>
+
+          <InfoSection>
+            <Container>
+              <InfoTitle>내가 남긴 문의</InfoTitle>
+              {boardData
+                .data!.filter((board: Tables<'board'>) => {
+                  return board.user_id === user!.id;
+                })
+                .map((item: Tables<'board'>) => {
+                  return (
+                    <S.StudentItem key={item.id}>
+                      <div>
+                        <S.DataTitle>{item.title}</S.DataTitle>
+                        <S.DataContent>{item.content}</S.DataContent>
+                        <S.DataAuth>{item.created_at.split('T')[0]}</S.DataAuth>
+                      </div>
+                    </S.StudentItem>
+                  );
+                })}
+            </Container>
+          </InfoSection>
+
+          <InfoSection>
+            <Container>
+              <InfoTitle>수강 database</InfoTitle>
+              <div>통계 그래프</div>
             </Container>
           </InfoSection>
         </>
