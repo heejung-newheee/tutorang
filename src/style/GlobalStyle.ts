@@ -6,7 +6,9 @@ const GlobalStyles = createGlobalStyle`
 ${reset}
     *{
         box-sizing: border-box;
+        font-family: 'Noto Sans KR'; 
     }    
+    
     body{
         line-height: 1.4;
         font-family: 'Noto Sans KR', sans-serif;
@@ -36,6 +38,7 @@ ${reset}
 
     html, body, div, span, h1, h2, h3, h4, h5, h6, p,
     a, dl, dt, dd, ol, ul, li, form, label, table{
+        font-family: 'Noto Sans KR'; 
         margin: 0;
         padding: 0;
         border: 0;
@@ -56,6 +59,7 @@ ${reset}
         background: transparent;
         cursor: pointer;
     }
+    
 `;
 
 export default GlobalStyles;
