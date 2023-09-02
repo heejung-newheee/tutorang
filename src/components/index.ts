@@ -17,3 +17,4 @@ export { default as Review } from './review/Review';
 export { default as TutorInfoDetail } from './tutorInfoDetail/TutorInfoDetail';
 export { default as StarTutorSlider } from './slider/starTutorSlider/StarTutorSlider';
 export { default as RemoveConfirm } from './dialog/confirm/RemoveConfirm';
+export { default as Loading } from './common/Loading/Loading';

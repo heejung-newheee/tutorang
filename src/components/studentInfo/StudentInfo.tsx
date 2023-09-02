@@ -14,6 +14,7 @@ import { matchMyReview } from '../../api/review';
 import { icon_more, starEmpty, starFull } from '../../assets';
 import { openModal, setReview } from '../../redux/modules';
 import * as S from './StudentInfo.styled';
+import { Loading } from '..';
 
 const BOARD_QUERY_KEY = ['board'];
 interface pageProps {
@@ -30,7 +31,7 @@ const StudentInfo = ({ match }: pageProps) => {
   const myReview = useQuery(['myReviewData'], () => matchMyReview(user!.id));
 
   if (boardLoading || likeLoading) {
-    return <div>로딩중~~~~~~~~~~~</div>;
+    return <Loading />;
   }
   if (boardError || likeError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
