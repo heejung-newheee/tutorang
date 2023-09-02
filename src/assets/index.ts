@@ -9,6 +9,7 @@ export { default as icon_verify } from './ico_verified.svg';
 export { default as icon_check } from './icon_check.svg';
 export { default as icon_class } from './icon_class.svg';
 export { default as icon_edit } from './icon_edit.png';
+export { default as icon_edit_wh } from './edit_white.svg';
 export { default as icon_info } from './icon_info.svg';
 export { default as icon_like } from './icon_like.svg';
 export { default as icon_location } from './icon_location.svg';
