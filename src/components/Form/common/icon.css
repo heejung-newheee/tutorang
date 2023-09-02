@@ -49,6 +49,12 @@
   .password_show_hidden_button {
     top: 41px;
   }
+
+  .welcome_icon {
+    font-size: 45px;
+    fill: #fe902f;
+    margin-bottom: 12px;
+  }
 }
 
 .pw_button_hidden_color {
@@ -77,4 +83,10 @@
 .agree_checkbox {
   font-size: 20px;
   fill: #3D3D3D;
+}
+
+.welcome_icon {
+  font-size: 65px;
+  fill: #fe902f;
+  margin-bottom: 15px;
 }

@@ -64,6 +64,7 @@ const SignInForm = () => {
       provider: 'kakao',
     });
     if (error) alert(error.message);
+    navigate('/');
   };
 
   const googleLogin = async () => {
@@ -77,6 +78,7 @@ const SignInForm = () => {
       },
     });
     if (error) alert(error.message);
+    navigate('/');
   };
 
   const naverLogin = () => {

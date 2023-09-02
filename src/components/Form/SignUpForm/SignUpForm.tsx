@@ -144,8 +144,7 @@ const SignUpForm = () => {
         console.log(error);
         alert('회원가입 실패');
       } else {
-        alert('입력했던 이메일로가서 인증을 완료하면 로그인이 가능합니다! 지금바로 확인하시기 바랍니다!');
-        navigate('/signin');
+        navigate('/welcome-to-tutorang');
       }
     }
   };

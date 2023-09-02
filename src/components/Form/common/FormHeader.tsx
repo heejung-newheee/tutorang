@@ -35,17 +35,17 @@ const SHeader = styled.header`
   gap: 10px;
   & h1 {
     font-size: 30px;
-    font-weight: 700;
+    font-weight: 600;
   }
   & p {
-    font-size: 18px;
+    font-size: 17px;
     color: #4a4a4a;
   }
   @media screen and (max-width: 420px) {
     height: 130px;
     & h1 {
       font-size: 25px;
-      font-weight: 600;
+      font-weight: 500;
     }
     & p {
       font-size: 14px;
