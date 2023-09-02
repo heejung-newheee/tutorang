@@ -65,6 +65,11 @@ export const StudentItem = styled.li`
 export const StudentReview = styled.div``;
 
 // 글목록 불러오기 공통적용스타일
+export const ContentsDataBox = styled.div`
+  max-height: 600px;
+  overflow-y: scroll;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 0px -10px 0px inset, rgba(0, 0, 0, 0.3) 0px 0px -18px 0px inset;
+`;
 export const DataTitle = styled.h3`
   /* font-size: 27px; */
   font-size: 21px;

@@ -9,7 +9,7 @@ import CompleteClass from '../slider/completeClassSlider/CompleteClass';
 import TutorSlider from '../slider/tutorSlider/TutorSlider';
 import MatchingTutor from '../matchingTab/MatchingTutor';
 import { fetchLike } from '../../api/like';
-import { DataAuth, DataContent, DataStar, DataTitle, StudentItem } from '../tutorInfo/TutorInfo.styled';
+import { ContentsDataBox, DataAuth, DataContent, DataStar, DataTitle, StudentItem } from '../tutorInfo/TutorInfo.styled';
 import { matchMyReview } from '../../api/review';
 import { ButtonMoreWrapper } from '../review/Review.styled';
 import { icon_more, starEmpty, starFull } from '../../assets';
@@ -22,6 +22,7 @@ interface pageProps {
 }
 const StudentInfo = ({ match }: pageProps) => {
   const dispatch = useDispatch();
+  const [openMenuId, setOpenMenuId] = useState<number>(0);
   const [openButton, setOpenButton] = useState<boolean>(false);
   const user = useSelector((state: RootState) => state.user.user);
   const tutors = useSelector((state: RootState) => state.tutor.tutor);
@@ -58,8 +59,9 @@ const StudentInfo = ({ match }: pageProps) => {
   const handleReviewDelete = (id: number) => {
     dispatch(openModal({ type: 'confirmRemove', targetId: id }));
   };
-  const handleIsOpen = () => {
-    setOpenButton((prev) => !prev);
+
+  const handleIsOpen = (reviewId: number) => {
+    setOpenMenuId(reviewId === openMenuId ? 0 : reviewId);
   };
   const starRating = (rating: number) => {
     const stars = [];
@@ -77,7 +79,7 @@ const StudentInfo = ({ match }: pageProps) => {
       <InfoSection>
         <Container>
           <InfoTitle>찜한 강사 리스트</InfoTitle>
-          {likedUser.length > 0 ? <TutorSlider uniqueKey="studentInfo" tutorList={likedUser} panels={3} /> : <InfoNull>찜한 강사가 없습니다</InfoNull>}
+          {likedUser.length > 0 ? <TutorSlider uniqueKey="studentInfo" tutorList={likedUser} panels={4} /> : <InfoNull>찜한 강사가 없습니다</InfoNull>}
         </Container>
       </InfoSection>
       <InfoSection>
@@ -95,45 +97,50 @@ const StudentInfo = ({ match }: pageProps) => {
       <InfoSection>
         <Container>
           <InfoTitle>내가 쓴 후기</InfoTitle>
-          {myReview.data.map((review) => {
-            return (
-              <StudentItem key={review.id} style={{ alignItems: 'start' }}>
-                <div>
-                  <DataTitle>{review.title}</DataTitle>
-                  <DataStar>{starRating(review.rating!)}</DataStar>
-                  <DataContent>{review.content}</DataContent>
-                  {/* TODO 지금은 작성자. 타겟이름으로 변경/ */}
-                  <DataAuth>{review.author} </DataAuth>
-                </div>
-                <S.ReviewEditBtn onClick={handleIsOpen}>
-                  <button>
-                    <img src={icon_more} alt="" />
-                  </button>
-                  {openButton && (
-                    <S.moreMenu>
-                      <S.moreMenuItem
-                        onClick={() => {
-                          handleOpenReviewUpdateForm(review.id);
-                          // 수정할 리뷰 데이터 전달
-                          dispatch(setReview(review));
-                          // handleIsOpen(review.id);
-                        }}
-                      >
-                        수정
-                      </S.moreMenuItem>
-                      <S.moreMenuItem
-                        onClick={() => {
-                          handleReviewDelete(review.id);
-                        }}
-                      >
-                        삭제
-                      </S.moreMenuItem>
-                    </S.moreMenu>
-                  )}
-                </S.ReviewEditBtn>
-              </StudentItem>
-            );
-          })}
+          <ContentsDataBox>
+            {myReview.data.length > 0 ? (
+              myReview.data.map((review) => {
+                return (
+                  <StudentItem key={review.id} style={{ alignItems: 'start' }}>
+                    <div>
+                      <DataTitle>{review.title}</DataTitle>
+                      <DataStar>{starRating(review.rating!)}</DataStar>
+                      <DataContent>{review.content}</DataContent>
+                      {/* TODO 지금은 작성자. 타겟이름으로 변경/ */}
+                      <DataAuth>{review.author} </DataAuth>
+                    </div>
+                    <S.ReviewEditBtn>
+                      <button onClick={() => handleIsOpen(review.id)}>
+                        <img src={icon_more} alt="" />
+                      </button>
+                      <S.moreMenu className={review.id === openMenuId ? 'active' : ''}>
+                        <S.moreMenuItem
+                          onClick={() => {
+                            handleOpenReviewUpdateForm(review.id);
+                            // 수정할 리뷰 데이터 전달
+                            dispatch(setReview(review));
+                            handleIsOpen(review.id);
+                          }}
+                        >
+                          수정
+                        </S.moreMenuItem>
+                        <S.moreMenuItem
+                          onClick={() => {
+                            handleReviewDelete(review.id);
+                            handleIsOpen(review.id);
+                          }}
+                        >
+                          삭제
+                        </S.moreMenuItem>
+                      </S.moreMenu>
+                    </S.ReviewEditBtn>
+                  </StudentItem>
+                );
+              })
+            ) : (
+              <InfoNull>작성한 후기가 없습니다</InfoNull>
+            )}
+          </ContentsDataBox>
         </Container>
       </InfoSection>
       <InfoSection>

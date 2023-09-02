@@ -118,7 +118,7 @@ export const SummaryItem = styled.div`
 
 export const InfoSection = styled.section`
   background-color: ${colors.gray_100};
-  padding: 55px 0;
+  padding: 55px 10px;
   margin: 40px 0;
 `;
 export const InfoList = styled.ul``;

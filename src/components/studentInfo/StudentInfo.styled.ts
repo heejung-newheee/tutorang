@@ -39,7 +39,7 @@ export const ReviewEditBtn = styled.div`
   }
 `;
 export const moreMenu = styled.ul`
-  /* display: none; */
+  display: none;
   background-color: ${colors.white};
   border: 1px solid ${colors.primary};
   border-radius: 8px;
