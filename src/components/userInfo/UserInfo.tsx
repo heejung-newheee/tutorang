@@ -3,7 +3,7 @@ import TutorInfo from '../tutorInfo/TutorInfo';
 import StudentInfo from '../studentInfo/StudentInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
-import { matchingTutorData } from '../../api/match';
+import { getMatchData, matchingTutorData } from '../../api/match';
 import { useQuery } from '@tanstack/react-query';
 import { icon_edit, icon_location } from '../../assets';
 import { openModal } from '../../redux/modules';
@@ -12,9 +12,10 @@ import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../api/revi
 const UserInfo = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
-
-  const matchData = useSelector((state: RootState) => state.match.match);
+  const matchData = useQuery(['matchingData'], getMatchData);
   const { data } = useQuery(['matching_tutor_data'], matchingTutorData);
+  console.log(matchData.data);
+  console.log(data);
 
   // TODO count가 null이라면????????
   // TODO 리덕스 로딩
@@ -27,8 +28,8 @@ const UserInfo = () => {
   const handleEditProfiles = () => {
     dispatch(openModal({ type: 'editProfiles' }));
   };
-  const studentMatch = matchData?.filter((item) => item.user_id === user.id);
-  const tutorMatch = matchData?.filter((item) => item.tutor_id === user.id);
+  const studentMatch = matchData.data?.filter((item) => item.user_id === user.id);
+  const tutorMatch = matchData.data?.filter((item) => item.tutor_id === user.id);
 
   return (
     <>
