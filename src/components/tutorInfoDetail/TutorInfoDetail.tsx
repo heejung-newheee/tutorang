@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import * as S from './TutorInfoDetail.styled';
 import { matchTutor } from '../../api/tutor';
 import { icon_check, icon_class, icon_info, icon_like, icon_location_gray, icon_school, icon_verify, starEmpty, starFull, starHalf } from '../../assets';
-import { BookMark, Button } from '..';
+import { BookMark, Button, Loading } from '..';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../redux/modules';
 import { useReviewAverage } from '../../hooks';
@@ -84,7 +84,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
   };
 
   if (tutorLoading || reviewLoading) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
   if (tutorError || reviewError) {

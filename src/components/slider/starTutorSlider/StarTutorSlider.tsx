@@ -2,6 +2,7 @@ import * as S from './StartTutorSlider.styled';
 import { useQuery } from '@tanstack/react-query';
 import TutorSlider from '../tutorSlider/TutorSlider';
 import { tutorInfoJoin } from '../../../api/tutor';
+import { Loading } from '../..';
 
 const STAR_TUTORS_QUERY_KEY = ['starTutors'];
 
@@ -9,7 +10,7 @@ const StarTutorSlider = () => {
   const tutors = useQuery(STAR_TUTORS_QUERY_KEY, tutorInfoJoin);
 
   if (tutors.isLoading) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
   if (tutors.isError) {
     console.log(tutors.error);

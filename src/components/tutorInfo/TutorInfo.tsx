@@ -14,6 +14,7 @@ import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify,
 import { Age, Icon, TutorName, InfoItem, TagList, PriceList, PriceItem, Dot } from '../tutorInfoDetail/TutorInfoDetail.styled';
 import { openModal } from '../../redux/modules';
 import { getBoard } from '../../api/board';
+import { Loading } from '..';
 
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
@@ -38,7 +39,7 @@ const TutorInfo = ({ match }: pageProps) => {
   const matchList = matchingData.filter((item: Views<'matching_tutor_data'>) => item.tutor_id === user!.id);
 
   if (tutorLoading || reviewLoading) {
-    return <div>로딩중~~~~~~~~~~~</div>;
+    return <Loading />;
   }
   if (tutorError || reviewError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;

@@ -9,6 +9,7 @@ import { OverviewItem, OverviewItemIcon, OverviewItemNumber } from '../component
 import { icon_class, icon_like, icon_tutor, main_banner } from '../assets';
 import { colors } from '../style/theme/colors';
 import MatchingFlow from '../components/process/MatchingFlow';
+import { Loading } from '../components';
 
 const Main = () => {
   const tutorCount = useQuery(['tutorCount'], () => getAllTutorCount());
@@ -16,7 +17,7 @@ const Main = () => {
   const { data: topReviewer, isLoading, isError } = useQuery(['topReviewer'], () => getTopReviewer());
 
   if (isLoading) {
-    return <span>Loading...</span>;
+    return <Loading />;
   }
   if (isError) {
     return <span>Error</span>;

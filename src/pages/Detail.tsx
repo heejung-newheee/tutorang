@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { Review, StarTutorSlider, TutorInfoDetail } from '../components';
+import { Loading, Review, StarTutorSlider, TutorInfoDetail } from '../components';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from '../redux/modules';
