@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { colors } from '../../../style/theme/colors';
 
 export const TutorContainer = styled(Link)`
   border-radius: 10px;
@@ -17,17 +18,17 @@ export const TutorContainer = styled(Link)`
 
 export const Title = styled.div`
   width: 100%;
-  display: block;
+  margin: 5px 0;
   margin-bottom: 5px;
-  font-size: 15px;
+  margin-left: 10px;
+  padding-left: 7px;
+  display: block;
   overflow: hidden;
+  font-size: 15px;
+  font-weight: 600;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin: 5px 0;
-  border-left: 3px solid #fe902f;
-  margin-left: 10px;
-  font-weight: 600;
-  padding-left: 7px;
+  border-left: 3px solid ${colors.primary};
 `;
 
 export const InFoWrap = styled.div``;
@@ -39,19 +40,19 @@ export const TutorInfo = styled.div`
 
 export const Name = styled.div`
   width: 100%;
-  display: block;
   margin-bottom: 5px;
-  font-size: 15px;
+  display: block;
   overflow: hidden;
+  font-size: 15px;
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
 
 export const LocationDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   margin: 10px 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   font-size: 13px;
   color: gray;
 

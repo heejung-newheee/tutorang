@@ -1,26 +1,17 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { gender, level, age, handleDeleteFilterBar, price, Price, handleGenderFilter, handleLevelFilter, handleAgeFilter } from '../utility';
+import { gender, level, age, handleDeleteFilterBar, price, Price, handleGenderFilter, handleLevelFilter, handleAgeFilter, speakingLanguage, handleLanguageFilter } from '../utility';
 import * as S from './SelectBox.styled';
-// import { Slider } from '@mui/material';
-// import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Checkbox from '@mui/material/Checkbox';
 import { SelectedFilters, FilterMenuObj } from '../utility';
-import filterIcon from '../../../assets/funnel.png';
-import icon_location from '../../../assets/marker-location.png';
+import { filterIcon } from '../../../assets';
+import { icon_location } from '../../../assets';
 
 const obj: FilterMenuObj = {
   gender,
   level,
   age,
+  speakingLanguage,
 };
-
-// const theme = createTheme({
-//   palette: {
-//     secondary: {
-//       main: '#fe902f;', // 변경하고자 하는 색상 지정
-//     },
-//   },
-// });
 
 type Props = {
   initialSelectedFilters: SelectedFilters;
@@ -31,22 +22,14 @@ type Props = {
   setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>;
 };
 
-//price debounce
-// let timerId: ReturnType<typeof setTimeout> | null = null;
-
 const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelectedArr, selectedFilters, setSelectedFilters }: Props) => {
   const [filteredMenu, setfilteredMenu] = useState('');
   const [isChevronOpen, setIsChevronOpen] = useState(false);
-
-  // const [minPriceNum, setMinPriceNum] = useState<undefined | number>(0);
-  // const [maxPriceNum, setMaxPriceNum] = useState<undefined | number>(100000);
-  // const [Value, setValue] = useState<number>(0);
 
   //체크박스 노출여부
   const handleHiddenBox = (category: string) => {
     setfilteredMenu(category);
     setIsChevronOpen((pre) => (pre === true && filteredMenu !== category ? true : !pre));
-    // setIsChevronOpen((pre) => !pre);
   };
 
   //온,오프라인 설정
@@ -64,9 +47,6 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
   const reset = () => {
     setSelectedArr([]);
     setSelectedFilters(initialSelectedFilters);
-
-    // setMaxPriceNum(0);
-    // setMinPriceNum(0);
   };
 
   //체크박스 클릭
@@ -87,6 +67,11 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
         handleAgeFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
         break;
 
+      //언어종류
+      case 'speakingLanguage':
+        handleLanguageFilter(item, setSelectedFilters, selectedFilters, setSelectedArr);
+        break;
+
       default:
         break;
     }
@@ -94,28 +79,15 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
 
   //체크박스 클릭 - price가격 업데이트
   const handleFilterdObjPrice = (item: Price) => {
-    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: item.min });
-    setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-    setSelectedArr((pre) => [...pre, ['price', item.optionPrice]]);
-    // setSelectedArr((pre) => [...pre, ['price', `${minPriceNum?.toLocaleString('ko-KR')}~${item?.toLocaleString('ko-KR')}`]]);
+    if (item.optionPrice === '전체') {
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: item.min });
+      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
+    } else {
+      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: item.min });
+      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
+      setSelectedArr((pre) => [...pre, ['price', item.optionPrice]]);
+    }
   };
-
-  // //price가격 debounce
-  // const priceDebounce = (fn: (item: number) => void, delay: number) => {
-  //   if (timerId) {
-  //     clearTimeout(timerId);
-  //   }
-  //   timerId = setTimeout(() => {
-  //     fn(Value);
-  //     timerId = null;
-  //   }, delay);
-  // };
-
-  // //price가격 onchange
-  // const handleSliderChange = (event: Event, newValue: number | number[]) => {
-  //   setValue(newValue as number); // 슬라이더 값이 변경되면 state 업데이트
-  //   priceDebounce(() => handelInputPrice(newValue as number), 1000);
-  // };
 
   //선택되면 색깔바뀜
   const isColorTrue = (item: string) => {
@@ -152,28 +124,29 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
   return (
     <>
       <S.LocationDiv onClick={openModal}>
-        <span>
-          <img src={icon_location} />
-          <p> 지역을 통해서 찾기</p>
-        </span>
+        <img src={icon_location} />
+        <p> 지역을 통해서 찾기</p>
       </S.LocationDiv>
 
-      <S.FilterContainer $isChevronOpen={isChevronOpen}>
+      <S.FilterContainer>
         <S.FilterStart>
-          {' '}
           <img src={filterIcon} />
-          필터로 자세히 찾기
+          <p>필터로 자세히 찾기</p>
         </S.FilterStart>
 
         <S.FilterUl>
-          <S.FilterLi $isIn={isColorTrue('gender')} onClick={() => handleHiddenBox('gender')}>
-            성별
-            <S.ChevronSpan $chevron={ischevronOpen('gender')}></S.ChevronSpan>
+          <S.FilterLi $isIn={isColorTrue('speakingLanguage')} onClick={() => handleHiddenBox('speakingLanguage')}>
+            언어
+            <S.ChevronSpan $chevron={ischevronOpen('speakingLanguage')}></S.ChevronSpan>
           </S.FilterLi>
 
           <S.FilterLi $isIn={isColorTrue('level')} onClick={() => handleHiddenBox('level')}>
             난이도
             <S.ChevronSpan $chevron={ischevronOpen('level')}></S.ChevronSpan>
+          </S.FilterLi>
+          <S.FilterLi $isIn={isColorTrue('gender')} onClick={() => handleHiddenBox('gender')}>
+            성별
+            <S.ChevronSpan $chevron={ischevronOpen('gender')}></S.ChevronSpan>
           </S.FilterLi>
 
           <S.FilterLi $isIn={isColorTrue('age')} onClick={() => handleHiddenBox('age')}>
@@ -243,10 +216,6 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
                 <label htmlFor={`check-${item.optionPrice}`}>{item.optionPrice}</label>
               </div>
             ))}
-
-            {/* <ThemeProvider theme={theme}>
-              <Slider getAriaLabel={() => 'Temperature range'} valueLabelDisplay="auto" min={0} max={100000} value={Value} step={1000} onChange={handleSliderChange} color="secondary" />
-            </ThemeProvider> */}
           </S.InnerHiddenPrice>
         ) : null}
       </S.FilterContainer>

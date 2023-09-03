@@ -1,69 +1,95 @@
 import * as S from './Header.styled';
-import styled, { keyframes } from 'styled-components';
-import { closeModal } from '../../../redux/modules';
-import { useDispatch } from 'react-redux';
+import { Dispatch, SetStateAction } from 'react';
+import { tutorang_logo } from '../../../assets';
+import { Tables } from '../../../supabase/database.types';
+import { useNavigate } from 'react-router-dom';
 
-const HeaderModal = () => {
-  const dispatch = useDispatch();
+type HEADERMENUMOBILE = { title: string; path: string }[];
 
-  const handleClose = () => {
-    dispatch(closeModal());
-  };
+const HeaderMenuMobile: HEADERMENUMOBILE = [
+  { title: '튜터찾기', path: '/list' },
+  { title: '매칭후기', path: '/' },
+  { title: '커뮤니티', path: '/' },
+  { title: '고객센터', path: '/' },
+];
 
+type Props = {
+  sideNavOpen: boolean;
+  setSideNavOpen: Dispatch<SetStateAction<boolean>>;
+  loginUser: Tables<'profiles'> | null;
+  signOut: () => void;
+};
+
+const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props) => {
+  const navigate = useNavigate();
   return (
-    <ModalContainer onClick={handleClose}>
-      <div
+    <S.MobileContainer $sideNavOpen={sideNavOpen} onClick={(pre) => setSideNavOpen(!pre)}>
+      <S.MobileInner
+        $sideNavOpen={sideNavOpen}
         onClick={(e: React.MouseEvent<HTMLElement>) => {
           e.stopPropagation();
         }}
       >
-        <S.MobileMenuWrapper>
+        <S.MobileLogoDiv>
+          <span>
+            <img src={tutorang_logo} alt="logo"></img>
+            <h1>튜터랑</h1>
+          </span>
+
           <S.SignMobileWrapper>
-            <button>로그인</button>
-            <button>로그아웃</button>
+            {loginUser ? (
+              <>
+                {' '}
+                <button onClick={() => navigate('/mypage')}>마이페이지</button>
+                <button
+                  onClick={() => {
+                    signOut();
+                    navigate('/');
+                    setSideNavOpen(false);
+                  }}
+                >
+                  로그아웃
+                </button>
+              </>
+            ) : (
+              <>
+                {' '}
+                <button
+                  onClick={() => {
+                    setSideNavOpen(false);
+                    navigate('/signin');
+                  }}
+                >
+                  로그인
+                </button>
+                <button
+                  onClick={() => {
+                    setSideNavOpen(false);
+                    navigate('/signup');
+                  }}
+                >
+                  회원가입
+                </button>
+              </>
+            )}
           </S.SignMobileWrapper>
+        </S.MobileLogoDiv>
+        <S.MobileMenuWrapper>
           <nav>
             <S.GnbMobile>
-              <S.GnbMobileItem>튜터찾기</S.GnbMobileItem>
-              <S.GnbMobileItem>매칭후기</S.GnbMobileItem>
-              <S.GnbMobileItem>매칭후기</S.GnbMobileItem>
-              <S.GnbMobileItem>커뮤니티</S.GnbMobileItem>
-              <S.GnbMobileItem>고객센터</S.GnbMobileItem>
+              {HeaderMenuMobile.map((item, index) => (
+                <S.GnbMobileItemList>
+                  <S.NavLinkSt key={index} to={item.path}>
+                    {item.title}
+                  </S.NavLinkSt>
+                </S.GnbMobileItemList>
+              ))}
             </S.GnbMobile>
           </nav>
         </S.MobileMenuWrapper>
-      </div>
-    </ModalContainer>
+      </S.MobileInner>
+    </S.MobileContainer>
   );
 };
 
 export default HeaderModal;
-
-const slide = keyframes`
-	0%{
-    transform: translate(0px, -50%);
-    }
-    100%{
-      transform: translate(-140px, -50%);
-    }
-`;
-
-const ModalContainer = styled.div`
-  position: fixed;
-  z-index: 999999;
-  top: 50%;
-  left: 50%;
-  transform: translate(-140px, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  animation: ${slide} 0.5s ease-in-out forwards;
-
-  & > div {
-    width: 280px;
-    height: 100vh;
-    background-color: #ffffff;
-  }
-`;

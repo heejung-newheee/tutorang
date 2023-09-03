@@ -33,9 +33,9 @@ const LastTutorListCompo = ({ LastelementRef, userInfo }: Props) => {
 
           <S.TutorContent>
             <S.Tag>
-              <div>#{userInfo.personality}</div>
-              <div>#열정적인</div>
-              <div>#열정적인</div>
+              {userInfo.personality?.map((item) => (
+                <div>#{item}</div>
+              ))}
             </S.Tag>
           </S.TutorContent>
         </S.TutorInfo>
