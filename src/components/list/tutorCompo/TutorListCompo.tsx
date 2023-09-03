@@ -14,18 +14,16 @@ const TutorListCompo = ({ userInfo }: Props) => {
       <S.InFoWrap>
         <S.Title>{userInfo.class_info}</S.Title>
         <S.TutorInfo>
-          <S.Name>{userInfo?.tutor_name}(hello)</S.Name>
+          <S.Name>{userInfo?.tutor_name}</S.Name>
           <S.LocationDiv>
             <div>
               <img src={icon_location} alt="" />
-              location1 | location2
-              {/* {userInfo.location1_gugun} | {userInfo.location2_gugun} */}
+              {userInfo.location1_gugun} | {userInfo.location2_gugun}
             </div>
             <div>
               {' '}
               <img src={graduation} alt="" />
-              university | major
-              {/* {userInfo.university} | {userInfo.major} */}
+              {userInfo.university} | {userInfo.major}
             </div>
           </S.LocationDiv>
 

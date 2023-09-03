@@ -57,14 +57,18 @@ export const LocationDiv = styled.div`
   color: gray;
 
   & > div {
-    margin-right: 5px;
+    margin-right: 15px;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
   }
 
-  & > div > img {
-    width: 12px;
+  & > div:first-child > img {
+    width: 10px;
+    margin-right: 5px;
+  }
+  & > div:last-child > img {
+    width: 13px;
     margin-right: 5px;
   }
   & > div > svg {
