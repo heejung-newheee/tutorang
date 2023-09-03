@@ -78,10 +78,8 @@ const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props)
           <nav>
             <S.GnbMobile>
               {HeaderMenuMobile.map((item, index) => (
-                <S.GnbMobileItemList>
-                  <S.NavLinkSt key={index} to={item.path}>
-                    {item.title}
-                  </S.NavLinkSt>
+                <S.GnbMobileItemList key={index}>
+                  <S.NavLinkSt to={item.path}>{item.title}</S.NavLinkSt>
                 </S.GnbMobileItemList>
               ))}
             </S.GnbMobile>

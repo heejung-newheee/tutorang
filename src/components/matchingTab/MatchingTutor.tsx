@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Tabs, Tab } from '@mui/material';
 import { Views } from '../../supabase/database.types';
+import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../userInfo/UserInfo';
 import { InfoItem, InfoList, MatchBtn } from '../userInfo/UserInfo.styled';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { matchingCancel } from '../../api/match';
@@ -20,11 +21,12 @@ const TabPanel = (props: any) => {
     </div>
   );
 };
+
 const MatchingTutor = ({ matchList }: pageProps) => {
   const queryClient = useQueryClient();
   const cancelMatchMutation = useMutation(matchingCancel, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['matching']);
+      queryClient.invalidateQueries(MATCHING_TUTOR_DATA_QUERY_KEY);
     },
   });
   const handleCancelMatch = async (id: string) => {

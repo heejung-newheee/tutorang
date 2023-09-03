@@ -9,12 +9,15 @@ import { icon_edit, icon_location } from '../../assets';
 import { openModal } from '../../redux/modules';
 import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../api/review';
 
+export const MATCHING_TUTOR_DATA_QUERY_KEY = ['matching_tutor_data'];
+
 const UserInfo = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
-
-  const matchData = useSelector((state: RootState) => state.match.match);
-  const { data } = useQuery(['matching_tutor_data'], matchingTutorData);
+  // const matchData = useQuery(['matching'], getMatchData);
+  const { data } = useQuery(MATCHING_TUTOR_DATA_QUERY_KEY, matchingTutorData);
+  // console.log(matchData.data);
+  // console.log(data);
 
   // TODO count가 null이라면????????
   // TODO 리덕스 로딩
@@ -27,8 +30,13 @@ const UserInfo = () => {
   const handleEditProfiles = () => {
     dispatch(openModal({ type: 'editProfiles' }));
   };
-  const studentMatch = matchData?.filter((item) => item.user_id === user.id);
-  const tutorMatch = matchData?.filter((item) => item.tutor_id === user.id);
+  //학생의 매칭 결과 배열
+  const studentMatch = data?.filter((item) => item.user_id === user.id);
+  // console.log(studentMatch);
+
+  // 튜터의 매칭 결과
+  const tutorMatch = data?.filter((item) => item.tutor_id === user.id);
+  // console.log(tutorMatch);
 
   return (
     <>

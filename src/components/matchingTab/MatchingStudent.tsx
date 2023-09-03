@@ -9,6 +9,7 @@ import './custom.css';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import { createChatRoom, getChatRoomWithTutor, inviteChatRoom, sendTutoringMessage } from '../../api/chat';
+import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../userInfo/UserInfo';
 
 interface pageProps {
   matchList: Views<'matching_tutor_data'>[];
@@ -26,9 +27,11 @@ const TabPanel = (props: any) => {
 const MatchingTutor = ({ matchList }: pageProps) => {
   const user = useSelector((state: RootState) => state.user.user);
   const queryClient = useQueryClient();
+
   const acceptMatchMutation = useMutation(matchingAccept, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['matching']);
+      // queryClient.invalidateQueries(['matching']);
+      queryClient.invalidateQueries(MATCHING_TUTOR_DATA_QUERY_KEY);
     },
   });
 
@@ -51,7 +54,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
 
   const rejectMatchMutation = useMutation(matchingReject, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['matching']);
+      queryClient.invalidateQueries(MATCHING_TUTOR_DATA_QUERY_KEY);
     },
   });
 
