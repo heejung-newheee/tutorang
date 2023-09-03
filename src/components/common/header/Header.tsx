@@ -91,7 +91,6 @@ const Header = () => {
             </svg>
           </S.Hamburger>
 
-          {/* {sideNavOpen ? <HeaderModal sideNavOpen={sideNavOpen} setSideNavOpen={setSideNavOpen} loginUser={loginUser} signOut={signOut} /> : null} */}
           <HeaderModal sideNavOpen={sideNavOpen} setSideNavOpen={setSideNavOpen} loginUser={loginUser} signOut={signOut} />
           {/* 미디어쿼리 */}
           <S.LoginBtn>

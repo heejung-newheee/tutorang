@@ -38,8 +38,6 @@ const List = () => {
   //검색
   const [searchText, setSearchText] = useState('');
 
-  console.log(selectedArr, selectedFilters);
-
   //튜터 api 호출
   const PAGE_SIZE = 5;
 

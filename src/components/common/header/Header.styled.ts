@@ -118,6 +118,35 @@ export const LoginSignUpDiv = styled.div`
 `;
 
 // Mobile UI
+
+export const MobileContainer = styled.div<{ $sideNavOpen: boolean }>`
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #43434371;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 9999;
+  visibility: ${(props) => (props.$sideNavOpen ? 'visible' : 'hidden')};
+  transition: all 0.5s ease-in-out;
+`;
+
+export const MobileInner = styled.div<{ $sideNavOpen: boolean }>`
+  width: 280px;
+  height: 100vh;
+  position: fixed;
+  right: 0;
+  background-color: ${colors.white};
+  transform: ${(props) => (props.$sideNavOpen ? ' translateX(0px)' : 'translateX(300px)')};
+  transition: all 0.5s ease-in-out;
+`;
+
 export const MobileLogo = styled(Link)`
   font-weight: 700;
   font-size: 18px;

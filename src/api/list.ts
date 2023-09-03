@@ -6,7 +6,7 @@ const PAGE_SIZE = 5;
 export const getTutorListPageData = async (page = 1, selectedFilters: SelectedFilters, searchText: string) => {
   const { gender, level, minPrice, maxPrice, location1, location2, age, classStyle, speakingLanguage } = selectedFilters;
 
-  let query = supabase.from('tutor_info_join').select('*');
+  let query = supabase.from('tutor_info_join').select('*').eq('role', 'tutor');
 
   //성별
   if (gender.length !== 0) {

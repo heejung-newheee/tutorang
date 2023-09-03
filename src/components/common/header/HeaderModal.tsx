@@ -1,5 +1,4 @@
 import * as S from './Header.styled';
-import styled, { keyframes } from 'styled-components';
 import { Dispatch, SetStateAction } from 'react';
 import { tutorang_logo } from '../../../assets';
 import { Tables } from '../../../supabase/database.types';
@@ -24,8 +23,8 @@ type Props = {
 const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props) => {
   const navigate = useNavigate();
   return (
-    <MobileContainer $sideNavOpen={sideNavOpen} onClick={(pre) => setSideNavOpen(!pre)}>
-      <MobileInner
+    <S.MobileContainer $sideNavOpen={sideNavOpen} onClick={(pre) => setSideNavOpen(!pre)}>
+      <S.MobileInner
         $sideNavOpen={sideNavOpen}
         onClick={(e: React.MouseEvent<HTMLElement>) => {
           e.stopPropagation();
@@ -88,84 +87,9 @@ const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props)
             </S.GnbMobile>
           </nav>
         </S.MobileMenuWrapper>
-      </MobileInner>
-    </MobileContainer>
+      </S.MobileInner>
+    </S.MobileContainer>
   );
 };
 
 export default HeaderModal;
-
-const slideOpen = keyframes`
-	0%{
-      transform: translateX(300px);
-
-
-    }
-    100%{
-      transform: translateX(0);
-
-      
-
-    }
-`;
-
-const slideClose = keyframes`
-    0%{
-      transform: translateX(0);
-      visibility: visible;
-    }
-    100%{
-      transform: translateX(300px);
-      visibility: hidden;
-
-    }
-`;
-
-const backgroundToGray = keyframes`
-    0%{
-      opacity: 0;
-      visibility: hidden;
-    }
-    100%{
-      opacity: 1;
-      visibility: visible;
-    }
-`;
-
-const backgroundToWhite = keyframes`
-	0%{
-      visibility: visible;
-      opacity: 1;
-    }
-    100%{
-        visibility: hidden;
-        opacity: 0;
-    }
-`;
-
-const MobileContainer = styled.div<{ $sideNavOpen: boolean }>`
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: #43434371;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  z-index: 9999;
-  visibility: ${(props) => (props.$sideNavOpen ? 'visible' : 'hidden')};
-  animation: ${(props) => (props.$sideNavOpen ? backgroundToGray : backgroundToWhite)} 0.8s ease-in-out;
-`;
-
-const MobileInner = styled.div<{ $sideNavOpen: boolean }>`
-  width: 280px;
-  height: 100vh;
-  position: fixed;
-  right: 0;
-  background-color: #ffffff;
-  animation: ${(props) => (props.$sideNavOpen ? slideOpen : slideClose)} 0.8s ease-in-out;
-`;
