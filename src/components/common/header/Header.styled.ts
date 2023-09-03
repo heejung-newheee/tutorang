@@ -147,8 +147,11 @@ export const MobileInner = styled.div<{ $sideNavOpen: boolean }>`
   width: 280px;
   height: 100vh;
   position: fixed;
+  top: 0;
+  bottom: 0;
   right: 0;
   background-color: ${colors.white};
+  transform: translateX(-200px);
   transform: ${(props) => (props.$sideNavOpen ? ' translateX(0px)' : 'translateX(300px)')};
   transition: all 0.5s ease-in-out;
 `;
