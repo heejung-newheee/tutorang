@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { v4 } from 'uuid';
@@ -20,6 +20,7 @@ const EditProfileForm = () => {
   const [checkedGender, setCheckedGender] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | null>(null);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
 
@@ -35,6 +36,7 @@ const EditProfileForm = () => {
   };
 
   // TODO 변경할 프로필 이미지 미리보기
+  /*
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
@@ -42,6 +44,25 @@ const EditProfileForm = () => {
     if (files && files.length > 0) {
       const theFile = files[0];
       setImgFile(theFile);
+    }
+  };*/
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setImgFile(selectedFile);
+      makeVisiblePreviewImg(selectedFile);
+    } else return false;
+  };
+  const makeVisiblePreviewImg = (selectedFile: File) => {
+    if (selectedFile) {
+      // setImgFile(selectedFile);
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+      reader.onloadend = () => {
+        if (reader.result) {
+          setPreviewImg(reader.result);
+        }
+      };
     }
   };
 
@@ -87,7 +108,7 @@ const EditProfileForm = () => {
 
           <form onSubmit={updateProfilesInfo}>
             <S.ProfileImg>
-              <img src={user?.avatar_url || undefined} alt="" />
+              <img src={previewImg?.toString() || user?.avatar_url || undefined} alt="" />
             </S.ProfileImg>
             <S.EditInput type="file" id="fileInput" accept="image/*" onChange={onFileChange} />
             <S.EditFormFlex>
