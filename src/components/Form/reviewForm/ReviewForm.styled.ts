@@ -40,6 +40,7 @@ export const StarList = styled.ul`
   gap: 5px;
   justify-content: center;
   margin-bottom: 32px;
+  cursor: pointer;
 `;
 
 export const StarItem = styled.li`

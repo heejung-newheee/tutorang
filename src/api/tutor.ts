@@ -6,6 +6,11 @@ export const getAllTutorCount = async () => {
   if (error) throw error;
   return count;
 };
+export const getAllTutorInfo = async (id: string) => {
+  const { count, error } = await supabase.from('tutor_info').select('*').eq('user_id', id);
+  if (error) throw error;
+  return count;
+};
 
 export const getTutors = async () => {
   const { data, error } = await supabase
@@ -38,7 +43,7 @@ export const getTutorMostReview = async () => {
 };
 export const getTopReviewer = async () => {
   const { data, error } = await supabase.from('tutor_top_reviewer').select().limit(10);
-  console.log('supabase에서 top reviewr 10개 가져온 data', data);
+  // console.log('supabase에서 top reviewr 10개 가져온 data', data);
   if (error) throw error;
   return data;
 };

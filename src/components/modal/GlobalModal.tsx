@@ -6,6 +6,7 @@ import ModalPortal from './ModalPortal';
 import EditProfileForm from '../Form/profileForm/EditProfileForm';
 import YoutubeModal from '../youtube/YoutubeModal';
 import EditTutorForm from '../Form/registTutorForm/EditTutorForm';
+import MatchedReviewForm from '../Form/reviewForm/MatchedReviewForm';
 
 const GlobalModal = () => {
   const { type, isOpen } = useSelector((state: RootState) => state.modal);
@@ -19,6 +20,7 @@ const GlobalModal = () => {
     reviewCreate: 'reviewCreate',
     reviewUpdate: 'reviewUpdate',
     navbabr: 'navbabr',
+    matchedReviewCreate: 'matchedReviewCreate',
     editProfiles: 'editProfiles',
     editTutorInfo: 'editTutorInfo',
     reviewYoutube: 'reviewYoutube',
@@ -44,6 +46,10 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.reviewCreate,
       component: <ReviewForm />,
+    },
+    {
+      type: MODAL_TYPES.matchedReviewCreate,
+      component: <MatchedReviewForm />,
     },
     {
       type: MODAL_TYPES.reviewUpdate,

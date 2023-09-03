@@ -21,6 +21,20 @@ const BOARD_QUERY_KEY = ['board'];
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
 }
+// interface reviewedProps {
+//   profiles: string;
+//   username: string;
+// }
+// interface myReviewsProps {
+//   author: string;
+//   content: string;
+//   created_at: Date;
+//   id: number;
+//   rating: number;
+//   reviewed_id: reviewedProps;
+//   title: string;
+//   user_id: string;
+// }
 const StudentInfo = ({ match }: pageProps) => {
   const dispatch = useDispatch();
   const [openMenuId, setOpenMenuId] = useState<number>(0);
@@ -30,6 +44,10 @@ const StudentInfo = ({ match }: pageProps) => {
   const { data: board, isLoading: boardLoading, isError: boardError } = useQuery([BOARD_QUERY_KEY], getBoard);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery(['like'], fetchLike);
   const myReview = useQuery(REVIEW_QUERY_KEY, () => matchMyReview(user!.id));
+
+  // if (myReview.data) {
+  //   console.log(myReview.data || undefined);
+  // }
 
   if (boardLoading || likeLoading) {
     return <Loading />;
@@ -107,8 +125,8 @@ const StudentInfo = ({ match }: pageProps) => {
                         <DataTitle>{review.title}</DataTitle>
                         <DataStar>{starRating(review.rating!)}</DataStar>
                         <DataContent>{review.content}</DataContent>
-                        {/* TODO 지금은 작성자. 타겟이름으로 변경/ */}
-                        <DataAuth>{review.author} </DataAuth>
+                        {/* TODO 이름은 보여지나 타입? 속성? 오류가 뜸 */}
+                        {/* <DataAuth>{review.reviewed_id && review.reviewed_id.username} 튜터</DataAuth> */}
                       </div>
                       <S.ReviewEditBtn>
                         <button onClick={() => handleIsOpen(review.id)}>

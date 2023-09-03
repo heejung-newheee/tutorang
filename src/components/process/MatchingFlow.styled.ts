@@ -61,7 +61,7 @@ export const TabNum = styled.div`
   color: #fff;
   background-color: #d8d8d8;
   border-radius: 50%;
-  transition: all 0.4s;
+  transition: all 0.3s;
 `;
 
 export const TabBubble = styled.div`
@@ -73,7 +73,7 @@ export const TabBubble = styled.div`
 `;
 export const TabBubbleBg = styled.div`
   opacity: 0;
-  transition: all 0.4s;
+  transition: all 0.3s;
 `;
 export const TabBubbleContent = styled.div`
   margin-left: 12px;

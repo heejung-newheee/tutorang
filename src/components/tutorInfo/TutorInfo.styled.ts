@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { colors } from '../../style/theme/colors';
+import { Link } from 'react-router-dom';
 // 튜더 대시보드
 export const TutorClassWarp = styled.div`
   background-color: #fff;
@@ -12,12 +13,16 @@ export const TutorClassTop = styled.div`
   align-items: center;
   margin-bottom: 21px;
 `;
-export const ClassEditBtn = styled.button`
+export const ClassEditBtn = styled(Link)`
   width: 32px;
   height: 32px;
   border-radius: 50%;
   background-color: ${colors.primary};
   img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
   }
 `;
 export const TutorClass = styled.div`

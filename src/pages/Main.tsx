@@ -17,7 +17,6 @@ const Main = () => {
   const reviewCount = useQuery(['reviewCount'], () => getAllReviewCount());
   const matchCount = useQuery(['matchCount'], () => getAllMatchCount());
   const { data: topReviewer, isLoading, isError } = useQuery(['topReviewer'], () => getTopReviewer());
-  console.log('main에서 처음 가져오고 있는 topReviewer', topReviewer);
 
   if (isLoading) {
     return <Loading />;
@@ -82,6 +81,9 @@ export const Container = styled.div`
 `;
 export const Section = styled.section`
   padding: 100px 0;
+  @media screen and (max-width: 768px) {
+    padding: 50px 0;
+  }
 `;
 
 export const SectionTitle = styled.h2`

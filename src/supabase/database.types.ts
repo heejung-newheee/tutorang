@@ -315,6 +315,7 @@ export interface Database {
           created_at: string;
           id: string;
           matched: boolean | null;
+          review_confirm: boolean | null;
           status: string | null;
           tutor_id: string | null;
           user_id: string | null;
@@ -323,6 +324,7 @@ export interface Database {
           created_at?: string;
           id?: string;
           matched?: boolean | null;
+          review_confirm?: boolean | null;
           status?: string | null;
           tutor_id?: string | null;
           user_id?: string | null;
@@ -331,6 +333,7 @@ export interface Database {
           created_at?: string;
           id?: string;
           matched?: boolean | null;
+          review_confirm?: boolean | null;
           status?: string | null;
           tutor_id?: string | null;
           user_id?: string | null;
@@ -633,6 +636,7 @@ export interface Database {
           created_at: string | null;
           id: string | null;
           matched: boolean | null;
+          review_confirm: boolean | null;
           status: string | null;
           student_img: string | null;
           student_lc_1_gugun: string | null;
