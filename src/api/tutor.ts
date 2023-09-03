@@ -43,6 +43,7 @@ export const getTutorMostReview = async () => {
 };
 export const getTopReviewer = async () => {
   const { data, error } = await supabase.from('tutor_top_reviewer').select().limit(10);
+  console.log('supabase에서 top reviewr 10개 가져온 data', data);
   if (error) throw error;
   return data;
 };

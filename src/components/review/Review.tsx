@@ -1,12 +1,12 @@
-import * as S from './Review.styled';
 import { useQuery } from '@tanstack/react-query';
-import { matchReview } from '../../api/review';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button, Loading } from '..';
+import { matchReview } from '../../api/review';
+import { icon_more, starEmpty, starFull } from '../../assets';
 import { RootState } from '../../redux/config/configStore';
 import { openModal, setReview } from '../../redux/modules';
-import { Button, Loading } from '..';
-import { icon_more, starEmpty, starFull } from '../../assets';
-import { useState } from 'react';
+import * as S from './Review.styled';
 
 const REVIEW_QUERY_KEY = 'reviewTutorDetail';
 
@@ -70,9 +70,9 @@ const Review = ({ id }: ReviewProps) => {
     let timeMessage = '';
 
     if (hoursDiff < 1) {
-      timeMessage = `ㆍ방금`;
+      timeMessage = `방금`;
     } else if (hoursDiff < 24) {
-      timeMessage = `ㆍ${hoursDiff}시간 전`;
+      timeMessage = `${hoursDiff}시간 전`;
     } else {
       const getTime = createTime.split('T')[0]; // date만 추출
 

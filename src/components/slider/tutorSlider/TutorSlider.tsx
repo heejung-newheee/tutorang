@@ -1,11 +1,11 @@
-import Flicking, { ViewportSlot } from '@egjs/react-flicking';
 import { Arrow } from '@egjs/flicking-plugins';
-import '@egjs/react-flicking/dist/flicking.css';
 import '@egjs/flicking-plugins/dist/arrow.css';
-import './custom.css';
+import Flicking, { ViewportSlot } from '@egjs/react-flicking';
+import '@egjs/react-flicking/dist/flicking.css';
 import { Views } from '../../../supabase/database.types';
-import * as S from './TutorSlider.styled';
 import ProfilesCard from '../../profilesCard/ProfilesCard';
+import * as S from './TutorSlider.styled';
+import './custom.css';
 interface pageProps {
   tutorList: Views<'tutor_info_join'>[];
   panels: number;
@@ -13,7 +13,7 @@ interface pageProps {
 }
 const TutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
   const _plugins = [new Arrow()];
-
+  console.log('slider에서 받고 있는 tutorlist', tutorList);
   return (
     <>
       <Flicking key={uniqueKey} panelsPerView={panels} align="20%" circular={true} plugins={_plugins} style={{ padding: '0 50px' }}>

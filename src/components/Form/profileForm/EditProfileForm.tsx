@@ -4,16 +4,16 @@ import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import { close, edit_photo } from '../../../assets';
 // import { RootState } from '../../../redux/config/configStore';
+import { useQuery } from '@tanstack/react-query';
+import { getUserProfile } from '../../../api/chat';
+import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
+import { USER_PROFILE_QUERY_KEY } from '../../userInfo/UserInfo';
 import { SPGuideMessage } from '../common/AuthForm.styled';
 import SelectLocation from '../common/SelectLocation';
 import { Container, ContentWrapper, Inner } from '../reviewForm/ReviewForm.styled';
 import * as S from './ProfileForm.styled';
-import { useQuery } from '@tanstack/react-query';
-import { getUserProfile } from '../../../api/chat';
-import { USER_PROFILE_QUERY_KEY } from '../../userInfo/UserInfo';
-import { RootState } from '../../../redux/config/configStore';
 import { Button } from '../../button/Button.styled';
 
 // const GET_USER_QUERY_KEY = ['profiles'];
@@ -51,7 +51,6 @@ const EditProfileForm = () => {
       makeVisiblePreviewImg(selectedFile);
     } else return false;
   };
-
   const makeVisiblePreviewImg = (selectedFile: File) => {
     if (selectedFile) {
       // setImgFile(selectedFile);

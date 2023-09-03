@@ -39,30 +39,6 @@
   z-index: 3
 }
 
-@media screen and (max-width: 420px) {
-  .reset_input_btn {
-    position: absolute;
-    right: 118px;
-    top: 15px;
-  }
-
-  .password_show_hidden_button {
-    top: 41px;
-    fill: #cdcdcd;
-    ;
-  }
-
-  .password_show_hidden_button:hover {
-    fill: #696969;
-    ;
-  }
-
-  .welcome_icon {
-    font-size: 45px;
-    fill: #fe902f;
-    margin-bottom: 12px;
-  }
-}
 
 .pw_button_hidden_color {
   fill: #cdcdcd;
@@ -96,4 +72,29 @@
   font-size: 65px;
   fill: #fe902f;
   margin-bottom: 15px;
+}
+
+@media screen and (max-width: 420px) {
+  .reset_input_btn {
+    position: absolute;
+    right: 118px;
+    top: 15px;
+  }
+
+  .password_show_hidden_button {
+    top: 41px;
+    fill: #cdcdcd;
+    ;
+  }
+
+  .password_show_hidden_button:hover {
+    fill: #696969;
+    ;
+  }
+
+  .welcome_icon {
+    font-size: 43px;
+    fill: #fe902f;
+    margin-bottom: 10px;
+  }
 }

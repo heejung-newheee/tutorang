@@ -105,4 +105,5 @@ export const moreMenuItem = styled.li`
 export const Time = styled.span`
   color: #555454;
   opacity: 0.6;
+  margin-left: 15px;
 `;

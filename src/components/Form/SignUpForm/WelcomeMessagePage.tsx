@@ -39,6 +39,10 @@ const SWelcomeContainer = styled.div`
   width: 570px;
   height: 680px;
   border-radius: 3px;
+  @media screen and (max-width: 420px) {
+    width: 320px;
+    height: 400px;
+  }
 `;
 
 const SWelcomeHeader = styled.header`
@@ -51,21 +55,36 @@ const SWelcomeHeader = styled.header`
   & img {
     width: 134px;
   }
-
   border-bottom: 1.5px solid #ffd0a8;
+  @media screen and (max-width: 420px) {
+    height: 70px;
+    & img {
+      width: 100px;
+    }
+  }
 `;
 
 const SWelcomeBody = styled.div`
   background-color: #f5f5f5;
   height: 400px;
+  padding-top: 120px;
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
   align-items: center;
-  padding-top: 120px;
   gap: 10px;
   & p {
     color: #585858;
+  }
+  @media screen and (max-width: 420px) {
+    height: 240px;
+    padding-top: 54px;
+    & p {
+      font-size: 14px;
+      color: #585858;
+      padding: 0 45px;
+      text-align: center;
+    }
   }
 `;
 
