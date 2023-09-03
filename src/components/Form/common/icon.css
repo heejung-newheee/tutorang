@@ -48,6 +48,13 @@
 
   .password_show_hidden_button {
     top: 41px;
+    fill: #cdcdcd;
+    ;
+  }
+
+  .password_show_hidden_button:hover {
+    fill: #696969;
+    ;
   }
 
   .welcome_icon {

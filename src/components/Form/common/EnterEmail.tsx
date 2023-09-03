@@ -21,6 +21,7 @@ const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDo
   }, []);
 
   const duplicationCheck = async (unverifiedEmail: string) => {
+    console.log('이거 내 이메일', unverifiedEmail);
     // unverifiedEmail 을 supabase의 db 에서 확인
     const { data: profiles, error } = await supabase.from('profiles').select('email');
     const myEmailFromDB = profiles?.find((profile) => {
