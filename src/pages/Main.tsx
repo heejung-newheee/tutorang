@@ -10,10 +10,12 @@ import UserReviewList from '../components/review/mainReviewList/UserReviewList';
 import TutorSlider from '../components/slider/tutorSlider/TutorSlider';
 import { OverviewItem, OverviewItemIcon, OverviewItemNumber } from '../components/tutorInfoDetail/TutorInfoDetail.styled';
 import { colors } from '../style/theme/colors';
+import { getAllMatchCount } from '../api/match';
 
 const Main = () => {
   const tutorCount = useQuery(['tutorCount'], () => getAllTutorCount());
   const reviewCount = useQuery(['reviewCount'], () => getAllReviewCount());
+  const matchCount = useQuery(['matchCount'], () => getAllMatchCount());
   const { data: topReviewer, isLoading, isError } = useQuery(['topReviewer'], () => getTopReviewer());
 
   if (isLoading) {
@@ -52,13 +54,13 @@ const Main = () => {
               <span>튜터 수</span>
             </OverviewItem>
             <OverviewItem>
-              <OverviewItemIcon src={icon_like} alt="리뷰 아이콘" style={{ height: '37px' }} />
+              <OverviewItemIcon src={icon_class} alt="리뷰 아이콘" style={{ height: '37px' }} />
               <OverviewItemNumber>{reviewCount?.data}건</OverviewItemNumber>
               <span>리뷰 수</span>
             </OverviewItem>
             <OverviewItem>
-              <OverviewItemIcon src={icon_class} alt="매칭 아이콘" style={{ height: '37px' }} />
-              <OverviewItemNumber>{reviewCount?.data}</OverviewItemNumber>
+              <OverviewItemIcon src={icon_like} alt="매칭 아이콘" style={{ height: '37px' }} />
+              <OverviewItemNumber>{matchCount?.data}</OverviewItemNumber>
               <span>매칭 횟수</span>
             </OverviewItem>
           </div>

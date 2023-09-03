@@ -1,5 +1,10 @@
 import supabase from '../supabase';
 
+export const getAllMatchCount = async () => {
+  const { count, error } = await supabase.from('matching').select('*', { count: 'estimated', head: true });
+  if (error) throw error;
+  return count;
+};
 export const getMatchData = async () => {
   const { data: matching, error } = await supabase.from('matching').select();
   if (error) throw error;
@@ -9,8 +14,6 @@ export const getMatchData = async () => {
 //조인한 매칭 테이블 전체
 export const matchingTutorData = async (tutorId: any) => {
   const { data, error } = await supabase.from('matching_tutor_data').select();
-  console.log(tutorId);
-
   if (error) throw error;
   return data;
 };
