@@ -3,7 +3,7 @@ import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { styled } from 'styled-components';
+// import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
@@ -17,8 +17,8 @@ import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from './co
 import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from './translation';
 import * as S from './RegistTutorForm.styled';
 import SelectLocation from '../common/SelectLocation';
-import { useQuery } from '@tanstack/react-query';
-import { getAllTutorInfo } from '../../../api/tutor';
+// import { useQuery } from '@tanstack/react-query';
+// import { getAllTutorInfo } from '../../../api/tutor';
 
 const EditTutorForm = () => {
   const [tuitionFeeOnline, setTuitionFeeOnline] = useState(0);
@@ -26,7 +26,7 @@ const EditTutorForm = () => {
   const [checkPersonalityItems, setCheckPersonalityItems] = useState<string[]>([]);
   const [checkLanguageItems, setCheckLanguageItems] = useState<string[]>([]);
   const [checkClassLevelItems, setCheckClassLevelItems] = useState<string[]>([]);
-  const [validationCheck, setValicationCheck] = useState(false);
+  // const [validationCheck, setValicationCheck] = useState(false);
   const [uid, setUid] = useState<string | null>('');
   const [email, setEmail] = useState<string | null>('');
   const [classInfo, setClassInfo] = useState('');
@@ -39,7 +39,7 @@ const EditTutorForm = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
 
-  const { data: classInfoData } = useQuery(['tutor_info'], () => getAllTutorInfo(user!.id));
+  // const { data: classInfoData } = useQuery(['tutor_info'], () => getAllTutorInfo(user!.id));
   // console.log(user);
   // console.log(classInfoData); // 안불려옴
 

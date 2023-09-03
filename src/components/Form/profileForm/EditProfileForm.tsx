@@ -25,7 +25,7 @@ const EditProfileForm = () => {
 
   const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
 
-  const [checkedGender, setCheckedGender] = useState<string>('');
+  // const [checkedGender, setCheckedGender] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | null>(null);
