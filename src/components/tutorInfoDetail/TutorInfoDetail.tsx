@@ -1,17 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import * as S from './TutorInfoDetail.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { BookMark, Button, Loading } from '..';
 import { matchTutor } from '../../api/tutor';
 import { icon_check, icon_class, icon_info, icon_like, icon_location_gray, icon_school, icon_verify, starEmpty, starFull, starHalf } from '../../assets';
-import { BookMark, Button, Loading } from '..';
-import { useDispatch, useSelector } from 'react-redux';
-import { openModal } from '../../redux/modules';
 import { useReviewAverage } from '../../hooks';
+import { openModal } from '../../redux/modules';
+import * as S from './TutorInfoDetail.styled';
 
-import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../../api/chat';
 import { useNavigate } from 'react-router-dom';
+import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../../api/chat';
+import { tutorMatchedCount } from '../../api/match';
 import { matchReview } from '../../api/review';
 import { RootState } from '../../redux/config/configStore';
-import { tutorMatchedCount } from '../../api/match';
 
 const TUTOR_QUERY_KEY = 'tutorDetail';
 const REVIEW_QUERY_KEY = 'reviewTutorDetail';
@@ -193,12 +193,12 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
             <span>리뷰 평점</span>
           </S.OverviewItem>
           <S.OverviewItem>
-            <S.OverviewItemIcon src={icon_like} alt="리뷰 아이콘" />
+            <S.OverviewItemIcon src={icon_class} alt="리뷰 아이콘" />
             <S.OverviewItemNumber>{review.length}건</S.OverviewItemNumber>
             <span>리뷰 수</span>
           </S.OverviewItem>
           <S.OverviewItem>
-            <S.OverviewItemIcon src={icon_class} alt="매칭 아이콘" />
+            <S.OverviewItemIcon src={icon_like} alt="매칭 아이콘" />
             <S.OverviewItemNumber>{matchingCount.data?.length}번</S.OverviewItemNumber>
             <span>매칭 횟수</span>
           </S.OverviewItem>
