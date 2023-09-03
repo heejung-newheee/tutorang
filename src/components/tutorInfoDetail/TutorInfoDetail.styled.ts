@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { size } from '../../style/theme/size';
 import { colors } from '../../style/theme/colors';
+import { size } from '../../style/theme/size';
 
 export const Container = styled.section`
   background-color: ${colors.gray_100};
@@ -207,7 +207,8 @@ export const OverviewItem = styled.div`
     right: 0;
     display: block;
     content: '';
-    height: 120px;
+    /* height: 120px; */
+    height: 139px;
     width: 2px;
     background-color: rgba(72, 72, 72, 0.8);
   }
@@ -223,8 +224,10 @@ export const OverviewItemNumber = styled.p`
 `;
 
 export const OverviewItemIcon = styled.img`
+  /* margin-bottom: 24px;
+  height: 60px; */
   margin-bottom: 24px;
-  height: 60px;
+  height: 37px;
 `;
 
 export const StarList = styled.ul`
@@ -236,6 +239,8 @@ export const StarWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 60px;
-  margin-bottom: 24px;
+  /* height: 60px;
+  margin-bottom: 24px; */
+  height: 37px;
+  margin-bottom: 32px;
 `;

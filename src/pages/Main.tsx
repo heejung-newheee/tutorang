@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { getAllMatchCount } from '../api/match';
 import { getAllReviewCount } from '../api/review';
 import { getAllTutorCount, getTopReviewer } from '../api/tutor';
 import { icon_class, icon_like, icon_tutor, main_banner } from '../assets';
@@ -10,14 +11,13 @@ import UserReviewList from '../components/review/mainReviewList/UserReviewList';
 import TutorSlider from '../components/slider/tutorSlider/TutorSlider';
 import { OverviewItem, OverviewItemIcon, OverviewItemNumber } from '../components/tutorInfoDetail/TutorInfoDetail.styled';
 import { colors } from '../style/theme/colors';
-import { getAllMatchCount } from '../api/match';
 
 const Main = () => {
   const tutorCount = useQuery(['tutorCount'], () => getAllTutorCount());
   const reviewCount = useQuery(['reviewCount'], () => getAllReviewCount());
   const matchCount = useQuery(['matchCount'], () => getAllMatchCount());
   const { data: topReviewer, isLoading, isError } = useQuery(['topReviewer'], () => getTopReviewer());
-  console.log(topReviewer);
+  console.log('main에서 처음 가져오고 있는 topReviewer', topReviewer);
 
   if (isLoading) {
     return <Loading />;

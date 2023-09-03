@@ -64,6 +64,9 @@ export const FilterUl = styled.ul`
   padding: 0 30px;
   display: flex;
   overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 `;
 
 export const FilterLi = styled.li<{ $isIn: boolean }>`
