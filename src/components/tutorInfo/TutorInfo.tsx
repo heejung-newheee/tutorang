@@ -1,21 +1,21 @@
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchReview } from '../../api/user';
 import * as S from './TutorInfo.styled';
 import { RootState } from '../../redux/config/configStore';
 import { useDispatch, useSelector } from 'react-redux';
 import { tutorInfoJoin } from '../../api/tutor';
-import { Tables, Views } from '../../supabase/database.types';
-import { Container, InfoNull, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
+import { getBoard } from '../../api/board';
+import { openModal } from '../../redux/modules';
+import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataTitle, InfoNull, InfoSection, InfoTitle, ReviewRating } from '../userInfo/UserInfo.styled';
 import MatchingStudent from '../matchingTab/MatchingStudent';
-import { useEffect } from 'react';
-import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify, starEmpty, starFull } from '../../assets';
 import { Age, Icon, TutorName, InfoItem, TagList, PriceList, PriceItem, Dot } from '../tutorInfoDetail/TutorInfoDetail.styled';
-import { openModal } from '../../redux/modules';
-import { getBoard } from '../../api/board';
+import AOS from 'aos';
 import { Loading } from '..';
 
+import { Tables, Views } from '../../supabase/database.types';
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
 }
@@ -154,48 +154,53 @@ const TutorInfo = ({ match }: pageProps) => {
           <InfoSection>
             <Container>
               <InfoTitle>수강생 후기</InfoTitle>
-              {reviewData.length > 0 ? (
-                <S.StudentList>
-                  {reviewData.map((review) => {
-                    const rating = review.rating || 0; // rating 값이 없는 경우 0으로 처리
-                    return (
-                      <S.StudentItem key={review.id}>
-                        <S.StudentReview>
-                          <S.DataTitle>{review.title}</S.DataTitle>
-                          <S.DataContent>{review.content}</S.DataContent>
-                          <S.DataAuth>
-                            {review.author} / {review.created_at.split('T')[0]}
-                          </S.DataAuth>
-                        </S.StudentReview>
-                        <S.ReviewRating>{starRating(rating)}</S.ReviewRating>
-                      </S.StudentItem>
-                    );
-                  })}
-                </S.StudentList>
-              ) : (
-                <InfoNull>후기가 없습니다</InfoNull>
-              )}
+
+              <ContentsDataBox>
+                {reviewData.length > 0 ? (
+                  <DataList>
+                    {reviewData.map((review) => {
+                      const rating = review.rating || 0; // rating 값이 없는 경우 0으로 처리
+                      return (
+                        <DataItem key={review.id}>
+                          <div>
+                            <DataTitle>{review.title}</DataTitle>
+                            <DataContent>{review.content}</DataContent>
+                            <DataAuth>
+                              {review.author} / {review.created_at.split('T')[0]}
+                            </DataAuth>
+                          </div>
+                          <ReviewRating>{starRating(rating)}</ReviewRating>
+                        </DataItem>
+                      );
+                    })}
+                  </DataList>
+                ) : (
+                  <InfoNull>후기가 없습니다</InfoNull>
+                )}
+              </ContentsDataBox>
             </Container>
           </InfoSection>
 
           <InfoSection>
             <Container>
               <InfoTitle>내가 남긴 문의</InfoTitle>
-              {boardData
-                .data!.filter((board: Tables<'board'>) => {
-                  return board.user_id === user!.id;
-                })
-                .map((item: Tables<'board'>) => {
-                  return (
-                    <S.StudentItem key={item.id}>
-                      <div>
-                        <S.DataTitle>{item.title}</S.DataTitle>
-                        <S.DataContent>{item.content}</S.DataContent>
-                        <S.DataAuth>{item.created_at.split('T')[0]}</S.DataAuth>
-                      </div>
-                    </S.StudentItem>
-                  );
-                })}
+              <ContentsDataBox>
+                {boardData
+                  .data!.filter((board: Tables<'board'>) => {
+                    return board.user_id === user!.id;
+                  })
+                  .map((item: Tables<'board'>) => {
+                    return (
+                      <DataItem key={item.id}>
+                        <div>
+                          <DataTitle>{item.title}</DataTitle>
+                          <DataContent>{item.content}</DataContent>
+                          <DataAuth>{item.created_at.split('T')[0]}</DataAuth>
+                        </div>
+                      </DataItem>
+                    );
+                  })}
+              </ContentsDataBox>
             </Container>
           </InfoSection>
 
