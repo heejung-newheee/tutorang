@@ -12,9 +12,9 @@ import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../api/revi
 const UserInfo = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
-  const matchData = useQuery(['matchingData'], getMatchData);
+  const matchData = useQuery(['matching'], getMatchData);
   const { data } = useQuery(['matching_tutor_data'], matchingTutorData);
-  console.log(matchData.data);
+  // console.log(matchData.data);
   console.log(data);
 
   // TODO count가 null이라면????????
@@ -28,8 +28,13 @@ const UserInfo = () => {
   const handleEditProfiles = () => {
     dispatch(openModal({ type: 'editProfiles' }));
   };
-  const studentMatch = matchData.data?.filter((item) => item.user_id === user.id);
-  const tutorMatch = matchData.data?.filter((item) => item.tutor_id === user.id);
+  //학생의 매칭 결과 배열
+  const studentMatch = data?.filter((item) => item.user_id === user.id);
+  console.log(studentMatch);
+
+  // 튜터의 매칭 결과
+  const tutorMatch = data?.filter((item) => item.tutor_id === user.id);
+  console.log(tutorMatch);
 
   return (
     <>

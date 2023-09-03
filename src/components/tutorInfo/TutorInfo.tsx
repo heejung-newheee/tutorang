@@ -147,6 +147,7 @@ const TutorInfo = ({ match }: pageProps) => {
 
           <InfoSection>
             <Container>
+              {/* props로 내려받은 매칭내역 (수락,거질) */}
               <InfoTitle>매칭 내역</InfoTitle>
               {matchList.length > 0 ? <MatchingStudent matchList={matchList} /> : <InfoNull>매칭 내역이 없습니다</InfoNull>}
             </Container>
@@ -199,12 +200,12 @@ const TutorInfo = ({ match }: pageProps) => {
             </Container>
           </InfoSection>
 
-          <InfoSection>
+          {/* <InfoSection>
             <Container>
               <InfoTitle>수강 database</InfoTitle>
               <div>통계 그래프</div>
             </Container>
-          </InfoSection>
+          </InfoSection> */}
         </>
       )}
     </>
