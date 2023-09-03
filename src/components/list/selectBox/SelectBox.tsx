@@ -164,7 +164,7 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
         {filteredMenu !== 'price' && isChevronOpen ? (
           <S.InnerHidden key={filteredMenu} $isChevronOpen={isChevronOpen} $dddddd={filteredMenu !== 'price' && isChevronOpen}>
             {obj[filteredMenu]?.map((item: string) => (
-              <div>
+              <div key={`check-${item}`}>
                 <Checkbox
                   sx={{
                     color: 'gray',

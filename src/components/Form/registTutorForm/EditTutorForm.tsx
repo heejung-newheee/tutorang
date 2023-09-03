@@ -40,8 +40,8 @@ const EditTutorForm = () => {
   const user = useSelector((state: RootState) => state.user.user);
 
   const { data: classInfoData } = useQuery(['tutor_info'], () => getAllTutorInfo(user!.id));
-  console.log(user);
-  console.log(classInfoData);
+  // console.log(user);
+  // console.log(classInfoData); // 안불려옴
 
   const onChangeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.name === 'university') setUniversity(event.target.value);

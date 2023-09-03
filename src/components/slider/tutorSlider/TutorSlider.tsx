@@ -13,7 +13,7 @@ interface pageProps {
 }
 const TutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
   const _plugins = [new Arrow()];
-  console.log('slider에서 받고 있는 tutorlist', tutorList);
+  // console.log('slider에서 받고 있는 tutorlist', tutorList);
   return (
     <>
       <Flicking key={uniqueKey} panelsPerView={panels} align="20%" circular={true} plugins={_plugins} style={{ padding: '0 50px' }}>
