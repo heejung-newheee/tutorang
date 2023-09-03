@@ -1,6 +1,57 @@
 import styled from 'styled-components';
 import { colors } from '../../style/theme/colors';
 
+// 글목록 불러오기 공통적용스타일
+export const ContentsDataBox = styled.div`
+  max-height: 600px;
+  overflow-y: scroll;
+`;
+// 수강생 후기
+export const DataList = styled.ul``;
+export const DataItem = styled.li`
+  margin: 10px 0;
+  padding: 35px;
+  border-radius: 8px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 17px;
+`;
+
+export const DataTitle = styled.h3`
+  /* font-size: 27px; */
+  font-size: 21px;
+  font-weight: bold;
+  margin: 0 0 20px 0;
+`;
+
+export const DataContent = styled.p`
+  font-size: 16px;
+  margin: 0 0 25px 0;
+`;
+
+export const DataAuth = styled.p`
+  font-size: 13px;
+  color: #999;
+`;
+export const DataStar = styled.div`
+  img {
+    width: 16px;
+    filter: invert(48%) sepia(0%) saturate(2647%) hue-rotate(312deg) brightness(93%) contrast(76%);
+  }
+`;
+export const ReviewRating = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 5px;
+  img {
+    width: 30px;
+    filter: invert(78%) sepia(45%) saturate(4904%) hue-rotate(337deg) brightness(102%) contrast(99%);
+  }
+`;
+
+// 상단 프로필 영역
 export const MypageContainer = styled.section`
   /* padding: 10px; */
   margin-top: 70px;
@@ -121,17 +172,7 @@ export const InfoSection = styled.section`
   padding: 55px 10px;
   margin: 40px 0;
 `;
-export const InfoList = styled.ul``;
-export const InfoItem = styled.li`
-  display: flex;
-  text-align: center;
-  height: 99px;
-  align-items: center;
-  border-top: solid 1px #dbd9d8;
-  > div {
-    width: 20%;
-  }
-`;
+
 export const InfoTitle = styled.h2`
   font-size: 28px;
   line-height: 1;

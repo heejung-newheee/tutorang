@@ -25,8 +25,6 @@ const Header = () => {
   const navigate = useNavigate();
 
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log(loginUser);
-
   const { data: tutor } = useQuery(['tutor_info_join'], tutorInfoJoin);
 
   // matching 테이블 모든 데이터
