@@ -6,6 +6,7 @@ import supabase from './supabase';
 import { useEffect, useState } from 'react';
 import { getUser } from './api/user';
 import { logOutUser, setUser } from './redux/modules/user';
+import { Loading } from './components';
 
 function App() {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ function App() {
       }
     });
   }, [dispatch]);
-  if (isLoading) return <div>로그인 상태를 가져오는 중</div>;
+  if (isLoading) return <Loading />;
   return (
     <>
       <Router />

@@ -4,7 +4,7 @@ import { matchReview } from '../../api/review';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import { openModal, setReview } from '../../redux/modules';
-import { Button } from '..';
+import { Button, Loading } from '..';
 import { icon_more, starEmpty, starFull } from '../../assets';
 import { useState } from 'react';
 
@@ -89,7 +89,7 @@ const Review = ({ id }: ReviewProps) => {
   };
 
   if (reviewLoading) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
   if (reviewError) {
