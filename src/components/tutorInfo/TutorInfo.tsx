@@ -1,26 +1,24 @@
-import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetchReview } from '../../api/user';
-import * as S from './TutorInfo.styled';
-import { RootState } from '../../redux/config/configStore';
-import { useDispatch, useSelector } from 'react-redux';
-import { tutorInfoJoin } from '../../api/tutor';
-import { getBoard } from '../../api/board';
-import { openModal } from '../../redux/modules';
-import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataTitle, InfoNull, InfoSection, InfoTitle, ReviewRating } from '../userInfo/UserInfo.styled';
-import MatchingStudent from '../matchingTab/MatchingStudent';
-import 'aos/dist/aos.css';
-import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify, starEmpty, starFull } from '../../assets';
-import { Age, Icon, TutorName, InfoItem, TagList, PriceList, PriceItem, Dot } from '../tutorInfoDetail/TutorInfoDetail.styled';
 import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Loading } from '..';
+import { getBoard } from '../../api/board';
+import { tutorInfoJoin } from '../../api/tutor';
+import { fetchReview } from '../../api/user';
+import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify, starEmpty, starFull } from '../../assets';
+import { RootState } from '../../redux/config/configStore';
+import MatchingStudent from '../matchingTab/MatchingStudent';
+import { Age, Dot, Icon, InfoItem, PriceItem, PriceList, TagList, TutorName } from '../tutorInfoDetail/TutorInfoDetail.styled';
+import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataTitle, InfoNull, InfoSection, InfoTitle, ReviewRating } from '../userInfo/UserInfo.styled';
+import * as S from './TutorInfo.styled';
 
 import { Tables, Views } from '../../supabase/database.types';
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
 }
 const TutorInfo = ({ match }: pageProps) => {
-  const dispatch = useDispatch();
   useEffect(() => {
     AOS.init();
   }, []);
