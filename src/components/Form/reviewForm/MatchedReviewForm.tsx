@@ -8,9 +8,8 @@ import { useState } from 'react';
 import { useCreateReviewMutation } from '../../../api/review';
 import { RootState } from '../../../redux/config/configStore';
 import { reviews } from '../../../supabase/database.types';
-import supabase from '../../../supabase';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { matchedReview, matchingTutorData } from '../../../api/match';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { matchedReview } from '../../../api/match';
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../userInfo/UserInfo';
 
 type initialStateType = {

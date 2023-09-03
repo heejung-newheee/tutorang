@@ -54,9 +54,9 @@ const TutorInfo = ({ match }: pageProps) => {
 
   const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.tutor_id) : null;
 
-  const handleEditTutorInfo = () => {
-    dispatch(openModal({ type: 'editTutorInfo' }));
-  };
+  // const handleEditTutorInfo = () => {
+  //   dispatch(openModal({ type: 'editTutorInfo' }));
+  // };
 
   const starRating = (rating: number) => {
     const stars = [];
