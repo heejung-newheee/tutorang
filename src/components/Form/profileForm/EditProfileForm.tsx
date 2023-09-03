@@ -1,12 +1,15 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Container, ContentWrapper, Inner } from '../reviewForm/ReviewForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeModal } from '../../../redux/modules';
-import { RootState } from '../../../redux/config/configStore';
-import supabase from '../../../supabase';
-import * as S from './ProfileForm.styled';
-import { close } from '../../../assets';
+import { styled } from 'styled-components';
 import { v4 } from 'uuid';
+import { close } from '../../../assets';
+import { RootState } from '../../../redux/config/configStore';
+import { closeModal } from '../../../redux/modules';
+import supabase from '../../../supabase';
+import { SPGuideMessage } from '../common/AuthForm.styled';
+import SelectLocation from '../common/SelectLocation';
+import { Container, ContentWrapper, Inner } from '../reviewForm/ReviewForm.styled';
+import * as S from './ProfileForm.styled';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -18,6 +21,7 @@ const EditProfileForm = () => {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [imgFile, setImgFile] = useState<File | null>(null);
+  const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
 
   const changeNewpassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -145,80 +149,25 @@ const EditProfileForm = () => {
               </div>
             </S.EditFormFlex>
             <p>지역</p>
-            {/* <span>선택1</span>
-            <S.SDropdownField>
-            <S.SDropdownWrapper>
-              <S.SDropDownHeader id="location1SidoDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, sido1: !prev.sido1 }))}>
-                <span>{location1.sido1}</span>
-                <FaAngleDown />
-              </S.SDropDownHeader>
-              {isLocationOpen.sido1 && (
-                <S.SOptionContainer $selectOptionsType={'location1'}>
-                  <S.Select>
-                    {cities.AREA0.map((option, index) => (
-                      <S.SOption key={option} $selectedOption={location1.sido1 === option} onClick={() => selectLocation1Option(option, 'sido1', index.toString())}>
-                        {option}
-                      </S.SOption>
-                    ))}
-                  </S.Select>
-                </S.SOptionContainer>
-              )}
-            </S.SDropdownWrapper>
-            <S.SDropdownWrapper>
-              <S.SDropDownHeader id="location1gugunDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, gugun1: !prev.gugun1 }))}>
-                <span>{location1.gugun1}</span>
-                <FaAngleDown />
-              </S.SDropDownHeader>
-              {isLocationOpen.gugun1 && (
-                <S.SOptionContainer $selectOptionsType={'location1'}>
-                  <S.Select>
-                    {gugun1Options.map((option, index) => (
-                      <S.SOption key={option} $selectedOption={location1.gugun1 === option} onClick={() => selectLocation1Option(option, 'gugun1', index.toString())}>
-                        {option}
-                      </S.SOption>
-                    ))}
-                  </S.Select>
-                </S.SOptionContainer>
-              )}
-            </S.SDropdownWrapper>
-          </S.SDropdownField>     
-          <span>선택2</span>
-          <S.SDropdownField>
-            <S.SDropdownWrapper>
-              <S.SDropDownHeader id="location2SidoDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, sido2: !prev.sido2 }))}>
-                <span>{location2.sido2}</span>
-                <FaAngleDown />
-              </S.SDropDownHeader>
-              {isLocationOpen.sido2 && (
-                <S.SOptionContainer $selectOptionsType={'location2'}>
-                  <S.Select>
-                    {cities.AREA0.map((option, index) => (
-                      <S.SOption key={option} $selectedOption={location2.sido2 === option} onClick={() => selectLocation2Option(option, 'sido2', index.toString())}>
-                        {option}
-                      </S.SOption>
-                    ))}
-                  </S.Select>
-                </S.SOptionContainer>
-              )}
-            </S.SDropdownWrapper>
-            <S.SDropdownWrapper>
-              <S.SDropDownHeader id="location2gugunDropdown" onClick={() => setIsLocationOpen((prev) => ({ ...prev, gugun2: !prev.gugun2 }))}>
-                <span>{location2.gugun2}</span>
-                <FaAngleDown />
-              </S.SDropDownHeader>
-              {isLocationOpen.gugun2 && (
-                <S.SOptionContainer $selectOptionsType={'location2'}>
-                  <S.Select>
-                    {gugun2Options.map((option, index) => (
-                      <S.SOption key={option} $selectedOption={location2.gugun2 === option} onClick={() => selectLocation2Option(option, 'gugun2', index.toString())}>
-                        {option}
-                      </S.SOption>
-                    ))}
-                  </S.Select>
-                </S.SOptionContainer>
-              )}
-            </S.SDropdownWrapper>
-          </S.SDropdownField> */}
+            <SFormItem>
+              <SFormItemHeader>
+                <span>활동선호지역</span>
+                <SPGuideMessage>
+                  {location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}
+                  {(location.sido1 === '전체' || location.sido2 === '전체') && '지역1, 지역2 모두 특정지역 선택 필수'}
+                </SPGuideMessage>
+              </SFormItemHeader>
+              <SFormItemBody>
+                <SFormItemBodySection>
+                  <span>지역1</span>
+                  <SelectLocation $locationType={'locationType1'} $setLocation={setLoaction} />
+                </SFormItemBodySection>
+                <SFormItemBodySection>
+                  <span>지역2</span>
+                  <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} />
+                </SFormItemBodySection>
+              </SFormItemBody>
+            </SFormItem>
             <button type="submit">수정</button>
           </form>
         </ContentWrapper>
@@ -228,3 +177,37 @@ const EditProfileForm = () => {
 };
 
 export default EditProfileForm;
+
+const SFormItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const SFormItemHeader = styled.div`
+  display: flex;
+  align-items: center;
+  height: 30px;
+  gap: 10px;
+  & span {
+    vertical-align: bottom;
+  }
+`;
+
+const SFormItemBody = styled.div`
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 15px;
+`;
+
+const SFormItemBodySection = styled.section`
+  border-radius: 3px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;

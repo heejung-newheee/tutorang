@@ -1,5 +1,3 @@
-// [ ] 현재 로그인한 사용자의 uid를 session에서 불러오고 있는데 , redux로 한번에 관리하는 거 연결하고 나면 없애야함.
-// [ ] 등록할 때 session?거기에 핞
 import { useEffect, useState } from 'react';
 import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
@@ -9,8 +7,8 @@ import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
-import FormHeader from '../FormHeader';
-import { FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE } from '../formConstant';
+import FormHeader from '../common/FormHeader';
+import { FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE } from '../common/formConstant';
 import Checkbox from './Checkbox';
 import ImgFileUpload from './ImgFileUpload';
 import SelectEnrollmentStatus from './SelectEnrollmentStatus';
@@ -252,7 +250,7 @@ const SContainer = styled.div``;
 
 const SForm = styled.form`
   box-sizing: border-box;
-  padding: 80px 20px;
+  padding: 40px 20px;
   margin: 0 auto;
   width: 100%;
   max-width: 650px;
@@ -261,7 +259,7 @@ const SForm = styled.form`
   flex-direction: column;
   gap: 40px;
   @media screen and (max-width: 420px) {
-    padding: 50px 20px;
+    padding: 30px 20px;
   }
 `;
 
