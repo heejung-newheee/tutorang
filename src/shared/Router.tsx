@@ -8,6 +8,7 @@ import { Detail, List, Main, Mypage, NotFound } from '../pages';
 import Chat from '../pages/Chat';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
+import EditTutorForm from '../components/Form/registTutorForm/EditTutorForm';
 
 const Router = () => {
   return (
@@ -41,6 +42,14 @@ const Router = () => {
               element={
                 <AuthenticatedRoute>
                   <RegistTutorForm />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/tutor-class"
+              element={
+                <AuthenticatedRoute>
+                  <EditTutorForm />
                 </AuthenticatedRoute>
               }
             />

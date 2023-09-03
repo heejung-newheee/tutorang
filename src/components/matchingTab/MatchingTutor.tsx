@@ -10,6 +10,10 @@ import * as S from './MatchingTutor.styled';
 import './custom.css';
 
 import { InfoItem, InfoList } from './MatchingTutor.styled';
+import { useNavigate } from 'react-router-dom';
+import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../../api/chat';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/config/configStore';
 
 interface pageProps {
   matchList: Views<'matching_tutor_data'>[];
@@ -27,21 +31,43 @@ const TabPanel = (props: any) => {
 
 const MatchingTutor = ({ matchList }: pageProps) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<number>(0);
+  const loginUser = useSelector((state: RootState) => state.user.user);
+
   const cancelMatchMutation = useMutation(matchingCancel, {
     onSuccess: () => {
       queryClient.invalidateQueries(MATCHING_TUTOR_DATA_QUERY_KEY);
     },
   });
+
+  const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
+    setActiveTab(newValue);
+  };
   const handleCancelMatch = async (id: string) => {
     if (window.confirm('요청을 취소 하시겠습니까?')) cancelMatchMutation.mutate(id);
   };
 
-  const [activeTab, setActiveTab] = useState<number>(0);
-  const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
-    setActiveTab(newValue);
-  };
+  const handleStartChat = async (tutorId: string) => {
+    if (!tutorId) return;
 
-  console.log(matchList);
+    try {
+      const chatRoom = await getChatRoomWithTutor(loginUser!.id, tutorId);
+
+      if (chatRoom.length > 0) {
+        navigate(`/chat?room_id=${chatRoom[0].room_id}`);
+        return;
+      }
+
+      const newRoom = await createChatRoom();
+
+      await inviteChatRoom(newRoom.room_id, tutorId);
+
+      navigate(`/chat?room_id=${newRoom.room_id}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -72,7 +98,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                     <S.InfoItem>
                       <div>{item.status}</div>
                       <div>
-                        <S.TutorPageLink to={`/detail/${item.id}`}>{item.tutor_name}</S.TutorPageLink>
+                        <S.TutorChatLink onClick={() => handleStartChat(item.tutor_id!)}>{item.tutor_name}</S.TutorChatLink>
                       </div>
                       <div>
                         {item.tutor_lc_1_gugun} | {item.tutor_lc_2_gugun}
@@ -110,7 +136,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                     <InfoItem>
                       <div>{item.status}</div>
                       <div>
-                        <S.TutorPageLink to={`/detail/${item.id}`}>{item.tutor_name}</S.TutorPageLink>
+                        <S.TutorChatLink onClick={() => handleStartChat(item.tutor_id!)}>{item.tutor_name}</S.TutorChatLink>
                       </div>
                       <div>
                         {item.tutor_lc_1_gugun} | {item.tutor_lc_2_gugun}

@@ -20,6 +20,7 @@ export { default as icon_tutor } from './icon_tutor.svg';
 export { default as kakaotalk } from './kakao-talk.png';
 export { default as navericon } from './navericon.png';
 export { default as play_button } from './play_button.svg';
+export { default as edit_photo } from './edit-photo.svg';
 export { default as tabPanel_1 } from './tab-panel-1.png';
 export { default as tabPanel_2 } from './tab-panel-2.png';
 export { default as tabPanel_3 } from './tab-panel-3.png';

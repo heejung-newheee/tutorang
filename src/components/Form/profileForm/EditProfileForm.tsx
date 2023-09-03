@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { v4 } from 'uuid';
-import { close } from '../../../assets';
+import { close, edit_photo } from '../../../assets';
 // import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
@@ -14,6 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getUserProfile } from '../../../api/chat';
 import { USER_PROFILE_QUERY_KEY } from '../../userInfo/UserInfo';
 import { RootState } from '../../../redux/config/configStore';
+import { Button } from '../../button/Button.styled';
 
 // const GET_USER_QUERY_KEY = ['profiles'];
 const EditProfileForm = () => {
@@ -38,9 +39,9 @@ const EditProfileForm = () => {
     setConfirmPassword(event.target.value);
   };
 
-  const onChangeGenderHandler = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-    if (event.target.name === 'female' || event.target.name === 'male') setCheckedGender(event.target.value);
-  };
+  // const onChangeGenderHandler = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+  //   if (event.target.name === 'female' || event.target.name === 'male') setCheckedGender(event.target.value);
+  // };
 
   // TODO 변경할 프로필 이미지 미리보기
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,10 +77,9 @@ const EditProfileForm = () => {
         await supabase.auth.updateUser({ password: password });
         alert('비밀번호 변경이 완료되었습니다.');
       }
-      await supabase.from('profiles').update({ gender: checkedGender }).eq('id', user?.id);
+      await supabase.from('profiles').update({ location1_sido: location.sido1, location1_gugun: location.gugun1, location2_sido: location.sido2, location2_gugun: location.gugun2 }).eq('id', user?.id);
       if (imgFile) {
         await supabase.storage.from('avatars').upload(`profiles/${user!.id}/${imgName}`, imgFile);
-
         // TODO await 수정하기
         const { data } = await supabase.storage.from('avatars').getPublicUrl(`profiles/${user!.id}/${imgName}`);
         await supabase.from('profiles').update({ avatar_url: data.publicUrl }).eq('id', user?.id);
@@ -97,27 +97,35 @@ const EditProfileForm = () => {
       <Inner>
         <ContentWrapper>
           <S.EditFormTop>
-            <h2>내 정보 수정</h2>
             <S.CloseBtn onClick={handleClose}>
               <img src={close} alt="close button" />
             </S.CloseBtn>
           </S.EditFormTop>
           <form onSubmit={updateProfilesInfo}>
-            <S.ProfileImg>
-              <img src={previewImg?.toString() || user?.avatar_url || undefined} alt="" />
-              <S.EditInput type="file" id="fileInput" accept="image/*" onChange={onFileChange} />
-            </S.ProfileImg>
+            <S.ProfileImgBox>
+              <S.ProfileImg src={previewImg?.toString() || user?.avatar_url || undefined} alt="" />
+              <S.EditPhotoBtn>
+                <img src={edit_photo} alt="이미지 교체 버튼" />
+              </S.EditPhotoBtn>
+              <S.EditInput className="edit-photo" type="file" id="fileInput" accept="image/*" onChange={onFileChange} />
+            </S.ProfileImgBox>
             <S.EditFormFlex>
               <p>이름</p>
               <div>{user?.username}</div>
             </S.EditFormFlex>
             <S.EditFormFlex>
+              <p>생년월일</p>
+              <div>{user?.birth}</div>
+            </S.EditFormFlex>
+            <S.EditFormFlex>
+              <p>성별</p>
+              <div>{user?.gender}</div>
+            </S.EditFormFlex>
+            <S.EditFormFlex>
               <p>이메일</p>
               <div>{user?.email}</div>
             </S.EditFormFlex>
-            <div>
-              <p>비밀번호</p>
-              <S.EditInput type="password" name="password" value={password} onChange={changeNewpassword} />
+            <S.PasswordChangeWrap>
               <S.ConfirmPass>
                 {password.length > 6 && PWD_REGEX.test(password) ? (
                   <p>사용가능한 비밀번호 입니다</p>
@@ -129,10 +137,6 @@ const EditProfileForm = () => {
                   </p>
                 )}
               </S.ConfirmPass>
-            </div>
-            <div>
-              <p>비밀번호 확인</p>
-              <S.EditInput type="password" name="confirmPassword" value={confirmPassword} onChange={changeConfirmPassword} />
               <S.ConfirmPass>
                 {password === confirmPassword ? (
                   <p>
@@ -146,29 +150,19 @@ const EditProfileForm = () => {
                   </p>
                 )}
               </S.ConfirmPass>
-            </div>
-
-            <S.EditFormFlex>
-              <p>생년월일</p>
-              <div>{user?.birth}</div>
-            </S.EditFormFlex>
-            <S.EditFormFlex>
-              <p>성별</p>
               <div>
-                <label htmlFor="female">
-                  여성
-                  <input type="radio" id="female" name="female" value="여성" checked={checkedGender === '여성'} onChange={onChangeGenderHandler} />
-                </label>
-                <label htmlFor="male">
-                  남성
-                  <input type="radio" id="male" name="male" value="남성" checked={checkedGender === '남성'} onChange={onChangeGenderHandler} />
-                </label>
+                <p>비밀번호 변경</p>
+                <S.EditInput type="password" name="password" value={password} onChange={changeNewpassword} />
               </div>
-            </S.EditFormFlex>
-            <p>지역</p>
+
+              <div>
+                <p>비밀번호 확인</p>
+                <S.EditInput type="password" name="confirmPassword" value={confirmPassword} onChange={changeConfirmPassword} />
+              </div>
+            </S.PasswordChangeWrap>
+
             <SFormItem>
               <SFormItemHeader>
-                <span>활동선호지역</span>
                 <SPGuideMessage>
                   {location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}
                   {(location.sido1 === '전체' || location.sido2 === '전체') && '지역1, 지역2 모두 특정지역 선택 필수'}
@@ -176,16 +170,18 @@ const EditProfileForm = () => {
               </SFormItemHeader>
               <SFormItemBody>
                 <SFormItemBodySection>
-                  <span>지역1</span>
+                  <span>활동 선호 지역1</span>
                   <SelectLocation $locationType={'locationType1'} $setLocation={setLoaction} />
                 </SFormItemBodySection>
                 <SFormItemBodySection>
-                  <span>지역2</span>
+                  <span>활동 선호 지역2</span>
                   <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} />
                 </SFormItemBodySection>
               </SFormItemBody>
             </SFormItem>
-            <button type="submit">수정</button>
+            <Button style={{ marginTop: '30px' }} variant="solid" color={'primary'} size="Large" type="submit">
+              수정
+            </Button>
           </form>
         </ContentWrapper>
       </Inner>

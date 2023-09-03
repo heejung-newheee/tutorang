@@ -20,7 +20,7 @@ export const InfoItem = styled.li`
     width: 20%;
   }
 `;
-export const TutorPageLink = styled(Link)`
+export const TutorChatLink = styled.button`
   width: 50%;
   display: inline-block;
   font-size: 16px;
@@ -29,7 +29,7 @@ export const TutorPageLink = styled(Link)`
   margin: 0 5px;
   border-radius: 8px;
   background-color: #efefef;
-  transition: all 0.4s;
+  transition: all 0.3s;
   &:hover {
     background-color: ${colors.primary};
     color: #fff;

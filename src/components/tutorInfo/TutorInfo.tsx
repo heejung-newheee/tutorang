@@ -87,7 +87,7 @@ const TutorInfo = ({ match }: pageProps) => {
                     학력인증
                     {/* </verify> */}
                   </div>
-                  <S.ClassEditBtn onClick={handleEditTutorInfo}>
+                  <S.ClassEditBtn to={'/tutor-class'}>
                     <img src={icon_edit_wh} alt="" />
                   </S.ClassEditBtn>
                 </S.TutorClassTop>
