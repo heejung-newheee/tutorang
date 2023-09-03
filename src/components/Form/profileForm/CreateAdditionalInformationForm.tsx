@@ -100,8 +100,8 @@ const CreateAdditionalInformationForm = () => {
       location2_gugun: location.gugun2,
       role: 'student',
     };
-    console.log('test', formData);
-    console.log(user);
+    // console.log('test', formData);
+    // console.log(user);
     // TODO session meta data에 role을 student로 변경해줘야함.
 
     if (user) {

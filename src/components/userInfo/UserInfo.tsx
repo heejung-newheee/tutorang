@@ -17,7 +17,7 @@ const UserInfo = () => {
   // const matchData = useQuery(['matching'], getMatchData);
   const { data } = useQuery(MATCHING_TUTOR_DATA_QUERY_KEY, matchingTutorData);
   // console.log(matchData.data);
-  console.log(data);
+  // console.log(data);
 
   // TODO count가 null이라면????????
   // TODO 리덕스 로딩

@@ -19,7 +19,7 @@ const GenderRadiobox: React.FC<TypeGenderRadioboxProps> = ({ $checkedGender, $se
     if ($checkedGender.male === $checkedGender.female && event.target.name === 'female') $setCheckedGender((prev) => ({ ...prev, female: true }));
     if ($checkedGender.male !== $checkedGender.female && event.target.name === 'male') $setCheckedGender((prev) => ({ male: !prev.male, female: !prev.female }));
     if ($checkedGender.male === $checkedGender.female && event.target.name === 'male') $setCheckedGender((prev) => ({ ...prev, male: true }));
-    console.log(event.target.value);
+    // console.log(event.target.value);
   };
 
   return (

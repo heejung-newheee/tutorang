@@ -88,7 +88,12 @@ export const LoginBtn = styled.span`
     display: none;
   }
 `;
-
+export const ProfileImg = styled.img`
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
 //로그인 했을 때
 export const LoginBtnSignUp = styled.button`
   border: 1px solid ${colors.primary};
@@ -101,6 +106,7 @@ export const LoginBtnSignUp = styled.button`
     color: white;
   }
 `;
+
 //로그인 안 했을 때
 export const LoginSignUpDiv = styled.div`
   display: flex;
