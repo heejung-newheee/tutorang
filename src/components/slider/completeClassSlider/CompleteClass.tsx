@@ -27,9 +27,7 @@ const CompleteClass = ({ matchList }: CompleteClassProps) => {
             .map((item: Views<'matching_tutor_data'>) => {
               return (
                 <S.CompleteTutor key={item.id} className="card-panel">
-                  <S.CompleteImg>
-                    <img src={item.tutor_img || undefined} alt="" />
-                  </S.CompleteImg>
+                  <S.CompleteImg src={item.tutor_img || undefined} alt="" />
                   <S.CompleteContents>
                     <S.ComTutorName>{item.tutor_name}</S.ComTutorName>
                     <S.ComTutorLocation>

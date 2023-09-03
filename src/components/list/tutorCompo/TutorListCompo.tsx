@@ -32,7 +32,7 @@ const TutorListCompo = ({ userInfo }: Props) => {
           <S.TutorContent>
             <S.Tag>
               {userInfo.personality?.map((item) => (
-                <div>#{item}</div>
+                <div key={item}>#{item}</div>
               ))}
             </S.Tag>
           </S.TutorContent>

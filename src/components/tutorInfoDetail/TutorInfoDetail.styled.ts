@@ -6,6 +6,9 @@ export const Container = styled.section`
   background-color: ${colors.gray_100};
   margin-top: 70px; //header 크기 추가
   padding: 92px 0;
+  @media all and (max-width: 768px) {
+    margin-top: 50px; // 헤더 높이
+  }
 `;
 
 export const TutorProfile = styled.div`

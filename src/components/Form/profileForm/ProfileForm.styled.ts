@@ -55,6 +55,7 @@ export const CloseBtn = styled.button`
   }
 `;
 export const ProfileImg = styled.div`
+  position: relative;
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -67,6 +68,9 @@ export const ProfileImg = styled.div`
   }
 `;
 export const EditInput = styled.input`
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 100%;
   height: 40px;
   border: 1px solid #696969;

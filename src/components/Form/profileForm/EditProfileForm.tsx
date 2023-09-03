@@ -102,13 +102,11 @@ const EditProfileForm = () => {
               <img src={close} alt="close button" />
             </S.CloseBtn>
           </S.EditFormTop>
-
-          {user?.avatar_url}
           <form onSubmit={updateProfilesInfo}>
             <S.ProfileImg>
               <img src={previewImg?.toString() || user?.avatar_url || undefined} alt="" />
+              <S.EditInput type="file" id="fileInput" accept="image/*" onChange={onFileChange} />
             </S.ProfileImg>
-            <S.EditInput type="file" id="fileInput" accept="image/*" onChange={onFileChange} />
             <S.EditFormFlex>
               <p>이름</p>
               <div>{user?.username}</div>

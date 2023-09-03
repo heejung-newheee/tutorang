@@ -3,15 +3,12 @@ import { styled } from 'styled-components';
 export const CompleteTutor = styled.div`
   margin-right: 66px;
 `;
-export const CompleteImg = styled.div`
+export const CompleteImg = styled.img`
   width: 92px;
   height: 92px;
   overflow: hidden;
   border-radius: 50%;
-  img {
-    width: 100%;
-    object-fit: cover;
-  }
+  object-fit: cover;
 `;
 export const CompleteContents = styled.div`
   text-align: center;

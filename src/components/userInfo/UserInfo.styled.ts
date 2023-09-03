@@ -53,8 +53,10 @@ export const ReviewRating = styled.div`
 
 // 상단 프로필 영역
 export const MypageContainer = styled.section`
-  /* padding: 10px; */
   margin-top: 70px;
+  @media all and (max-width: 768px) {
+    margin-top: 50px; // 헤더 높이
+  }
 `;
 export const ProfileBox = styled.section`
   text-align: center;

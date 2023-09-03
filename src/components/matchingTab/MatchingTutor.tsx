@@ -41,6 +41,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     setActiveTab(newValue);
   };
 
+  console.log(matchList);
+
   return (
     <div>
       <Tabs value={activeTab} onChange={handleTabChange} aria-label="tab menu">
@@ -69,7 +71,9 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                   <S.InfoList key={item.id}>
                     <S.InfoItem>
                       <div>{item.status}</div>
-                      <div>{item.tutor_name}</div>
+                      <div>
+                        <S.TutorPageLink to={`/detail/${item.id}`}>{item.tutor_name}</S.TutorPageLink>
+                      </div>
                       <div>
                         {item.tutor_lc_1_gugun} | {item.tutor_lc_2_gugun}
                       </div>
@@ -105,7 +109,9 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                   <InfoList key={item.id}>
                     <InfoItem>
                       <div>{item.status}</div>
-                      <div>{item.tutor_name}</div>
+                      <div>
+                        <S.TutorPageLink to={`/detail/${item.id}`}>{item.tutor_name}</S.TutorPageLink>
+                      </div>
                       <div>
                         {item.tutor_lc_1_gugun} | {item.tutor_lc_2_gugun}
                       </div>

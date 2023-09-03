@@ -3,6 +3,8 @@ import YouTube, { YouTubeProps } from 'react-youtube';
 import { closeModal } from '../../redux/modules';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
+import { styled } from 'styled-components';
+import { close } from '../../assets';
 const opts: YouTubeProps['opts'] = {
   height: '390',
   width: '640',
@@ -36,10 +38,28 @@ const YoutubeModal = () => {
 
   return (
     <Container>
-      <button onClick={handleClose}>닫기</button>
-      <YouTube videoId={id as string} opts={opts} onReady={onPlayerReady} />
+      <div>
+        <CloseBtn onClick={handleClose}>
+          <img src={close} alt="close button" />
+        </CloseBtn>
+        <YouTube videoId={id as string} opts={opts} onReady={onPlayerReady} />
+      </div>
     </Container>
   );
 };
 
 export default YoutubeModal;
+const CloseBtn = styled.button`
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: #ffffff7f;
+  padding: 5px;
+  margin-bottom: 20px;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  img {
+    height: 100%;
+  }
+`;
