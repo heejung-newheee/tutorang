@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout, SignInForm, SignUpForm } from '../components';
-import CreateProfileForm from '../components/Form/profileForm/CreateProfileForm';
+import WelcomeMessagePage from '../components/Form/SignUpForm/WelcomeMessagePage';
+import CreateAdditionalInformationForm from '../components/Form/profileForm/CreateAdditionalInformationForm';
 import RegistTutorForm from '../components/Form/registTutorForm/RegistTutorForm';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import { Detail, List, Main, Mypage, NotFound } from '../pages';
@@ -25,11 +26,13 @@ const Router = () => {
           <Route path="/detail/:id" element={<Detail />} />
           <Route element={<Layout />}>
             <Route path="/list" element={<List />} />
+            <Route path="/test" element={<WelcomeMessagePage />} />
+
             <Route
               path="/additional-information"
               element={
                 <AuthenticatedRoute>
-                  <CreateProfileForm />
+                  <CreateAdditionalInformationForm />
                 </AuthenticatedRoute>
               }
             />
@@ -54,6 +57,14 @@ const Router = () => {
               element={
                 <NonAuthenticatedRoute>
                   <SignUpForm />
+                </NonAuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/welcome-to-tutorang"
+              element={
+                <NonAuthenticatedRoute>
+                  <WelcomeMessagePage />
                 </NonAuthenticatedRoute>
               }
             />

@@ -26,7 +26,7 @@ export default FormHeader;
 
 const SHeader = styled.header`
   width: 100%;
-  height: 175px;
+  height: 155px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -34,18 +34,18 @@ const SHeader = styled.header`
   padding: 20px;
   gap: 10px;
   & h1 {
-    font-size: 32px;
-    font-weight: 700;
+    font-size: 30px;
+    font-weight: 600;
   }
   & p {
-    font-size: 20px;
+    font-size: 17px;
     color: #4a4a4a;
   }
   @media screen and (max-width: 420px) {
     height: 130px;
     & h1 {
       font-size: 25px;
-      font-weight: 600;
+      font-weight: 500;
     }
     & p {
       font-size: 14px;

@@ -1,3 +1,5 @@
+// 이미지 처리할 때 사용할 함수 모음
+
 import { v4 } from 'uuid';
 import supabase from '../../supabase';
 // users-profile-images : 유저의 프로필 이미지, 튜터의 정식 프로필 이미지

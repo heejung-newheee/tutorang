@@ -11,3 +11,9 @@ export const FORM_CONSTANT_TITLE_SIGNUP = 'signup';
 export const FORM_CONSTANT_TITLE_COMPLETE = 'complete';
 export const FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO = 'user_additional-information';
 export const FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE = 'tutor_certificate';
+
+// REGEX
+export const USERNAME_KR_REGEX = /^[가-힣|]{2,6}$/;
+export const USERNAME_EN_REGEX = /^[a-z|A-Z|+\s]{2,20}$/;
+export const EMAIL_REGEX = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/;
+export const PWD_REGEX = /^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
