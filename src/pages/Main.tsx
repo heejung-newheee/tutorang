@@ -17,6 +17,7 @@ const Main = () => {
   const reviewCount = useQuery(['reviewCount'], () => getAllReviewCount());
   const matchCount = useQuery(['matchCount'], () => getAllMatchCount());
   const { data: topReviewer, isLoading, isError } = useQuery(['topReviewer'], () => getTopReviewer());
+  console.log(topReviewer);
 
   if (isLoading) {
     return <Loading />;

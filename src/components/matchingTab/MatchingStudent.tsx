@@ -93,7 +93,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
         <S.InfoList>
           <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
             <div>상태</div>
-            <div>이름</div>
+            <div>학생 이름</div>
             <div>지역</div>
             <div>날짜</div>
             <div>취소</div>
@@ -129,7 +129,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
         <S.InfoList>
           <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
             <div>상태</div>
-            <div>이름</div>
+            <div>학생 이름</div>
             <div>지역</div>
             <div>날짜</div>
             <div>확인</div>
