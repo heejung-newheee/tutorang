@@ -8,6 +8,7 @@ import CityModal from '../components/list/location/CityModal';
 import { handleCityModalFilter, SelectedFilters, SearchDebounce } from '../components/list/utility';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getTutorListPageData } from '../api/list';
+import { Loading } from '../components';
 
 const List = () => {
   const { Modal, isOpen, openModal, closeModal } = useModal();
@@ -110,7 +111,7 @@ const List = () => {
   };
 
   if (isLoading) {
-    return <div style={{ width: '100%', height: '100vh', backgroundColor: 'salmon' }}>Loading...</div>;
+    return <Loading />;
   }
 
   return (
