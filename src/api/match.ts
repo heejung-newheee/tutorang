@@ -1,5 +1,10 @@
 import supabase from '../supabase';
 
+export const getAllMatchCount = async () => {
+  const { count, error } = await supabase.from('matching').select('*', { count: 'estimated', head: true });
+  if (error) throw error;
+  return count;
+};
 export const getMatchData = async () => {
   const { data: matching, error } = await supabase.from('matching').select();
   if (error) throw error;
@@ -45,7 +50,13 @@ export const matchingAccept = async (id: string) => {
 };
 
 export const matchingReject = async (id: string) => {
-  const { error } = await supabase.from('matching').update({ status: 'reject' }).eq('id', id);
+  const { error } = await supabase
+    .from('matching')
+    .update({
+      status: 'reject',
+      matched: true,
+    })
+    .eq('id', id);
   if (error) throw error;
 };
 

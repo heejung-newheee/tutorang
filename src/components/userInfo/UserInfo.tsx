@@ -8,27 +8,40 @@ import { useQuery } from '@tanstack/react-query';
 import { icon_edit, icon_location } from '../../assets';
 import { openModal } from '../../redux/modules';
 import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../api/review';
+import { getUserProfile } from '../../api/chat';
+import { Loading } from '..';
 
+export const MATCHING_TUTOR_DATA_QUERY_KEY = ['matching_tutor_data'];
+export const USER_PROFILE_QUERY_KEY = ['profiles'];
 const UserInfo = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user.user);
+  const loginUserId = useSelector((state: RootState) => state.user.user!.id);
+  const { data: user, isLoading, isError, error } = useQuery(USER_PROFILE_QUERY_KEY, () => getUserProfile(loginUserId));
+  const { data } = useQuery(MATCHING_TUTOR_DATA_QUERY_KEY, matchingTutorData);
 
-  const matchData = useSelector((state: RootState) => state.match.match);
-  const { data } = useQuery(['matching_tutor_data'], matchingTutorData);
-
-  // TODO count가 null이라면????????
-  // TODO 리덕스 로딩
   const writeReviewCount = useQuery(['writeReviewCount'], () => getWriteReviewCount(user!.id));
   const receivedReviewCount = useQuery(['receivedReviewCount'], () => getReceivedWriteReviewCount(user!.id));
 
+  if (isLoading) {
+    return <Loading />;
+  }
   if (!user) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
+  }
+  if (isError) {
+    console.log('supabase Error', error);
+    return null;
   }
   const handleEditProfiles = () => {
     dispatch(openModal({ type: 'editProfiles' }));
   };
-  const studentMatch = matchData?.filter((item) => item.user_id === user.id);
-  const tutorMatch = matchData?.filter((item) => item.tutor_id === user.id);
+  //학생의 매칭 결과 배열
+  const studentMatch = data?.filter((item) => item.user_id === user.id);
+  // console.log(studentMatch);
+
+  // 튜터의 매칭 결과
+  const tutorMatch = data?.filter((item) => item.tutor_id === user.id);
+  // console.log(tutorMatch);
 
   return (
     <>

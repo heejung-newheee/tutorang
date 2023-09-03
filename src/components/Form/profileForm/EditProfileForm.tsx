@@ -3,17 +3,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import { close } from '../../../assets';
+// import { RootState } from '../../../redux/config/configStore';
+import { useQuery } from '@tanstack/react-query';
+import { getUserProfile } from '../../../api/chat';
 import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
+import { USER_PROFILE_QUERY_KEY } from '../../userInfo/UserInfo';
 import { SPGuideMessage } from '../common/AuthForm.styled';
 import SelectLocation from '../common/SelectLocation';
 import { Container, ContentWrapper, Inner } from '../reviewForm/ReviewForm.styled';
 import * as S from './ProfileForm.styled';
 
+// const GET_USER_QUERY_KEY = ['profiles'];
 const EditProfileForm = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user.user);
+  const loginUserId = useSelector((state: RootState) => state.user.user!.id);
+  const userData = useQuery(USER_PROFILE_QUERY_KEY, () => getUserProfile(loginUserId));
+  const user = userData.data;
 
   const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
 
@@ -31,21 +38,11 @@ const EditProfileForm = () => {
     setConfirmPassword(event.target.value);
   };
 
-  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+  const onChangeGenderHandler = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     if (event.target.name === 'female' || event.target.name === 'male') setCheckedGender(event.target.value);
   };
 
   // TODO 변경할 프로필 이미지 미리보기
-  /*
-  const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { files },
-    } = e;
-    if (files && files.length > 0) {
-      const theFile = files[0];
-      setImgFile(theFile);
-    }
-  };*/
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
@@ -79,7 +76,6 @@ const EditProfileForm = () => {
         alert('비밀번호 변경이 완료되었습니다.');
       }
       await supabase.from('profiles').update({ gender: checkedGender }).eq('id', user?.id);
-
       if (imgFile) {
         await supabase.storage.from('avatars').upload(`profiles/${user!.id}/${imgName}`, imgFile);
 
@@ -106,6 +102,7 @@ const EditProfileForm = () => {
             </S.CloseBtn>
           </S.EditFormTop>
 
+          {user?.avatar_url}
           <form onSubmit={updateProfilesInfo}>
             <S.ProfileImg>
               <img src={previewImg?.toString() || user?.avatar_url || undefined} alt="" />
@@ -161,11 +158,11 @@ const EditProfileForm = () => {
               <div>
                 <label htmlFor="female">
                   여성
-                  <input type="radio" id="female" name="female" value="여성" checked={checkedGender === '여성'} onChange={onChangeHandler} />
+                  <input type="radio" id="female" name="female" value="여성" checked={checkedGender === '여성'} onChange={onChangeGenderHandler} />
                 </label>
                 <label htmlFor="male">
                   남성
-                  <input type="radio" id="male" name="male" value="남성" checked={checkedGender === '남성'} onChange={onChangeHandler} />
+                  <input type="radio" id="male" name="male" value="남성" checked={checkedGender === '남성'} onChange={onChangeGenderHandler} />
                 </label>
               </div>
             </S.EditFormFlex>

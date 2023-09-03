@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Section, SectionTitle } from '../../pages/Main';
 import * as S from './MatchingFlow.styled';
-import { bubble, tabPanel_1, tabPanel_3 } from '../../assets';
+import { bubble, tabPanel_1, tabPanel_2, tabPanel_3, tabPanel_4 } from '../../assets';
 interface TabViewProps {
   index: number;
   name: JSX.Element;
@@ -11,10 +11,10 @@ interface TabViewProps {
 const MatchingFlow = () => {
   const [activeTab, setActiveTab] = useState(0);
   const tabs: TabViewProps[] = [
-    { index: 1, name: <TabTitle1 />, content: <img src={tabPanel_3} alt="" /> },
-    { index: 2, name: <TabTitle2 />, content: <img src={tabPanel_1} alt="" /> },
+    { index: 1, name: <TabTitle1 />, content: <img src={tabPanel_1} alt="" /> },
+    { index: 2, name: <TabTitle2 />, content: <img src={tabPanel_2} alt="" /> },
     { index: 3, name: <TabTitle3 />, content: <img src={tabPanel_3} alt="" /> },
-    { index: 4, name: <TabTitle4 />, content: <img src={tabPanel_1} alt="" /> },
+    { index: 4, name: <TabTitle4 />, content: <img src={tabPanel_4} alt="" /> },
   ];
 
   return (

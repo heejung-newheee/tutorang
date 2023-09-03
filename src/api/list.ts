@@ -33,7 +33,6 @@ export const getTutorListPageData = async (page = 1, selectedFilters: SelectedFi
   //가격
   if (minPrice >= 0 && maxPrice) {
     if (classStyle === 'onLine') {
-      console.log('sdfsdf');
       query = query.gte('tuition_fee_online', minPrice).lte('tuition_fee_online', maxPrice);
     } else {
       query = query.gte('tuition_fee_offline', minPrice).lte('tuition_fee_offline', maxPrice);

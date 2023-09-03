@@ -55,7 +55,7 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
   }
 
   const selectDateOption = (value: string, dateType: string) => {
-    console.log(value, dateType);
+    // console.log(value, dateType);
     if (dateType === 'year') {
       setBirth((prev) => ({ ...prev, year: value }));
       $setBirth((prev) => ({ ...prev, year: value }));

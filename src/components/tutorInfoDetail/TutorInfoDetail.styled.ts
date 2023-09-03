@@ -33,7 +33,7 @@ export const Figure = styled.figure`
 
   & button {
     position: absolute;
-    z-index: 99;
+    z-index: 5;
     top: 18px;
     right: 12px;
   }
