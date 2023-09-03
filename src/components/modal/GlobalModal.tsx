@@ -3,7 +3,6 @@ import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm } f
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import ModalPortal from './ModalPortal';
-import HeaderModal from '../common/header/HeaderModal';
 import EditProfileForm from '../Form/profileForm/EditProfileForm';
 import YoutubeModal from '../youtube/YoutubeModal';
 import EditTutorForm from '../Form/registTutorForm/EditTutorForm';
@@ -57,10 +56,6 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.editTutorInfo,
       component: <EditTutorForm />,
-    },
-    {
-      type: MODAL_TYPES.navbabr,
-      component: <HeaderModal />,
     },
     {
       type: MODAL_TYPES.reviewYoutube,
