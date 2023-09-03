@@ -12,7 +12,7 @@ export const getMatchData = async () => {
 };
 
 //조인한 매칭 테이블 전체
-export const matchingTutorData = async (tutorId: any) => {
+export const matchingTutorData = async () => {
   const { data, error } = await supabase.from('matching_tutor_data').select();
   if (error) throw error;
   return data;
