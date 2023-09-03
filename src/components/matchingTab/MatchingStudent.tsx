@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Tabs, Tab } from '@mui/material';
-import { Tables, Views } from '../../supabase/database.types';
+import { Views } from '../../supabase/database.types';
 import { InfoItem, InfoList, MatchBtn } from '../userInfo/UserInfo.styled';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { matchingAccept, matchingReject, matchingTutorData } from '../../api/match';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { matchingAccept, matchingReject } from '../../api/match';
 import { styled } from 'styled-components';
 import './custom.css';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
 import { createChatRoom, getChatRoomWithTutor, inviteChatRoom, sendTutoringMessage } from '../../api/chat';
+import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../userInfo/UserInfo';
 
 interface pageProps {
   matchList: Views<'matching_tutor_data'>[];
@@ -24,17 +25,13 @@ const TabPanel = (props: any) => {
   );
 };
 const MatchingTutor = ({ matchList }: pageProps) => {
-  const queryClient = useQueryClient();
   const user = useSelector((state: RootState) => state.user.user);
-  if (!user) return null;
-  const aaaaa = user.id.toString();
-  const matchData = useQuery(['matching_tutor_data'], () => matchingTutorData(aaaaa));
-
-  console.log(matchData.data);
+  const queryClient = useQueryClient();
 
   const acceptMatchMutation = useMutation(matchingAccept, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['matching']);
+      // queryClient.invalidateQueries(['matching']);
+      queryClient.invalidateQueries(MATCHING_TUTOR_DATA_QUERY_KEY);
     },
   });
 
@@ -57,7 +54,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
 
   const rejectMatchMutation = useMutation(matchingReject, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['matching']);
+      queryClient.invalidateQueries(MATCHING_TUTOR_DATA_QUERY_KEY);
     },
   });
 
@@ -101,8 +98,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
             <div>취소</div>
           </InfoItem>
         </InfoList>
-        {matchData.data &&
-          matchData.data
+        {matchList &&
+          matchList
             .filter((item: Views<'matching_tutor_data'>) => {
               return item.matched === false;
             })
@@ -135,8 +132,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
             <div>확인</div>
           </InfoItem>
         </InfoList>
-        {matchData.data &&
-          matchData.data
+        {matchList &&
+          matchList
             .filter((item: Views<'matching_tutor_data'>) => {
               return item.matched === true;
             })

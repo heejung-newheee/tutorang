@@ -3,17 +3,19 @@ import TutorInfo from '../tutorInfo/TutorInfo';
 import StudentInfo from '../studentInfo/StudentInfo';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
-import { getMatchData, matchingTutorData } from '../../api/match';
+import { matchingTutorData } from '../../api/match';
 import { useQuery } from '@tanstack/react-query';
 import { icon_edit, icon_location } from '../../assets';
 import { openModal } from '../../redux/modules';
 import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../api/review';
 
+export const MATCHING_TUTOR_DATA_QUERY_KEY = ['matching_tutor_data'];
+
 const UserInfo = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.user);
-  const matchData = useQuery(['matching'], getMatchData);
-  const { data } = useQuery(['matching_tutor_data'], matchingTutorData);
+  // const matchData = useQuery(['matching'], getMatchData);
+  const { data } = useQuery(MATCHING_TUTOR_DATA_QUERY_KEY, matchingTutorData);
   // console.log(matchData.data);
   console.log(data);
 
@@ -30,11 +32,11 @@ const UserInfo = () => {
   };
   //학생의 매칭 결과 배열
   const studentMatch = data?.filter((item) => item.user_id === user.id);
-  console.log(studentMatch);
+  // console.log(studentMatch);
 
   // 튜터의 매칭 결과
   const tutorMatch = data?.filter((item) => item.tutor_id === user.id);
-  console.log(tutorMatch);
+  // console.log(tutorMatch);
 
   return (
     <>

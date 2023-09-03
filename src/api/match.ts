@@ -8,7 +8,7 @@ export const getMatchData = async () => {
 
 //조인한 매칭 테이블 전체
 export const matchingTutorData = async (tutorId: any) => {
-  const { data, error } = await supabase.from('matching_tutor_data').select().eq('tutor_id', tutorId);
+  const { data, error } = await supabase.from('matching_tutor_data').select();
   console.log(tutorId);
 
   if (error) throw error;
@@ -47,7 +47,13 @@ export const matchingAccept = async (id: string) => {
 };
 
 export const matchingReject = async (id: string) => {
-  const { error } = await supabase.from('matching').update({ status: 'reject' }).eq('id', id);
+  const { error } = await supabase
+    .from('matching')
+    .update({
+      status: 'reject',
+      matched: true,
+    })
+    .eq('id', id);
   if (error) throw error;
 };
 
