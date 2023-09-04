@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { getAllMatchCount } from '../api/match';
 import { getAllReviewCount } from '../api/review';
 import { getAllTutorCount, getTopReviewer } from '../api/tutor';
-import { icon_class, icon_like, icon_tutor, main_banner } from '../assets';
+import { icon_class, icon_like, icon_tutor } from '../assets';
 import { Loading } from '../components';
+import Banner from '../components/main/Banner';
 import MatchingFlow from '../components/process/MatchingFlow';
 import UserReviewList from '../components/review/mainReviewList/UserReviewList';
 import TutorSlider from '../components/slider/tutorSlider/TutorSlider';
@@ -30,15 +30,7 @@ const Main = () => {
 
   return (
     <>
-      <Banner>
-        <BannerContainer>
-          <BannerContent>
-            <BannerTitle>1:1 매칭 클래스</BannerTitle>
-            <BannerText>나와 가까운 튜터를 쉽고 빠르게 만나보세요 </BannerText>
-            <BannerBtn to={`/list`}>튜터 만나러 가기</BannerBtn>
-          </BannerContent>
-        </BannerContainer>
-      </Banner>
+      <Banner />
       <Section style={{ backgroundColor: '#ffffff' }}>
         <Container>
           <SectionTitle>인기있는 튜터를 만나보세요</SectionTitle>
@@ -60,7 +52,7 @@ const Main = () => {
             </OverviewItem>
             <OverviewItem>
               <OverviewItemIcon src={icon_like} alt="매칭 아이콘" style={{ height: '37px' }} />
-              <OverviewItemNumber>{matchCount?.data}</OverviewItemNumber>
+              <OverviewItemNumber>{matchCount?.data}건</OverviewItemNumber>
               <span>매칭 횟수</span>
             </OverviewItem>
           </div>
@@ -96,37 +88,3 @@ export const SectionTitle = styled.h2`
   border-left: 6px solid ${colors.primary};
 `;
 export const SectionSubTitle = styled.h3``;
-
-const Banner = styled.div`
-  background-image: url(${main_banner});
-  background-repeat: no-repeat;
-  background-size: contain;
-`;
-
-const BannerContainer = styled.div`
-  height: 600px;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-`;
-const BannerContent = styled.div``;
-const BannerTitle = styled.p`
-  font-weight: bold;
-  color: #fff;
-`;
-const BannerText = styled.p`
-  font-size: 45px;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 45px;
-`;
-const BannerBtn = styled(Link)`
-  background-color: #fff;
-  font-size: 22px;
-  font-weight: bold;
-  color: ${colors.primary}!important;
-  padding: 8px 80px;
-  margin-top: 45px;
-  border-radius: 30px;
-`;

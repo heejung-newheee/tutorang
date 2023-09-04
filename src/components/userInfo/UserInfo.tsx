@@ -1,15 +1,15 @@
-import * as S from './UserInfo.styled';
-import TutorInfo from '../tutorInfo/TutorInfo';
-import StudentInfo from '../studentInfo/StudentInfo';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/config/configStore';
-import { matchingTutorData } from '../../api/match';
 import { useQuery } from '@tanstack/react-query';
-import { icon_edit, icon_location } from '../../assets';
-import { openModal } from '../../redux/modules';
-import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../api/review';
-import { getUserProfile } from '../../api/chat';
+import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '..';
+import { getUserProfile } from '../../api/chat';
+import { matchingTutorData } from '../../api/match';
+import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../api/review';
+import { icon_edit, icon_location } from '../../assets';
+import { RootState } from '../../redux/config/configStore';
+import { openModal } from '../../redux/modules';
+import StudentInfo from '../studentInfo/StudentInfo';
+import TutorInfo from '../tutorInfo/TutorInfo';
+import * as S from './UserInfo.styled';
 
 export const MATCHING_TUTOR_DATA_QUERY_KEY = ['matching_tutor_data'];
 export const USER_PROFILE_QUERY_KEY = ['profiles'];
@@ -19,8 +19,8 @@ const UserInfo = () => {
   const { data: user, isLoading, isError, error } = useQuery(USER_PROFILE_QUERY_KEY, () => getUserProfile(loginUserId));
   const { data } = useQuery(MATCHING_TUTOR_DATA_QUERY_KEY, matchingTutorData);
 
-  const writeReviewCount = useQuery(['writeReviewCount'], () => getWriteReviewCount(user!.id));
-  const receivedReviewCount = useQuery(['receivedReviewCount'], () => getReceivedWriteReviewCount(user!.id));
+  const writeReviewCount = useQuery(['writeReviewCount', user], () => getWriteReviewCount(user!.id), { enabled: !!user });
+  const receivedReviewCount = useQuery(['receivedReviewCount'], () => getReceivedWriteReviewCount(user!.id), { enabled: !!user });
 
   if (isLoading) {
     return <Loading />;

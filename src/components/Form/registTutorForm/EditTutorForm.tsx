@@ -8,15 +8,15 @@ import { v4 } from 'uuid';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
 import FormHeader from '../common/FormHeader';
+import SelectLocation from '../common/SelectLocation';
 import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../common/formConstant';
 import Checkbox from './Checkbox';
 import ImgFileUpload from './ImgFileUpload';
+import * as S from './RegistTutorForm.styled';
 import SelectEnrollmentStatus from './SelectEnrollmentStatus';
 import SelectTuitionFee from './SelectTuitionFee';
 import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from './constant';
 import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from './translation';
-import * as S from './RegistTutorForm.styled';
-import SelectLocation from '../common/SelectLocation';
 // import { useQuery } from '@tanstack/react-query';
 // import { getAllTutorInfo } from '../../../api/tutor';
 
