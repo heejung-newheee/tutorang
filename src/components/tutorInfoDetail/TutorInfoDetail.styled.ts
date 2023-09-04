@@ -47,7 +47,7 @@ export const Figure = styled.figure`
 `;
 
 export const ClassTitle = styled.h3`
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 600;
   line-height: 1.4;
   margin-bottom: 58px;
@@ -229,6 +229,15 @@ export const OverviewItemNumber = styled.p`
 export const OverviewItemIcon = styled.img`
   /* margin-bottom: 24px;
   height: 60px; */
+  filter: invert(73%) sepia(73%) saturate(2869%) hue-rotate(335deg) brightness(100%) contrast(104%);
+  margin-bottom: 20px;
+  margin-top: 7px;
+  height: 37px;
+`;
+export const OverviewItemIcon2 = styled.img`
+  /* margin-bottom: 24px;
+  height: 60px; */
+  filter: invert(73%) sepia(73%) saturate(2869%) hue-rotate(335deg) brightness(88%) contrast(104%);
   margin-bottom: 20px;
   margin-top: 7px;
   height: 37px;

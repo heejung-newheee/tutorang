@@ -38,7 +38,6 @@ const UserInfo = () => {
 
   const studentMatch = data?.filter((item) => item.user_id === user.id);
   const tutorMatch = data?.filter((item) => item.tutor_id === user.id);
-
   return (
     <>
       <S.MypageContainer>
