@@ -1,5 +1,5 @@
-export { default as Detail } from './Detail';
-export { default as Main } from './Main';
-export { default as Mypage } from './Mypage';
-export { default as List } from './List';
-export { default as NotFound } from './NotFound';
+export { default as Detail } from './detail/Detail';
+export { default as List } from './list/List';
+export { default as Main } from './main/Main';
+export { default as Mypage } from './mypage/Mypage';
+export { default as NotFound } from './notFound/NotFound';

@@ -31,8 +31,6 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   };
   useEffect(() => {
     const handleOutsideClose = (event: MouseEvent) => {
-      console.log('AuthNavInfoAreaRef.current', AuthNavInfoAreaRef.current);
-      console.log('event.target', event.target);
       if (isOpenAuthNavInfoArea && !AuthNavInfoAreaRef.current?.contains(event.target as Node)) setIsOpenAuthNavInfoArea(false);
     };
     window.addEventListener('click', handleOutsideClose);
@@ -45,17 +43,11 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
       {$loginUser?.role === 'student' && (
         <S.RegisterTutorBtnContainer>
           <S.BtnWholeBody onClick={moveToRegisterTutorPage}>
-            {/* 다른 header button이랑 크기 동일, hover시 gray, 원모양 w/h = 40px */}
             <S.RightButton>
-              {/* semantic 기능 -감싸주기만 */}
               <S.IconCover>
-                {/* 아이콘 모양 잡기 */}
                 <RiUserStarLine className="right_icon register_tutor_icon" />
               </S.IconCover>
             </S.RightButton>
-            {/* <div>
-            <p></p>
-          </div> */}
           </S.BtnWholeBody>
         </S.RegisterTutorBtnContainer>
       )}
@@ -67,22 +59,17 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
               <BsBell className="right_icon" />
             </S.IconCover>
           </S.RightButton>
-          {/* <div>
-            <p></p>
-          </div> */}
         </S.BtnWholeBody>
       </S.AlarmBtnContainer>
 
       <S.AvatarBtnContainer ref={AuthNavInfoAreaRef}>
         <S.AvatarBtnWholeBody>
-          {/* 토글버튼 */}
           <S.RightButton onClick={toggleAuthNavInfoArea}>
             <div>
               <S.ProfileImg src={$loginUser!.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="" />
             </div>
           </S.RightButton>
 
-          {/* 내용물 */}
           {isOpenAuthNavInfoArea && (
             <S.AuthNavContainer>
               <S.AuthInfoSection>

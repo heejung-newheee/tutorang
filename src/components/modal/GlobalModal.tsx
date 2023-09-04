@@ -1,12 +1,12 @@
-import * as S from './Modal.styled';
-import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm } from '..';
 import { useSelector } from 'react-redux';
+import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm } from '..';
+import EditTutorForm from '../../pages/auth/registTutorForm/EditTutorForm';
+import YoutubeModal from '../../pages/main/youtube/YoutubeModal';
+import EditProfileForm from '../../pages/mypage/profileForm/EditProfileForm';
 import { RootState } from '../../redux/config/configStore';
+import MatchedReviewForm from '../review/reviewForm/MatchedReviewForm';
+import * as S from './Modal.styled';
 import ModalPortal from './ModalPortal';
-import EditProfileForm from '../Form/profileForm/EditProfileForm';
-import YoutubeModal from '../youtube/YoutubeModal';
-import EditTutorForm from '../Form/registTutorForm/EditTutorForm';
-import MatchedReviewForm from '../Form/reviewForm/MatchedReviewForm';
 
 const GlobalModal = () => {
   const { type, isOpen } = useSelector((state: RootState) => state.modal);

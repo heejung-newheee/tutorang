@@ -124,7 +124,6 @@ const ChatRoomPreview = ({ room, userId }: { room: RoomWithLastMessageType; user
           </S.PreviewTitle>
           <S.PreviewMessage>{room.last_message.length > 0 ? room.last_message[0].content : 'No message'}</S.PreviewMessage>
         </S.PriviewContent>
-        {/* 채팅방 나가기 버튼 디자인 미정  */}
         <div style={{ display: 'none' }}>
           <button onClick={() => handleLeaveRoom(room.room_id)}>채팅방 나가기</button>
         </div>

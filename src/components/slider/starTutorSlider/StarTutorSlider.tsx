@@ -1,10 +1,9 @@
-import * as S from './StartTutorSlider.styled';
 import { useQuery } from '@tanstack/react-query';
-import TutorSlider from '../tutorSlider/TutorSlider';
-import { tutorInfoJoin } from '../../../api/tutor';
 import { Loading } from '../..';
-
-const STAR_TUTORS_QUERY_KEY = ['starTutors'];
+import { tutorInfoJoin } from '../../../api/tutor';
+import { STAR_TUTORS_QUERY_KEY } from '../../../constants/query.constant';
+import TutorSlider from '../tutorSlider/TutorSlider';
+import * as S from './StartTutorSlider.styled';
 
 const StarTutorSlider = () => {
   const tutors = useQuery(STAR_TUTORS_QUERY_KEY, tutorInfoJoin);

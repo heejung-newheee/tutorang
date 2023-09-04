@@ -132,7 +132,6 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
           if (payload.eventType === 'INSERT') {
             const newParticipant = payload.new as Tables<'chat_room_participants'>;
             if (newParticipant.user_id === userId) {
-              //내가 채팅방에 들어간 경우
               try {
                 const chatRoom = (await getChatRoom(newParticipant.room_id)) as RoomWithLastMessageType;
                 if (chatRoom) setChatRoomList((roomList) => [chatRoom, ...roomList]);
@@ -140,7 +139,6 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
                 console.error(err);
               }
             } else {
-              //다른 사람이 채팅방에 들어간 경우
               try {
                 const profile = await getUserProfile(newParticipant.user_id);
                 setChatRoomList((roomList) => {

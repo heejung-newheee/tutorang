@@ -1,14 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout, SignInForm, SignUpForm } from '../components';
-import WelcomeMessagePage from '../components/Form/SignUpForm/WelcomeMessagePage';
-import CreateAdditionalInformationForm from '../components/Form/profileForm/CreateAdditionalInformationForm';
-import RegistTutorForm from '../components/Form/registTutorForm/RegistTutorForm';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import { Detail, List, Main, Mypage, NotFound } from '../pages';
-import Chat from '../pages/Chat';
+import WelcomeMessagePage from '../pages/auth/SignUpForm/WelcomeMessagePage';
+import EditTutorForm from '../pages/auth/registTutorForm/EditTutorForm';
+import RegistTutorForm from '../pages/auth/registTutorForm/RegistTutorForm';
+import Chat from '../pages/chat/Chat';
+import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateAdditionalInformationForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
-import EditTutorForm from '../components/Form/registTutorForm/EditTutorForm';
 
 const Router = () => {
   return (
@@ -27,7 +27,6 @@ const Router = () => {
           <Route path="/detail/:id" element={<Detail />} />
           <Route element={<Layout />}>
             <Route path="/list" element={<List />} />
-            <Route path="/test" element={<WelcomeMessagePage />} />
 
             <Route
               path="/additional-information"
