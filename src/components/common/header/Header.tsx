@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
 import { tutorInfoJoin } from '../../../api/tutor';
 import { tutorang_logo } from '../../../assets';
@@ -23,7 +23,6 @@ const HeaderMenu: HEADERMENU = [
 const Header = () => {
   const [sideNavOpen, setSideNavOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const loginUser = useSelector((state: RootState) => state.user.user);
   const { data: tutor } = useQuery(['tutor_info_join'], tutorInfoJoin);
