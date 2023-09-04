@@ -7,9 +7,9 @@ export const getAllTutorCount = async () => {
   return count;
 };
 export const getAllTutorInfo = async (id: string) => {
-  const { count, error } = await supabase.from('tutor_info').select('*').eq('user_id', id);
+  const { data, error } = await supabase.from('tutor_info').select('*').eq('user_id', id);
   if (error) throw error;
-  return count;
+  return data;
 };
 
 export const getTutors = async () => {

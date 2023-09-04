@@ -229,13 +229,22 @@ export const OverviewItemNumber = styled.p`
 export const OverviewItemIcon = styled.img`
   /* margin-bottom: 24px;
   height: 60px; */
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  margin-top: 7px;
   height: 37px;
 `;
 
 export const StarList = styled.ul`
   display: flex;
+  align-items: center;
+  padding-top: 10px;
   filter: invert(63%) sepia(97%) saturate(1441%) hue-rotate(336deg) brightness(100%) contrast(102%);
+  li {
+    width: 35px;
+    img {
+      width: 100%;
+    }
+  }
 `;
 
 export const StarWrapper = styled.div`
