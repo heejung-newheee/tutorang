@@ -42,7 +42,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   }, [isOpenAuthNavInfoArea]);
   return (
     <>
-      {$loginUser?.role === 'tutor' && (
+      {$loginUser?.role === 'student' && (
         <S.RegisterTutorBtnContainer>
           <S.BtnWholeBody onClick={moveToRegisterTutorPage}>
             {/* 다른 header button이랑 크기 동일, hover시 gray, 원모양 w/h = 40px */}
