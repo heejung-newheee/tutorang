@@ -1,6 +1,7 @@
 import { BsBell } from 'react-icons/bs';
-import { RiUserStarFill } from 'react-icons/ri';
-import { useNavigate } from 'react-router-dom';
+import { RiUserStarLine } from 'react-icons/ri';
+import { Link, useNavigate } from 'react-router-dom';
+import supabase from '../../../supabase';
 import { Tables } from '../../../supabase/database.types';
 import * as S from './Header.styled';
 import './headericon.css';
@@ -12,6 +13,17 @@ type TypeSiginUserNavProps = {
 const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   const navigate = useNavigate();
   const moveToRegisterTutorPage = () => navigate('/tutor-registration');
+  const moveToMyPage = () => navigate('/mypage');
+  const handleUserSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      alert(error.message);
+    } else {
+      alert('로그아웃 되었습니다');
+      navigate('/');
+    }
+  };
+
   return (
     <>
       <S.RegisterTutorBtnContainer>
@@ -21,7 +33,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
             {/* semantic 기능 -감싸주기만 */}
             <S.IconCover>
               {/* 아이콘 모양 잡기 */}
-              <RiUserStarFill className="right_icon register_tutor_icon" />
+              <RiUserStarLine className="right_icon register_tutor_icon" />
             </S.IconCover>
           </S.RightButton>
           {/* <div>
@@ -49,9 +61,24 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
             </div>
           </S.RightButton>
           <S.AuthNavContainer>
-            <S.AuthInfoSection></S.AuthInfoSection>
+            <S.AuthInfoSection>
+              <S.AuthAvatarContainer>
+                <S.ProfileImg src={$loginUser!.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="" />
+              </S.AuthAvatarContainer>
+              <S.AuthProfileContainer>
+                <p>{$loginUser!.username || '이름 미확인'}</p>
+                <p>{$loginUser!.role}</p>
+              </S.AuthProfileContainer>
+            </S.AuthInfoSection>
             <S.PartitionLine />
-            <div></div>
+            <S.AuthNavSection>
+              <S.AuthNavItem onClick={moveToMyPage}>
+                <Link to="#">마이페이지</Link>
+              </S.AuthNavItem>
+              <S.AuthNavItem onClick={handleUserSignOut}>
+                <button>로그아웃</button>
+              </S.AuthNavItem>
+            </S.AuthNavSection>
           </S.AuthNavContainer>
         </S.AvatarBtnWholeBody>
       </S.AvatarBtnContainer>
