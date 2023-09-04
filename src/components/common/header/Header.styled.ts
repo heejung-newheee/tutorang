@@ -158,13 +158,13 @@ export const RightButton = styled.button`
   border-radius: 100%;
 `;
 
+// [ ]
 export const AuthNavContainer = styled.div`
   position: absolute;
   top: 46px;
   right: -10px;
   width: 190px;
   /* height: 200px; */
-  padding-bottom: 10px;
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
   border-radius: 3px;
@@ -196,7 +196,9 @@ export const AuthProfileContainer = styled.div`
   }
 `;
 
-export const AuthNavSection = styled.section``;
+export const AuthNavSection = styled.section`
+  padding: 5px 0 10px;
+`;
 
 export const AuthNavItem = styled.div`
   box-sizing: border-box;
@@ -204,7 +206,6 @@ export const AuthNavItem = styled.div`
   height: 40px;
   display: flex;
   align-items: center;
-  /* justify-content: center; */
   font-size: 15px;
   & button {
     font-size: 15px;
