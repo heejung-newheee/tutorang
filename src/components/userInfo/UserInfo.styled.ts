@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 import { colors } from '../../style/theme/colors';
 
-// 글목록 불러오기 공통적용스타일
 export const ContentsDataBox = styled.div`
   max-height: 600px;
   overflow-y: scroll;
 `;
-// 수강생 후기
 export const DataList = styled.ul``;
 export const DataItem = styled.li`
   margin: 10px 0;
@@ -51,11 +49,10 @@ export const ReviewRating = styled.div`
   }
 `;
 
-// 상단 프로필 영역
 export const MypageContainer = styled.section`
   margin-top: 70px;
   @media all and (max-width: 768px) {
-    margin-top: 50px; // 헤더 높이
+    margin-top: 50px;
   }
 `;
 export const ProfileBox = styled.section`
@@ -123,23 +120,6 @@ export const TutorLocationBox = styled.div`
     top: 1.5px;
   }
 `;
-
-// export const Summary = styled.div`
-//   width: 100%;
-//   max-width: 1200px;
-//   height: 244px;
-//   padding: 62px;
-//   border-radius: 40px;
-//   background-color: #fff;
-//   margin: 40px 0;
-//   justify-content: space-between;
-//   align-items: center;
-//   display: flex;
-//   text-align: center;
-//   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-//   position: absolute;
-//   bottom: -170px;
-// `;
 
 export const Summary = styled.div`
   width: 100%;

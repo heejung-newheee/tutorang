@@ -94,7 +94,6 @@ export const ProfileImg = styled.img`
   border-radius: 50%;
   object-fit: cover;
 `;
-//로그인 했을 때
 export const LoginBtnSignUp = styled.button`
   border: 1px solid ${colors.primary};
   margin-left: 15px;
@@ -107,7 +106,6 @@ export const LoginBtnSignUp = styled.button`
   }
 `;
 
-//로그인 안 했을 때
 export const LoginSignUpDiv = styled.div`
   display: flex;
   align-items: center;
@@ -122,8 +120,6 @@ export const LoginSignUpDiv = styled.div`
     border-right: 1px solid ${colors.gray_900};
   }
 `;
-
-// Mobile UI
 
 export const MobileContainer = styled.div<{ $sideNavOpen: boolean }>`
   width: 100%;

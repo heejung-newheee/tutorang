@@ -1,15 +1,15 @@
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useQuery } from '@tanstack/react-query';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
-import { matchingList } from '../../../redux/modules/matching';
 import { tutorInfoJoin } from '../../../api/tutor';
-import { tutorInfo } from '../../../redux/modules/tutorSlice';
 import { tutorang_logo } from '../../../assets';
+import { RootState } from '../../../redux/config/configStore';
+import { matchingList } from '../../../redux/modules/matching';
+import { tutorInfo } from '../../../redux/modules/tutorSlice';
 import supabase from '../../../supabase';
 import * as S from './Header.styled';
-import { RootState } from '../../../redux/config/configStore';
 import HeaderModal from './HeaderModal';
 
 type HEADERMENU = { title: string; path: string }[];
@@ -27,7 +27,6 @@ const Header = () => {
   const loginUser = useSelector((state: RootState) => state.user.user);
   const { data: tutor } = useQuery(['tutor_info_join'], tutorInfoJoin);
 
-  // matching 테이블 모든 데이터
   const { data: matchData } = useQuery(['matching'], () => getMatchData());
   useEffect(() => {
     if (matchData) {
@@ -38,7 +37,6 @@ const Header = () => {
     }
   }, [tutor, matchData, dispatch]);
 
-  // TODO 로그아웃 함수 --> 일단은 main에 넣어둠
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) alert(error.message);
@@ -76,7 +74,6 @@ const Header = () => {
               ))}
             </S.Gnb>
           </S.HeaderLeft>
-          {/* 미디어쿼리 */}
           <S.MobileLogo to="/">
             <div>
               <S.NavLogoImg src={tutorang_logo} alt="logo"></S.NavLogoImg>

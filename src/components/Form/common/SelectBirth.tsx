@@ -34,7 +34,6 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
     birthYearOptions.push(y);
   }
 
-  // 월, 일 2자리
   const birthMonthOptions = [];
   for (let m = 1; m <= 12; m += 1) {
     if (m < 10) {

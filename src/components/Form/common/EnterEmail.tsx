@@ -21,14 +21,11 @@ const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDo
   }, []);
 
   const duplicationCheck = async (unverifiedEmail: string) => {
-    // console.log('이거 내 이메일', unverifiedEmail);
-    // unverifiedEmail 을 supabase의 db 에서 확인
     const { data: profiles, error } = await supabase.from('profiles').select('email');
     const myEmailFromDB = profiles?.find((profile) => {
       return profile.email === unverifiedEmail;
     });
     const isMyEmailHere = myEmailFromDB === undefined ? false : true;
-    // console.log('????????', isMyEmailHere);
     $setDuplicatedEmail(isMyEmailHere);
     $setDoneDuplicationCheck(true);
 
@@ -70,7 +67,6 @@ const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDo
 
 export default EnterEmail;
 
-// 공용으로 뺄까
 const SInput = styled.input<{ id?: string }>`
   box-sizing: border-box;
   width: 100%;
@@ -105,7 +101,6 @@ const SInput = styled.input<{ id?: string }>`
   }
 `;
 
-// 이것도 공용으로 뺄까
 const SPGuideMessage = styled.p<{ $guideMessageColor?: string }>`
   min-width: 10px;
   height: 18px;

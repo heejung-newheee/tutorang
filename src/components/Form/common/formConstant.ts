@@ -14,7 +14,6 @@ export const FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO = 'user_additional-informa
 export const FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE = 'tutor_certificate';
 export const FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT = 'tutor_class_edit';
 
-// REGEX
 export const USERNAME_KR_REGEX = /^[가-힣|]{2,6}$/;
 export const USERNAME_EN_REGEX = /^[a-z|A-Z|+\s]{2,20}$/;
 export const EMAIL_REGEX = /^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/;

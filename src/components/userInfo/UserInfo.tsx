@@ -36,13 +36,8 @@ const UserInfo = () => {
     dispatch(openModal({ type: 'editProfiles' }));
   };
 
-  // TODO Cannot read properties of undefined (reading 'id') 에러 계속뜸! 순서 바꾸면 에러남
-  //학생의 매칭 결과 배열
   const studentMatch = data?.filter((item) => item.user_id === user.id);
-  // console.log(studentMatch);
-  // 튜터의 매칭 결과
   const tutorMatch = data?.filter((item) => item.tutor_id === user.id);
-  // console.log(tutorMatch);
 
   return (
     <>

@@ -9,12 +9,12 @@ import { getUserProfile } from '../../../api/chat';
 import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
+import { Button } from '../../button/Button.styled';
 import { USER_PROFILE_QUERY_KEY } from '../../userInfo/UserInfo';
 import { SPGuideMessage } from '../common/AuthForm.styled';
 import SelectLocation from '../common/SelectLocation';
 import { Container, ContentWrapper, Inner } from '../reviewForm/ReviewForm.styled';
 import * as S from './ProfileForm.styled';
-import { Button } from '../../button/Button.styled';
 
 // const GET_USER_QUERY_KEY = ['profiles'];
 const EditProfileForm = () => {
@@ -72,6 +72,7 @@ const EditProfileForm = () => {
     const imgName = v4();
     e.preventDefault();
     try {
+      console.log('되엇음');
       if (password) {
         await supabase.auth.updateUser({ password: password });
         alert('비밀번호 변경이 완료되었습니다.');

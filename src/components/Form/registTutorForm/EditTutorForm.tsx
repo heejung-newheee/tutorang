@@ -3,7 +3,6 @@ import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-// import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
@@ -17,8 +16,6 @@ import SelectEnrollmentStatus from './SelectEnrollmentStatus';
 import SelectTuitionFee from './SelectTuitionFee';
 import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from './constant';
 import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from './translation';
-// import { useQuery } from '@tanstack/react-query';
-// import { getAllTutorInfo } from '../../../api/tutor';
 
 const EditTutorForm = () => {
   const [tuitionFeeOnline, setTuitionFeeOnline] = useState(0);
@@ -26,7 +23,6 @@ const EditTutorForm = () => {
   const [checkPersonalityItems, setCheckPersonalityItems] = useState<string[]>([]);
   const [checkLanguageItems, setCheckLanguageItems] = useState<string[]>([]);
   const [checkClassLevelItems, setCheckClassLevelItems] = useState<string[]>([]);
-  // const [validationCheck, setValicationCheck] = useState(false);
   const [uid, setUid] = useState<string | null>('');
   const [email, setEmail] = useState<string | null>('');
   const [classInfo, setClassInfo] = useState('');
@@ -39,10 +35,6 @@ const EditTutorForm = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
 
-  // const { data: classInfoData } = useQuery(['tutor_info'], () => getAllTutorInfo(user!.id));
-  // console.log(user);
-  // console.log(classInfoData); // 안불려옴
-
   const onChangeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.name === 'university') setUniversity(event.target.value);
     if (event.target.name === 'major') setMajor(event.target.value);
@@ -50,7 +42,6 @@ const EditTutorForm = () => {
   const handleCheckedItems = (checkBoxType: string, value: string, isChecked: boolean) => {
     if (checkBoxType === 'personality') {
       if (isChecked) {
-        // 선택된 아이템이 2개 이상이면 더 추가 못하게 (Checkbox에서 어차피 선택안되게 해서 필요없지만 한 번 더 써줌.)
         if (checkPersonalityItems.length >= 3) return false;
         setCheckPersonalityItems([...checkPersonalityItems, value]);
       } else if (!isChecked) {
@@ -62,7 +53,6 @@ const EditTutorForm = () => {
     }
     if (checkBoxType === 'language') {
       if (isChecked) {
-        // 선택된 아이템이 2개 이상이면 더 추가 못하게 (Checkbox에서 어차피 선택안되게 해서 필요없지만 한 번 더 써줌.)
         if (checkLanguageItems.length >= 3) return false;
         setCheckLanguageItems([...checkLanguageItems, value]);
       } else if (!isChecked) {
@@ -74,7 +64,6 @@ const EditTutorForm = () => {
     }
     if (checkBoxType === 'classLevel') {
       if (isChecked) {
-        // 선택된 아이템이 2개 이상이면 더 추가 못하게 (Checkbox에서 어차피 선택안되게 해서 필요없지만 한 번 더 써줌.)
         if (checkClassLevelItems.length >= 3) return false;
         setCheckClassLevelItems([...checkClassLevelItems, value]);
       } else if (!isChecked) {
@@ -88,7 +77,6 @@ const EditTutorForm = () => {
 
   const storeAndGetProfileImg = async () => {
     const imgIdentity = v4();
-    // let pdfUrlList: string | undefined;
     if (certificationImgFile && certificationImgFile !== undefined) {
       const { error } = await supabase.storage.from('certification-img-file').upload(`${email}/${imgIdentity}`, certificationImgFile, {
         cacheControl: '3600',
@@ -98,7 +86,7 @@ const EditTutorForm = () => {
         console.error('upload error', error);
       } else {
         const { data } = await supabase.storage.from('certification-img-file').getPublicUrl(`${email}/${imgIdentity}`);
-        return data?.publicUrl; // 업로드된 파일들의 URL을 반환합니다. imgUrlList
+        return data?.publicUrl;
       }
     } else return undefined;
   };
@@ -137,7 +125,6 @@ const EditTutorForm = () => {
       location2_gugun: location.gugun2,
     };
     const { error } = await supabase.from('tutor_info').update(formData).eq('user_id', user?.id);
-    // 지역 업데이트
     await supabase.from('profiles').update(locationUpdate).eq('id', user?.id);
     if (error) console.log(error.message);
     else {
