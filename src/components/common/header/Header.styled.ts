@@ -79,7 +79,7 @@ export const NavLinkSt = styled(NavLink)`
 `;
 
 export const LoginBtn = styled.span`
-  cursor: pointer;
+  /* cursor: pointer; */
   color: black;
   display: flex;
   align-items: center;
@@ -89,8 +89,8 @@ export const LoginBtn = styled.span`
   }
 `;
 export const ProfileImg = styled.img`
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
 `;
@@ -105,6 +105,81 @@ export const LoginBtnSignUp = styled.button`
     background-color: ${colors.primary};
     color: white;
   }
+`;
+// 지은 추가
+export const RegisterTutorBtnContainer = styled.div`
+  box-sizing: border-box;
+  padding: 5px 0;
+  width: 50px;
+  height: 50px;
+`;
+export const AlarmBtnContainer = styled.div`
+  box-sizing: border-box;
+  padding: 5px 0;
+  width: 50px;
+  height: 50px;
+`;
+export const AvatarBtnContainer = styled.div`
+  box-sizing: border-box;
+  padding: 5px;
+  width: 60px;
+  height: 50px;
+`;
+
+export const AvatarBtnWholeBody = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 40px;
+  height: 40px; */
+  border-radius: 100%;
+`;
+export const BtnWholeBody = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 43px;
+  height: 43px;
+  border-radius: 100%;
+  &:hover {
+    background-color: #eee;
+  }
+`;
+export const IconCover = styled.div`
+  width: 40px;
+  height: 40px;
+  padding: 5px 0px 5px;
+  margin-top: 3px;
+`;
+
+export const RightButton = styled.button`
+  border-radius: 100%;
+`;
+
+export const AuthNavContainer = styled.div`
+  position: absolute;
+  top: 50px;
+  right: 5px;
+  width: 200px;
+  height: 200px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+`;
+
+// [ ] 이것도 section으로 하는게 맞나....?
+export const AuthInfoSection = styled.section`
+  box-sizing: border-box;
+  width: 100%;
+  height: 50px;
+`;
+
+export const AuthNavSection = styled.section``;
+
+export const PartitionLine = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: #eaeaea;
 `;
 
 //로그인 안 했을 때

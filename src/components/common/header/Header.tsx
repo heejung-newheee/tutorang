@@ -1,16 +1,17 @@
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useQuery } from '@tanstack/react-query';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
-import { matchingList } from '../../../redux/modules/matching';
 import { tutorInfoJoin } from '../../../api/tutor';
-import { tutorInfo } from '../../../redux/modules/tutorSlice';
 import { tutorang_logo } from '../../../assets';
+import { RootState } from '../../../redux/config/configStore';
+import { matchingList } from '../../../redux/modules/matching';
+import { tutorInfo } from '../../../redux/modules/tutorSlice';
 import supabase from '../../../supabase';
 import * as S from './Header.styled';
-import { RootState } from '../../../redux/config/configStore';
 import HeaderModal from './HeaderModal';
+import SigninUserNav from './SigninUserNav';
 
 type HEADERMENU = { title: string; path: string }[];
 
@@ -95,7 +96,7 @@ const Header = () => {
           <S.LoginBtn>
             {loginUser ? (
               <>
-                <Link to="/mypage">
+                {/* <Link to="/mypage">
                   <S.ProfileImg src={loginUser.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="" />
                 </Link>
                 <S.LoginBtnSignUp
@@ -105,7 +106,8 @@ const Header = () => {
                   }}
                 >
                   로그아웃
-                </S.LoginBtnSignUp>
+                </S.LoginBtnSignUp> */}
+                <SigninUserNav $loginUser={loginUser} />
               </>
             ) : (
               <NavLink to="/signin">
