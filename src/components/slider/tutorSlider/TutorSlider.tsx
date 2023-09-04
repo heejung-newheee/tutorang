@@ -23,8 +23,8 @@ const TutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
           tutorList.map((tutor: Views<'tutor_info_join'>) => {
             let key = `${tutor.tutor_img}+${tutor.tutor_id!.split('-')[0]}`;
             return (
-              <S.Tutor to={`/detail/${tutor.tutor_id}`}>
-                <ProfilesCard tutor={tutor} key={key} />
+              <S.Tutor to={`/detail/${tutor.tutor_id}`} key={key}>
+                <ProfilesCard tutor={tutor} />
               </S.Tutor>
             );
           })}
