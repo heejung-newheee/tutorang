@@ -79,7 +79,7 @@ export const NavLinkSt = styled(NavLink)`
 `;
 
 export const LoginBtn = styled.span`
-  cursor: pointer;
+  /* cursor: pointer; */
   color: black;
   display: flex;
   align-items: center;
@@ -89,8 +89,8 @@ export const LoginBtn = styled.span`
   }
 `;
 export const ProfileImg = styled.img`
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
 `;
@@ -105,6 +105,124 @@ export const LoginBtnSignUp = styled.button`
     background-color: ${colors.primary};
     color: white;
   }
+`;
+// 지은 추가
+export const RegisterTutorBtnContainer = styled.div`
+  box-sizing: border-box;
+  padding: 5px 0;
+  width: 50px;
+  height: 50px;
+`;
+export const AlarmBtnContainer = styled.div`
+  box-sizing: border-box;
+  padding: 5px 0;
+  width: 50px;
+  height: 50px;
+`;
+export const AvatarBtnContainer = styled.div`
+  box-sizing: border-box;
+  padding: 5px 5px 5px 15px;
+  width: 60px;
+  /* width: 100px; */
+  height: 50px;
+`;
+
+export const AvatarBtnWholeBody = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 40px;
+  height: 40px; */
+  border-radius: 100%;
+`;
+export const BtnWholeBody = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 43px;
+  height: 43px;
+  border-radius: 100%;
+  &:hover {
+    background-color: #eee;
+  }
+`;
+export const IconCover = styled.div`
+  width: 40px;
+  height: 40px;
+  padding: 7.5px 0px 7.5px;
+  margin-top: 3px;
+`;
+
+export const RightButton = styled.button`
+  border-radius: 100%;
+`;
+
+// [ ]
+export const AuthNavContainer = styled.div`
+  position: absolute;
+  top: 46px;
+  right: -10px;
+  width: 190px;
+  /* height: 200px; */
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  border-radius: 3px;
+`;
+
+// [ ] 이것도 section으로 하는게 맞나....?
+export const AuthInfoSection = styled.section`
+  box-sizing: border-box;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-left: 10px;
+`;
+
+export const AuthAvatarContainer = styled.div`
+  height: 40px;
+`;
+export const AuthProfileContainer = styled.div`
+  height: 50px;
+  & p:nth-child(1) {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+  }
+  & p:nth-child(2) {
+    font-size: 14px;
+  }
+`;
+
+export const AuthNavSection = styled.section`
+  padding: 5px 0 10px;
+`;
+
+export const AuthNavItem = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  & button {
+    font-size: 15px;
+    padding: 0;
+    border: 0;
+  }
+  &:hover {
+    background-color: #eee;
+    cursor: pointer;
+  }
+  padding-left: 10px;
+`;
+
+export const PartitionLine = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: #eaeaea;
 `;
 
 //로그인 안 했을 때

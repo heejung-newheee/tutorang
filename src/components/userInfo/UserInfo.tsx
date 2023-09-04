@@ -43,7 +43,7 @@ const UserInfo = () => {
   // 튜터의 매칭 결과
   const tutorMatch = data?.filter((item) => item.tutor_id === user.id);
   // console.log(tutorMatch);
-
+  console.log('하잉~~~~~~~', receivedReviewCount.data);
   return (
     <>
       <S.MypageContainer>
