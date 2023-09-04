@@ -6,7 +6,7 @@ export { default as icon_edit_wh } from './edit_white.svg';
 export { default as foot_logo } from './foot_logo.png';
 export { default as filterIcon } from './funnel.png';
 export { default as googleicon } from './googleicon.png';
-export { default as homebuttonlogo } from './homebuttonlogo.png';
+export { default as home_button_logo } from './homebuttonlogo.png';
 export { default as icon_location_gray } from './ico_location.svg';
 export { default as starEmpty } from './ico_star.svg';
 export { default as starFull } from './ico_star_full.svg';

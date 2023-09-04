@@ -79,7 +79,6 @@ export const NavLinkSt = styled(NavLink)`
 `;
 
 export const LoginBtn = styled.span`
-  /* cursor: pointer; */
   color: black;
   display: flex;
   align-items: center;
@@ -94,7 +93,6 @@ export const ProfileImg = styled.img`
   border-radius: 50%;
   object-fit: cover;
 `;
-//로그인 했을 때
 export const LoginBtnSignUp = styled.button`
   border: 1px solid ${colors.primary};
   margin-left: 15px;
@@ -106,7 +104,6 @@ export const LoginBtnSignUp = styled.button`
     color: white;
   }
 `;
-// 지은 추가
 export const RegisterTutorBtnContainer = styled.div`
   box-sizing: border-box;
   padding: 5px 0;
@@ -123,7 +120,6 @@ export const AvatarBtnContainer = styled.div`
   box-sizing: border-box;
   padding: 5px 5px 5px 15px;
   width: 60px;
-  /* width: 100px; */
   height: 50px;
 `;
 
@@ -132,8 +128,6 @@ export const AvatarBtnWholeBody = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 40px;
-  height: 40px; */
   border-radius: 100%;
 `;
 export const BtnWholeBody = styled.div`
@@ -158,19 +152,16 @@ export const RightButton = styled.button`
   border-radius: 100%;
 `;
 
-// [ ]
 export const AuthNavContainer = styled.div`
   position: absolute;
   top: 46px;
   right: -10px;
   width: 190px;
-  /* height: 200px; */
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
   border-radius: 3px;
 `;
 
-// [ ] 이것도 section으로 하는게 맞나....?
 export const AuthInfoSection = styled.section`
   box-sizing: border-box;
   width: 100%;
@@ -225,7 +216,6 @@ export const PartitionLine = styled.div`
   background-color: #eaeaea;
 `;
 
-//로그인 안 했을 때
 export const LoginSignUpDiv = styled.div`
   display: flex;
   align-items: center;
@@ -240,8 +230,6 @@ export const LoginSignUpDiv = styled.div`
     border-right: 1px solid ${colors.gray_900};
   }
 `;
-
-// Mobile UI
 
 export const MobileContainer = styled.div<{ $sideNavOpen: boolean }>`
   width: 100%;

@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
 import { tutorInfoJoin } from '../../../api/tutor';
 import { tutorang_logo } from '../../../assets';
+import { MATCHING_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { matchingList } from '../../../redux/modules/matching';
 import { tutorInfo } from '../../../redux/modules/tutorSlice';
@@ -25,10 +26,9 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const loginUser = useSelector((state: RootState) => state.user.user);
-  const { data: tutor } = useQuery(['tutor_info_join'], tutorInfoJoin);
+  const { data: tutor } = useQuery(TUTOR_INFO_JOIN_QUERY_KEY, tutorInfoJoin);
+  const { data: matchData } = useQuery(MATCHING_QUERY_KEY, () => getMatchData());
 
-  // matching 테이블 모든 데이터
-  const { data: matchData } = useQuery(['matching'], () => getMatchData());
   useEffect(() => {
     if (matchData) {
       dispatch(matchingList(matchData));
@@ -38,14 +38,12 @@ const Header = () => {
     }
   }, [tutor, matchData, dispatch]);
 
-  // TODO 로그아웃 함수 --> 일단은 main에 넣어둠
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) alert(error.message);
     alert('로그아웃 되었습니다');
   };
 
-  //스크롤 방지
   const preventScroll = (e: Event) => {
     e.preventDefault();
   };
@@ -76,7 +74,7 @@ const Header = () => {
               ))}
             </S.Gnb>
           </S.HeaderLeft>
-          {/* 미디어쿼리 */}
+
           <S.MobileLogo to="/">
             <div>
               <S.NavLogoImg src={tutorang_logo} alt="logo"></S.NavLogoImg>
@@ -91,21 +89,9 @@ const Header = () => {
           </S.Hamburger>
 
           <HeaderModal sideNavOpen={sideNavOpen} setSideNavOpen={setSideNavOpen} loginUser={loginUser} signOut={signOut} />
-          {/* 미디어쿼리 */}
           <S.LoginBtn>
             {loginUser ? (
               <>
-                {/* <Link to="/mypage">
-                  <S.ProfileImg src={loginUser.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="" />
-                </Link>
-                <S.LoginBtnSignUp
-                  onClick={() => {
-                    signOut();
-                    navigate('/');
-                  }}
-                >
-                  로그아웃
-                </S.LoginBtnSignUp> */}
                 <SigninUserNav $loginUser={loginUser} />
               </>
             ) : (

@@ -44,7 +44,6 @@ export const ChatList = styled.ul`
   gap: 0.625rem;
   flex-direction: column;
   width: 100%;
-  /* padding: 1.25rem; */
   overflow-y: auto;
 `;
 

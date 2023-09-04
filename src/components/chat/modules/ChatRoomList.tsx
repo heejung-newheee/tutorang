@@ -1,12 +1,12 @@
+import { useEffect, useMemo, useState } from 'react';
+import { AiFillCloseCircle } from 'react-icons/ai';
+import { BiSearchAlt2 } from 'react-icons/bi';
 import { useSearchParams } from 'react-router-dom';
 import { leaveChatRoom } from '../../../api/chat';
+import defaultProfileImgUrl from '../../../assets/basic-user-profile-img.png';
 import useChatContext from '../../../hooks/useChatContext';
 import { RoomWithLastMessageType } from '../../../supabase/database.types';
-import defaultProfileImgUrl from '../../../assets/basic-user-profile-img.png';
 import * as S from './ChatRoomList.styled';
-import { useState, useMemo, useEffect } from 'react';
-import { BiSearchAlt2 } from 'react-icons/bi';
-import { AiFillCloseCircle } from 'react-icons/ai';
 
 const calculateTimeDifference = (inputTime: string): string => {
   const inputDate = new Date(inputTime);
@@ -124,7 +124,6 @@ const ChatRoomPreview = ({ room, userId }: { room: RoomWithLastMessageType; user
           </S.PreviewTitle>
           <S.PreviewMessage>{room.last_message.length > 0 ? room.last_message[0].content : 'No message'}</S.PreviewMessage>
         </S.PriviewContent>
-        {/* 채팅방 나가기 버튼 디자인 미정  */}
         <div style={{ display: 'none' }}>
           <button onClick={() => handleLeaveRoom(room.room_id)}>채팅방 나가기</button>
         </div>
@@ -145,7 +144,6 @@ const PreviewTime = ({ time }: { time: string }) => {
     updateTime();
     const intervalId = setInterval(updateTime, 60 * 1000);
 
-    // 컴포넌트 unmount 시 인터벌 제거
     return () => clearInterval(intervalId);
   }, [time]);
 

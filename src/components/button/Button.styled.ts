@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { colors, ColorKey } from '../../style/theme/colors';
+import { ColorKey, colors } from '../../style/theme/colors';
 
 type ButtonProps = {
   variant: 'solid' | 'outline' | 'text' | 'textIcon';
@@ -23,7 +23,6 @@ export const Button = styled.button<ButtonProps>`
     transition: all 0.3 ease;
   }
 
-  // variant 정의
   ${(props) => {
     switch (props.variant) {
       case 'solid':
@@ -49,8 +48,7 @@ export const Button = styled.button<ButtonProps>`
     }
   }}
 
-  // size 정의
-   ${(props) => {
+  ${(props) => {
     switch (props.size) {
       case 'Large':
         return css`

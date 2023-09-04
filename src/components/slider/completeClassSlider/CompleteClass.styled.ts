@@ -22,9 +22,6 @@ export const ComTutorName = styled.div`
 `;
 export const ComTutorLocation = styled.div`
   font-size: 13px;
-  /* img {
-    filter: invert(0%) sepia(6%) saturate(7476%) hue-rotate(257deg) brightness(102%) contrast(107%);
-    } */
 `;
 export const ReviewBtnWrap = styled.div`
   display: flex;

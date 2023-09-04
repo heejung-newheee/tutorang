@@ -13,12 +13,9 @@ interface pageProps {
 }
 const TutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
   const _plugins = [new Arrow()];
-  // console.log('slider에서 받고 있는 tutorlist', tutorList);
   return (
     <>
-      <Flicking key={uniqueKey} panelsPerView={panels} align="11%" circular={true} plugins={_plugins} style={{ padding: '0 50px' }}>
-        {/* 처음 가짜 카드 */}
-        {/* <S.Empty className="this-start"></S.Empty> */}
+      <Flicking key={uniqueKey} panelsPerView={panels} align="19%" circular={true} plugins={_plugins} style={{ padding: '0 50px' }}>
         {tutorList &&
           tutorList.map((tutor: Views<'tutor_info_join'>) => {
             const key = `${tutor.tutor_img}+${tutor.tutor_id!.split('-')[0]}`;

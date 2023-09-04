@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect, Fragment } from 'react';
-import supabase from '../../../supabase';
-import useChatContext from '../../../hooks/useChatContext';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { IoIosSend } from 'react-icons/io';
-import * as S from './ChatRoom.styled';
+import { useSearchParams } from 'react-router-dom';
 import { leaveChatRoom, sendTutoringMessage } from '../../../api/chat';
 import { matchingRequest } from '../../../api/match';
+import useChatContext from '../../../hooks/useChatContext';
+import supabase from '../../../supabase';
 import { Tables } from '../../../supabase/database.types';
-import { useSearchParams } from 'react-router-dom';
+import * as S from './ChatRoom.styled';
 
 const isTutoringMessage = (type: string) => {
   return ['request', 'accept', 'reject'].includes(type);
@@ -49,7 +49,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
   const handleRequestTutoring = async () => {
     if (!chatRoom) return;
     const tutor = chatRoom.chat_room_participants.filter((participant) => participant.user_id !== userId);
-    if (tutor.length > 1) return; // 임시
+    if (tutor.length > 1) return;
     try {
       await matchingRequest({ tutorId: tutor[0].user_id, userId: userId });
       await sendTutoringMessage(chatRoom.room_id, 'request');
