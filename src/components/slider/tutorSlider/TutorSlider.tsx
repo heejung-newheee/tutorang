@@ -16,12 +16,12 @@ const TutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
   // console.log('slider에서 받고 있는 tutorlist', tutorList);
   return (
     <>
-      <Flicking key={uniqueKey} panelsPerView={panels} align="20%" circular={true} plugins={_plugins} style={{ padding: '0 50px' }}>
+      <Flicking key={uniqueKey} panelsPerView={panels} align="11%" circular={true} plugins={_plugins} style={{ padding: '0 50px' }}>
         {/* 처음 가짜 카드 */}
         {/* <S.Empty className="this-start"></S.Empty> */}
         {tutorList &&
           tutorList.map((tutor: Views<'tutor_info_join'>) => {
-            let key = `${tutor.tutor_img}+${tutor.tutor_id!.split('-')[0]}`;
+            const key = `${tutor.tutor_img}+${tutor.tutor_id!.split('-')[0]}`;
             return (
               <S.Tutor to={`/detail/${tutor.tutor_id}`} key={key}>
                 <ProfilesCard tutor={tutor} />

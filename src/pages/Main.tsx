@@ -9,7 +9,7 @@ import Banner from '../components/main/Banner';
 import MatchingFlow from '../components/process/MatchingFlow';
 import UserReviewList from '../components/review/mainReviewList/UserReviewList';
 import TutorSlider from '../components/slider/tutorSlider/TutorSlider';
-import { OverviewItem, OverviewItemIcon, OverviewItemNumber } from '../components/tutorInfoDetail/TutorInfoDetail.styled';
+import { OverviewItem, OverviewItemIcon, OverviewItemIcon2, OverviewItemNumber } from '../components/tutorInfoDetail/TutorInfoDetail.styled';
 import { colors } from '../style/theme/colors';
 
 const Main = () => {
@@ -51,7 +51,7 @@ const Main = () => {
               <span>리뷰 수</span>
             </OverviewItem>
             <OverviewItem>
-              <OverviewItemIcon src={icon_like} alt="매칭 아이콘" style={{ height: '37px' }} />
+              <OverviewItemIcon2 src={icon_like} alt="매칭 아이콘" style={{ height: '37px' }} />
               <OverviewItemNumber>{matchCount?.data}건</OverviewItemNumber>
               <span>매칭 횟수</span>
             </OverviewItem>
