@@ -48,7 +48,7 @@ const StTopBtn = styled.button`
   height: 40px;
   padding: 10px;
   border-radius: 20px;
-  transition: all 0.4s;
+  transition: all 0.3s;
   img {
     width: 100%;
   }

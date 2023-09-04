@@ -53,8 +53,10 @@ export const ReviewRating = styled.div`
 
 // 상단 프로필 영역
 export const MypageContainer = styled.section`
-  /* padding: 10px; */
   margin-top: 70px;
+  @media all and (max-width: 768px) {
+    margin-top: 50px; // 헤더 높이
+  }
 `;
 export const ProfileBox = styled.section`
   text-align: center;
@@ -90,6 +92,8 @@ export const EditBtn = styled.button`
   height: 42px;
   border-radius: 50%;
   background-color: #fff;
+  display: flex;
+  align-items: center;
 `;
 export const UserName = styled.p`
   font-size: 22px;
@@ -98,20 +102,25 @@ export const UserName = styled.p`
   color: #fff;
   span {
     font-size: 13px;
+    line-height: 1;
     font-weight: bold;
-    color: #e2e2e2;
+    color: #e5e5e5;
     /* text-transform: uppercase; */
   }
 `;
 export const TutorLocationBox = styled.div`
   display: flex;
   font-size: 13px;
-  width: 175px; //강제로 너비값 넣어둠
+  width: 50%;
   height: 16px;
   color: #fff;
   margin: 0 auto;
+  justify-content: center;
   img {
     height: 100%;
+    margin: 0 3px 0 7px;
+    position: relative;
+    top: 1.5px;
   }
 `;
 
@@ -192,7 +201,7 @@ export const MatchBtn = styled.button`
   margin: 0 5px;
   border-radius: 20px;
   border: solid 1px #000;
-  transition: all 0.4s;
+  transition: all 0.3s;
   &:hover {
     background-color: ${colors.primary};
     color: #fff;

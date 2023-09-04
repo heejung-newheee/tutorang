@@ -1,5 +1,6 @@
 import { Tab, TabList } from 'react-tabs';
 import { styled } from 'styled-components';
+import { colors } from '../../style/theme/colors';
 
 export const TabListButton = styled(TabList)`
   display: flex;
@@ -16,5 +17,21 @@ export const InfoItem = styled.li`
   border-top: solid 1px #dbd9d8;
   > div {
     width: 20%;
+  }
+`;
+export const TutorChatLink = styled.button`
+  width: 50%;
+  display: inline-block;
+  font-size: 16px;
+  line-height: 32px;
+  padding: 0 18px;
+  margin: 0 5px;
+  border-radius: 8px;
+  background-color: #efefef;
+  transition: all 0.3s;
+  &:hover {
+    background-color: ${colors.primary};
+    color: #fff;
+    border: solid 1px ${colors.primary};
   }
 `;

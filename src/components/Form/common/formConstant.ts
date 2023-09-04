@@ -4,6 +4,7 @@ export const FORM_HEADER_TITLE = [
   { keyword: 'complete', title: '완료' },
   { keyword: 'user_additional-information', title: '추가인증' },
   { keyword: 'tutor_certificate', title: '튜터 추가인증 정보' },
+  { keyword: 'tutor_class_edit', title: '튜터 수업정보 수정' },
 ];
 
 export const FORM_CONSTANT_TITLE_SIGNIN = 'signin';
@@ -11,6 +12,7 @@ export const FORM_CONSTANT_TITLE_SIGNUP = 'signup';
 export const FORM_CONSTANT_TITLE_COMPLETE = 'complete';
 export const FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO = 'user_additional-information';
 export const FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE = 'tutor_certificate';
+export const FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT = 'tutor_class_edit';
 
 // REGEX
 export const USERNAME_KR_REGEX = /^[가-힣|]{2,6}$/;

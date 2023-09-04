@@ -33,7 +33,14 @@ export const matchReview = async (tutorId: string) => {
 
 // 내가 쓴 리뷰 데이터만 조회
 export const matchMyReview = async (id: string) => {
-  const { data, error } = await supabase.from(REVIEW_TABLE).select().eq('user_id', id);
+  const { data, error } = await supabase
+    .from(REVIEW_TABLE)
+    .select(
+      `*,
+      reviewed_id (profiles: id, username)
+    `,
+    )
+    .eq('user_id', id);
   if (error) throw error;
   return data;
 };

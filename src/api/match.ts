@@ -48,7 +48,6 @@ export const matchingAccept = async (id: string) => {
     .eq('id', id);
   if (error) throw error;
 };
-
 export const matchingReject = async (id: string) => {
   const { error } = await supabase
     .from('matching')
@@ -59,7 +58,15 @@ export const matchingReject = async (id: string) => {
     .eq('id', id);
   if (error) throw error;
 };
-
+export const matchedReview = async (id: string) => {
+  const { error } = await supabase
+    .from('matching')
+    .update({
+      review_confirm: true,
+    })
+    .eq('id', id);
+  if (error) throw error;
+};
 export const tutorMatchedCount = async (id: string) => {
   const { data, error } = await supabase.from('matching').select().match({ tutor_id: id, status: 'complete' });
   if (error) throw error;

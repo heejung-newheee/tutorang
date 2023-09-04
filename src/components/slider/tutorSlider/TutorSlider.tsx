@@ -13,19 +13,21 @@ interface pageProps {
 }
 const TutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
   const _plugins = [new Arrow()];
-  console.log('slider에서 받고 있는 tutorlist', tutorList);
+  // console.log('slider에서 받고 있는 tutorlist', tutorList);
   return (
     <>
       <Flicking key={uniqueKey} panelsPerView={panels} align="20%" circular={true} plugins={_plugins} style={{ padding: '0 50px' }}>
         {/* 처음 가짜 카드 */}
         {/* <S.Empty className="this-start"></S.Empty> */}
-        {tutorList.map((tutor: Views<'tutor_info_join'>) => {
-          return (
-            <S.Tutor to={`/detail/${tutor.tutor_id}`} key={tutor.tutor_id}>
-              <ProfilesCard tutor={tutor} key={tutor.tutor_id} />
-            </S.Tutor>
-          );
-        })}
+        {tutorList &&
+          tutorList.map((tutor: Views<'tutor_info_join'>) => {
+            let key = `${tutor.tutor_img}+${tutor.tutor_id!.split('-')[0]}`;
+            return (
+              <S.Tutor to={`/detail/${tutor.tutor_id}`}>
+                <ProfilesCard tutor={tutor} key={key} />
+              </S.Tutor>
+            );
+          })}
         <ViewportSlot>
           <span className="flicking-arrow-prev is-circle"></span>
           <span className="flicking-arrow-next is-circle"></span>
