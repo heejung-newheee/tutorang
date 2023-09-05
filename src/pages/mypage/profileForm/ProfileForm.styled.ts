@@ -111,7 +111,7 @@ export const EditFormFlex = styled.div`
 export const PasswordChangeWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 0 12px;
   margin-top: 30px;
   > p {
     width: 100%;
