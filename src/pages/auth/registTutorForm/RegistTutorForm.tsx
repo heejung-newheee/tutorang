@@ -105,6 +105,7 @@ const RegistTutorForm = () => {
     const class_level = classLevelTranslation(checkClassLevelItems);
     const speaking_language = speakingLanguageTranslation(checkLanguageItems);
     const formData = {
+      state: 'pending',
       user_id: uid,
       university,
       major,
@@ -117,7 +118,7 @@ const RegistTutorForm = () => {
       tuition_fee_online: tuitionFeeOnline,
       tuition_fee_offline: tuitionFeeOffline,
     };
-    const { error } = await supabase.from('tutor_info').insert(formData);
+    const { error } = await supabase.from('pending_tutor_registration').insert(formData);
     if (error) console.log(error.message);
     else {
       alert('튜터신청이 완료되었습니다! 관리자의 승인을 기다려주세염');
