@@ -140,6 +140,12 @@ const EditTutorForm = () => {
     }
   }, [user]);
 
+  let isHereguidemessage = '';
+  if (location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2) {
+    isHereguidemessage = '중복 지역선택 불가';
+  } else if (location.sido1 === '전체' || location.sido2 === '전체' || location.gugun1 === '전체' || location.gugun2 === '전체') {
+    isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
+  }
   return (
     <S.Container>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT} />
@@ -158,10 +164,7 @@ const EditTutorForm = () => {
             </S.FormItemBodySection>
           </S.FormItemBody>
           <S.FormItemHeader>
-            <S.PGuideMessage>
-              {location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}
-              {(location.sido1 === '전체' || location.sido2 === '전체') && '지역1, 지역2 모두 특정지역 선택 필수'}
-            </S.PGuideMessage>
+            <S.PGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</S.PGuideMessage>
           </S.FormItemHeader>
           <S.FormItemTitle>학위/자격 증명</S.FormItemTitle>
           <S.FormCertificateItems>
