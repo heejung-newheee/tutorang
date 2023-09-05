@@ -26,5 +26,5 @@ export const Inner = styled.div`
   margin: 0 32px;
   background-color: ${colors.white};
   border-radius: 18px;
-  padding: 100px;
+  padding: 50px 0 30px;
 `;

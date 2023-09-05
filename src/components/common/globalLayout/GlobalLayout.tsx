@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Footer, Header } from '../..';
+import GlobalModal from '../../modal/GlobalModal';
 import ScrollTop from '../ScrollTop';
 import ScrollToTop from './ScrollToTop';
 
@@ -13,6 +14,7 @@ const GlobalLayout = () => {
         <Outlet />
       </main>
       <Footer />
+      <GlobalModal />
     </>
   );
 };
