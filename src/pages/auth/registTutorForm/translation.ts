@@ -1,4 +1,4 @@
-import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/constant';
+import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/signup.constant';
 
 export const personalityTranslation = (personalityArray: string[]) => {
   const translated: string[] = [];

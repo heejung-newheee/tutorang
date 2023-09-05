@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
-import { CheckboxOptionType } from '../../../constants/constant';
+import { CheckboxOptionType } from '../../../constants/signup.constant';
 
 type CheckboxType = {
   $checkboxType: string;
