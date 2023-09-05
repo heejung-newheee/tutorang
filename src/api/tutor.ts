@@ -6,6 +6,11 @@ export const getAllTutorCount = async () => {
   if (error) throw error;
   return count;
 };
+export const getAllTutorInfo = async (id: string) => {
+  const { data, error } = await supabase.from('tutor_info').select('*').eq('user_id', id);
+  if (error) throw error;
+  return data;
+};
 
 export const getTutors = async () => {
   const { data, error } = await supabase
@@ -37,27 +42,17 @@ export const getTutorMostReview = async () => {
   return data;
 };
 export const getTopReviewer = async () => {
-  const { data, error } = await supabase.from('tutor_top_reviewer').select().limit(5);
+  const { data, error } = await supabase.from('tutor_top_reviewer').select().limit(10);
   if (error) throw error;
   return data;
 };
 
-export const fetchTutorAll = async () => {
-  const res = await supabase.from('tutor_info').select('*');
-  return res.data;
-};
-
-export const fetchTutorFilter = async () => {
-  const res = await supabase.from('tutor_info').select('*').range(0, 1).eq('user_id', 'fd32cf82-7866-4d4c-90fc-3539ef165556');
-  return res.data;
-};
 export const tutorInfoJoin = async () => {
   const { data, error } = await supabase.from('tutor_info_join').select();
   if (error) throw error;
   return data;
 };
 
-// 해당 (튜터) 데이터만 조회
 export const matchTutor = async (tutorId: string) => {
   const { data, error } = await supabase.from('tutor_info_join').select().match({ tutor_id: tutorId }).single();
   if (error) throw error;

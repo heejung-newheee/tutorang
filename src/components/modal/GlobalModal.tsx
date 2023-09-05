@@ -1,11 +1,12 @@
-import * as S from './Modal.styled';
-import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm } from '..';
 import { useSelector } from 'react-redux';
+import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm } from '..';
+import EditTutorForm from '../../pages/auth/registTutorForm/EditTutorForm';
+import YoutubeModal from '../../pages/main/youtube/YoutubeModal';
+import EditProfileForm from '../../pages/mypage/profileForm/EditProfileForm';
 import { RootState } from '../../redux/config/configStore';
+import MatchedReviewForm from '../review/reviewForm/MatchedReviewForm';
+import * as S from './Modal.styled';
 import ModalPortal from './ModalPortal';
-import HeaderModal from '../common/header/HeaderModal';
-import EditProfileForm from '../Form/profileForm/EditProfileForm';
-import YoutubeModal from '../youtube/YoutubeModal';
 
 const GlobalModal = () => {
   const { type, isOpen } = useSelector((state: RootState) => state.modal);
@@ -19,7 +20,9 @@ const GlobalModal = () => {
     reviewCreate: 'reviewCreate',
     reviewUpdate: 'reviewUpdate',
     navbabr: 'navbabr',
+    matchedReviewCreate: 'matchedReviewCreate',
     editProfiles: 'editProfiles',
+    editTutorInfo: 'editTutorInfo',
     reviewYoutube: 'reviewYoutube',
   };
 
@@ -45,6 +48,10 @@ const GlobalModal = () => {
       component: <ReviewForm />,
     },
     {
+      type: MODAL_TYPES.matchedReviewCreate,
+      component: <MatchedReviewForm />,
+    },
+    {
       type: MODAL_TYPES.reviewUpdate,
       component: <ReviewUpdateForm />,
     },
@@ -53,8 +60,8 @@ const GlobalModal = () => {
       component: <EditProfileForm />,
     },
     {
-      type: MODAL_TYPES.navbabr,
-      component: <HeaderModal />,
+      type: MODAL_TYPES.editTutorInfo,
+      component: <EditTutorForm />,
     },
     {
       type: MODAL_TYPES.reviewYoutube,

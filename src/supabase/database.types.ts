@@ -243,7 +243,7 @@ export interface Database {
         };
         Relationships: [];
       };
-      like: {
+      book_mark: {
         Row: {
           id: number;
           liked_id: string;
@@ -315,6 +315,7 @@ export interface Database {
           created_at: string;
           id: string;
           matched: boolean | null;
+          review_confirm: boolean | null;
           status: string | null;
           tutor_id: string | null;
           user_id: string | null;
@@ -323,6 +324,7 @@ export interface Database {
           created_at?: string;
           id?: string;
           matched?: boolean | null;
+          review_confirm?: boolean | null;
           status?: string | null;
           tutor_id?: string | null;
           user_id?: string | null;
@@ -331,6 +333,7 @@ export interface Database {
           created_at?: string;
           id?: string;
           matched?: boolean | null;
+          review_confirm?: boolean | null;
           status?: string | null;
           tutor_id?: string | null;
           user_id?: string | null;
@@ -633,6 +636,7 @@ export interface Database {
           created_at: string | null;
           id: string | null;
           matched: boolean | null;
+          review_confirm: boolean | null;
           status: string | null;
           student_img: string | null;
           student_lc_1_gugun: string | null;
@@ -764,7 +768,7 @@ export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'c
   profiles: Pick<Tables<'profiles'>, 'id' | 'username' | 'avatar_url'>;
 };
 
-export type BookMarkType = Pick<Tables<'like'>, 'liked_id' | 'user_id'>;
+export type BookMarkType = Pick<Tables<'book_mark'>, 'liked_id' | 'user_id'>;
 export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
 export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
 export type RoomType = Tables<'chat_rooms'> & {
@@ -774,4 +778,3 @@ export type RoomType = Tables<'chat_rooms'> & {
 export type RoomWithLastMessageType = RoomType & {
   last_message: Tables<'chat_messages'>[];
 };
-// export type TutorLists<T extends keyof Database['public']['Tables']['tutor_info']['Row']> = Database['public']['Tables']['tutor_info']['Row'][T];

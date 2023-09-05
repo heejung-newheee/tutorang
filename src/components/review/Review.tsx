@@ -1,14 +1,13 @@
-import * as S from './Review.styled';
 import { useQuery } from '@tanstack/react-query';
-import { matchReview } from '../../api/review';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button, Loading } from '..';
+import { matchReview } from '../../api/review';
+import { icon_more, starEmpty, starFull } from '../../assets';
+import { REVIEW_QUERY_KEY } from '../../constants/query.constant';
 import { RootState } from '../../redux/config/configStore';
 import { openModal, setReview } from '../../redux/modules';
-import { Button } from '..';
-import { icon_more, starEmpty, starFull } from '../../assets';
-import { useState } from 'react';
-
-const REVIEW_QUERY_KEY = 'reviewTutorDetail';
+import * as S from './Review.styled';
 
 type ReviewProps = {
   id: string;
@@ -16,13 +15,11 @@ type ReviewProps = {
 
 const Review = ({ id }: ReviewProps) => {
   const dispatch = useDispatch();
-
   const [openMenuId, setOpenMenuId] = useState(0);
   const { data: reviews, isLoading: reviewLoading, isError: reviewError, error } = useQuery([REVIEW_QUERY_KEY, id], () => matchReview(id));
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  // 리뷰 작성
   const handleOpenReviewCreateForm = () => {
     if (!loginUser) {
       dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
@@ -31,17 +28,15 @@ const Review = ({ id }: ReviewProps) => {
 
     dispatch(openModal({ type: 'reviewCreate', targetId: id }));
   };
-  // 리뷰 업데이트
+
   const handleOpenReviewUpdateForm = () => {
     dispatch(openModal({ type: 'reviewUpdate', targetId: id }));
   };
 
-  // 리뷰 삭제
   const handleReviewDelete = (id: number) => {
     dispatch(openModal({ type: 'confirmRemove', targetId: id }));
   };
 
-  // 별점 후기
   const starRating = (rating: number) => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
@@ -70,17 +65,17 @@ const Review = ({ id }: ReviewProps) => {
     let timeMessage = '';
 
     if (hoursDiff < 1) {
-      timeMessage = `ㆍ방금`;
+      timeMessage = `방금`;
     } else if (hoursDiff < 24) {
-      timeMessage = `ㆍ${hoursDiff}시간 전`;
+      timeMessage = `${hoursDiff}시간 전`;
     } else {
-      const getTime = createTime.split('T')[0]; // date만 추출
+      const getTime = createTime.split('T')[0];
 
       const [year, month, day] = getTime.split('-');
       const formattedMonth = Number(month).toString();
       const formattedDay = Number(day).toString();
 
-      const formattedDate = `${year}.${formattedMonth}.${formattedDay}`; // "-"를 "."으로 변경
+      const formattedDate = `${year}.${formattedMonth}.${formattedDay}`;
 
       timeMessage = formattedDate;
     }
@@ -89,7 +84,7 @@ const Review = ({ id }: ReviewProps) => {
   };
 
   if (reviewLoading) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
 
   if (reviewError) {
@@ -134,7 +129,6 @@ const Review = ({ id }: ReviewProps) => {
                             <S.moreMenuItem
                               onClick={() => {
                                 handleOpenReviewUpdateForm();
-                                // 수정할 리뷰 데이터 전달
                                 dispatch(setReview(review));
                                 handleIsOpen(review.id);
                               }}

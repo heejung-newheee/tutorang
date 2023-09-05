@@ -1,9 +1,9 @@
 import { RealtimeChannel } from '@supabase/supabase-js';
-import { RoomType, RoomWithLastMessageType, Tables } from '../../../supabase/database.types';
-import { useState, createContext, useEffect, useRef, useCallback } from 'react';
-import supabase from '../../../supabase';
-import { getChatRoom, getJoinedChatRooms, getMessagesInChatRoom, getUserProfile } from '../../../api/chat';
+import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { getChatRoom, getJoinedChatRooms, getMessagesInChatRoom, getUserProfile } from '../../../api/chat';
+import supabase from '../../../supabase';
+import { RoomType, RoomWithLastMessageType, Tables } from '../../../supabase/database.types';
 
 type ChatContextType = {
   chatRoomList: RoomWithLastMessageType[];
@@ -93,7 +93,6 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
         },
         (payload) => {
           const newMessage = payload.new as Tables<'chat_messages'>;
-          // 현재 채팅방에 메시지 업데이트
           if (chatRoomIdRef.current === newMessage.room_id) {
             setChatMessages((messages) => {
               if (!messages.find((message) => message.message_id === newMessage.message_id)) {
@@ -103,7 +102,6 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
             });
           }
 
-          // 채팅 리스트에서 last_message 업데이트
           setChatRoomList((roomList) => {
             const newRoomList = [...roomList];
             const roomIndex = newRoomList.findIndex((room) => room.room_id === newMessage.room_id);
@@ -134,7 +132,6 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
           if (payload.eventType === 'INSERT') {
             const newParticipant = payload.new as Tables<'chat_room_participants'>;
             if (newParticipant.user_id === userId) {
-              //내가 채팅방에 들어간 경우
               try {
                 const chatRoom = (await getChatRoom(newParticipant.room_id)) as RoomWithLastMessageType;
                 if (chatRoom) setChatRoomList((roomList) => [chatRoom, ...roomList]);
@@ -142,7 +139,6 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
                 console.error(err);
               }
             } else {
-              //다른 사람이 채팅방에 들어간 경우
               try {
                 const profile = await getUserProfile(newParticipant.user_id);
                 setChatRoomList((roomList) => {
@@ -160,15 +156,12 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
             const deletedParticipant = payload.old as Tables<'chat_room_participants'>;
 
             if (deletedParticipant.user_id === userId) {
-              // 내가 현재 방에서 나간 경우
               if (chatRoomIdRef.current && chatRoomIdRef.current === deletedParticipant.room_id) {
                 setChatRoom(null);
                 setChatMessages([]);
               }
-              // 내가 내 채팅방 목록 중에서 나간 경우
               setChatRoomList((roomList) => roomList.filter((room) => room.room_id !== deletedParticipant.room_id));
             } else {
-              // 다른 사람이 내 현재 방에서 나간 경우
               setChatRoom((chatRoom) => {
                 if (!chatRoom || !chatRoom.chat_room_participants) return chatRoom;
                 const newChatRoom = { ...chatRoom };
@@ -176,7 +169,6 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
                 return newChatRoom;
               });
 
-              // 다른 사람이 내 채팅방 목록 중에서 나간 경우
               setChatRoomList((roomList) => {
                 const newRoomList = [...roomList];
                 const roomIndex = roomList.findIndex((room) => room.room_id === deletedParticipant.room_id);

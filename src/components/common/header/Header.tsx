@@ -1,16 +1,18 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
-import { matchingList } from '../../../redux/modules/matching';
 import { tutorInfoJoin } from '../../../api/tutor';
+import { tutorang_logo } from '../../../assets';
+import { MATCHING_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
+import { RootState } from '../../../redux/config/configStore';
+import { matchingList } from '../../../redux/modules/matching';
 import { tutorInfo } from '../../../redux/modules/tutorSlice';
-import logo from '../../../assets/logo.png';
 import supabase from '../../../supabase';
 import * as S from './Header.styled';
-import { openModal } from '../../../redux/modules';
-import { RootState } from '../../../redux/config/configStore';
+import HeaderModal from './HeaderModal';
+import SigninUserNav from './SigninUserNav';
 
 type HEADERMENU = { title: string; path: string }[];
 
@@ -20,15 +22,13 @@ const HeaderMenu: HEADERMENU = [
 ];
 
 const Header = () => {
+  const [sideNavOpen, setSideNavOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const loginUser = useSelector((state: RootState) => state.user.user);
+  const { data: tutor } = useQuery(TUTOR_INFO_JOIN_QUERY_KEY, tutorInfoJoin);
+  const { data: matchData } = useQuery(MATCHING_QUERY_KEY, () => getMatchData());
 
-  const { data: tutor } = useQuery(['tutor_info_join'], tutorInfoJoin);
-
-  // matching 테이블 모든 데이터
-  const { data: matchData } = useQuery(['matching'], () => getMatchData());
   useEffect(() => {
     if (matchData) {
       dispatch(matchingList(matchData));
@@ -38,16 +38,24 @@ const Header = () => {
     }
   }, [tutor, matchData, dispatch]);
 
-  // TODO 로그아웃 함수 --> 일단은 main에 넣어둠
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) alert(error.message);
     alert('로그아웃 되었습니다');
   };
-  //모달
-  const handleHiddenDiv = () => {
-    dispatch(openModal({ type: 'navbabr' }));
+
+  const preventScroll = (e: Event) => {
+    e.preventDefault();
   };
+  useEffect(() => {
+    const { body } = document;
+    if (sideNavOpen) {
+      body.addEventListener('wheel', preventScroll, { passive: false });
+    }
+    return () => {
+      body.removeEventListener('wheel', preventScroll);
+    };
+  }, [sideNavOpen]);
 
   return (
     <>
@@ -55,7 +63,7 @@ const Header = () => {
         <S.WidthLimitContainer>
           <S.HeaderLeft>
             <S.LogoWrap to="/">
-              <S.NavLogoImg src={logo} alt="logo"></S.NavLogoImg>
+              <S.NavLogoImg src={tutorang_logo} alt="logo"></S.NavLogoImg>
               <S.LogoH1>튜터랑</S.LogoH1>
             </S.LogoWrap>
             <S.Gnb>
@@ -66,37 +74,32 @@ const Header = () => {
               ))}
             </S.Gnb>
           </S.HeaderLeft>
-          {/* 미디어쿼리 */}
-          <S.MiddleLogo to="/">
+
+          <S.MobileLogo to="/">
             <div>
-              <S.NavLogoImg src={logo} alt="logo"></S.NavLogoImg>
+              <S.NavLogoImg src={tutorang_logo} alt="logo"></S.NavLogoImg>
               튜터랑
             </div>
-          </S.MiddleLogo>
+          </S.MobileLogo>
 
-          <S.Hamberger onClick={handleHiddenDiv}>
+          <S.Hamburger onClick={() => setSideNavOpen(!sideNavOpen)}>
             <svg xmlns="http://www.w3.org/2000/svg" fill=" #fe902f" height="1.2em" viewBox="0 0 448 512">
               <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
             </svg>
-          </S.Hamberger>
-          {/* <S.HiddenBarDiv></S.HiddenBarDiv> */}
+          </S.Hamburger>
 
-          {/* 미디어쿼리 */}
+          <HeaderModal sideNavOpen={sideNavOpen} setSideNavOpen={setSideNavOpen} loginUser={loginUser} signOut={signOut} />
           <S.LoginBtn>
             {loginUser ? (
               <>
-                <Link to="/mypage">마이페이지 </Link>
-                <S.LoginBtnSignUp
-                  onClick={() => {
-                    signOut();
-                    navigate('/');
-                  }}
-                >
-                  로그아웃
-                </S.LoginBtnSignUp>
+                <SigninUserNav $loginUser={loginUser} />
               </>
             ) : (
-              <NavLink to="/signin">로그인 | 회원가입</NavLink>
+              <NavLink to="/signin">
+                <S.LoginSignUpDiv>
+                  <span>로그인</span> <span>회원가입</span>
+                </S.LoginSignUpDiv>
+              </NavLink>
             )}
           </S.LoginBtn>
         </S.WidthLimitContainer>

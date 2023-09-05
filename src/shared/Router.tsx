@@ -1,10 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout, SignInForm, SignUpForm } from '../components';
-import CreateProfileForm from '../components/Form/profileForm/CreateProfileForm';
-import RegistTutorForm from '../components/Form/registTutorForm/RegistTutorForm';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
-import { AuthMain, Detail, List, Main, Mypage } from '../pages';
-import Chat from '../pages/Chat';
+import { Detail, List, Main, Mypage, NotFound } from '../pages';
+import WelcomeMessagePage from '../pages/auth/SignUpForm/WelcomeMessagePage';
+import EditTutorForm from '../pages/auth/registTutorForm/EditTutorForm';
+import RegistTutorForm from '../pages/auth/registTutorForm/RegistTutorForm';
+import Chat from '../pages/chat/Chat';
+import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateAdditionalInformationForm';
+import AuthenticatedRoute from './AuthenticatedRoute';
+import NonAuthenticatedRoute from './NonAuthenticatedRoute';
 
 const Router = () => {
   return (
@@ -12,17 +16,75 @@ const Router = () => {
       <Routes>
         <Route element={<GlobalLayout />}>
           <Route path="/" element={<Main />} />
-          <Route path="/mypage" element={<Mypage />} />
+          <Route
+            path="/mypage"
+            element={
+              <AuthenticatedRoute>
+                <Mypage />
+              </AuthenticatedRoute>
+            }
+          />
           <Route path="/detail/:id" element={<Detail />} />
           <Route element={<Layout />}>
             <Route path="/list" element={<List />} />
-            <Route path="/additional-information" element={<CreateProfileForm />} />
-            <Route path="/tutor-registration" element={<RegistTutorForm />} />
-            <Route element={<AuthMain />}>
-              <Route path="/signin" element={<SignInForm />} />
-              <Route path="/signup" element={<SignUpForm />} />
-            </Route>
-            <Route path="/chat" element={<Chat />} />
+
+            <Route
+              path="/additional-information"
+              element={
+                <AuthenticatedRoute>
+                  <CreateAdditionalInformationForm />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/tutor-registration"
+              element={
+                <AuthenticatedRoute>
+                  <RegistTutorForm />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/tutor-class"
+              element={
+                <AuthenticatedRoute>
+                  <EditTutorForm />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/signin"
+              element={
+                <NonAuthenticatedRoute>
+                  <SignInForm />
+                </NonAuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <NonAuthenticatedRoute>
+                  <SignUpForm />
+                </NonAuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/welcome-to-tutorang"
+              element={
+                <NonAuthenticatedRoute>
+                  <WelcomeMessagePage />
+                </NonAuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/chat"
+              element={
+                <AuthenticatedRoute>
+                  <Chat />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Route>
       </Routes>

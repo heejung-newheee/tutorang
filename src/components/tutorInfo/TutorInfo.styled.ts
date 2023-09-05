@@ -1,41 +1,55 @@
 import { styled } from 'styled-components';
+import { colors } from '../../style/theme/colors';
+import { Link } from 'react-router-dom';
 // 튜더 대시보드
-// 수강생 후기
-export const StudentList = styled.ul``;
-export const StudentItem = styled.li`
-  margin: 10px 0;
-  padding: 35px;
-  border-radius: 8px;
+export const TutorClassWarp = styled.div`
   background-color: #fff;
+  padding: 37px 50px;
+  border-radius: 8px;
+`;
+export const TutorClassTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 17px;
+  margin-bottom: 21px;
 `;
-
-export const StudentReview = styled.div``;
-export const StReviewTitle = styled.h3`
-  /* font-size: 27px; */
-  font-size: 21px;
-  font-weight: bold;
-  margin: 0 0 20px 0;
-`;
-
-export const StReviewContent = styled.p`
-  font-size: 16px;
-  margin: 0 0 38px 0;
-`;
-
-export const StReviewAuth = styled.p`
-  font-size: 13px;
-  color: #999;
-`;
-export const ReviewRating = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 5px;
+export const ClassEditBtn = styled(Link)`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: ${colors.primary};
   img {
-    width: 30px;
-    filter: invert(78%) sepia(45%) saturate(4904%) hue-rotate(337deg) brightness(102%) contrast(99%);
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+  }
+`;
+export const TutorClass = styled.div`
+  display: flex;
+  gap: 30px;
+  > div {
+    width: calc((100% - 30px) / 2);
+  }
+  .class-price {
+    max-width: 325px;
+    margin-top: 30px;
+  }
+`;
+export const ClassDetail = styled.div``;
+export const langLevel = styled.span`
+  display: flex;
+  justify-content: center;
+  background-color: ${colors.gray_200};
+  /* width: 22px; */
+  padding: 2px 8px;
+  border-radius: 30px;
+  margin-left: 6px;
+`;
+export const ClassIntro = styled.div`
+  p {
+    font-size: 13px;
+    color: #434343;
+    margin-bottom: 10px;
   }
 `;

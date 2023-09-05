@@ -1,15 +1,15 @@
-import * as S from './StartTutorSlider.styled';
 import { useQuery } from '@tanstack/react-query';
-import TutorSlider from '../tutorSlider/TutorSlider';
+import { Loading } from '../..';
 import { tutorInfoJoin } from '../../../api/tutor';
-
-const STAR_TUTORS_QUERY_KEY = ['starTutors'];
+import { STAR_TUTORS_QUERY_KEY } from '../../../constants/query.constant';
+import TutorSlider from '../tutorSlider/TutorSlider';
+import * as S from './StartTutorSlider.styled';
 
 const StarTutorSlider = () => {
   const tutors = useQuery(STAR_TUTORS_QUERY_KEY, tutorInfoJoin);
 
   if (tutors.isLoading) {
-    return <div>로딩중</div>;
+    return <Loading />;
   }
   if (tutors.isError) {
     console.log(tutors.error);
@@ -19,8 +19,8 @@ const StarTutorSlider = () => {
     <S.Container>
       <S.Inner>
         <S.Title>인기강사</S.Title>
-        <TutorSlider tutorList={tutors.data} panels={4} uniqueKey="startTutors" />
       </S.Inner>
+      <TutorSlider tutorList={tutors.data} panels={4} uniqueKey="startTutors" />
     </S.Container>
   );
 };

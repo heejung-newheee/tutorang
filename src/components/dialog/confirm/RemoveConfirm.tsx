@@ -1,11 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
-import * as S from './Confirm.styled';
-import React from 'react';
-import { Button } from '../..';
-import { closeModal } from '../../../redux/modules';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '../..';
 import { reviewDelete } from '../../../api/review';
 import { RootState } from '../../../redux/config/configStore';
+import { closeModal } from '../../../redux/modules';
+import * as S from './Confirm.styled';
 
 const REVIEW_QUERY_KEY = 'reviewTutorDetail';
 
@@ -25,7 +25,6 @@ const RemoveConfirm = () => {
     },
   });
 
-  // 리뷰 삭제
   const handleReviewDelete = () => {
     mutationReviewDelete.mutate(Number(_id));
     dispatch(closeModal());

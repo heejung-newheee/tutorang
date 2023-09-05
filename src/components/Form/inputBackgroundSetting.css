@@ -1,4 +1,3 @@
-/* 크롬 브라우저에서 자동완성된 값으로 입력받을 경우 커스텀으로 설정해둔 input의 css 스타일이 적용되지 않는 문제 해결을 위한 코드입니다. */
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px white inset;
   box-shadow: 0 0 0 1000px white inset;

@@ -24,19 +24,12 @@ const ProfilesCard = ({ tutor }: pageProps) => {
             {tutor.university} | {tutor.major}
           </div>
           <S.Tag>
-            {tutor.personality && tutor.personality.length > 0 ? (
-              <>
-                {tutor.personality[0] ? <div>#{tutor.personality[0]}</div> : <br />}
-                {tutor.personality[1] ? <div>#{tutor.personality[1]}</div> : <br />}
-                {tutor.personality[2] ? <div>#{tutor.personality[2]}</div> : <br />}
-              </>
-            ) : (
-              <div></div>
-            )}
+            {tutor.personality?.map((personal) => {
+              return <div key={personal}>#{personal}</div>;
+            })}
           </S.Tag>
         </S.TutorContent>
       </S.TutorInfo>
-      {/* </S.TutorCard> */}
     </>
   );
 };

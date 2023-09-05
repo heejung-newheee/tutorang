@@ -1,19 +1,28 @@
 .reset_input_btn {
   position: absolute;
   right: 130px;
-  top: 17px;
+  top: 16px;
   fill: #cdcdcd;
-  z-index: 2
+  z-index: 2;
 }
 
+.info_icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .reset_signin_input_btn {
   position: absolute;
-  top: 44px;
+  top: 43px;
   right: 20px;
   fill: #cdcdcd;
   z-index: 2;
   cursor: pointer;
+}
+
+.reset_signin_input_btn:hover {
+  fill: #696969;
 }
 
 .reset_input_btn:hover {
@@ -30,17 +39,6 @@
   z-index: 3
 }
 
-@media screen and (max-width: 420px) {
-  .reset_input_btn {
-    position: absolute;
-    right: 118px;
-    top: 15px;
-  }
-
-  .password_show_hidden_button {
-    top: 41px;
-  }
-}
 
 .pw_button_hidden_color {
   fill: #cdcdcd;
@@ -68,4 +66,35 @@
 .agree_checkbox {
   font-size: 20px;
   fill: #3D3D3D;
+}
+
+.welcome_icon {
+  font-size: 65px;
+  fill: #fe902f;
+  margin-bottom: 15px;
+}
+
+@media screen and (max-width: 420px) {
+  .reset_input_btn {
+    position: absolute;
+    right: 118px;
+    top: 15px;
+  }
+
+  .password_show_hidden_button {
+    top: 41px;
+    fill: #cdcdcd;
+    ;
+  }
+
+  .password_show_hidden_button:hover {
+    fill: #696969;
+    ;
+  }
+
+  .welcome_icon {
+    font-size: 43px;
+    fill: #fe902f;
+    margin-bottom: 10px;
+  }
 }

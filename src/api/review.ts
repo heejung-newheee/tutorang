@@ -23,26 +23,36 @@ export const getReceivedWriteReviewCount = async (id: string) => {
   if (error) throw error;
   return count;
 };
-// 해당 게시물(튜터) 리뷰 데이터만 조회
+
 export const matchReview = async (tutorId: string) => {
-  const { data, error } = await supabase.from(REVIEW_TABLE).select().eq('reviewed_id', tutorId);
+  const { data, error } = await supabase.from(REVIEW_TABLE).select(`*`).eq('reviewed_id', tutorId);
   if (error) throw error;
   return data;
 };
 
-/** review create */
+export const matchMyReview = async (id: string) => {
+  const { data, error } = await supabase
+    .from(REVIEW_TABLE)
+    .select(
+      `*,
+      reviewed_id (profiles: id, username)
+    `,
+    )
+    .eq('user_id', id);
+  if (error) throw error;
+  return data;
+};
+
 export const reviewRequest = async (newReview: reviews) => {
   const { error } = await supabase.from(REVIEW_TABLE).insert(newReview).select();
   if (error) throw error;
 };
 
-/** review delete */
 export const reviewDelete = async (id: number) => {
   const { error } = await supabase.from(REVIEW_TABLE).delete().eq('id', id).select();
   if (error) throw error;
 };
 
-/** review update */
 export const reviewUpdate = async ({ updatedReview, id }: { updatedReview: reviews; id: number }) => {
   const { data, error } = await supabase.from(REVIEW_TABLE).update(updatedReview).eq('id', id).select();
   if (error) throw error;
@@ -50,7 +60,6 @@ export const reviewUpdate = async ({ updatedReview, id }: { updatedReview: revie
   return data;
 };
 
-//** mutation Review : optimistic Update 적용 */
 export const useCreateReviewMutation = () => {
   const queryClient = useQueryClient();
 
