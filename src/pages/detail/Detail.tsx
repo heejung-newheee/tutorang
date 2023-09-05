@@ -18,9 +18,7 @@ const Detail = () => {
   return (
     <>
       <TutorInfoDetail id={id} />
-
       <Review id={id} />
-
       <StarTutorSlider />
     </>
   );
