@@ -7,7 +7,7 @@ import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import FormHeader from '../../../components/Form/FormHeader';
 import { FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE } from '../../../components/Form/formConstant';
-import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/constant';
+import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/signup.constant';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
 import Checkbox from './Checkbox';

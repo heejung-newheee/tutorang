@@ -20,14 +20,14 @@ const Review = ({ id }: ReviewProps) => {
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const handleOpenReviewCreateForm = () => {
-    if (!loginUser) {
-      dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
-      return;
-    }
+  // const handleOpenReviewCreateForm = () => {
+  //   if (!loginUser) {
+  //     dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
+  //     return;
+  //   }
 
-    dispatch(openModal({ type: 'reviewCreate', targetId: id }));
-  };
+  //   dispatch(openModal({ type: 'reviewCreate', targetId: id }));
+  // };
 
   const handleOpenReviewUpdateForm = () => {
     dispatch(openModal({ type: 'reviewUpdate', targetId: id }));

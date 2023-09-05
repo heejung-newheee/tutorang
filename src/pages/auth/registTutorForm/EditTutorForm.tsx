@@ -7,7 +7,7 @@ import { v4 } from 'uuid';
 import FormHeader from '../../../components/Form/FormHeader';
 import SelectLocation from '../../../components/Form/SelectLocation';
 import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../../../components/Form/formConstant';
-import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/constant';
+import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/signup.constant';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
 import Checkbox from './Checkbox';
