@@ -13,8 +13,19 @@ import { OverviewItem, OverviewItemIcon, OverviewItemIcon2, OverviewItemNumber }
 import Banner from './banner/Banner';
 import UserReviewList from './mainReviewList/UserReviewList';
 import MatchingFlow from './matchingFlow/MatchingFlow';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { closeModal } from '../../redux/modules';
 
 const Main = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(closeModal());
+    };
+  }, []);
+
   const tutorCount = useQuery(TUTOR_ALL_QUERY_KEY, () => getAllTutorCount());
   const reviewCount = useQuery(REVIEW_ALL_QUERY_KEY, () => getAllReviewCount());
   const matchCount = useQuery(MATCHED_COUNT_QUERY_KEY, () => getAllMatchCount());
