@@ -7,6 +7,7 @@ import { getUserProfile } from '../../../api/chat';
 import { close, edit_photo } from '../../../assets';
 import { SPGuideMessage } from '../../../components/Form/AuthForm.styled';
 import SelectLocation from '../../../components/Form/SelectLocation';
+import { PWD_REGEX } from '../../../components/Form/formConstant';
 import { Button } from '../../../components/button/Button.styled';
 import { Container, ContentWrapper, Inner } from '../../../components/review/reviewForm/ReviewForm.styled';
 import { RootState } from '../../../redux/config/configStore';
@@ -20,8 +21,6 @@ const EditProfileForm = () => {
   const loginUserId = useSelector((state: RootState) => state.user.user!.id);
   const userData = useQuery(USER_PROFILE_QUERY_KEY, () => getUserProfile(loginUserId));
   const user = userData.data;
-
-  const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
 
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -72,6 +71,7 @@ const EditProfileForm = () => {
         await supabase.storage.from('avatars').upload(`profiles/${user!.id}/${imgName}`, imgFile);
         const { data } = await supabase.storage.from('avatars').getPublicUrl(`profiles/${user!.id}/${imgName}`);
         await supabase.from('profiles').update({ avatar_url: data.publicUrl }).eq('id', user?.id);
+        alert('사진 업로드 완료');
       }
 
       handleClose();
