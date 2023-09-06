@@ -1,0 +1,47 @@
+.ql-container {
+  box-sizing: border-box;
+  font-family: 'Gowun Batang';
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #565759;
+  border: none !important;
+
+  border-bottom: 1px solid gray;
+
+  min-height: 40rem;
+  margin: 0px;
+  position: relative;
+}
+@media screen and (max-width: 600px) {
+  .ql-container {
+    font-size: 1.125rem;
+  }
+}
+
+.ql-toolbar.ql-snow {
+  border: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px solid rgb(194, 194, 194);
+}
+
+.ql-formats {
+  border-right: 1px solid black;
+  padding: 5px;
+}
+.ql-bold,
+.ql-italic,
+.ql-underline,
+.ql-strike,
+.ql-blockquote {
+  margin: 0 10px;
+}
+
+.ql-color .ql-picker .ql-color-picker .ql-picker-label {
+  padding: 0 10px;
+}
+
+.ql-color-picker {
+  margin: 0 10px;
+}
