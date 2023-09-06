@@ -13,6 +13,7 @@ interface pageProps {
 }
 const TutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
   const _plugins = [new Arrow()];
+
   return (
     <>
       <Flicking key={uniqueKey} panelsPerView={panels} align="19%" circular={true} plugins={_plugins} style={{ padding: '0 50px' }}>
@@ -20,7 +21,7 @@ const TutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
           tutorList.map((tutor: Views<'tutor_info_join'>) => {
             const key = `${tutor.tutor_img}+${tutor.tutor_id!.split('-')[0]}`;
             return (
-              <S.Tutor to={`/detail/${tutor.tutor_id}`} key={key}>
+              <S.Tutor to={`/detail/${tutor.tutor_id}`} key={key} style={{ minWidth: '280px' }}>
                 <ProfilesCard tutor={tutor} />
               </S.Tutor>
             );

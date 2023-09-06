@@ -9,8 +9,13 @@ export const BannerSection = styled.section`
   background-size: cover;
   background-position: center;
   @media screen and (max-width: 1300px) {
-    height: 700px;
+    height: 500px;
     padding: 50px;
+  }
+  @media screen and (max-width: 768px) {
+    height: 400px;
+    padding: 50px 30px;
+    text-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }
 `;
 export const BannerContainer = styled.div`
@@ -21,8 +26,10 @@ export const BannerContainer = styled.div`
   align-items: center;
   margin-top: 70px;
   @media screen and (max-width: 1300px) {
-    height: 700px;
-    padding: 50px;
+    height: 500px;
+  }
+  @media screen and (max-width: 768px) {
+    height: 200px;
   }
 `;
 export const BannerContent = styled.div`
@@ -32,6 +39,9 @@ export const BannerContent = styled.div`
   @media screen and (max-width: 1300px) {
     top: 0;
   }
+  @media screen and (max-width: 768px) {
+    transform: translate(0, 0);
+  }
 `;
 
 export const BannerTitle = styled.p`
@@ -39,11 +49,17 @@ export const BannerTitle = styled.p`
   font-weight: bold;
   color: #fff;
   margin-bottom: 20px;
+  @media screen and (max-width: 768px) {
+    font-size: 24px;
+  }
 `;
 export const BannerText = styled.p`
   font-weight: bold;
   color: #fff;
   margin-bottom: 40px;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 export const BannerBtn = styled(Link)`
   background-color: #fff;

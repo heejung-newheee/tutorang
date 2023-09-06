@@ -7,9 +7,16 @@ export const FlowTabWrap = styled.div`
   margin: 0 auto;
   margin-top: 140px;
   position: relative;
+  @media screen and (max-width: 1024px) {
+    max-width: 600px;
+    margin-top: 20px;
+  }
   > ul,
   article {
     width: calc((100% - 3rem) / 2);
+    @media screen and (max-width: 1024px) {
+      width: 100%;
+    }
   }
 `;
 export const FlowTabList = styled.ul`
@@ -34,6 +41,9 @@ export const FlowTabItem = styled.li`
 export const FlowPanel = styled.article`
   img {
     transition: all 0.5s;
+  }
+  @media screen and (max-width: 1024px) {
+    display: none;
   }
 `;
 
@@ -80,12 +90,24 @@ export const TabBubbleContent = styled.div`
   position: absolute;
   top: 0;
   left: 10px;
+  @media screen and (max-width: 1024px) {
+    padding: 40px;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 20px;
+  }
 `;
 export const BubbletTit = styled.p`
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 5px;
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 export const BubbleTxt = styled.p`
   font-size: 16px;
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+  }
 `;

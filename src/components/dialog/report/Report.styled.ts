@@ -26,6 +26,12 @@ export const Inner = styled.div`
 
 export const ContentWrapper = styled.div`
   padding: 48px 60px 0 60px;
+  @media screen and (max-width: 1024px) {
+    padding: 30px 30px 0;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 30px 20px 0;
+  }
 `;
 
 export const Textarea = styled.textarea`
@@ -65,5 +71,12 @@ export const ButtonWrapper = styled.div`
 
   & Button {
     height: 80px;
+
+    @media screen and (max-width: 1024px) {
+      height: 60px;
+    }
+    @media screen and (max-width: 768px) {
+      height: 50px;
+    }
   }
 `;
