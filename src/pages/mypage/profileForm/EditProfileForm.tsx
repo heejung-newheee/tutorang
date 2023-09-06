@@ -99,8 +99,6 @@ const EditProfileForm = () => {
     setValidPwd(result);
     const resultMatch = password === confirmPassword;
     setValidPwdConfirm(resultMatch);
-    console.log('setValidPwd', result);
-    console.log('setValidPwdConfirm', resultMatch);
   }, [password, confirmPassword]);
   useEffect(() => {
     if (prevLocation.sido1 !== location.sido1 || prevLocation.gugun1 !== location.gugun1 || prevLocation.sido2 !== location.sido2 || prevLocation.gugun2 !== location.gugun2) {

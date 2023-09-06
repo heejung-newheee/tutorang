@@ -1,44 +1,22 @@
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid';
-import { getAllTutorInfo } from '../../../api/tutor';
-import FormHeader from '../../../components/Form/FormHeader';
-import SelectLocation from '../../../components/Form/SelectLocation';
-import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../../../components/Form/formConstant';
-import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/signup.constant';
-import { RootState } from '../../../redux/config/configStore';
-import supabase from '../../../supabase';
-import Checkbox from './Checkbox';
-import ImgFileUpload from './ImgFileUpload';
-import * as S from './RegistTutorForm.styled';
-import SelectEnrollmentStatus from './SelectEnrollmentStatus';
-import SelectTuitionFee from './SelectTuitionFee';
-import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from './translation';
+import FormHeader from '../../components/Form/FormHeader';
+import SelectLocation from '../../components/Form/SelectLocation';
+import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../../components/Form/formConstant';
+import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../constants/signup.constant';
+import { RootState } from '../../redux/config/configStore';
+import supabase from '../../supabase';
+import Checkbox from '../auth/registTutorForm/Checkbox';
+import * as S from '../auth/registTutorForm/RegistTutorForm.styled';
+import SelectEnrollmentStatus from '../auth/registTutorForm/SelectEnrollmentStatus';
+import SelectTuitionFee from '../auth/registTutorForm/SelectTuitionFee';
+import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from '../auth/registTutorForm/translation';
 
 const EditTutorForm = () => {
-  const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.user.user);
-  console.log(user);
-  if (!user) return;
-  const { data: tutorInfo, isLoading, isError } = useQuery(['tutorInfo'], () => getAllTutorInfo(user!.id), { enabled: !!user });
-
-  if (isError) {
-    // Handle the error here, you can log it or show an error message
-    console.error('Error fetching tutor info:', isError);
-    return <div>Error fetching data...</div>;
-  }
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  const firstTutor = tutorInfo;
-  console.log(firstTutor[0]);
-
   const [tuitionFeeOnline, setTuitionFeeOnline] = useState(0);
   const [tuitionFeeOffline, setTuitionFeeOffline] = useState(0);
   const [checkPersonalityItems, setCheckPersonalityItems] = useState<string[]>([]);
@@ -46,13 +24,15 @@ const EditTutorForm = () => {
   const [checkClassLevelItems, setCheckClassLevelItems] = useState<string[]>([]);
   const [uid, setUid] = useState<string | null>('');
   const [email, setEmail] = useState<string | null>('');
-  const [classInfo, setClassInfo] = useState(firstTutor[0]?.class_info || '');
-  const [university, setUniversity] = useState<string>(firstTutor[0].university || '');
-  const [major, setMajor] = useState(firstTutor[0].major || '');
-  const [certificationImgFile, setCertificationImgFile] = useState<File | undefined>();
+  const [classInfo, setClassInfo] = useState('');
+  const [university, setUniversity] = useState('');
+  const [major, setMajor] = useState('');
+  const [certificationImgFile, _] = useState<File | undefined>();
   const [enrollmentStatus, setEnrollmentStatus] = useState('');
+  const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
 
-  const [location, setLoaction] = useState({ sido1: user.location1_sido!, gugun1: user.location1_gugun!, sido2: user.location2_sido!, gugun2: user.location2_gugun! });
+  const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.user.user);
 
   const onChangeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.name === 'university') setUniversity(event.target.value);
@@ -175,11 +155,11 @@ const EditTutorForm = () => {
           <S.FormItemBody>
             <S.FormItemBodySection>
               <span>지역1</span>
-              <SelectLocation $locationType={'locationType1'} $setLocation={setLoaction} $prevValue={location} />
+              <SelectLocation $locationType={'locationType1'} $setLocation={setLoaction} />
             </S.FormItemBodySection>
             <S.FormItemBodySection>
               <span>지역2</span>
-              <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} $prevValue={location} />
+              <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} />
             </S.FormItemBodySection>
           </S.FormItemBody>
           <S.FormItemHeader>
@@ -198,28 +178,11 @@ const EditTutorForm = () => {
               <label htmlFor="major">학과</label>
               <S.Input type="text" id="major" name="major" value={major} onChange={onChangeInputHandler}></S.Input>
             </S.CertificateItem>
-            <S.CertificateItem>
-              <span>학생증, 증명가능서류 사진첨부</span>
-              <ImgFileUpload $setCertificationImgFile={setCertificationImgFile} $fileType={'tutorCertificationImg'} />
-            </S.CertificateItem>
           </S.FormCertificateItems>
         </S.FormItem>
-
         <S.FormItem>
           <S.FormItemTitle>성격 (최대 3개 선택)</S.FormItemTitle>
           <S.Items>
-            {/* {checkPersonalityItems!== null && checkPersonalityItems.map((item) => (
-                <li
-                  key={item}
-                  onClick={() => handleSelectItem(item)}
-                  style={{
-                    color: selectedItems.includes(item) ? 'orange' : 'black',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {item}
-                </li>
-              ))} */}
             {PERSONALITY_LIST.map((personality) => (
               <Checkbox key={personality.value} $checkboxType={'personality'} option={personality} handleCheckedItems={handleCheckedItems} checkItems={checkPersonalityItems} />
             ))}

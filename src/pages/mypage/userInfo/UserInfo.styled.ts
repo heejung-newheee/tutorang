@@ -61,6 +61,16 @@ export const ProfileBox = styled.section`
   height: 528px;
   padding-top: 45px;
   border-radius: 0 0 40px 40px;
+  @media only screen and (max-width: 1024px) {
+    padding-top: 30px;
+    height: 350px;
+    border-radius: 0 0 20px 20px;
+  }
+  @media only screen and (max-width: 768px) {
+    padding-top: 25px;
+    height: 269px;
+    border-radius: 0 0 0 0;
+  }
 `;
 export const Container = styled.div`
   max-width: 1200px;
@@ -73,6 +83,14 @@ export const ProfileImg = styled.div`
   position: relative;
   margin-bottom: 20px;
   overflow: hidden;
+  @media only screen and (max-width: 1024px) {
+    width: 150px;
+    height: 150px;
+  }
+  @media only screen and (max-width: 768px) {
+    width: 104px;
+    height: 104px;
+  }
 `;
 export const UserImg = styled.img`
   object-fit: cover;
@@ -90,6 +108,23 @@ export const EditBtn = styled.button`
   background-color: #fff;
   display: flex;
   align-items: center;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  @media only screen and (max-width: 1024px) {
+    width: 30px;
+    height: 30px;
+    right: 8px;
+    bottom: 8px;
+  }
+  @media only screen and (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    right: 0px;
+    bottom: 0px;
+  }
 `;
 export const UserName = styled.p`
   font-size: 22px;
@@ -101,6 +136,10 @@ export const UserName = styled.p`
     line-height: 1;
     font-weight: bold;
     color: #e5e5e5;
+  }
+  @media only screen and (max-width: 768px) {
+    margin: 5px 0;
+    font-size: 16px;
   }
 `;
 export const TutorLocationBox = styled.div`
@@ -116,6 +155,9 @@ export const TutorLocationBox = styled.div`
     margin: 0 3px 0 7px;
     position: relative;
     top: 1.5px;
+  }
+  @media only screen and (max-width: 768px) {
+    width: 100%;
   }
 `;
 
@@ -136,6 +178,15 @@ export const Summary = styled.div`
   left: 50%;
   bottom: -125px;
   transform: translate(-50%, 0);
+  @media only screen and (max-width: 1024px) {
+    height: 111px;
+    min-height: auto;
+    width: 90%;
+    border-radius: 8px;
+    padding: 0;
+    bottom: -58px;
+    margin: 0px 0;
+  }
 `;
 export const SummaryItem = styled.div`
   width: 33.3333%;
@@ -146,9 +197,19 @@ export const SummaryItem = styled.div`
     padding-bottom: 30px;
     font-size: 31px;
     font-weight: bold;
+    @media screen and (max-width: 1024px) {
+      padding-bottom: 14px;
+      font-size: 20px;
+    }
+    @media only screen and (max-width: 768px) {
+      padding-bottom: 10px;
+    }
   }
   p:last-child {
     font-size: 13px;
+    @media screen and (max-width: 1024px) {
+      font-size: 10px;
+    }
   }
 `;
 
@@ -182,5 +243,16 @@ export const MatchBtn = styled.button`
     background-color: ${colors.primary};
     color: #fff;
     border: solid 1px ${colors.primary};
+  }
+  @media screen and (max-width: 1024px) {
+    padding: 0 15px;
+    margin: 3px 0;
+  }
+`;
+
+export const EmptyMypage = styled.div`
+  height: 120px;
+  @media screen and (max-width: 1024px) {
+    height: 50px;
   }
 `;

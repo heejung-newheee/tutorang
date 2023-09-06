@@ -16,7 +16,7 @@ export const InfoItem = styled.li`
   align-items: center;
   border-top: solid 1px #dbd9d8;
   > div {
-    width: 20%;
+    width: 25%;
   }
 `;
 export const TutorChatLink = styled.button`
@@ -33,5 +33,8 @@ export const TutorChatLink = styled.button`
     background-color: ${colors.primary};
     color: #fff;
     border: solid 1px ${colors.primary};
+  }
+  @media only screen and (max-width: 768px) {
+    font-size: 14px;
   }
 `;

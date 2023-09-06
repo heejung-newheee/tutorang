@@ -27,4 +27,14 @@ export const Inner = styled.div`
   background-color: ${colors.white};
   border-radius: 18px;
   padding: 50px 0 30px;
+  @media screen and (max-width: 1024px) {
+    margin: 70px 0 0;
+  }
+  @media screen and (max-width: 768px) {
+    margin: 50px 0 0;
+    width: 100%;
+    height: calc(100% - 50px);
+    border-radius: 0;
+    padding: 20px 10px 0;
+  }
 `;

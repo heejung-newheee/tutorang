@@ -91,7 +91,6 @@ const MatchingStudent = ({ matchList }: pageProps) => {
       <TabPanel value={activeTab} index={0}>
         <S.InfoList>
           <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
-            <div>상태</div>
             <div>학생 이름</div>
             <div>지역</div>
             <div>날짜</div>
@@ -108,10 +107,11 @@ const MatchingStudent = ({ matchList }: pageProps) => {
                 return (
                   <S.InfoList key={item.id}>
                     <S.InfoItem>
-                      <div>{item.status}</div>
                       <div>{item.student_name}</div>
                       <div>
-                        {item.student_lc_1_gugun} | {item.student_lc_2_gugun}
+                        {item.student_lc_1_gugun}
+                        <br />
+                        {item.student_lc_2_gugun}
                       </div>
                       <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
                       <div>
@@ -127,7 +127,6 @@ const MatchingStudent = ({ matchList }: pageProps) => {
       <TabPanel value={activeTab} index={1}>
         <S.InfoList>
           <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
-            <div>상태</div>
             <div>학생 이름</div>
             <div>지역</div>
             <div>날짜</div>
@@ -144,10 +143,11 @@ const MatchingStudent = ({ matchList }: pageProps) => {
                 return (
                   <S.InfoList key={item.id}>
                     <S.InfoItem>
-                      <div>{item.status}</div>
                       <div>{item.student_name}</div>
                       <div>
-                        {item.student_lc_1_gugun} | {item.student_lc_2_gugun}
+                        {item.student_lc_1_gugun}
+                        <br />
+                        {item.student_lc_2_gugun}
                       </div>
                       <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
                       <div>완료</div>
