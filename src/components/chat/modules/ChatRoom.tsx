@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { IoIosSend, IoMdAdd } from 'react-icons/io';
+import { IoIosSend, IoMdAdd, IoIosArrowBack } from 'react-icons/io';
 import { useSearchParams } from 'react-router-dom';
 import { leaveChatRoom, sendImageMessage, sendTutoringMessage } from '../../../api/chat';
 import { matchingRequest } from '../../../api/match';
@@ -89,6 +89,13 @@ const ChatRoom = ({ userId }: { userId: string }) => {
     dispatch(openModal({ type: 'chatLocationModal', targetId: chatRoom.room_id }));
   };
 
+  const handleCloseRoom = async () => {
+    setSearchParams((prev) => {
+      prev.delete('room_id');
+      return prev;
+    });
+  };
+
   useEffect(() => {
     if (!chatAreaRef.current) return;
     chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
@@ -109,13 +116,17 @@ const ChatRoom = ({ userId }: { userId: string }) => {
   return (
     <S.Container>
       <S.Header>
-        <S.HeaderButton onClick={handleLeaveRoom} color="red">
-          채팅방 나가기
-        </S.HeaderButton>
-        <S.HeaderTitle>{profile?.username}</S.HeaderTitle>
-        <S.HeaderButton onClick={handleRequestTutoring} color="blue">
-          1:1 매칭하기
-        </S.HeaderButton>
+        <S.IconButton onClick={handleCloseRoom}>
+          <IoIosArrowBack size={30} />
+        </S.IconButton>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <S.HeaderTitle>{profile?.username}</S.HeaderTitle>
+        </div>
+        <div>
+          <S.HeaderButton onClick={handleLeaveRoom} color="red">
+            나가기
+          </S.HeaderButton>
+        </div>
       </S.Header>
 
       <S.ChatArea ref={chatAreaRef}>
@@ -164,11 +175,17 @@ const ChatRoom = ({ userId }: { userId: string }) => {
               </div>
               <p>이미지</p>
             </S.InputMenuButtonItem>
-            <S.InputMenuButtonItem type="button" onClick={() => handleOpenLocationModal()}>
+            <S.InputMenuButtonItem type="button" onClick={handleOpenLocationModal}>
               <div>
                 <IoLocationOutline size={28} />
               </div>
               <p>위치공유</p>
+            </S.InputMenuButtonItem>
+            <S.InputMenuButtonItem type="button" onClick={handleRequestTutoring}>
+              <div>
+                <IoLocationOutline size={28} />
+              </div>
+              <p>튜터링 요청</p>
             </S.InputMenuButtonItem>
           </S.InputMenuInner>
         </S.InputMenu>

@@ -98,27 +98,44 @@ const KakaoMap = ({ onChange }) => {
     searchPlaces(debouncedValue)
   },[debouncedValue,searchPlaces])
 
-  return(<div style={{display:'flex',gap:'1rem',height:'300px'}}>
-    <div 
+  return(<Container>
+    <MapContainer 
     id="map"
     style={{ 
-      width: "100%", 
-      height: "300px", 
-      borderRadius: "10px" 
+      
     }}>
        {!isLoading &&  selectedLocation && <Marker map={mapRef.current} place={selectedLocation}/>} 
-    </div>
-    <div style={{display:'flex',flexDirection:'column'}}>
+    </MapContainer>
+    <SearchContainer >
       <input placeholder="검색어를 입력하세요" type='text' value={inputKeyword} onChange={(e)=>setInputKeyword(e.target.value)} style={{fontSize:'1rem',padding:'6px 10px',border: 'none',borderRadius:'10px',backgroundColor:'#eee'}}/>
       <ul style={{ display:'flex',flexDirection:'column',marginTop:'1rem',overflowY:'auto'}}>
         {placesResult.map((place)=> <ListItem key={`${place.latitude},${place.longitude}`} onClick={()=>setSelectLocation(place)}>{place.name}</ListItem>)}
       </ul>
-    </div>
-  </div>)
+    </SearchContainer>
+  </Container>)
 }
 
 const MemoizedKakaoMap = memo(KakaoMap)
 export default MemoizedKakaoMap;
+
+const Container = styled.div`
+  display: flex;
+  gap: 1rem;
+  height:300px;
+  @media screen and (max-width: 768px) {
+    height: auto;
+    overflow: hidden;
+    flex-direction: column;
+    flex: 1;
+  }
+`
+
+const MapContainer = styled.div`
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+
+`
 
 const ListItem = styled.li`
   padding: 10px;
@@ -128,6 +145,16 @@ const ListItem = styled.li`
   &:focus-within {
     background-color: #eeeeee81;
   }
+`
+
+const SearchContainer =styled.div`
+  display: flex;
+  flex-direction: column;
+  @media screen and (max-width: 768px) {
+    overflow: hidden;
+    flex: 1;
+  }
+  
 `
 
 
