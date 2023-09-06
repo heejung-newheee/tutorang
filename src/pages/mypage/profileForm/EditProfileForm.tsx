@@ -68,7 +68,6 @@ const EditProfileForm = () => {
     try {
       if (password !== '') {
         supabase.auth.updateUser({ password: password });
-        alert('비밀번호 변경이 완료되었습니다.'); // alert 다 지워야해
         handleClose();
       }
       if (location.sido1 !== user.location1_sido || location.gugun1 !== user.location1_gugun || location.sido2 !== user.location2_sido || location.gugun2 !== user.location2_gugun) {
@@ -78,7 +77,6 @@ const EditProfileForm = () => {
         await supabase.storage.from('avatars').upload(`profiles/${user!.id}/${imgName}`, imgFile);
         const { data } = await supabase.storage.from('avatars').getPublicUrl(`profiles/${user!.id}/${imgName}`);
         await supabase.from('profiles').update({ avatar_url: data.publicUrl }).eq('id', user?.id);
-        alert('사진 업로드 완료'); // alert 다 지워야해
       }
 
       handleClose();
