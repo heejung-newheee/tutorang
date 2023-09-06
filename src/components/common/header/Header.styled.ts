@@ -27,7 +27,7 @@ export const WidthLimitContainer = styled.div`
   position: relative;
 
   @media only screen and (max-width: 1200px) {
-    padding: 0 30px;
+    padding: 0 20px 0 15px;
   }
 
   @media only screen and (max-width: 768px) {

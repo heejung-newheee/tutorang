@@ -4,21 +4,22 @@ export const ReviewList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
-
-  max-width: 890px;
   margin: 0 auto;
+  max-width: 890px;
 `;
 
 export const ReviewItem = styled.div`
   display: flex;
-  flex-wrap: wrap;
   gap: 10%;
   justify-content: space-between;
+  @media screen and (max-width: 960px) {
+    flex-wrap: wrap;
+  }
 `;
 
 export const ReviewItemContent = styled.div`
   width: 60%;
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 960px) {
     width: 100%;
     margin-bottom: 20px;
   }
