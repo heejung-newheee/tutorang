@@ -7,6 +7,7 @@ import defaultProfileImgUrl from '../../../assets/basic-user-profile-img.png';
 import useChatContext from '../../../hooks/useChatContext';
 import { RoomWithLastMessageType } from '../../../supabase/database.types';
 import * as S from './ChatRoomList.styled';
+import { useViewport } from '../../../hooks';
 
 const calculateTimeDifference = (inputTime: string): string => {
   const inputDate = new Date(inputTime);
@@ -31,6 +32,7 @@ const calculateTimeDifference = (inputTime: string): string => {
 const ChatRoomList = ({ userId }: { userId: string }) => {
   const [searchInput, setSearchInput] = useState('');
   const { chatRoomList } = useChatContext();
+  const {isMobile} = useViewport()
 
   const handleClearSearchInput = () => {
     setSearchInput('');
@@ -58,12 +60,12 @@ const ChatRoomList = ({ userId }: { userId: string }) => {
   });
 
   return (
-    <S.Container>
+    <S.Container $isMobile={isMobile}>
       <S.SearchBar>
         <S.SearchBarIcon htmlFor="chat_room_search">
           <BiSearchAlt2 color="#C9C9C9" />
         </S.SearchBarIcon>
-        <S.SearchInput id="chat_room_search" type="text" value={searchInput} onChange={handleChangeSearchInput} />
+        <S.SearchInput id="chat_room_search" type="text" value={searchInput} onChange={handleChangeSearchInput} placeholder='이름으로 검색하세요.'/>
         {searchInput && (
           <S.SearchClearButton onClick={() => handleClearSearchInput()}>
             <AiFillCloseCircle size={16} color="#aaaaaadc" />
@@ -114,7 +116,7 @@ const ChatRoomPreview = ({ room, userId }: { room: RoomWithLastMessageType; user
         <S.ProfileImageWrapper>
           <S.ProfileImage src={profile?.avatar_url || defaultProfileImgUrl} alt="avatar" width={54} height={54} />
         </S.ProfileImageWrapper>
-        <S.PriviewContent>
+        <S.PreviewContent>
           <S.PreviewTitle>
             <S.ProfileName>
               {room.chat_room_participants.find((participant) => participant.user_id !== userId)?.profiles.username || '참가자 없음'}
@@ -123,7 +125,7 @@ const ChatRoomPreview = ({ room, userId }: { room: RoomWithLastMessageType; user
             <S.PreviewTime>{room.last_message.length > 0 && <PreviewTime time={room.last_message[0].created_at}></PreviewTime>}</S.PreviewTime>
           </S.PreviewTitle>
           <S.PreviewMessage>{room.last_message.length > 0 ? room.last_message[0].content : 'No message'}</S.PreviewMessage>
-        </S.PriviewContent>
+        </S.PreviewContent>
         <div style={{ display: 'none' }}>
           <button onClick={() => handleLeaveRoom(room.room_id)}>채팅방 나가기</button>
         </div>

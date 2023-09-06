@@ -1,6 +1,17 @@
 import supabase from '../supabase';
+import { v4 } from 'uuid';
 
 type tutoringType = 'request' | 'accept' | 'reject';
+
+export type ImageDataType = {
+  imageUrl: string
+}
+
+export type LocationDataType = {
+  name: string,
+  latitude: number,
+  longitude: number
+}
 
 const TUTORING_MESSAGE = {
   request: '튜터링을 요청했습니다',
@@ -136,3 +147,46 @@ export const sendTutoringMessage = async (room_id: string, type: tutoringType) =
   });
   if (error) throw error;
 };
+
+
+export const sendImageMessage = async (room_id: string, image_file: File) => {
+  const fileType = image_file.type.includes('/') ? image_file.type.split('/')[1] : image_file.type;
+  const fileName = `${v4()}.${fileType}`
+
+  const imageUploadResult = await supabase.storage
+  .from('chat')
+  .upload(`images/${fileName}`, image_file,{
+    cacheControl: '3600',
+    upsert: false
+  })
+
+  if(imageUploadResult.error) throw new Error('이미지 업로드에 실패했습니다.')
+
+  const getPublicUrlResult = supabase
+  .storage
+  .from('chat')
+  .getPublicUrl(`images/${fileName}`)
+
+  const imagUrl = getPublicUrlResult.data.publicUrl
+  if(!imagUrl) throw new Error('이미지 주소를 가져올 수 없습니다.')
+
+  const { error } = await supabase.from('chat_messages').insert({
+    room_id: room_id,
+    type: 'image',
+    data: { imageUrl: imagUrl },
+    content: '이미지',
+  });
+
+  if(error) throw error;
+}
+
+export const sendLocationMessage = async (room_id: string, location: LocationDataType) => {
+  if(!room_id) return
+  const { error } = await supabase.from('chat_messages').insert({
+    room_id,
+    type: 'location',
+    data: location,
+    content: '위치'
+  });
+  if(error) throw error;
+}

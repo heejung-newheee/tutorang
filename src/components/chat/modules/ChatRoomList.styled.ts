@@ -46,7 +46,7 @@ export const PreviewTitle = styled.div`
   gap: 0.4375rem;
 `;
 
-export const PriviewContent = styled.div`
+export const PreviewContent = styled.div`
   overflow: hidden;
 `;
 
@@ -79,8 +79,8 @@ export const ProfileImageWrapper = styled.div`
   align-items: center;
 `;
 
-export const Container = styled.div`
-  width: 410px;
+export const Container = styled.div<{$isMobile: boolean}>`
+    width: ${({$isMobile}) => $isMobile ? '100%' : '410px'};
   border-right: 1px solid #eaeaea;
   overflow-y: auto;
   box-sizing: border-box;
