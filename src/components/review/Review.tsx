@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Loading } from '..';
+import { Loading } from '..';
 import { matchReview } from '../../api/review';
 import { icon_more, starEmpty, starFull } from '../../assets';
 import { REVIEW_QUERY_KEY } from '../../constants/query.constant';
@@ -20,14 +20,14 @@ const Review = ({ id }: ReviewProps) => {
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const handleOpenReviewCreateForm = () => {
-    if (!loginUser) {
-      dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
-      return;
-    }
+  // const handleOpenReviewCreateForm = () => {
+  //   if (!loginUser) {
+  //     dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
+  //     return;
+  //   }
 
-    dispatch(openModal({ type: 'reviewCreate', targetId: id }));
-  };
+  //   dispatch(openModal({ type: 'reviewCreate', targetId: id }));
+  // };
 
   const handleOpenReviewUpdateForm = () => {
     dispatch(openModal({ type: 'reviewUpdate', targetId: id }));
@@ -98,9 +98,6 @@ const Review = ({ id }: ReviewProps) => {
           <S.Title>
             수강생 후기 <S.BadgeReviewCount>{reviews?.length}</S.BadgeReviewCount>
           </S.Title>
-          <Button variant="solid" color="primary" size="Small" onClick={handleOpenReviewCreateForm}>
-            리뷰 남기기
-          </Button>
         </S.TitleContainer>
 
         <S.ReviewContainer>

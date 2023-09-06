@@ -1,15 +1,25 @@
 import { styled } from 'styled-components';
 import { colors } from '../../../style/theme/colors';
-
+export const Descktop = styled.div`
+  @media only screen and (max-width: 945px) {
+    display: none;
+  }
+`;
 export const CompleteTutor = styled.div`
   margin-right: 66px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 export const CompleteImg = styled.img`
+  display: flex;
+  justify-content: center;
   width: 92px;
   height: 92px;
   overflow: hidden;
   border-radius: 50%;
   object-fit: cover;
+  margin: 0 auto;
 `;
 export const CompleteContents = styled.div`
   text-align: center;

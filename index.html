@@ -30,15 +30,47 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-
+    
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q67CHMTVTW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-Q67CHMTVTW');
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-TD372CXT');
+    </script>
+    <!-- End Google Tag Manager -->
   </head>
 
   <body>
     <div id="root"></div>
     <div id="modal-root"></div>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?autoload=false&libraries=services&appkey=175759800abd15d9e80fa10eb7758935"></script>
 
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TD372CXT" height="0" width="0" style="display: none; visibility: hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <script type="module" src="/src/main.tsx"></script>
+    
   </body>
 </html>

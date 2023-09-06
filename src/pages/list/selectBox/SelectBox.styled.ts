@@ -4,6 +4,7 @@ import { colors } from '../../../style/theme/colors';
 export const FilterContainer = styled.div`
   width: 100%;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 0 0 8px 8px;
 `;
 
 export const LocationDiv = styled.div`
@@ -16,6 +17,7 @@ export const LocationDiv = styled.div`
   background-color: ${colors.primary};
   color: ${colors.white};
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border-radius: 8px 8px 0 0;
   cursor: pointer;
 
   & > img {

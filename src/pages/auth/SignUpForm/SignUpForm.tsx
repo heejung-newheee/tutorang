@@ -8,9 +8,9 @@ import GenderRadiobox from '../../../components/Form/GenderRadiobox';
 import SelectBirth from '../../../components/Form/SelectBirth';
 import SelectLocation from '../../../components/Form/SelectLocation';
 import ServiceAgreement from '../../../components/Form/ServiceAgreement';
-import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNUP, PWD_REGEX, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../../../components/Form/formConstant';
 import '../../../components/Form/icon.css';
 import '../../../components/Form/inputBackgroundSetting.css';
+import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNUP, PWD_REGEX, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../../../constants/formConstant';
 import supabase from '../../../supabase';
 
 const SignUpForm = () => {
@@ -79,8 +79,8 @@ const SignUpForm = () => {
   }, [checkedGender]);
 
   useEffect(() => {
-    const checkedValidLocation1 = location.sido1 !== '시/도 선택' && location.sido1 !== '전체' && location.gugun1 !== '구/군 선택';
-    const checkedValidLocation2 = location.sido2 !== '시/도 선택' && location.sido2 !== '전체' && location.gugun2 !== '구/군 선택';
+    const checkedValidLocation1 = location.sido1 !== '시/도 선택' && location.sido1 !== '전체' && location.gugun1 !== '구/군 선택' && location.gugun1 !== '전체';
+    const checkedValidLocation2 = location.sido2 !== '시/도 선택' && location.sido2 !== '전체' && location.gugun2 !== '구/군 선택' && location.gugun2 !== '전체';
     const checkedSameLocation = location.sido1 === location.sido2 && location.gugun1 === location.gugun2;
     setValidLocation(checkedValidLocation1 && checkedValidLocation2 && !checkedSameLocation);
   }, [location]);
@@ -146,6 +146,12 @@ const SignUpForm = () => {
       }
     }
   };
+  let isHereguidemessage = '';
+  if (location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2) {
+    isHereguidemessage = '중복 지역선택 불가';
+  } else if (location.sido1 === '전체' || location.sido2 === '전체' || location.gugun1 === '전체' || location.gugun2 === '전체') {
+    isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
+  }
   return (
     <SContainer>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_SIGNUP} />
@@ -240,10 +246,7 @@ const SignUpForm = () => {
             <SFormItem>
               <SFormItemHeader>
                 <SFormItemTitle>활동선호지역</SFormItemTitle>
-                <SPGuideMessage>
-                  {location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}
-                  {(location.sido1 === '전체' || location.sido2 === '전체') && '지역1, 지역2 모두 특정지역 선택 필수'}
-                </SPGuideMessage>
+                <SPGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</SPGuideMessage>
               </SFormItemHeader>
 
               <SFormItemBody>

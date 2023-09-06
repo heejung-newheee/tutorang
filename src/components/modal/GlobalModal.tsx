@@ -1,9 +1,10 @@
 import { useSelector } from 'react-redux';
 import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm } from '..';
-import EditTutorForm from '../../pages/auth/registTutorForm/EditTutorForm';
+import RetrievePendingTutorRegistration from '../../pages/auth/registTutorForm/RetrievePendingTutorRegistration';
 import YoutubeModal from '../../pages/main/youtube/YoutubeModal';
 import EditProfileForm from '../../pages/mypage/profileForm/EditProfileForm';
 import { RootState } from '../../redux/config/configStore';
+import ChatLocationModal from '../chat/modules/ChatLocationModal';
 import MatchedReviewForm from '../review/reviewForm/MatchedReviewForm';
 import * as S from './Modal.styled';
 import ModalPortal from './ModalPortal';
@@ -22,8 +23,9 @@ const GlobalModal = () => {
     navbabr: 'navbabr',
     matchedReviewCreate: 'matchedReviewCreate',
     editProfiles: 'editProfiles',
-    editTutorInfo: 'editTutorInfo',
     reviewYoutube: 'reviewYoutube',
+    retrievePendingTutorRegistForm: 'retrievePendingTutorRegistForm',
+    chatLocationModal: 'chatLocationModal',
   };
 
   const MODAL_COMPONENTS = [
@@ -60,12 +62,16 @@ const GlobalModal = () => {
       component: <EditProfileForm />,
     },
     {
-      type: MODAL_TYPES.editTutorInfo,
-      component: <EditTutorForm />,
-    },
-    {
       type: MODAL_TYPES.reviewYoutube,
       component: <YoutubeModal />,
+    },
+    {
+      type: MODAL_TYPES.retrievePendingTutorRegistForm,
+      component: <RetrievePendingTutorRegistration />,
+    },
+    {
+      type: MODAL_TYPES.chatLocationModal,
+      component: <ChatLocationModal />,
     },
   ];
 

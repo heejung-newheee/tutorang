@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
 import { tutorInfoJoin } from '../../../api/tutor';
-import { tutorang_logo } from '../../../assets';
+import { logo04 } from '../../../assets';
 import { MATCHING_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { matchingList } from '../../../redux/modules/matching';
@@ -16,10 +16,7 @@ import SigninUserNav from './SigninUserNav';
 
 type HEADERMENU = { title: string; path: string }[];
 
-const HeaderMenu: HEADERMENU = [
-  { title: '튜터찾기', path: '/list' },
-  { title: '채팅', path: '/chat' },
-];
+const HeaderMenu: HEADERMENU = [{ title: '튜터찾기', path: '/list' }];
 
 const Header = () => {
   const [sideNavOpen, setSideNavOpen] = useState<boolean>(false);
@@ -63,9 +60,10 @@ const Header = () => {
         <S.WidthLimitContainer>
           <S.HeaderLeft>
             <S.LogoWrap to="/">
-              <S.NavLogoImg src={tutorang_logo} alt="logo"></S.NavLogoImg>
-              <S.LogoH1>튜터랑</S.LogoH1>
+              <S.NavLogoImg src={logo04} alt="logo"></S.NavLogoImg>
+              {/* <S.LogoH1>튜터랑</S.LogoH1> */}
             </S.LogoWrap>
+            {/* 채팅 다른 곳으로 뺄꺼라 지금 당장은 HeaderMenu가 하나밖에 없어서 map 돌릴 필요가 없지만 곧 다른 카테고리도 넣을거라 일단 map 부분은 수정 안하고 남겨두겠습니다! */}
             <S.Gnb>
               {HeaderMenu.map((item, index) => (
                 <S.NavLinkSt key={index} to={item.path}>
@@ -77,8 +75,7 @@ const Header = () => {
 
           <S.MobileLogo to="/">
             <div>
-              <S.NavLogoImg src={tutorang_logo} alt="logo"></S.NavLogoImg>
-              튜터랑
+              <S.NavLogoImg src={logo04} alt="logo"></S.NavLogoImg>
             </div>
           </S.MobileLogo>
 
@@ -97,7 +94,7 @@ const Header = () => {
             ) : (
               <NavLink to="/signin">
                 <S.LoginSignUpDiv>
-                  <span>로그인</span> <span>회원가입</span>
+                  <span>로그인</span>
                 </S.LoginSignUpDiv>
               </NavLink>
             )}

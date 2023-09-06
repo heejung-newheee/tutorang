@@ -1,7 +1,7 @@
 import Checkbox from '@mui/material/Checkbox';
 import { Dispatch, SetStateAction } from 'react';
 import { marker_location } from '../../../assets';
-import { AREA0, 강원, 경기, 경남, 경북, 광주, 대구, 대전, 부산, 서울, 울산, 인천, 전남, 전북, 제주, 충남, 충북 } from '../../../constants/constant';
+import { AREA0, 강원, 경기, 경남, 경북, 광주, 대구, 대전, 부산, 서울, 울산, 인천, 전남, 전북, 제주, 충남, 충북 } from '../../../constants/location.constant';
 import * as S from './CityModal.styled';
 
 interface CityData {

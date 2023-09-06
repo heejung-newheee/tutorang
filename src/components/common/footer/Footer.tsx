@@ -1,4 +1,4 @@
-import { home_button_logo } from '../../../assets';
+import { logo04 } from '../../../assets';
 import { Section } from '../../../pages/main/Main';
 import * as S from './Footer.syled';
 const Footer = () => {
@@ -9,8 +9,8 @@ const Footer = () => {
           <S.FooterWrap>
             <div>
               <S.CompanyInfo>
-                <div>
-                  <img src={home_button_logo} alt="logo" />
+                <div style={{ width: '120px' }}>
+                  <img src={logo04} alt="logo" />
                 </div>
                 <div>
                   <S.Call>1599-5319</S.Call>

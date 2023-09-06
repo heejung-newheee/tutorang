@@ -20,3 +20,5 @@ export const BOOKMARK_QUERY_KEY = ['matchBookMark'];
 
 export const WRITE_REVIEW_COUNT = 'writeReviewCount';
 export const RECEIVED_REVIEW_COUNT = 'receivedReviewCount';
+
+export const PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY = ['pending_tutor_registration_info'];

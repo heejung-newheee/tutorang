@@ -35,3 +35,8 @@ export { default as tabPanel_3 } from './tab-panel-3.png';
 export { default as tabPanel_4 } from './tab-panel-4.png';
 export { default as bubble } from './talk_bubble.png';
 export { default as twitter } from './twitter.png';
+
+export { default as logo01 } from './logo-01.svg';
+export { default as logo02 } from './logo-02.svg';
+export { default as logo03 } from './logo-03.svg';
+export { default as logo04 } from './logo-04.svg';

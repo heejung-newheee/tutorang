@@ -2,8 +2,19 @@ import Lottie from 'lottie-react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import animationData from '../../assets/lottie/animation_lm1km4tq.json';
+import { useDispatch } from 'react-redux';
+import { closeModal } from '../../redux/modules';
+import { useEffect } from 'react';
 
 const NotFound = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(closeModal());
+    };
+  }, []);
+
   return (
     <Container>
       <div>

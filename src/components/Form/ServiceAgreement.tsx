@@ -51,11 +51,11 @@ const ServiceAgreement: React.FC<TypeServiceAgreement> = ({ $setIsAllChecked }) 
           <SCheckBox type="checkbox" id="aboveFourteen" name="aboveFourteen" onChange={check} checked={checkList.includes('aboveFourteen') ? true : false} />
           <SCheckLabel htmlFor="aboveFourteen">{checkList.includes('aboveFourteen') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel>
           <Label htmlFor="aboveFourteen">(필수) 만 14세 이상입니다.</Label>
-          <Span>보기</Span>
+          <Span></Span>
         </CheckTeramsAndConditions>
         <CheckTeramsAndConditions>
           <SCheckBox type="checkbox" id="usageRule" name="usageRule" onChange={check} checked={checkList.includes('usageRule') ? true : false} />
-          <SCheckLabel htmlFor="usageRule">{checkList.includes('usageRule') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel> <Label htmlFor="aboveFourteen">(필수) 이용약관 동의</Label>
+          <SCheckLabel htmlFor="usageRule">{checkList.includes('usageRule') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel> <Label htmlFor="usageRule">(필수) 이용약관 동의</Label>
           <Span>보기</Span>
         </CheckTeramsAndConditions>
         <CheckTeramsAndConditions>

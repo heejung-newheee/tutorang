@@ -4,29 +4,41 @@ export const ReviewList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3rem;
-
-  max-width: 890px;
   margin: 0 auto;
+  max-width: 890px;
 `;
 
 export const ReviewItem = styled.div`
   display: flex;
   gap: 10%;
   justify-content: space-between;
+  @media screen and (max-width: 960px) {
+    flex-wrap: wrap;
+  }
 `;
 
 export const ReviewItemContent = styled.div`
   width: 60%;
+  @media screen and (max-width: 960px) {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 `;
 
 export const ReviewItemTitle = styled.h4`
   font-size: 22px;
   font-weight: 700;
   margin: 0 0 17px 0;
+  @media screen and (max-width: 1024px) {
+    font-size: 20px;
+  }
 `;
 
 export const ReviewItemText = styled.p`
   font-size: 16px;
+  @media screen and (max-width: 1024px) {
+    font-size: 14px;
+  }
 `;
 
 export const ReviewItemAuthor = styled.span`
@@ -34,12 +46,18 @@ export const ReviewItemAuthor = styled.span`
   display: block;
   padding-top: 15px;
   color: #888;
+  @media screen and (max-width: 1024px) {
+    font-size: 13px;
+  }
 `;
 export const ReviewVideoBox = styled.div`
   height: 270px;
   overflow: hidden;
   position: relative;
   border-radius: 5px;
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+  }
 `;
 export const ReviewItemImage = styled.img`
   height: auto;
