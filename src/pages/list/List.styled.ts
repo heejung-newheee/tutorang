@@ -5,11 +5,11 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 20px;
 `;
 
 export const TutorList = styled.div`
   width: 100%;
-  padding: 0 20px;
   margin-top: 100px;
   display: grid;
   justify-content: center;
@@ -42,10 +42,12 @@ export const SearchWrap = styled.div`
   height: 50px;
   display: flex;
   align-items: center;
-  margin-top: 120px;
+  margin-top: 50px;
   color: ${colors.white};
-  padding-left: 20px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 0 20px;
+  background-color: #f5f5f5;
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+  border-radius: 8px;
 
   & > input {
     outline: none;
@@ -54,6 +56,8 @@ export const SearchWrap = styled.div`
     height: 100%;
     padding-left: 20px;
     font-size: 1em;
+    border-radius: 8px;
+    background-color: #f5f5f5;
   }
 `;
 

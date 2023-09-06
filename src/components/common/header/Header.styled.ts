@@ -58,7 +58,7 @@ export const LogoH1 = styled.h1`
 
 export const NavLogoImg = styled.img`
   width: auto;
-  height: 25px;
+  height: 35px;
   margin-right: 10px;
 `;
 

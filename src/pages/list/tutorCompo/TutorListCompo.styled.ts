@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { colors } from '../../../style/theme/colors';
 
 export const TutorContainer = styled(Link)`
@@ -18,9 +18,7 @@ export const TutorContainer = styled(Link)`
 
 export const Title = styled.div`
   width: 100%;
-  margin: 5px 0;
   margin-bottom: 5px;
-  margin-left: 10px;
   padding-left: 7px;
   display: block;
   overflow: hidden;
@@ -31,11 +29,12 @@ export const Title = styled.div`
   border-left: 3px solid ${colors.primary};
 `;
 
-export const InFoWrap = styled.div``;
+export const InFoWrap = styled.div`
+  padding: 20px;
+`;
 
 export const TutorInfo = styled.div`
   padding-top: 10px;
-  padding-left: 15px;
 `;
 
 export const Name = styled.div`
@@ -79,17 +78,17 @@ export const LocationDiv = styled.div`
 
 export const TutorContent = styled.div`
   font-size: 13px;
-  margin-bottom: 15px;
   white-space: nowrap;
 `;
 
 export const Tag = styled.div`
   display: flex;
   gap: 5px;
+  flex-wrap: wrap;
   div {
     padding: 0 11px;
     line-height: 26px;
     border-radius: 13px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: solid 1px #f3f3f3;
   }
 `;
