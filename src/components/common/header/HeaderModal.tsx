@@ -1,8 +1,8 @@
-import * as S from './Header.styled';
 import { Dispatch, SetStateAction } from 'react';
-import { tutorang_logo } from '../../../assets';
-import { Tables } from '../../../supabase/database.types';
 import { useNavigate } from 'react-router-dom';
+import { logo04 } from '../../../assets';
+import { Tables } from '../../../supabase/database.types';
+import * as S from './Header.styled';
 
 type HEADERMENUMOBILE = { title: string; path: string }[];
 
@@ -32,8 +32,7 @@ const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props)
       >
         <S.MobileLogoDiv>
           <span>
-            <img src={tutorang_logo} alt="logo"></img>
-            <h1>튜터랑</h1>
+            <img src={logo04} alt="logo"></img>
           </span>
 
           <S.SignMobileWrapper>
