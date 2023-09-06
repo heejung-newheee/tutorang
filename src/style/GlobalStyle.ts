@@ -28,7 +28,7 @@ ${reset}
         border-radius: 5px;
     }
     div::-webkit-scrollbar-thumb {
-        background-color: #fe902f4f;
+        background-color: #ebdaca;
         border-radius: 5px;
     }
 

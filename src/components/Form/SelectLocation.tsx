@@ -16,11 +16,17 @@ type TypeSelectLocationProps = {
       gugun2: string;
     }>
   >;
+  $prevValue?: {
+    sido1: string;
+    gugun1: string;
+    sido2: string;
+    gugun2: string;
+  };
 };
 
 const cities: CityData = { AREA0, 서울, 인천, 대전, 광주, 대구, 울산, 부산, 경기, 강원, 충북, 충남, 전북, 전남, 경북, 경남, 제주 };
 
-const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $setLocation }) => {
+const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $setLocation, $prevValue }) => {
   const sidoDropContainerRef = useRef<HTMLDivElement>(null);
   const gugunDropContainerRef = useRef<HTMLDivElement>(null);
   const [selectedOption, setSelectedOption] = useState({ sido: '시/도 선택', gugun: '구/군 선택' });
@@ -49,6 +55,20 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
     }
   };
 
+  useEffect(() => {
+    if (!!$prevValue && $locationType === 'locationType1') {
+      setSelectedOption({
+        sido: $prevValue.sido1,
+        gugun: $prevValue.gugun1,
+      });
+    }
+    if (!!$prevValue && $locationType === 'locationType2') {
+      setSelectedOption({
+        sido: $prevValue.sido2,
+        gugun: $prevValue.gugun2,
+      });
+    }
+  }, []);
   useEffect(() => {
     const handleOutSideClose = (event: MouseEvent) => {
       if ((isDropMenuOpen.sido && !sidoDropContainerRef.current?.contains(event.target as Node)) || (isDropMenuOpen.gugun && !gugunDropContainerRef.current?.contains(event.target as Node))) setIsDropMenuOpen({ sido: false, gugun: false });

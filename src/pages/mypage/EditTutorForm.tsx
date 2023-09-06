@@ -4,18 +4,17 @@ import { FaInfoCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid';
-import FormHeader from '../../../components/Form/FormHeader';
-import SelectLocation from '../../../components/Form/SelectLocation';
-import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../../../components/Form/formConstant';
-import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/signup.constant';
-import { RootState } from '../../../redux/config/configStore';
-import supabase from '../../../supabase';
-import Checkbox from './Checkbox';
-import ImgFileUpload from './ImgFileUpload';
-import * as S from './RegistTutorForm.styled';
-import SelectEnrollmentStatus from './SelectEnrollmentStatus';
-import SelectTuitionFee from './SelectTuitionFee';
-import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from './translation';
+import FormHeader from '../../components/Form/FormHeader';
+import SelectLocation from '../../components/Form/SelectLocation';
+import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../../components/Form/formConstant';
+import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../constants/signup.constant';
+import { RootState } from '../../redux/config/configStore';
+import supabase from '../../supabase';
+import Checkbox from '../auth/registTutorForm/Checkbox';
+import * as S from '../auth/registTutorForm/RegistTutorForm.styled';
+import SelectEnrollmentStatus from '../auth/registTutorForm/SelectEnrollmentStatus';
+import SelectTuitionFee from '../auth/registTutorForm/SelectTuitionFee';
+import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from '../auth/registTutorForm/translation';
 
 const EditTutorForm = () => {
   const [tuitionFeeOnline, setTuitionFeeOnline] = useState(0);
@@ -28,7 +27,7 @@ const EditTutorForm = () => {
   const [classInfo, setClassInfo] = useState('');
   const [university, setUniversity] = useState('');
   const [major, setMajor] = useState('');
-  const [certificationImgFile, setCertificationImgFile] = useState<File | undefined>();
+  const [certificationImgFile, _] = useState<File | undefined>();
   const [enrollmentStatus, setEnrollmentStatus] = useState('');
   const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
 
@@ -179,13 +178,8 @@ const EditTutorForm = () => {
               <label htmlFor="major">학과</label>
               <S.Input type="text" id="major" name="major" value={major} onChange={onChangeInputHandler}></S.Input>
             </S.CertificateItem>
-            <S.CertificateItem>
-              <span>학생증, 증명가능서류 사진첨부</span>
-              <ImgFileUpload $setCertificationImgFile={setCertificationImgFile} $fileType={'tutorCertificationImg'} />
-            </S.CertificateItem>
           </S.FormCertificateItems>
         </S.FormItem>
-
         <S.FormItem>
           <S.FormItemTitle>성격 (최대 3개 선택)</S.FormItemTitle>
           <S.Items>

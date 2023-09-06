@@ -111,7 +111,7 @@ export const EditFormFlex = styled.div`
 export const PasswordChangeWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 0 12px;
   margin-top: 30px;
   > p {
     width: 100%;
@@ -123,4 +123,33 @@ export const PasswordChangeWrap = styled.div`
 export const ConfirmPass = styled.div`
   color: #9d9d9d;
   font-size: 0.8rem;
+`;
+
+export const EditSubmitButton = styled.button<{ disabled: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 16px;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3 ease;
+  line-height: 1;
+  background-color: #fe902f;
+  color: #fff;
+  width: 100%;
+  height: 48px;
+
+  background-color: ${(props) => {
+    if (props.disabled === true) return '#e7e7e7';
+    else return '#FE902F';
+  }};
+
+  color: #fff;
+  cursor: ${(props) => {
+    if (props.disabled === true) return 'not-allowed';
+    else return 'pointer';
+  }};
+  border-radius: 3px;
+  font-size: 16px;
 `;

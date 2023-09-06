@@ -211,6 +211,10 @@ export const OverviewItem = styled.div`
     height: 139px;
     width: 2px;
     background-color: rgba(72, 72, 72, 0.8);
+    @media screen and (max-width: 1024px) {
+      height: 100%;
+      background-color: #ececec;
+    }
   }
   &:last-child::after {
     display: none;
@@ -221,6 +225,12 @@ export const OverviewItemNumber = styled.p`
   font-size: 31px;
   font-weight: 600;
   margin-bottom: 4px;
+  @media screen and (max-width: 1024px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 export const OverviewItemIcon = styled.img`
