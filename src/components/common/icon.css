@@ -1,0 +1,9 @@
+.pending_modal_close_btn {
+  font-size: '25px';
+}
+
+@media screen and (max-width: 420px) {
+  .pending_modal_close_btn {
+    font-size: '20px';
+  }
+}

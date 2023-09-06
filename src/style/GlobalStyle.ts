@@ -20,7 +20,7 @@ ${reset}
 
     body::-webkit-scrollbar-track, 
     div::-webkit-scrollbar-track  {
-        background-color: #eaeaea;
+        background-color: #efefef;
     }
 
     body::-webkit-scrollbar-thumb {

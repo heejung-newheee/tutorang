@@ -2,9 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { BsBell } from 'react-icons/bs';
 import { RiUserStarLine } from 'react-icons/ri';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { getPendingTutorRegistInfo } from '../../../api/pendingTutorInfo';
 import { PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY } from '../../../constants/query.constant';
+import { openModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
 import { Tables } from '../../../supabase/database.types';
 import * as S from './Header.styled';
@@ -15,14 +17,21 @@ type TypeSiginUserNavProps = {
 };
 
 const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
+  const dispatch = useDispatch();
   const AuthNavInfoAreaRef = useRef<HTMLDivElement>(null);
   const [isOpenAuthNavInfoArea, setIsOpenAuthNavInfoArea] = useState(false);
   const { data: pendingTutorRegistInfo } = useQuery(PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY, () => getPendingTutorRegistInfo($loginUser?.id));
 
+  const handleRetrieveTutorRegistInfo = () => {
+    if ($loginUser && $loginUser?.id) {
+      dispatch(openModal({ type: 'retrievePendingTutorRegistForm', targetId: $loginUser.id }));
+    }
+  };
+
   const navigate = useNavigate();
   const HandleClickRegisterTutorIcon = () => {
     if ($loginUser?.role === 'student' && !!pendingTutorRegistInfo) {
-      return alert('관리자가 귀하의 튜터신청서를 컴포중입니다');
+      return alert('관리자가 귀하의 튜터신청서를  검토중입니다');
     } else {
       return navigate('/tutor-registration');
     }
@@ -38,6 +47,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
       navigate('/');
     }
   };
+
   const toggleAuthNavInfoArea = () => {
     setIsOpenAuthNavInfoArea((prev) => !prev);
   };
@@ -109,8 +119,18 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
                     moveToChatPage();
                   }}
                 >
-                  <Link to="#">채팅</Link>
+                  <Link to="#">1:1 채팅</Link>
                 </S.AuthNavItem>
+                {$loginUser?.role === 'student' && !!pendingTutorRegistInfo && (
+                  <S.AuthNavItem
+                    onClick={() => {
+                      setIsOpenAuthNavInfoArea(false);
+                      handleRetrieveTutorRegistInfo();
+                    }}
+                  >
+                    <button>튜터변경 신청내역확인</button>
+                  </S.AuthNavItem>
+                )}
                 <S.AuthNavItem
                   onClick={() => {
                     setIsOpenAuthNavInfoArea(false);
