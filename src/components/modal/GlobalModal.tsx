@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm } from '..';
-import EditTutorForm from '../../pages/auth/registTutorForm/EditTutorForm';
 import YoutubeModal from '../../pages/main/youtube/YoutubeModal';
+import EditTutorForm from '../../pages/mypage/EditTutorForm';
 import EditProfileForm from '../../pages/mypage/profileForm/EditProfileForm';
 import { RootState } from '../../redux/config/configStore';
 import MatchedReviewForm from '../review/reviewForm/MatchedReviewForm';

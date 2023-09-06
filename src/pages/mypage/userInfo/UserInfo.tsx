@@ -17,7 +17,7 @@ export const USER_PROFILE_QUERY_KEY = ['profiles'];
 const UserInfo = () => {
   const dispatch = useDispatch();
   const loginUserId = useSelector((state: RootState) => state.user.user!.id);
-  const { data: user, isLoading, isError, error } = useQuery(USER_PROFILE_QUERY_KEY, () => getUserProfile(loginUserId));
+  const { data: user, isLoading, isError } = useQuery(USER_PROFILE_QUERY_KEY, () => getUserProfile(loginUserId));
   const { data } = useQuery(MATCHING_TUTOR_DATA_QUERY_KEY, matchingTutorData);
 
   const writeReviewCount = useQuery([WRITE_REVIEW_COUNT, user], () => getWriteReviewCount(user!.id), { enabled: !!user });
@@ -30,7 +30,7 @@ const UserInfo = () => {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
   if (isError) {
-    console.log('supabase Error', error);
+    console.error('Error', isError);
     return null;
   }
   const handleEditProfiles = () => {
@@ -95,7 +95,7 @@ const UserInfo = () => {
           </S.Container>
         </S.ProfileBox>
 
-        <div style={{ height: '120px' }}></div>
+        <S.EmptyMypage></S.EmptyMypage>
         {data && data.length > 0 ? <>{user.role === 'tutor' ? <TutorInfo match={data} /> : <StudentInfo match={data} />}</> : <div>매칭 데이터가 없습니다.</div>}
       </S.MypageContainer>
     </>

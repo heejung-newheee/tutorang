@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { v4 } from 'uuid';
@@ -7,7 +7,7 @@ import { getUserProfile } from '../../../api/chat';
 import { close, edit_photo } from '../../../assets';
 import { SPGuideMessage } from '../../../components/Form/AuthForm.styled';
 import SelectLocation from '../../../components/Form/SelectLocation';
-import { Button } from '../../../components/button/Button.styled';
+import { PWD_REGEX } from '../../../components/Form/formConstant';
 import { Container, ContentWrapper, Inner } from '../../../components/review/reviewForm/ReviewForm.styled';
 import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
@@ -21,13 +21,16 @@ const EditProfileForm = () => {
   const userData = useQuery(USER_PROFILE_QUERY_KEY, () => getUserProfile(loginUserId));
   const user = userData.data;
 
-  const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{6,24}$/;
-
+  if (!user) return;
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | null>(null);
   const [imgFile, setImgFile] = useState<File | null>(null);
-  const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
+  const [location, setLoaction] = useState({ sido1: user.location1_sido!, gugun1: user.location1_gugun!, sido2: user.location2_sido!, gugun2: user.location2_gugun! });
+  const [prevLocation, _] = useState(location);
+  const [validPwd, setValidPwd] = useState(false);
+  const [validPwdConfirm, setValidPwdConfirm] = useState(false);
+  const [validLocation, setValidLocation] = useState(false);
 
   const changeNewpassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -63,11 +66,13 @@ const EditProfileForm = () => {
     const imgName = v4();
     e.preventDefault();
     try {
-      if (password) {
-        await supabase.auth.updateUser({ password: password });
-        alert('비밀번호 변경이 완료되었습니다.');
+      if (password !== '') {
+        supabase.auth.updateUser({ password: password });
+        handleClose();
       }
-      await supabase.from('profiles').update({ location1_sido: location.sido1, location1_gugun: location.gugun1, location2_sido: location.sido2, location2_gugun: location.gugun2 }).eq('id', user?.id);
+      if (location.sido1 !== user.location1_sido || location.gugun1 !== user.location1_gugun || location.sido2 !== user.location2_sido || location.gugun2 !== user.location2_gugun) {
+        await supabase.from('profiles').update({ location1_sido: location.sido1, location1_gugun: location.gugun1, location2_sido: location.sido2, location2_gugun: location.gugun2 }).eq('id', user?.id);
+      }
       if (imgFile) {
         await supabase.storage.from('avatars').upload(`profiles/${user!.id}/${imgName}`, imgFile);
         const { data } = await supabase.storage.from('avatars').getPublicUrl(`profiles/${user!.id}/${imgName}`);
@@ -80,6 +85,27 @@ const EditProfileForm = () => {
       alert(`정보 수정 중 오류가 발생했습니다${error}`);
     }
   };
+  let isHereguidemessage = '';
+  if (location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2) {
+    isHereguidemessage = '중복 지역선택 불가';
+  } else if (location.sido1 === '전체' || location.sido2 === '전체' || location.gugun1 === '전체' || location.gugun2 === '전체') {
+    isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
+  }
+
+  useEffect(() => {
+    const result = PWD_REGEX.test(password);
+    setValidPwd(result);
+    const resultMatch = password === confirmPassword;
+    setValidPwdConfirm(resultMatch);
+  }, [password, confirmPassword]);
+  useEffect(() => {
+    if (prevLocation.sido1 !== location.sido1 || prevLocation.gugun1 !== location.gugun1 || prevLocation.sido2 !== location.sido2 || prevLocation.gugun2 !== location.gugun2) {
+      const checkedValidLocation1 = location.sido1 !== '시/도 선택' && location.sido1 !== '전체' && location.gugun1 !== '구/군 선택' && location.gugun1 !== '전체';
+      const checkedValidLocation2 = location.sido2 !== '시/도 선택' && location.sido2 !== '전체' && location.gugun2 !== '구/군 선택' && location.gugun2 !== '전체';
+      const checkedSameLocation = location.sido1 === location.sido2 && location.gugun1 === location.gugun2;
+      setValidLocation(checkedValidLocation1 && checkedValidLocation2 && !checkedSameLocation);
+    }
+  }, [location]);
 
   return (
     <Container>
@@ -119,7 +145,7 @@ const EditProfileForm = () => {
                 {password.length > 6 && PWD_REGEX.test(password) ? (
                   <p>사용가능한 비밀번호 입니다</p>
                 ) : password !== '' ? (
-                  <p>6자 이상 영문 대소문자, 숫자, 특수문자를 포함해주세요</p>
+                  <p>6자 이상 영문 영문, 숫자, 특수문자 포함</p>
                 ) : (
                   <p>
                     <br />
@@ -152,25 +178,22 @@ const EditProfileForm = () => {
 
             <SFormItem>
               <SFormItemHeader>
-                <SPGuideMessage>
-                  {location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}
-                  {(location.sido1 === '전체' || location.sido2 === '전체') && '지역1, 지역2 모두 특정지역 선택 필수'}
-                </SPGuideMessage>
+                <SPGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</SPGuideMessage>
               </SFormItemHeader>
               <SFormItemBody>
                 <SFormItemBodySection>
                   <span>활동 선호 지역1</span>
-                  <SelectLocation $locationType={'locationType1'} $setLocation={setLoaction} />
+                  <SelectLocation $locationType={'locationType1'} $setLocation={setLoaction} $prevValue={location} />
                 </SFormItemBodySection>
                 <SFormItemBodySection>
                   <span>활동 선호 지역2</span>
-                  <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} />
+                  <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} $prevValue={location} />
                 </SFormItemBodySection>
               </SFormItemBody>
             </SFormItem>
-            <Button style={{ marginTop: '30px' }} variant="solid" color={'primary'} size="Large" type="submit">
+            <S.EditSubmitButton style={{ marginTop: '30px' }} type="submit" disabled={(validPwd && validPwdConfirm) || validLocation ? false : true}>
               수정
-            </Button>
+            </S.EditSubmitButton>
           </form>
         </ContentWrapper>
       </Inner>

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { styled } from 'styled-components';
-import { AREA0, AREA1, AREA10, AREA11, AREA12, AREA13, AREA14, AREA15, AREA16, AREA2, AREA3, AREA4, AREA5, AREA6, AREA7, AREA8, AREA9 } from '../../api/cities';
+import { AREA0, 강원, 경기, 경남, 경북, 광주, 대구, 대전, 부산, 서울, 울산, 인천, 전남, 전북, 제주, 충남, 충북 } from '../../constants/location.constant';
 interface CityData {
   [key: string]: string[];
 }
@@ -16,18 +16,24 @@ type TypeSelectLocationProps = {
       gugun2: string;
     }>
   >;
+  $prevValue?: {
+    sido1: string;
+    gugun1: string;
+    sido2: string;
+    gugun2: string;
+  };
 };
 
-const cities: CityData = { AREA0, AREA1, AREA2, AREA3, AREA4, AREA5, AREA6, AREA7, AREA8, AREA9, AREA10, AREA11, AREA12, AREA13, AREA14, AREA15, AREA16 };
+const cities: CityData = { AREA0, 서울, 인천, 대전, 광주, 대구, 울산, 부산, 경기, 강원, 충북, 충남, 전북, 전남, 경북, 경남, 제주 };
 
-const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $setLocation }) => {
+const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $setLocation, $prevValue }) => {
   const sidoDropContainerRef = useRef<HTMLDivElement>(null);
   const gugunDropContainerRef = useRef<HTMLDivElement>(null);
   const [selectedOption, setSelectedOption] = useState({ sido: '시/도 선택', gugun: '구/군 선택' });
   const [gugunOptions, setGugunOptions] = useState<string[]>([]);
   const [isDropMenuOpen, setIsDropMenuOpen] = useState({ sido: false, gugun: false });
 
-  const handleOptionClick = async (option: string, locationDomain: string, preCode: string) => {
+  const handleOptionClick = async (option: string, locationDomain: string) => {
     if (locationDomain === 'sido') {
       setGugunOptions([]);
       setSelectedOption((prev) => ({ sido: option, gugun: prev.gugun }));
@@ -36,8 +42,7 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
       setIsDropMenuOpen(() => ({ sido: false, gugun: false }));
       if (option === '전체') return setSelectedOption((prev) => ({ ...prev, gugun: '구/군 선택' }));
 
-      const gugunCode = 'AREA' + preCode;
-      const options = cities[gugunCode];
+      const options = cities[option];
       setGugunOptions(options);
       setSelectedOption((prev) => ({ sido: prev.sido, gugun: options[0] }));
       $locationType === 'locationType1' ? $setLocation((prev) => ({ ...prev, gugun1: options[0] })) : $setLocation((prev) => ({ ...prev, gugun2: options[0] }));
@@ -50,6 +55,20 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
     }
   };
 
+  useEffect(() => {
+    if (!!$prevValue && $locationType === 'locationType1') {
+      setSelectedOption({
+        sido: $prevValue.sido1,
+        gugun: $prevValue.gugun1,
+      });
+    }
+    if (!!$prevValue && $locationType === 'locationType2') {
+      setSelectedOption({
+        sido: $prevValue.sido2,
+        gugun: $prevValue.gugun2,
+      });
+    }
+  }, []);
   useEffect(() => {
     const handleOutSideClose = (event: MouseEvent) => {
       if ((isDropMenuOpen.sido && !sidoDropContainerRef.current?.contains(event.target as Node)) || (isDropMenuOpen.gugun && !gugunDropContainerRef.current?.contains(event.target as Node))) setIsDropMenuOpen({ sido: false, gugun: false });
@@ -70,8 +89,8 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
         {isDropMenuOpen.sido && (
           <SOptionContainer $locationType={$locationType}>
             <Select>
-              {cities.AREA0.map((option, index) => (
-                <SOption key={option} $optionValue={option} $selectedOption={selectedOption.sido} onClick={() => handleOptionClick(option, 'sido', index.toString())}>
+              {cities.AREA0.map((option) => (
+                <SOption key={option} $optionValue={option} $selectedOption={selectedOption.sido} onClick={() => handleOptionClick(option, 'sido')}>
                   {option}
                 </SOption>
               ))}
@@ -89,8 +108,8 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
         {isDropMenuOpen.gugun && (
           <SOptionContainer $locationType={$locationType}>
             <Select>
-              {gugunOptions.map((option, index) => (
-                <SOption key={option} $optionValue={option} $selectedOption={selectedOption.gugun} onClick={() => handleOptionClick(option, 'gugun', index.toString())}>
+              {gugunOptions.map((option) => (
+                <SOption key={option} $optionValue={option} $selectedOption={selectedOption.gugun} onClick={() => handleOptionClick(option, 'gugun')}>
                   {option}
                 </SOption>
               ))}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { styled } from 'styled-components';
-import { ENROLLMENT_STATUS } from '../../../constants/constant';
+import { ENROLLMENT_STATUS } from '../../../constants/signup.constant';
 
 type TypeSelectEnrollmentStatus = {
   $setEnrollmentStatus: React.Dispatch<React.SetStateAction<string>>;

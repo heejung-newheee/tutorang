@@ -1,7 +1,10 @@
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { BsBell } from 'react-icons/bs';
 import { RiUserStarLine } from 'react-icons/ri';
 import { Link, useNavigate } from 'react-router-dom';
+import { getPendingTutorRegistInfo } from '../../../api/pendingTutorInfo';
+import { PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY } from '../../../constants/query.constant';
 import supabase from '../../../supabase';
 import { Tables } from '../../../supabase/database.types';
 import * as S from './Header.styled';
@@ -14,9 +17,18 @@ type TypeSiginUserNavProps = {
 const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   const AuthNavInfoAreaRef = useRef<HTMLDivElement>(null);
   const [isOpenAuthNavInfoArea, setIsOpenAuthNavInfoArea] = useState(false);
+  const { data: pendingTutorRegistInfo } = useQuery(PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY, () => getPendingTutorRegistInfo($loginUser?.id));
+
   const navigate = useNavigate();
-  const moveToRegisterTutorPage = () => navigate('/tutor-registration');
+  const HandleClickRegisterTutorIcon = () => {
+    if ($loginUser?.role === 'student' && !!pendingTutorRegistInfo) {
+      return alert('관리자가 귀하의 튜터신청서를 컴포중입니다');
+    } else {
+      return navigate('/tutor-registration');
+    }
+  };
   const moveToMyPage = () => navigate('/mypage');
+  const moveToChatPage = () => navigate('/chat');
   const handleUserSignOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -42,7 +54,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
     <>
       {$loginUser?.role === 'student' && (
         <S.RegisterTutorBtnContainer>
-          <S.BtnWholeBody onClick={moveToRegisterTutorPage}>
+          <S.BtnWholeBody onClick={HandleClickRegisterTutorIcon}>
             <S.RightButton>
               <S.IconCover>
                 <RiUserStarLine className="right_icon register_tutor_icon" />
@@ -90,6 +102,14 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
                   }}
                 >
                   <Link to="#">마이페이지</Link>
+                </S.AuthNavItem>
+                <S.AuthNavItem
+                  onClick={() => {
+                    setIsOpenAuthNavInfoArea(false);
+                    moveToChatPage();
+                  }}
+                >
+                  <Link to="#">채팅</Link>
                 </S.AuthNavItem>
                 <S.AuthNavItem
                   onClick={() => {

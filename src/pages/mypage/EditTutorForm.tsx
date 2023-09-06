@@ -4,18 +4,17 @@ import { FaInfoCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid';
-import FormHeader from '../../../components/Form/FormHeader';
-import SelectLocation from '../../../components/Form/SelectLocation';
-import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../../../components/Form/formConstant';
-import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/constant';
-import { RootState } from '../../../redux/config/configStore';
-import supabase from '../../../supabase';
-import Checkbox from './Checkbox';
-import ImgFileUpload from './ImgFileUpload';
-import * as S from './RegistTutorForm.styled';
-import SelectEnrollmentStatus from './SelectEnrollmentStatus';
-import SelectTuitionFee from './SelectTuitionFee';
-import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from './translation';
+import FormHeader from '../../components/Form/FormHeader';
+import SelectLocation from '../../components/Form/SelectLocation';
+import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../../components/Form/formConstant';
+import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../constants/signup.constant';
+import { RootState } from '../../redux/config/configStore';
+import supabase from '../../supabase';
+import Checkbox from '../auth/registTutorForm/Checkbox';
+import * as S from '../auth/registTutorForm/RegistTutorForm.styled';
+import SelectEnrollmentStatus from '../auth/registTutorForm/SelectEnrollmentStatus';
+import SelectTuitionFee from '../auth/registTutorForm/SelectTuitionFee';
+import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from '../auth/registTutorForm/translation';
 
 const EditTutorForm = () => {
   const [tuitionFeeOnline, setTuitionFeeOnline] = useState(0);
@@ -28,7 +27,7 @@ const EditTutorForm = () => {
   const [classInfo, setClassInfo] = useState('');
   const [university, setUniversity] = useState('');
   const [major, setMajor] = useState('');
-  const [certificationImgFile, setCertificationImgFile] = useState<File | undefined>();
+  const [certificationImgFile, _] = useState<File | undefined>();
   const [enrollmentStatus, setEnrollmentStatus] = useState('');
   const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
 
@@ -140,6 +139,12 @@ const EditTutorForm = () => {
     }
   }, [user]);
 
+  let isHereguidemessage = '';
+  if (location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2) {
+    isHereguidemessage = '중복 지역선택 불가';
+  } else if (location.sido1 === '전체' || location.sido2 === '전체' || location.gugun1 === '전체' || location.gugun2 === '전체') {
+    isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
+  }
   return (
     <S.Container>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT} />
@@ -158,10 +163,7 @@ const EditTutorForm = () => {
             </S.FormItemBodySection>
           </S.FormItemBody>
           <S.FormItemHeader>
-            <S.PGuideMessage>
-              {location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}
-              {(location.sido1 === '전체' || location.sido2 === '전체') && '지역1, 지역2 모두 특정지역 선택 필수'}
-            </S.PGuideMessage>
+            <S.PGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</S.PGuideMessage>
           </S.FormItemHeader>
           <S.FormItemTitle>학위/자격 증명</S.FormItemTitle>
           <S.FormCertificateItems>
@@ -176,13 +178,8 @@ const EditTutorForm = () => {
               <label htmlFor="major">학과</label>
               <S.Input type="text" id="major" name="major" value={major} onChange={onChangeInputHandler}></S.Input>
             </S.CertificateItem>
-            <S.CertificateItem>
-              <span>학생증, 증명가능서류 사진첨부</span>
-              <ImgFileUpload $setCertificationImgFile={setCertificationImgFile} $fileType={'tutorCertificationImg'} />
-            </S.CertificateItem>
           </S.FormCertificateItems>
         </S.FormItem>
-
         <S.FormItem>
           <S.FormItemTitle>성격 (최대 3개 선택)</S.FormItemTitle>
           <S.Items>

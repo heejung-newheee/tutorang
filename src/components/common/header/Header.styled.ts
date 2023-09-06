@@ -225,10 +225,6 @@ export const LoginSignUpDiv = styled.div`
     font-size: 15px;
     color: ${colors.black};
   }
-
-  & > span:first-child {
-    border-right: 1px solid ${colors.gray_900};
-  }
 `;
 
 export const MobileContainer = styled.div<{ $sideNavOpen: boolean }>`
