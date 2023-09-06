@@ -5,9 +5,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "types": [
-      "daum.maps.d.ts"
-    ],
+    "types": ["daum.maps.d.ts"],
 
     /* Bundler mode */
     "allowJs": true,
