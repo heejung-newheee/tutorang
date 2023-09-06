@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 import { home_button_logo } from '../../../assets';
 import { SContainer, SPartitionLine } from '../../../components/Form/AuthForm.styled';
 import FormHeader from '../../../components/Form/FormHeader';
-import { FORM_CONSTANT_TITLE_COMPLETE } from '../../../components/Form/formConstant';
+import { FORM_CONSTANT_TITLE_COMPLETE } from '../../../constants/formConstant';
 
 const WelcomeMessagePage = () => {
   const navigate = useNavigate();

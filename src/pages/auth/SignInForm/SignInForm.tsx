@@ -5,9 +5,9 @@ import { css, styled } from 'styled-components';
 import { googleicon, kakaotalk, navericon } from '../../../assets';
 import { SButton, SContainer, SForm, SFormContainer, SFormItem, SInput, SPGuideMessage, SPartitionLine } from '../../../components/Form/AuthForm.styled';
 import FormHeader from '../../../components/Form/FormHeader';
-import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNIN } from '../../../components/Form/formConstant';
 import '../../../components/Form/icon.css';
 import '../../../components/Form/inputBackgroundSetting.css';
+import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNIN } from '../../../constants/formConstant';
 import supabase from '../../../supabase';
 
 const SignInForm = () => {
