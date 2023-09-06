@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import { FORM_HEADER_TITLE } from './formConstant';
+import { FORM_HEADER_TITLE } from '../../constants/formConstant';
 
 type TypeFormHeaderProps = {
   $keyword: string;

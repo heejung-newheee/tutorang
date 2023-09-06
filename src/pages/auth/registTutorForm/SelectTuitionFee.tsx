@@ -39,7 +39,7 @@ const SelectTuitionFee: React.FC<SelectTuitionFeeType> = ({ $tuitionType, $selec
     <SDropdownWrapper ref={dropContainerRef}>
       <SDropDownHeader id={$tuitionType + 'Selectbox'} onClick={() => setIsDropMenuOpen((prev) => !prev)}>
         <SpanDefaultText $selectedOption={selectedOption}>{selectedOption === 0 ? '선택하세요' : selectedOption}</SpanDefaultText>
-        {isDropMenuOpen ? <FaAngleDown /> : <FaAngleUp />}
+        {isDropMenuOpen ? <FaAngleUp /> : <FaAngleDown />}
       </SDropDownHeader>
       {isDropMenuOpen && (
         <SOptionContainer $tuitionType={$tuitionType}>

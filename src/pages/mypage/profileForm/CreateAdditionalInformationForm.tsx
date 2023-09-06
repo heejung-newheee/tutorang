@@ -7,7 +7,7 @@ import GenderRadiobox from '../../../components/Form/GenderRadiobox';
 import SelectBirth from '../../../components/Form/SelectBirth';
 import SelectLocation from '../../../components/Form/SelectLocation';
 import ServiceAgreement from '../../../components/Form/ServiceAgreement';
-import { FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../../../components/Form/formConstant';
+import { FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../../../constants/formConstant';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
 

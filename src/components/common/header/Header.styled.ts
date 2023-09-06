@@ -219,6 +219,15 @@ export const PartitionLine = styled.div`
 export const LoginSignUpDiv = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 122px;
+  height: 40px;
+  border-radius: 20px;
+  border: 2px solid ${colors.primary};
+
+  &:hover {
+    background-color: #fe902f16;
+  }
 
   & > span {
     padding: 0 10px;
