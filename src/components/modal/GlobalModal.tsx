@@ -7,6 +7,7 @@ import { RootState } from '../../redux/config/configStore';
 import MatchedReviewForm from '../review/reviewForm/MatchedReviewForm';
 import * as S from './Modal.styled';
 import ModalPortal from './ModalPortal';
+import ChatLocationModal from '../chat/modules/ChatLocationModal';
 
 const GlobalModal = () => {
   const { type, isOpen } = useSelector((state: RootState) => state.modal);
@@ -24,6 +25,7 @@ const GlobalModal = () => {
     editProfiles: 'editProfiles',
     editTutorInfo: 'editTutorInfo',
     reviewYoutube: 'reviewYoutube',
+    chatLocationModal: 'chatLocationModal',
   };
 
   const MODAL_COMPONENTS = [
@@ -67,6 +69,10 @@ const GlobalModal = () => {
       type: MODAL_TYPES.reviewYoutube,
       component: <YoutubeModal />,
     },
+    {
+      type: MODAL_TYPES.chatLocationModal,
+      component: <ChatLocationModal/>
+    }
   ];
 
   const findModal = MODAL_COMPONENTS.find((modal) => {

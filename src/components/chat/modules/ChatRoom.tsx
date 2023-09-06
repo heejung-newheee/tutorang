@@ -1,22 +1,16 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { IoIosSend } from 'react-icons/io';
+import { IoIosSend, IoMdAdd } from 'react-icons/io';
 import { useSearchParams } from 'react-router-dom';
-import { leaveChatRoom, sendTutoringMessage } from '../../../api/chat';
+import { leaveChatRoom, sendImageMessage, sendTutoringMessage } from '../../../api/chat';
 import { matchingRequest } from '../../../api/match';
 import useChatContext from '../../../hooks/useChatContext';
 import supabase from '../../../supabase';
-import { Tables } from '../../../supabase/database.types';
+import { BiImageAdd } from 'react-icons/bi';
+import { IoLocationOutline } from 'react-icons/io5';
 import * as S from './ChatRoom.styled';
-
-const isTutoringMessage = (type: string) => {
-  return ['request', 'accept', 'reject'].includes(type);
-};
-
-const getTimeText = (isoDateString: string) => {
-  const isoDate = new Date(isoDateString);
-  const options: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'numeric' };
-  return new Intl.DateTimeFormat(navigator.language, options).format(isoDate);
-};
+import { useDispatch } from 'react-redux';
+import { openModal } from '../../../redux/modules';
+import { ChatMessage } from './ChatMessage';
 
 const getDateText = (isoDateString: string): string => {
   const isoDate = new Date(isoDateString);
@@ -27,8 +21,11 @@ const getDateText = (isoDateString: string): string => {
 const ChatRoom = ({ userId }: { userId: string }) => {
   const { chatRoom, chatMessages } = useChatContext();
   const [inputMessage, setInputMessage] = useState('');
+  const [isOpenInputMenu, setOpenInputMenu] = useState(false);
+  const inputImageRef = useRef<HTMLInputElement>(null);
   const chatAreaRef = useRef<HTMLDivElement>(null);
   const [, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch();
 
   const handleSubmitCreateMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,6 +69,24 @@ const ChatRoom = ({ userId }: { userId: string }) => {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleChangeInputImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!chatRoom) return;
+    if (!e.target.files || !e.target.files[0]) return;
+    const file = e.target.files[0];
+    if (!(file.type === 'image/jpeg' || file.type === 'image/png')) return;
+
+    try {
+      await sendImageMessage(chatRoom.room_id, file);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleOpenLocationModal = () => {
+    if (!chatRoom) return;
+    dispatch(openModal({ type: 'chatLocationModal', targetId: chatRoom.room_id }));
   };
 
   useEffect(() => {
@@ -131,33 +146,35 @@ const ChatRoom = ({ userId }: { userId: string }) => {
       <S.InputArea>
         <form onSubmit={handleSubmitCreateMessage}>
           <S.FormInner>
+            <S.InputMenuButton $isOpen={isOpenInputMenu} type="button" onClick={() => setOpenInputMenu((prev) => !prev)}>
+              <IoMdAdd size={29} color="#595959" />
+            </S.InputMenuButton>
             <S.MessageInput type="text" value={inputMessage} placeholder="메세지를 입력해주세요." onChange={(e) => setInputMessage(e.target.value)} />
             <S.SendButton type="submit">
               <IoIosSend size={34} color={'#ffffff'} />
             </S.SendButton>
           </S.FormInner>
         </form>
+        <S.InputMenu $isOpen={isOpenInputMenu}>
+          <S.InputMenuInner>
+            <input ref={inputImageRef} type="file" id="chat_image" name="chat_image" accept="image/png, image/jpeg" onChange={handleChangeInputImage} style={{ display: 'none' }} />
+            <S.InputMenuButtonItem type="button" onClick={() => inputImageRef.current?.click()}>
+              <div>
+                <BiImageAdd size={28} />
+              </div>
+              <p>이미지</p>
+            </S.InputMenuButtonItem>
+            <S.InputMenuButtonItem type="button" onClick={() => handleOpenLocationModal()}>
+              <div>
+                <IoLocationOutline size={28} />
+              </div>
+              <p>위치공유</p>
+            </S.InputMenuButtonItem>
+          </S.InputMenuInner>
+        </S.InputMenu>
       </S.InputArea>
     </S.Container>
   );
 };
 
 export default ChatRoom;
-
-export const ChatMessage = ({ message, isMine }: { message: Tables<'chat_messages'>; isMine: boolean }) => {
-  return (
-    <S.ChatMessage $isMine={isMine} $isCustom={!!message.type}>
-      {isTutoringMessage(message.type) ? (
-        <S.ChatCustomMessageContent $customType={message.type}>
-          {message.content}
-          <p>
-            <S.ChatCustomMessageLink to={'/mypage'}>마이페이지에서 확인하기</S.ChatCustomMessageLink>
-          </p>
-        </S.ChatCustomMessageContent>
-      ) : (
-        <S.ChatTextMessageContent $isMine={isMine}>{message.content}</S.ChatTextMessageContent>
-      )}
-      <S.ChatMessageTime>{getTimeText(message.created_at)}</S.ChatMessageTime>
-    </S.ChatMessage>
-  );
-};
