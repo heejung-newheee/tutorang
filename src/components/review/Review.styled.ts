@@ -5,11 +5,20 @@ import { size } from '../../style/theme/size';
 export const Container = styled.div`
   background-color: ${colors.gray_100};
   padding: 49px 0 70px 0;
+
+  @media screen and (max-width: 768px) {
+    padding: 18px 18px;
+    margin-top: 13px;
+  }
 `;
 
 export const ReviewContainer = styled.ul`
   width: ${size.globalInner};
   margin: 0 auto;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const TitleContainer = styled.div`
@@ -19,12 +28,22 @@ export const TitleContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 44px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: 0 18px 10px 0;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
 `;
 
 export const Title = styled.h4`
   font-size: 28px;
   color: ${colors.black};
   font-weight: 600;
+
+  @media screen and (max-width: 768px) {
+    font-size: 22px;
+  }
 `;
 
 export const BadgeReviewCount = styled.span`

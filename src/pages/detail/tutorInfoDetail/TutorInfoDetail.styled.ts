@@ -8,6 +8,7 @@ export const Container = styled.section`
   padding: 92px 0;
   @media all and (max-width: 768px) {
     margin-top: 50px;
+    padding-top: 24px;
   }
 `;
 
@@ -17,6 +18,11 @@ export const TutorProfile = styled.div`
   width: 100%;
   max-width: 660px;
   margin: 0 auto;
+  gap: 13px;
+  @media all and (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 0 18px;
+  }
 `;
 
 export const Figure = styled.figure`
@@ -44,6 +50,10 @@ export const Figure = styled.figure`
     width: 24px;
     height: 24px;
   }
+
+  @media all and (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
 
 export const ClassTitle = styled.h3`
@@ -51,6 +61,11 @@ export const ClassTitle = styled.h3`
   font-weight: 600;
   line-height: 1.4;
   margin-bottom: 58px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
 `;
 
 export const InfoWrapper = styled.div`
@@ -72,12 +87,20 @@ export const TutorNameWrapper = styled.div`
 export const TutorName = styled.span`
   font-size: 20px;
   font-weight: 700;
+
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 export const Age = styled.span`
   font-size: 12px;
   color: ${colors.black_100};
   margin-right: 15px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 9px;
+  }
 `;
 
 export const verify = styled.span`
@@ -167,6 +190,10 @@ export const ButtonWrapper = styled.div`
     border-radius: 30px;
     transform: translate(110px, -18px);
   }
+
+  @media screen and (max-width: 768px) {
+    margin-top: 48px;
+  }
 `;
 
 export const badgeLevel = styled.span`
@@ -182,6 +209,11 @@ export const OverviewContainer = styled.section`
   background-color: ${colors.gray_100};
   margin-top: 54px;
   padding: 88px 0 120px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 13px;
+    padding: 18px 20px;
+  }
 `;
 
 export const OverviewList = styled.section`
@@ -193,6 +225,11 @@ export const OverviewList = styled.section`
   background-color: ${colors.white};
   box-shadow: 0 4px 4px rgb(0 0 0 / 15%);
   border-radius: 8px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 13px;
+    padding: 18px 20px;
+  }
 `;
 
 export const OverviewItem = styled.div`
@@ -254,6 +291,9 @@ export const StarList = styled.ul`
     width: 35px;
     img {
       width: 100%;
+    }
+    @media screen and (max-width: 768px) {
+      width: 18px;
     }
   }
 `;
