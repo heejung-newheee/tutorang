@@ -61,12 +61,16 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
         sido: $prevValue.sido1,
         gugun: $prevValue.gugun1,
       });
+      const options = cities[$prevValue.sido1];
+      setGugunOptions(options);
     }
     if (!!$prevValue && $locationType === 'locationType2') {
       setSelectedOption({
         sido: $prevValue.sido2,
         gugun: $prevValue.gugun2,
       });
+      const options = cities[$prevValue.sido2];
+      setGugunOptions(options);
     }
   }, []);
   useEffect(() => {
@@ -84,7 +88,7 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
           <SpanDefaultText $locationDomain={'sido'} $selectedOption={selectedOption.sido}>
             {selectedOption.sido}
           </SpanDefaultText>
-          {isDropMenuOpen.sido ? <FaAngleDown /> : <FaAngleUp />}
+          {isDropMenuOpen.sido ? <FaAngleUp /> : <FaAngleDown />}
         </SDropDownHeader>
         {isDropMenuOpen.sido && (
           <SOptionContainer $locationType={$locationType}>
@@ -103,7 +107,7 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
           <SpanDefaultText $locationDomain={'gugun'} $selectedOption={selectedOption.gugun}>
             {selectedOption.gugun}
           </SpanDefaultText>
-          {isDropMenuOpen.gugun ? <FaAngleDown /> : <FaAngleUp />}
+          {isDropMenuOpen.gugun ? <FaAngleUp /> : <FaAngleDown />}
         </SDropDownHeader>
         {isDropMenuOpen.gugun && (
           <SOptionContainer $locationType={$locationType}>
