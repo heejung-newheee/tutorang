@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
-import { v4 } from 'uuid';
 import { getUserProfile } from '../../../api/chat';
 import { profileImgUpload } from '../../../api/user';
 import { close, edit_photo } from '../../../assets';
@@ -65,7 +64,6 @@ const EditProfileForm = () => {
   };
 
   const updateProfilesInfo = async (e: React.FormEvent) => {
-    const imgName = v4();
     e.preventDefault();
     try {
       if (password !== '') {
