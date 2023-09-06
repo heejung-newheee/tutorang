@@ -8,9 +8,9 @@ import GenderRadiobox from '../../../components/Form/GenderRadiobox';
 import SelectBirth from '../../../components/Form/SelectBirth';
 import SelectLocation from '../../../components/Form/SelectLocation';
 import ServiceAgreement from '../../../components/Form/ServiceAgreement';
-import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNUP, PWD_REGEX, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../../../components/Form/formConstant';
 import '../../../components/Form/icon.css';
 import '../../../components/Form/inputBackgroundSetting.css';
+import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNUP, PWD_REGEX, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../../../constants/formConstant';
 import supabase from '../../../supabase';
 
 const SignUpForm = () => {
