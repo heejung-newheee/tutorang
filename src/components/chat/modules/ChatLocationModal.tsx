@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import KakaoMap from './KakaoMap';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { LocationDataType, sendLocationMessage } from '../../../api/chat';
-
+import { IoClose } from 'react-icons/io5';
 export const ChatLocationModal = () => {
   const dispatch = useDispatch();
   const { targetId } = useSelector((state: RootState) => state.modal);
@@ -40,21 +40,29 @@ export const ChatLocationModal = () => {
     setInputLocationName(e.target.value);
   };
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
   return (
     <Container>
       <Inner>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <p>위치 공유하기</p>
+          <IconButton onClick={handleClose}>
+            <IoClose size={30} />
+          </IconButton>
+        </div>
         <KakaoMap onChange={handleChangeLocation} />
         <LocationForm>
-          <div>
-            <label htmlFor="location_name">위치 이름: </label>
+          <div style={{ display: 'flex', width: '100%', alignItems: 'center', gap: '0.25rem' }}>
+            <label htmlFor="location_name">위치명: </label>
             <LocationNameInput type="text" id="location_name" value={inputLocationName} onChange={handleChangeLocationName} />
           </div>
-          <ButtonWrapper>
-            <Button onClick={handleSendLocationMessage}>공유하기</Button>
-            <Button $type="outline" onClick={handleClose}>
-              닫기
-            </Button>
-          </ButtonWrapper>
+          <Button onClick={handleSendLocationMessage}>공유하기</Button>
         </LocationForm>
       </Inner>
     </Container>
@@ -65,7 +73,7 @@ export default ChatLocationModal;
 
 const Container = styled.div`
   position: fixed;
-  z-index: 99;
+  z-index: 999;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -78,13 +86,20 @@ const Container = styled.div`
 
 const Inner = styled.div`
   position: relative;
-  z-index: 999;
-  width: 100%;
-  max-width: 600px;
+
+  width: 600px;
   margin: 0 32px;
   background-color: #fff;
   border-radius: 18px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  @media screen and (max-width: 768px) {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
 `;
 
 const LocationForm = styled.div`
@@ -92,6 +107,10 @@ const LocationForm = styled.div`
   padding: 1rem;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const LocationNameInput = styled.input`
@@ -101,25 +120,31 @@ const LocationNameInput = styled.input`
   padding: 0.25rem;
   font-size: 1rem;
   text-indent: 0.5rem;
+  flex: 1;
+  min-width: 0;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  gap: 0.5rem;
-`;
-
-const Button = styled.button<{ $type?: 'outline' | 'fill' }>`
+const Button = styled.button`
   background-color: #0083f5;
   border-radius: 10px;
   padding: 0.5rem 0.875rem;
   font-size: 0.875rem;
   color: #fff;
+  white-space: nowrap;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`;
 
-  ${({ $type }) =>
-    $type === 'outline' &&
-    css`
-      border: 1px solid #0083f5;
-      background-color: #fff;
-      color: #000;
-    `}
+export const IconButton = styled.button`
+  display: flex;
+  padding: 0.25rem;
+  margin: 0;
+  border-radius: 50%;
+  &:hover,
+  &:hover,
+  &:focus,
+  &:focus-within {
+    background-color: #e7e7e7;
+  }
 `;

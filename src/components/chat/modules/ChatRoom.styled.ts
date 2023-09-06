@@ -90,7 +90,7 @@ export const InputMenuInner =styled.div`
 
 export const InputMenuButtonItem = styled.button`
   padding: 0;
-  width: 60px;
+  width: 70px;
   height: 60px;
   border-radius: 10px;
   &:hover,
@@ -130,3 +130,16 @@ export const SendButton = styled.button`
     background-color: #b86720;
   }
 `;
+
+export const IconButton = styled.button`
+  display: flex;
+  padding: 0.25rem;
+  margin: 0;
+  border-radius: 50%;
+  &:hover,
+  &:hover,
+  &:focus,
+  &:focus-within {
+    background-color: #e7e7e7;
+  }
+`
