@@ -4,6 +4,7 @@ import RetrievePendingTutorRegistration from '../../pages/auth/registTutorForm/R
 import YoutubeModal from '../../pages/main/youtube/YoutubeModal';
 import EditProfileForm from '../../pages/mypage/profileForm/EditProfileForm';
 import { RootState } from '../../redux/config/configStore';
+import ChatLocationModal from '../chat/modules/ChatLocationModal';
 import MatchedReviewForm from '../review/reviewForm/MatchedReviewForm';
 import * as S from './Modal.styled';
 import ModalPortal from './ModalPortal';
@@ -24,6 +25,7 @@ const GlobalModal = () => {
     editProfiles: 'editProfiles',
     reviewYoutube: 'reviewYoutube',
     retrievePendingTutorRegistForm: 'retrievePendingTutorRegistForm',
+    chatLocationModal: 'chatLocationModal',
   };
 
   const MODAL_COMPONENTS = [
@@ -66,6 +68,10 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.retrievePendingTutorRegistForm,
       component: <RetrievePendingTutorRegistration />,
+    },
+    {
+      type: MODAL_TYPES.chatLocationModal,
+      component: <ChatLocationModal />,
     },
   ];
 
