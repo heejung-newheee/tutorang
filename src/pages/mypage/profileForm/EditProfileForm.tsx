@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { v4 } from 'uuid';
@@ -8,7 +8,6 @@ import { close, edit_photo } from '../../../assets';
 import { SPGuideMessage } from '../../../components/Form/AuthForm.styled';
 import SelectLocation from '../../../components/Form/SelectLocation';
 import { PWD_REGEX } from '../../../components/Form/formConstant';
-import { Button } from '../../../components/button/Button.styled';
 import { Container, ContentWrapper, Inner } from '../../../components/review/reviewForm/ReviewForm.styled';
 import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
@@ -28,6 +27,10 @@ const EditProfileForm = () => {
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | null>(null);
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [location, setLoaction] = useState({ sido1: user.location1_sido!, gugun1: user.location1_gugun!, sido2: user.location2_sido!, gugun2: user.location2_gugun! });
+  const [prevLocation, _] = useState(location);
+  const [validPwd, setValidPwd] = useState(false);
+  const [validPwdConfirm, setValidPwdConfirm] = useState(false);
+  const [validLocation, setValidLocation] = useState(false);
 
   const changeNewpassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
@@ -90,6 +93,24 @@ const EditProfileForm = () => {
   } else if (location.sido1 === '전체' || location.sido2 === '전체' || location.gugun1 === '전체' || location.gugun2 === '전체') {
     isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
   }
+
+  useEffect(() => {
+    const result = PWD_REGEX.test(password);
+    setValidPwd(result);
+    const resultMatch = password === confirmPassword;
+    setValidPwdConfirm(resultMatch);
+    console.log('setValidPwd', result);
+    console.log('setValidPwdConfirm', resultMatch);
+  }, [password, confirmPassword]);
+  useEffect(() => {
+    if (prevLocation.sido1 !== location.sido1 || prevLocation.gugun1 !== location.gugun1 || prevLocation.sido2 !== location.sido2 || prevLocation.gugun2 !== location.gugun2) {
+      const checkedValidLocation1 = location.sido1 !== '시/도 선택' && location.sido1 !== '전체' && location.gugun1 !== '구/군 선택' && location.gugun1 !== '전체';
+      const checkedValidLocation2 = location.sido2 !== '시/도 선택' && location.sido2 !== '전체' && location.gugun2 !== '구/군 선택' && location.gugun2 !== '전체';
+      const checkedSameLocation = location.sido1 === location.sido2 && location.gugun1 === location.gugun2;
+      setValidLocation(checkedValidLocation1 && checkedValidLocation2 && !checkedSameLocation);
+    }
+  }, [location]);
+
   return (
     <Container>
       <Inner>
@@ -174,9 +195,9 @@ const EditProfileForm = () => {
                 </SFormItemBodySection>
               </SFormItemBody>
             </SFormItem>
-            <Button style={{ marginTop: '30px' }} variant="solid" color={'primary'} size="Large" type="submit">
+            <S.EditSubmitButton style={{ marginTop: '30px' }} type="submit" disabled={(validPwd && validPwdConfirm) || validLocation ? false : true}>
               수정
-            </Button>
+            </S.EditSubmitButton>
           </form>
         </ContentWrapper>
       </Inner>
