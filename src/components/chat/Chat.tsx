@@ -2,13 +2,23 @@ import ChatContextProvider from './modules/ChatContextProvider';
 import ChatRoomList from './modules/ChatRoomList';
 import ChatRoom from './modules/ChatRoom';
 import styled from 'styled-components';
+import { useViewport } from '../../hooks';
+import { useSearchParams } from 'react-router-dom';
 
 const Chat = ({ userId }: { userId: string }) => {
+  const { isMobile } = useViewport();
+  const [searchParams] = useSearchParams();
+  const room_id = searchParams.get('room_id');
+
   return (
     <ChatContextProvider userId={userId}>
       <Container>
-        <ChatRoomList userId={userId} />
-        <ChatRoom userId={userId} />
+        {!(isMobile && !!room_id) ? (
+          <ChatRoomList userId={userId}/>
+        ) : null}
+        {!(isMobile && !room_id) ? (
+          <ChatRoom userId={userId}/>
+        ): null}
       </Container>
     </ChatContextProvider>
   );

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
@@ -60,6 +59,47 @@ export const FormInner = styled.div`
   gap: 1rem;
 `;
 
+export const InputMenuButton =styled.button<{$isOpen: boolean}>`
+  display: flex;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: transform 200ms;
+  ${({$isOpen})=> $isOpen && css`transform:rotate(135deg);`}
+
+  &:hover,
+  &:focus,
+  &:focus-within {
+    background-color: #eee;
+  }
+`
+
+export const InputMenu = styled.div<{$isOpen: boolean}>`
+
+  width: 100%;
+  height: ${({$isOpen}) => $isOpen ? '100px' : '0'};
+  transition: height 200ms ease-out;
+  overflow: hidden;
+`
+
+export const InputMenuInner =styled.div`
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+`
+
+export const InputMenuButtonItem = styled.button`
+  padding: 0;
+  width: 70px;
+  height: 60px;
+  border-radius: 10px;
+  &:hover,
+  &:focus,
+  &:focus-within {
+    background-color: #eee;
+  }
+`
+
 export const MessageInput = styled.input`
   font-size: 1rem;
   padding: 0.8125rem;
@@ -91,71 +131,15 @@ export const SendButton = styled.button`
   }
 `;
 
-export const ChatMessage = styled.li<{ $isMine: boolean; $isCustom: boolean }>`
+export const IconButton = styled.button`
   display: flex;
-  gap: 0.5rem;
-  flex-direction: ${({ $isMine }) => ($isMine ? 'row-reverse' : 'row')};
-  align-items: flex-end;
-`;
-
-export const ChatTextMessageContent = styled.div<{ $isMine: boolean }>`
-  display: inline-block;
-  background-color: #e0e0e0;
-  color: #000000;
-  border-radius: 50px;
-  padding: 0.5rem 1rem;
-
-  ${({ $isMine }) =>
-    $isMine &&
-    css`
-      background-color: #fe902f;
-      color: #ffffff;
-    `}
-`;
-
-export const ChatCustomMessageContent = styled.div<{ $customType: string }>`
-  text-align: center;
-  display: inline-block;
-  background-color: #e0e0e0;
-  color: #000000;
-  border-radius: 10px;
-  padding: 0.5rem 1rem;
-
-  ${({ $customType }) =>
-    $customType === 'request'
-      ? css`
-          background-color: #0085ef;
-          color: #ffffff;
-          padding: 1.25rem 1.5rem;
-        `
-      : $customType === 'accept'
-      ? css`
-          background-color: forestgreen;
-          color: #ffffff;
-          padding: 1.25rem 1.5rem;
-        `
-      : $customType === 'reject'
-      ? css`
-          background-color: #e42626;
-          color: #ffffff;
-          padding: 1.25rem 1.5rem;
-        `
-      : ''}
-`;
-
-export const ChatCustomMessageLink = styled(Link)`
-  text-decoration: underline;
-  line-height: 1.5;
-  color: #ffffff;
-  transition: color 200ms;
+  padding: 0.25rem;
+  margin: 0;
+  border-radius: 50%;
+  &:hover,
   &:hover,
   &:focus,
   &:focus-within {
-    color: #000000;
+    background-color: #e7e7e7;
   }
-`;
-
-export const ChatMessageTime = styled.span`
-  font-size: 0.8125rem;
-  color: #949494;
-`;
+`

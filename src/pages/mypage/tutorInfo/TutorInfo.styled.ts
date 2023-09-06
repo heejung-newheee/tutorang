@@ -6,6 +6,9 @@ export const TutorClassWarp = styled.div`
   background-color: #fff;
   padding: 37px 50px;
   border-radius: 8px;
+  @media only screen and (max-width: 768px) {
+    padding: 37px 30px;
+  }
 `;
 export const TutorClassTop = styled.div`
   display: flex;
@@ -27,9 +30,13 @@ export const ClassEditBtn = styled(Link)`
 `;
 export const TutorClass = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 30px;
   > div {
     width: calc((100% - 30px) / 2);
+    @media only screen and (max-width: 768px) {
+      width: 100%;
+    }
   }
   .class-price {
     max-width: 325px;
