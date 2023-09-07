@@ -22,6 +22,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   const [isOpenAuthNavInfoArea, setIsOpenAuthNavInfoArea] = useState(false);
   const loginUserId: string | number = $loginUser!.id;
   const { data: pendingTutorRegistInfo } = useQuery(PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY, () => getPendingTutorRegistInfo(loginUserId), { enabled: !!$loginUser });
+  console.log($loginUser);
 
   const handleRetrieveTutorRegistInfo = () => {
     if ($loginUser && $loginUser?.id) {
