@@ -105,7 +105,7 @@ const RetrievePendingTutorRegistration = () => {
               <ContentItemBody>
                 <ContentItemBodyList>
                   {pendingTutorRegistInfo.class_level.map((item: string) => (
-                    <span>{item}</span>
+                    <span key={item}>{item}</span>
                   ))}
                 </ContentItemBodyList>
               </ContentItemBody>
