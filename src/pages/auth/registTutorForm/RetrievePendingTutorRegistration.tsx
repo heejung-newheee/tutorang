@@ -92,7 +92,7 @@ const RetrievePendingTutorRegistration = () => {
               <ContentItemBody>
                 <ContentItemBodyList>
                   {pendingTutorRegistInfo.speaking_language.map((item: string) => (
-                    <span>{item}</span>
+                    <span key={item}>{item}</span>
                   ))}
                 </ContentItemBodyList>
               </ContentItemBody>
