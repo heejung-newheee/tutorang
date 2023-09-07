@@ -7,13 +7,13 @@ import { matchMyReview } from '../../../api/review';
 import { icon_more, starEmpty, starFull } from '../../../assets';
 import { Loading } from '../../../components';
 import CompleteClass from '../../../components/slider/completeClassSlider/CompleteClass';
-import TutorSlider from '../../../components/slider/tutorSlider/TutorSlider';
 import { RootState } from '../../../redux/config/configStore';
 import { openModal, setReview } from '../../../redux/modules';
 import MatchingTutor from '../matchingTab/MatchingTutor';
 import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataStar, DataTitle, InfoNull, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
 import * as S from './StudentInfo.styled';
 
+import LikeTutorSlider from '../../../components/slider/tutorSlider/LikeTutorSlider';
 import { BOARD_QUERY_KEY, BOOK_MARK_QUERY_KEY, REVIEW_QUERY_KEY } from '../../../constants/query.constant';
 import { Tables, Views } from '../../../supabase/database.types';
 
@@ -77,7 +77,7 @@ const StudentInfo = ({ match }: pageProps) => {
         <Container>
           <InfoTitle>찜한 강사 리스트</InfoTitle>
         </Container>
-        {likedUser.length > 0 ? <TutorSlider uniqueKey="studentInfo" tutorList={likedUser} panels={6} /> : <InfoNull>찜한 강사가 없습니다</InfoNull>}
+        {likedUser.length > 0 ? <LikeTutorSlider uniqueKey="studentInfo" tutorList={likedUser} panels={6} /> : <InfoNull style={{ maxWidth: '1200px', margin: '0 auto' }}>찜한 강사가 없습니다</InfoNull>}
       </InfoSection>
       <InfoSection>
         <Container>

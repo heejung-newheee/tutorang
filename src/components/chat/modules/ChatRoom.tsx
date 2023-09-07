@@ -1,16 +1,16 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
-import { IoIosSend, IoMdAdd, IoIosArrowBack } from 'react-icons/io';
+import { BiImageAdd } from 'react-icons/bi';
+import { IoIosArrowBack, IoIosSend, IoMdAdd } from 'react-icons/io';
+import { IoLocationOutline } from 'react-icons/io5';
+import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { leaveChatRoom, sendImageMessage, sendTutoringMessage } from '../../../api/chat';
 import { matchingRequest } from '../../../api/match';
 import useChatContext from '../../../hooks/useChatContext';
-import supabase from '../../../supabase';
-import { BiImageAdd } from 'react-icons/bi';
-import { IoLocationOutline } from 'react-icons/io5';
-import * as S from './ChatRoom.styled';
-import { useDispatch } from 'react-redux';
 import { openModal } from '../../../redux/modules';
+import supabase from '../../../supabase';
 import { ChatMessage } from './ChatMessage';
+import * as S from './ChatRoom.styled';
 
 const getDateText = (isoDateString: string): string => {
   const isoDate = new Date(isoDateString);
@@ -50,10 +50,10 @@ const ChatRoom = ({ userId }: { userId: string }) => {
     try {
       await matchingRequest({ tutorId: tutor[0].user_id, userId: userId });
       await sendTutoringMessage(chatRoom.room_id, 'request');
+      window.alert('성공적으로 튜터링을 요청했습니다.');
     } catch (error) {
       if (error instanceof Error) window.alert(error.message || error);
     }
-    window.alert('성공적으로 튜터링을 요청했습니다.');
   };
 
   const handleLeaveRoom = async () => {
