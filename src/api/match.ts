@@ -19,18 +19,30 @@ export const matchingTutorData = async () => {
 };
 
 export const matchingRequest = async ({ tutorId, userId }: { tutorId: string; userId: string }) => {
-  const { error } = await supabase
-    .from('matching')
-    .insert([
+  // 이미 요청된 내역 확인
+  const { data, error } = await supabase.from('matching').select().eq('user_id', userId).eq('tutor_id', tutorId).eq('matched', false);
+  if (error) {
+    throw error;
+  }
+  if (data.length > 0) {
+    throw new Error('이미 요청한 튜터입니다.');
+
+    // 여기서 메세지를 보내줘야하나?
+  } else {
+    // 요청된 내역이 없을 경우 요청
+    const { error: insertError } = await supabase.from('matching').insert([
       {
         user_id: userId,
         tutor_id: tutorId,
         matched: false,
         status: 'request',
       },
-    ])
-    .select();
-  if (error) throw error;
+    ]);
+
+    if (insertError) {
+      throw insertError;
+    }
+  }
 };
 
 export const matchingCancel = async (id: string) => {
@@ -53,7 +65,7 @@ export const matchingReject = async (id: string) => {
     .from('matching')
     .update({
       status: 'reject',
-      matched: true,
+      matched: false,
     })
     .eq('id', id);
   if (error) throw error;

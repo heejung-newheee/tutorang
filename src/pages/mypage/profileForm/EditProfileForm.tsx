@@ -9,17 +9,17 @@ import { SPGuideMessage } from '../../../components/Form/AuthForm.styled';
 import SelectLocation from '../../../components/Form/SelectLocation';
 import { Container, ContentWrapper, Inner } from '../../../components/review/reviewForm/ReviewForm.styled';
 import { PWD_REGEX } from '../../../constants/formConstant';
+import { USER_PROFILE_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
-import { USER_PROFILE_QUERY_KEY } from '../userInfo/UserInfo';
 import * as S from './ProfileForm.styled';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
   const loginUserId = useSelector((state: RootState) => state.user.user!.id);
-  const userData = useQuery(USER_PROFILE_QUERY_KEY, () => getUserProfile(loginUserId));
+  const userData = useQuery([USER_PROFILE_QUERY_KEY], () => getUserProfile(loginUserId));
   const user = userData.data;
 
   if (!user) return;

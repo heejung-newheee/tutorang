@@ -1,5 +1,6 @@
 import supabase from '../supabase';
 export const getPendingTutorRegistInfo = async (authId: string | number) => {
-  const { data } = await supabase.from('pending_tutor_registration').select().eq('user_id', authId).single();
+  const { data } = await supabase.from('pending_tutor_registration').select().eq('user_id', authId).maybeSingle();
+
   return data;
 };

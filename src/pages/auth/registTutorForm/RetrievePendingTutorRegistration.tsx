@@ -31,6 +31,8 @@ const RetrievePendingTutorRegistration = () => {
     };
   }, []);
 
+  if (!pendingTutorRegistInfo) return <div></div>;
+  console.log(pendingTutorRegistInfo);
   return (
     <Container>
       <Inner onClick={handleOutsideClick}>
@@ -68,9 +70,7 @@ const RetrievePendingTutorRegistration = () => {
                   {/* </CertificateItem> */}
                   {/* <CertificateItem> */}
                   {/* <h3>증명가능 서류</h3> */}
-                  <Figure>
-                    <img src={pendingTutorRegistInfo.certification_image} />
-                  </Figure>
+                  <Figure>{pendingTutorRegistInfo.certification_image && <img src={pendingTutorRegistInfo.certification_image} />}</Figure>
                   {/* </CertificateItem> */}
                 </CertificateContainer>
               </ContentItemBody>
@@ -81,11 +81,7 @@ const RetrievePendingTutorRegistration = () => {
                 <h2>성격</h2>
               </ContentsItemTitle>
               <ContentItemBody>
-                <ContentItemBodyList>
-                  {pendingTutorRegistInfo.personality.map((item: string) => (
-                    <span>{item}</span>
-                  ))}
-                </ContentItemBodyList>
+                <ContentItemBodyList>{pendingTutorRegistInfo.personality && pendingTutorRegistInfo.personality.map((item: string) => <span key={item}>{item}</span>)}</ContentItemBodyList>
               </ContentItemBody>
             </ContentsItem>
 

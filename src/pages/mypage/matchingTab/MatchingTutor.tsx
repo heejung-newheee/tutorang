@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { matchingCancel } from '../../../api/match';
 import { Views } from '../../../supabase/database.types';
-import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../userInfo/UserInfo';
 import { ContentsDataBox, MatchBtn } from '../userInfo/UserInfo.styled';
 import * as S from './MatchingTutor.styled';
 import './custom.css';
@@ -12,6 +11,7 @@ import './custom.css';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../../../api/chat';
+import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { InfoItem, InfoList } from './MatchingTutor.styled';
 
@@ -37,7 +37,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
 
   const cancelMatchMutation = useMutation(matchingCancel, {
     onSuccess: () => {
-      queryClient.invalidateQueries(MATCHING_TUTOR_DATA_QUERY_KEY);
+      queryClient.invalidateQueries([MATCHING_TUTOR_DATA_QUERY_KEY]);
     },
   });
 

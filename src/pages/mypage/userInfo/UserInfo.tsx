@@ -5,20 +5,18 @@ import { matchingTutorData } from '../../../api/match';
 import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../../api/review';
 import { icon_edit, icon_location } from '../../../assets';
 import { Loading } from '../../../components';
-import { RECEIVED_REVIEW_COUNT, WRITE_REVIEW_COUNT } from '../../../constants/query.constant';
+import { MATCHING_TUTOR_DATA_QUERY_KEY, RECEIVED_REVIEW_COUNT, USER_PROFILE_QUERY_KEY, WRITE_REVIEW_COUNT } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { openModal } from '../../../redux/modules';
 import StudentInfo from '../studentInfo/StudentInfo';
 import TutorInfo from '../tutorInfo/TutorInfo';
 import * as S from './UserInfo.styled';
 
-export const MATCHING_TUTOR_DATA_QUERY_KEY = ['matching_tutor_data'];
-export const USER_PROFILE_QUERY_KEY = ['profiles'];
 const UserInfo = () => {
   const dispatch = useDispatch();
   const loginUserId = useSelector((state: RootState) => state.user.user!.id);
-  const { data: user, isLoading, isError } = useQuery(USER_PROFILE_QUERY_KEY, () => getUserProfile(loginUserId));
-  const { data } = useQuery(MATCHING_TUTOR_DATA_QUERY_KEY, matchingTutorData);
+  const { data: user, isLoading, isError } = useQuery([USER_PROFILE_QUERY_KEY], () => getUserProfile(loginUserId));
+  const { data: matchList } = useQuery([MATCHING_TUTOR_DATA_QUERY_KEY], matchingTutorData);
 
   const writeReviewCount = useQuery([WRITE_REVIEW_COUNT, user], () => getWriteReviewCount(user!.id), { enabled: !!user });
   const receivedReviewCount = useQuery([RECEIVED_REVIEW_COUNT], () => getReceivedWriteReviewCount(user!.id), { enabled: !!user });
@@ -37,8 +35,8 @@ const UserInfo = () => {
     dispatch(openModal({ type: 'editProfiles' }));
   };
 
-  const studentMatch = data?.filter((item) => item.user_id === user.id);
-  const tutorMatch = data?.filter((item) => item.tutor_id === user.id);
+  const studentMatch = matchList?.filter((item) => item.user_id === user.id);
+  const tutorMatch = matchList?.filter((item) => item.tutor_id === user.id);
   return (
     <>
       <S.MypageContainer>
@@ -96,7 +94,7 @@ const UserInfo = () => {
         </S.ProfileBox>
 
         <S.EmptyMypage></S.EmptyMypage>
-        {data && data.length > 0 ? <>{user.role === 'tutor' ? <TutorInfo match={data} /> : <StudentInfo match={data} />}</> : <div>매칭 데이터가 없습니다.</div>}
+        {matchList && matchList.length > 0 ? <>{user.role === 'tutor' ? <TutorInfo match={matchList} /> : <StudentInfo match={matchList} />}</> : <div>매칭 데이터가 없습니다.</div>}
       </S.MypageContainer>
     </>
   );
