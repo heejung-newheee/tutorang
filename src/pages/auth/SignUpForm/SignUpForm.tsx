@@ -152,6 +152,7 @@ const SignUpForm = () => {
   } else if (location.sido1 === '전체' || location.sido2 === '전체' || location.gugun1 === '전체' || location.gugun2 === '전체') {
     isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
   }
+  console.log(validBirth, birth);
   return (
     <SContainer>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_SIGNUP} />
@@ -186,10 +187,17 @@ const SignUpForm = () => {
                   placeholder="비밀번호를 입력하세요"
                   autoComplete="off"
                 />
-                {pwd && !isPasswordHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsPasswordHidden(true)} />}
-                {pwd && isPasswordHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsPasswordHidden(false)} />}
+                {isPasswordHidden ? (
+                  <PasswordEyeButton type="button" onClick={() => setIsPasswordHidden(false)}>
+                    <BsFillEyeSlashFill className="pw_button_hidden_color" />
+                  </PasswordEyeButton>
+                ) : (
+                  <PasswordEyeButton type="button" onClick={() => setIsPasswordHidden(true)}>
+                    <BsFillEyeFill className="pw_button_shown_color" />
+                  </PasswordEyeButton>
+                )}
               </SpasswordLabel>
-              <SPGuideMessage>{!!pwd && !validPwd && '소문자, 숫자, 특수문자(!@#$%)를 모두 포함하여 6자 이상 24자 이하의 비밀번호를 입력해주세요'}</SPGuideMessage>
+              <SPGuideMessage>{!!pwd && !validPwd && '문자, 숫자, 특수문자(!@#$%) 포함, 6자 이상의 비밀번호'}</SPGuideMessage>
             </SFormItem>
 
             <SFormItem>
@@ -207,8 +215,15 @@ const SignUpForm = () => {
                   placeholder="비밀번호 확인 입력하세요"
                   autoComplete="off"
                 />
-                {matchPwd && !isMatchPwHidden && <BsFillEyeFill className="password_show_hidden_button pw_button_shown_color" onClick={() => setIsMatchPwHidden(true)} />}
-                {matchPwd && isMatchPwHidden && <BsFillEyeSlashFill className="password_show_hidden_button pw_button_hidden_color" onClick={() => setIsMatchPwHidden(false)} />}
+                {isMatchPwHidden ? (
+                  <PasswordEyeButton type="button" onClick={() => setIsMatchPwHidden(false)}>
+                    <BsFillEyeSlashFill className=" pw_button_hidden_color" />
+                  </PasswordEyeButton>
+                ) : (
+                  <PasswordEyeButton type="button" onClick={() => setIsMatchPwHidden(true)}>
+                    <BsFillEyeFill className=" pw_button_shown_color" />
+                  </PasswordEyeButton>
+                )}
               </SpasswordLabel>
 
               <SPGuideMessage>{!!matchPwd && !validMatch && '처음에 입력한 비밀번호와 동일해야합니다.'}</SPGuideMessage>
@@ -230,7 +245,7 @@ const SignUpForm = () => {
                 placeholder="실명을 입력하세요"
                 autoComplete="off"
               />
-              <SPGuideMessage>{!!username && !validUsername && '2자 이상 6자미만의 한국실명 또는 2자이상 20자 미만의 영문실명을 입력하세요.'}</SPGuideMessage>
+              <SPGuideMessage>{!!username && !validUsername && '2자 이상 6자 미만의 한국실명 / 2자이상 20자 미만의 영문실명'}</SPGuideMessage>
             </SFormItem>
 
             <SFormItem style={{ marginBottom: '23px' }}>
@@ -348,6 +363,7 @@ const SInput = styled.input<{ $color: boolean; $noFocusedColor: boolean; id?: st
   }};
   width: 100%;
   height: 50px;
+  line-height: 50px;
   font-size: 16px;
   vertical-align: middle;
   border: 1px solid #696969;
@@ -355,7 +371,7 @@ const SInput = styled.input<{ $color: boolean; $noFocusedColor: boolean; id?: st
   color: #000;
   padding: ${({ id }) => {
     if (id === 'email' || id === 'confirm_pwd' || id === 'password') {
-      return '5px 40px 5px 12px';
+      return '5px 50px 5px 12px';
     } else {
       return '5px 12px 5px 12px';
     }
@@ -440,3 +456,42 @@ const SFormItemBodySection = styled.section`
 `;
 
 const SFormItemTitle = styled.span``;
+
+const PasswordEyeButton = styled.button`
+  position: absolute;
+  right: 24px;
+  bottom: 14px;
+  z-index: 3;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  .pw_button_hidden_color {
+    fill: #cdcdcd;
+  }
+  .pw_button_shown_color {
+    fill: #696969;
+  }
+  &:hover {
+    cursor: pointer;
+    .reset_input_btn {
+      fill: #696969;
+    }
+  }
+  &:focus {
+    .reset_input_btn {
+      fill: #696969;
+    }
+  }
+  @media screen and (max-width: 420px) {
+    right: 20px;
+    bottom: 13px;
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
+`;

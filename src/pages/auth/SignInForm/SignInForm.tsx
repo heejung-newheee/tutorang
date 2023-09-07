@@ -104,14 +104,22 @@ const SignInForm = () => {
           <SFormItem>
             <label htmlFor="email">이메일</label>
             <SInput type="text" id="email" placeholder="이메일을 입력하세요" name="email" value={email} onChange={handleInput} />
-            {email && <BsXCircleFill className="reset_signin_input_btn" onClick={() => setEmail('')} />}
+            {email && (
+              <SignInResetButton onClick={() => setEmail('')}>
+                <BsXCircleFill className="reset_signin_input_btn" />
+              </SignInResetButton>
+            )}
             <SPGuideMessage>{guideMessage.email && guideMessage.email}</SPGuideMessage>
           </SFormItem>
 
           <SFormItem>
             <label htmlFor="password">비밀번호</label>
             <SInput type="password" id="password" placeholder="비밀번호를 입력하세요" name="password" value={password} onChange={handleInput} />
-            {password && <BsXCircleFill className="reset_signin_input_btn" onClick={() => setPassword('')} />}
+            {password && (
+              <SignInResetButton onClick={() => setPassword('')}>
+                <BsXCircleFill className="reset_signin_input_btn" />
+              </SignInResetButton>
+            )}
             <SPGuideMessage>{guideMessage.password && guideMessage.password}</SPGuideMessage>
           </SFormItem>
 
@@ -207,5 +215,41 @@ const SsnsIconContainer = styled.div`
   gap: 45px;
   @media screen and (max-width: 420px) {
     gap: 35px;
+  }
+`;
+
+const SignInResetButton = styled.button`
+  position: absolute;
+  right: 22px;
+  bottom: 37px;
+  z-index: 3;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  cursor: pointer;
+  .reset_signin_input_btn {
+    fill: #cdcdcd;
+  }
+  &:hover {
+    cursor: pointer;
+    .reset_signin_input_btn {
+      fill: #696969;
+    }
+  }
+  &:focus {
+    .reset_signin_input_btn {
+      fill: #696969;
+    }
+  }
+  @media screen and (max-width: 420px) {
+    right: 18px;
+    bottom: 37px;
+    width: 15px;
+    height: 15px;
+    font-size: 15px;
   }
 `;
