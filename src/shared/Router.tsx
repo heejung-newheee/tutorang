@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout, SignInForm, SignUpForm } from '../components';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
-import { Detail, List, Main, Mypage, NotFound, Community, StudyCommunity, QuestionCommunity, RegionCommunity, WritePost } from '../pages';
+import { Detail, List, Main, Mypage, NotFound, Community, StudyCommunity, QuestionCommunity, RegionCommunity, WritePost, FreeCommunity, PostDetail } from '../pages';
 import WelcomeMessagePage from '../pages/auth/SignUpForm/WelcomeMessagePage';
 import RegistTutorForm from '../pages/auth/registTutorForm/RegistTutorForm';
 import Chat from '../pages/chat/Chat';
@@ -27,11 +27,13 @@ const Router = () => {
           <Route path="/detail/:id" element={<Detail />} />
           <Route element={<Layout />}>
             <Route path="/list" element={<List />} />
-            <Route path="/write" element={<WritePost />} />
+            <Route path="/write/:category" element={<WritePost />} />
+            <Route path="/post/:postid" element={<PostDetail />} />
             <Route path="/community" element={<Community />}>
-              <Route path="study-community" element={<StudyCommunity />} />
-              <Route path="question-community" element={<QuestionCommunity />} />
-              <Route path="region-community" element={<RegionCommunity />} />
+              <Route path="free" element={<FreeCommunity />} />
+              <Route path="study" element={<StudyCommunity />} />
+              <Route path="question" element={<QuestionCommunity />} />
+              <Route path="region" element={<RegionCommunity />} />
             </Route>
 
             <Route

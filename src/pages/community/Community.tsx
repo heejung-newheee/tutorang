@@ -1,30 +1,53 @@
 import React from 'react';
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import StudyCommunity from './StudyCommunity';
+import supabase from '../../supabase';
+import { useQuery } from '@tanstack/react-query';
+import FreeCommunity from './FreeCommunity';
 
 const Community = () => {
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const path = location.pathname.split('/')[2];
+
+  // const getApi = async () => {
+  //   const { data, error } = await supabase.from('write').select('*');
+  //   console.log(data);
+  //   if (error) throw error;
+  //   return data;
+  // };
+
+  // const { data } = useQuery(['write'], getApi);
+
+  // console.log(data, 'data');
+
+  const gotoWrite = () => {
+    navigate(`../write/${path}`);
+  };
   return (
     <CommunityContainer>
       <CommunityTitle>asdsa</CommunityTitle>
       <PostContainer>
         <Category>
-          <div>자유게시판</div>
-          <div>질문게시판</div>
-          <div>학습 정보 게시판</div>
-          <div>지역별 게시판</div>
+          <div onClick={() => navigate('free')}>자유게시판</div>
+          <div onClick={() => navigate('question')}>질문게시판</div>
+          <div onClick={() => navigate('study')}>학습 정보 게시판</div>
+          <div onClick={() => navigate('region')}>지역별 게시판</div>
         </Category>
         <PostsContainer>
           <Outlet />
-          <Post>
-            main
-            {/* <UserWrite>
+          {/* <Post> */}
+          {/* main */}
+          {/* <UserWrite>
               <div>img</div>
               <div>main post</div>
               <div>좋아요, 댓글</div>
             </UserWrite>
             <UserImg>asd</UserImg> */}
-          </Post>
+          {/* </Post> */}
         </PostsContainer>
       </PostContainer>
       <Pagination>
@@ -36,7 +59,7 @@ const Community = () => {
 
         <div>nex</div>
       </Pagination>
-      <PostBtn>asdadas</PostBtn>
+      <PostBtn onClick={gotoWrite}>asdadas</PostBtn>
     </CommunityContainer>
   );
 };

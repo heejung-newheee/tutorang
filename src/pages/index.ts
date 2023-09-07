@@ -8,3 +8,5 @@ export { default as StudyCommunity } from './community/StudyCommunity';
 export { default as RegionCommunity } from './community/RegionCommunity';
 export { default as QuestionCommunity } from './community/QuestionCommunity';
 export { default as WritePost } from './community/WritePost';
+export { default as FreeCommunity } from './community/FreeCommunity';
+export { default as PostDetail } from './postDetail/PostDetail';

@@ -2,12 +2,8 @@
   box-sizing: border-box;
   font-family: 'Gowun Batang';
   font-size: 1.25rem;
-  font-weight: 400;
   color: #565759;
   border: none !important;
-
-  border-bottom: 1px solid gray;
-
   min-height: 40rem;
   margin: 0px;
   position: relative;
@@ -18,30 +14,77 @@
   }
 }
 
+.ql-editor {
+  text-align: center;
+}
+
 .ql-toolbar.ql-snow {
   border: none !important;
-  border-top: none !important;
-  border-left: none !important;
-  border-right: none !important;
-  border-bottom: 1px solid rgb(194, 194, 194);
+  display: flex;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+  flex-wrap: nowrap;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+  z-index: 100000;
+}
+
+.ql-toolbar.ql-snow .ql-formats {
+  border-right: 1px solid black;
+  margin: 5px;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: scroll;
 }
 
 .ql-formats {
-  border-right: 1px solid black;
-  padding: 5px;
+  margin: 5px;
+  display: flex;
+  flex-wrap: nowrap;
 }
+
 .ql-bold,
 .ql-italic,
 .ql-underline,
 .ql-strike,
 .ql-blockquote {
   margin: 0 10px;
-}
-
-.ql-color .ql-picker .ql-color-picker .ql-picker-label {
-  padding: 0 10px;
+  overflow: scroll;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .ql-color-picker {
-  margin: 0 10px;
+  margin-right: 15px;
+}
+
+.ql-list {
+  margin-right: 15px;
+}
+
+.ql-image {
+  margin-right: 15px;
+}
+
+.ql-bold {
+  font-weight: bold !important;
+}
+
+.ql-stroke {
+  fill: #cde097;
+}
+
+strong {
+  font-weight: bold !important;
+}
+
+em {
+  font-style: italic !important;
+}
+
+.ql-snow .ql-editor img {
+  max-width: 80%;
 }

@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import supabase from '../../supabase';
 import { useQuery } from '@tanstack/react-query';
 
-const StudyCommunity = () => {
+const FreeCommunity = () => {
   const location = useLocation();
 
   const path = location.pathname.split('/')[2];
@@ -18,7 +18,8 @@ const StudyCommunity = () => {
   const { data } = useQuery(['write'], getApi);
 
   console.log(data, 'data');
-  return <div>StudyCommunity</div>;
+
+  return <div>FreeCommunity</div>;
 };
 
-export default StudyCommunity;
+export default FreeCommunity;
