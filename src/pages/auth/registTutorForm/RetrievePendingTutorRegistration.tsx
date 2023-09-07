@@ -19,7 +19,6 @@ const RetrievePendingTutorRegistration = () => {
   const targetId = useSelector((state: RootState) => state.modal.targetId!);
 
   const { data: pendingTutorRegistInfo } = useQuery(PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY, () => getPendingTutorRegistInfo(targetId), { enabled: !!targetId });
-  console.log(pendingTutorRegistInfo);
 
   const handleOutsideClick = () => {
     dispatch(closeModal());
@@ -31,8 +30,8 @@ const RetrievePendingTutorRegistration = () => {
     };
   }, []);
 
-  if (!pendingTutorRegistInfo) return <div></div>;
-  console.log(pendingTutorRegistInfo);
+  if (!pendingTutorRegistInfo) return <div>데이터가 없습니다</div>;
+
   return (
     <Container>
       <Inner onClick={handleOutsideClick}>
