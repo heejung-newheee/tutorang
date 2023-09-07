@@ -18,13 +18,13 @@ const CreateAdditionalInformationForm = () => {
 
   const [email, setEmail] = useState('');
 
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState(user?.username || '');
   const [validUsername, setValidUsername] = useState(false);
 
   const [checkedGender, setCheckedGender] = useState({ female: false, male: false });
   const [validGender, setValidGender] = useState(false);
 
-  const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
+  const [location, setLoaction] = useState({ sido1: '시/도 선택', gugun1: '구/군 선택', sido2: '시/도 선택', gugun2: '구/군 선택' });
   const [validLocation, setValidLocation] = useState(false);
 
   const [birth, setBirth] = useState({
@@ -116,6 +116,7 @@ const CreateAdditionalInformationForm = () => {
       }
     }
   };
+
   if (!user) return <div>로딩중</div>;
 
   return (
@@ -145,7 +146,7 @@ const CreateAdditionalInformationForm = () => {
             <label htmlFor="username">
               <SFormItemTitle>이름</SFormItemTitle>
             </label>
-            <SInput type="text" id="username" onChange={(e) => setUsername(e.target.value)} required placeholder="실명을 입력하세요" autoComplete="off" />
+            <SInput type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required placeholder="실명을 입력하세요" autoComplete="off" />
             <SPGuideMessage>{!!username && !validUsername && '2자 이상 6자미만의 한국실명 또는 2자이상 20자 미만의 영문실명을 입력하세요.'}</SPGuideMessage>
           </SFormItem>
 

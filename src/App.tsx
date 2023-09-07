@@ -15,10 +15,8 @@ function App() {
   const handleAuth = useCallback(
     (session: Session | null) => {
       if (session) {
-        console.log('이건 session', session);
         getUser(session.user.email)
           .then((data) => {
-            console.log('이것은 내가 원하는 것이야 db profile data', data);
             if (data!.username === null) {
               const userName = session.user.user_metadata.name;
               const additionalData = {
