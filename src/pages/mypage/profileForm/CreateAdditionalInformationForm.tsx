@@ -62,7 +62,6 @@ const CreateAdditionalInformationForm = () => {
   }, [location]);
 
   const now = new Date();
-
   const calculateAge = () => {
     const thisYear = now.getFullYear();
     const thisMonth = now.getMonth() + 1;
