@@ -19,7 +19,6 @@ const RetrievePendingTutorRegistration = () => {
   const targetId = useSelector((state: RootState) => state.modal.targetId!);
 
   const { data: pendingTutorRegistInfo } = useQuery(PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY, () => getPendingTutorRegistInfo(targetId), { enabled: !!targetId });
-  console.log(pendingTutorRegistInfo);
 
   const handleOutsideClick = () => {
     dispatch(closeModal());
@@ -30,6 +29,8 @@ const RetrievePendingTutorRegistration = () => {
       document.body.style.overflow = 'auto';
     };
   }, []);
+
+  if (!pendingTutorRegistInfo) return <div>데이터가 없습니다</div>;
 
   return (
     <Container>
@@ -68,9 +69,7 @@ const RetrievePendingTutorRegistration = () => {
                   {/* </CertificateItem> */}
                   {/* <CertificateItem> */}
                   {/* <h3>증명가능 서류</h3> */}
-                  <Figure>
-                    <img src={pendingTutorRegistInfo.certification_image} />
-                  </Figure>
+                  <Figure>{pendingTutorRegistInfo.certification_image && <img src={pendingTutorRegistInfo.certification_image} />}</Figure>
                   {/* </CertificateItem> */}
                 </CertificateContainer>
               </ContentItemBody>
@@ -81,11 +80,7 @@ const RetrievePendingTutorRegistration = () => {
                 <h2>성격</h2>
               </ContentsItemTitle>
               <ContentItemBody>
-                <ContentItemBodyList>
-                  {pendingTutorRegistInfo.personality.map((item: string) => (
-                    <span>{item}</span>
-                  ))}
-                </ContentItemBodyList>
+                <ContentItemBodyList>{pendingTutorRegistInfo.personality && pendingTutorRegistInfo.personality.map((item: string) => <span key={item}>{item}</span>)}</ContentItemBodyList>
               </ContentItemBody>
             </ContentsItem>
 
@@ -96,7 +91,7 @@ const RetrievePendingTutorRegistration = () => {
               <ContentItemBody>
                 <ContentItemBodyList>
                   {pendingTutorRegistInfo.speaking_language.map((item: string) => (
-                    <span>{item}</span>
+                    <span key={item}>{item}</span>
                   ))}
                 </ContentItemBodyList>
               </ContentItemBody>
@@ -109,7 +104,7 @@ const RetrievePendingTutorRegistration = () => {
               <ContentItemBody>
                 <ContentItemBodyList>
                   {pendingTutorRegistInfo.class_level.map((item: string) => (
-                    <span>{item}</span>
+                    <span key={item}>{item}</span>
                   ))}
                 </ContentItemBodyList>
               </ContentItemBody>

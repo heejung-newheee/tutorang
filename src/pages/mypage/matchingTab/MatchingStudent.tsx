@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { createChatRoom, getChatRoomWithTutor, inviteChatRoom, sendTutoringMessage } from '../../../api/chat';
 import { matchingAccept, matchingReject } from '../../../api/match';
+import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { Views } from '../../../supabase/database.types';
-import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../userInfo/UserInfo';
 import { ContentsDataBox, MatchBtn } from '../userInfo/UserInfo.styled';
 import * as S from './MatchingTutor.styled';
 import './custom.css';
@@ -31,10 +31,11 @@ const MatchingStudent = ({ matchList }: pageProps) => {
 
   const acceptMatchMutation = useMutation(matchingAccept, {
     onSuccess: () => {
-      queryClient.invalidateQueries(MATCHING_TUTOR_DATA_QUERY_KEY);
+      queryClient.invalidateQueries([MATCHING_TUTOR_DATA_QUERY_KEY]);
     },
   });
 
+  // 수락
   const acceptMatch = async (id: string, student_id: string) => {
     if (!user) return;
     acceptMatchMutation.mutate(id);
@@ -54,10 +55,11 @@ const MatchingStudent = ({ matchList }: pageProps) => {
 
   const rejectMatchMutation = useMutation(matchingReject, {
     onSuccess: () => {
-      queryClient.invalidateQueries(MATCHING_TUTOR_DATA_QUERY_KEY);
+      queryClient.invalidateQueries([MATCHING_TUTOR_DATA_QUERY_KEY]); // ********
     },
   });
 
+  // 거절
   const rejectMatch = async (id: string, student_id: string) => {
     if (!user) return;
     rejectMatchMutation.mutate(id);

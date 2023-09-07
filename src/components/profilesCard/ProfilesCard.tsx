@@ -3,9 +3,8 @@ import { Views } from '../../supabase/database.types';
 import * as S from './ProfilesCard.styled';
 
 interface pageProps {
-  tutor: Views<'tutor_info_join'>;
+  tutor: Views<'tutor_info_join'> | Views<'tutor_top_reviewer'>;
 }
-
 const ProfilesCard = ({ tutor }: pageProps) => {
   return (
     <>

@@ -3,23 +3,23 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { getUserProfile } from '../../../api/chat';
-import { profileImgUpload } from '../../../api/user';
+import { profileImgUpload, userUpdate } from '../../../api/user';
 import { close, edit_photo } from '../../../assets';
 import { SPGuideMessage } from '../../../components/Form/AuthForm.styled';
 import SelectLocation from '../../../components/Form/SelectLocation';
 import { Container, ContentWrapper, Inner } from '../../../components/review/reviewForm/ReviewForm.styled';
 import { PWD_REGEX } from '../../../constants/formConstant';
+import { USER_PROFILE_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
-import { USER_PROFILE_QUERY_KEY } from '../userInfo/UserInfo';
 import * as S from './ProfileForm.styled';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
   const loginUserId = useSelector((state: RootState) => state.user.user!.id);
-  const userData = useQuery(USER_PROFILE_QUERY_KEY, () => getUserProfile(loginUserId));
+  const userData = useQuery([USER_PROFILE_QUERY_KEY], () => getUserProfile(loginUserId));
   const user = userData.data;
 
   if (!user) return;
@@ -71,7 +71,13 @@ const EditProfileForm = () => {
         handleClose();
       }
       if (location.sido1 !== user.location1_sido || location.gugun1 !== user.location1_gugun || location.sido2 !== user.location2_sido || location.gugun2 !== user.location2_gugun) {
-        await supabase.from('profiles').update({ location1_sido: location.sido1, location1_gugun: location.gugun1, location2_sido: location.sido2, location2_gugun: location.gugun2 }).eq('id', user?.id);
+        const locationData = {
+          location1_sido: location.sido1,
+          location1_gugun: location.gugun1,
+          location2_sido: location.sido2,
+          location2_gugun: location.gugun2,
+        };
+        await userUpdate(locationData, user.id);
       }
       if (imgFile) {
         const uploadProfile = await profileImgUpload({ id: user.id, img: imgFile });

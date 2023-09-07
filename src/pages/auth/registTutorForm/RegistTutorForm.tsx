@@ -23,7 +23,7 @@ const RegistTutorForm = () => {
   const [checkLanguageItems, setCheckLanguageItems] = useState<string[]>([]);
   const [checkClassLevelItems, setCheckClassLevelItems] = useState<string[]>([]);
   const [validationCheck, setValicationCheck] = useState(false);
-  const [uid, setUid] = useState<string | null>('');
+  const [uid, setUid] = useState<string>('');
   const [email, setEmail] = useState<string | null>('');
   const [classInfo, setClassInfo] = useState('');
   const [university, setUniversity] = useState('');
