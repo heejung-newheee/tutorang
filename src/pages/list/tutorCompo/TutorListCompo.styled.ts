@@ -43,13 +43,14 @@ export const Name = styled.div`
   display: block;
   overflow: hidden;
   font-size: 15px;
+  font-weight: bold;
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
 
 export const LocationDiv = styled.div`
   margin: 10px 0;
-  display: flex;
+  /* display: flex; */
   align-items: center;
   flex-wrap: wrap;
   font-size: 13px;

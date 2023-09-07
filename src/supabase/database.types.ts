@@ -982,6 +982,8 @@ export interface Database {
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 export type Views<T extends keyof Database['public']['Views']> = Database['public']['Views'][T]['Row'];
 
+export type UpdatingTables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Update'];
+
 export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'class_info' | 'tuition_fee_offline' | 'tuition_fee_online'> & {
   profiles: Pick<Tables<'profiles'>, 'id' | 'username' | 'avatar_url'>;
 };
