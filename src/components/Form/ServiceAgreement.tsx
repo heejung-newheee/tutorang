@@ -42,7 +42,7 @@ const ServiceAgreement: React.FC<TypeServiceAgreement> = ({ $setIsAllChecked }) 
           ) : (
             <BsSquare className="agree_checkbox" />
           )}
-        </SCheckLabel>{' '}
+        </SCheckLabel>
         <Label htmlFor="allAgreed">전체동의</Label>
       </CheckTeramsAndConditions>
       <SPartitionLine />
@@ -61,7 +61,7 @@ const ServiceAgreement: React.FC<TypeServiceAgreement> = ({ $setIsAllChecked }) 
         <CheckTeramsAndConditions>
           <SCheckBox type="checkbox" id="aboutRefund" name="aboutRefund" onChange={check} checked={checkList.includes('aboutRefund') ? true : false} />{' '}
           <SCheckLabel htmlFor="aboutRefund">{checkList.includes('aboutRefund') ? <BsCheckSquareFill className="agree_checkbox" /> : <BsSquare className="agree_checkbox" />}</SCheckLabel>
-          <Label htmlFor="aboutRefund">(필수) 튜터랑 매칭방식 및 환불 규정 동의</Label>
+          <Label htmlFor="aboutRefund">(필수) 튜터 매칭방식 및 환불 규정 동의</Label>
           <Span>보기</Span>
         </CheckTeramsAndConditions>
         <CheckTeramsAndConditions>
@@ -147,6 +147,10 @@ const CheckTeramsAndConditions = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 15px;
+  @media screen and (max-width: 420px) {
+    gap: 10px;
+    font-size: 15px;
+  }
 `;
 
 const SCheckboxContainer = styled.div`
@@ -162,10 +166,13 @@ const SCheckBox = styled.input`
 `;
 
 const SCheckLabel = styled.label`
-  width: 30px;
+  /* width: 30px; */
   height: 30px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+  @media screen and (max-width: 420px) {
+    height: 27px;
+  }
 `;
