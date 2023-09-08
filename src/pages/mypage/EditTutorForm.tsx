@@ -29,7 +29,7 @@ const EditTutorForm = () => {
   const [major, setMajor] = useState('');
   const [certificationImgFile, _] = useState<File | undefined>();
   const [enrollmentStatus, setEnrollmentStatus] = useState('');
-  const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
+  const [location, setLoaction] = useState({ sido1: '시/도 선택', gugun1: '구/군 선택', sido2: '시/도 선택', gugun2: '구/군 선택' });
 
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
@@ -142,7 +142,7 @@ const EditTutorForm = () => {
   let isHereguidemessage = '';
   if (location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2) {
     isHereguidemessage = '중복 지역선택 불가';
-  } else if (location.sido1 === '전체' || location.sido2 === '전체' || location.gugun1 === '전체' || location.gugun2 === '전체') {
+  } else if (location.sido1 === '시/도 선택' || location.sido2 === '시/도 선택' || location.gugun1 === '구/군 선택' || location.gugun2 === '구/군 선택') {
     isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
   }
   return (
