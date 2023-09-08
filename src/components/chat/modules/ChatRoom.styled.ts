@@ -19,6 +19,9 @@ export const Header = styled.div`
 export const HeaderTitle = styled.h2`
   font-size: 1.25rem;
   font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 export const HeaderButton = styled.button<{ color?: 'red' | 'blue' }>`
@@ -29,6 +32,7 @@ export const HeaderButton = styled.button<{ color?: 'red' | 'blue' }>`
   background-color: ${({ color }) => (color === 'red' ? '#c50404' : '#186af4')};
   border-radius: 20px;
   padding: 0.4rem 0.725rem;
+  flex-shrink: 0;
 `;
 
 export const ChatArea = styled.div`
