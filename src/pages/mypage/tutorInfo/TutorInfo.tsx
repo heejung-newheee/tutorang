@@ -8,10 +8,10 @@ import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify,
 import * as S from './TutorInfo.styled';
 
 import { getBoard } from '../../../api/board';
+import { matchReview } from '../../../api/review';
 import { tutorInfoJoin } from '../../../api/tutor';
-import { fetchReview } from '../../../api/user';
 import { Loading } from '../../../components';
-import { BOARD_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
+import { BOARD_QUERY_KEY, REVIEW_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { Tables, Views } from '../../../supabase/database.types';
 import { Age, Dot, Icon, InfoItem, PriceItem, PriceList, TagList, TutorName } from '../../detail/tutorInfoDetail/TutorInfoDetail.styled';
@@ -29,10 +29,17 @@ const TutorInfo = ({ match }: pageProps) => {
 
   const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery([TUTOR_INFO_JOIN_QUERY_KEY], tutorInfoJoin);
 
-  const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery([TUTOR_INFO_JOIN_QUERY_KEY], fetchReview);
-
   const user = useSelector((state: RootState) => state.user.user);
   if (!user) return null;
+  const id = user.id;
+  const {
+    data: review,
+    isLoading: reviewLoading,
+    isError: reviewError,
+  } = useQuery([REVIEW_QUERY_KEY, id], async () => {
+    const data = await matchReview(id);
+    return data;
+  });
 
   const matchingData = Array.isArray(match) ? match : [match];
   const matchList = matchingData.filter((item: Views<'matching_tutor_data'>) => item.tutor_id === user!.id);
@@ -46,10 +53,6 @@ const TutorInfo = ({ match }: pageProps) => {
   if (!tutor || !review || !matchList || !boardData.data) {
     return null;
   }
-
-  const reviewData = review?.filter((item) => {
-    return user!.id === item.reviewed_id;
-  });
 
   const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.tutor_id) : null;
 
@@ -149,9 +152,9 @@ const TutorInfo = ({ match }: pageProps) => {
               <InfoTitle>수강생 후기</InfoTitle>
 
               <ContentsDataBox>
-                {reviewData.length > 0 ? (
+                {review.length > 0 ? (
                   <DataList>
-                    {reviewData.map((review) => {
+                    {review.map((review) => {
                       const rating = review.rating || 0;
                       return (
                         <DataItem key={review.id}>

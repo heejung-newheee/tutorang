@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { getUserProfile } from '../../../api/chat';
 import { matchingTutorData } from '../../../api/match';
 import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../../api/review';
@@ -7,17 +8,15 @@ import { icon_edit, icon_location } from '../../../assets';
 import { Loading } from '../../../components';
 import { MATCHING_TUTOR_DATA_QUERY_KEY, RECEIVED_REVIEW_COUNT, USER_PROFILE_QUERY_KEY, WRITE_REVIEW_COUNT } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
-import { openModal } from '../../../redux/modules';
 import StudentInfo from '../studentInfo/StudentInfo';
 import TutorInfo from '../tutorInfo/TutorInfo';
 import * as S from './UserInfo.styled';
 
 const UserInfo = () => {
-  const dispatch = useDispatch();
-  const loginUserId = useSelector((state: RootState) => state.user.user!.id);
-  const { data: user, isLoading, isError } = useQuery([USER_PROFILE_QUERY_KEY], () => getUserProfile(loginUserId));
+  const navigate = useNavigate();
+  const loginUser = useSelector((state: RootState) => state.user.user!);
+  const { data: user, isLoading, isError } = useQuery([USER_PROFILE_QUERY_KEY], () => getUserProfile(loginUser.id));
   const { data: matchList } = useQuery([MATCHING_TUTOR_DATA_QUERY_KEY], matchingTutorData);
-
   const writeReviewCount = useQuery([WRITE_REVIEW_COUNT, user], () => getWriteReviewCount(user!.id), { enabled: !!user });
   const receivedReviewCount = useQuery([RECEIVED_REVIEW_COUNT], () => getReceivedWriteReviewCount(user!.id), { enabled: !!user });
 
@@ -32,7 +31,7 @@ const UserInfo = () => {
     return null;
   }
   const handleEditProfiles = () => {
-    dispatch(openModal({ type: 'editProfiles' }));
+    navigate('/edit-profiles');
   };
 
   const studentMatch = matchList?.filter((item) => item.user_id === user.id);
@@ -59,11 +58,11 @@ const UserInfo = () => {
               {user.role === 'tutor' ? (
                 <>
                   <S.SummaryItem>
-                    <p>{tutorMatch?.filter((a) => a.matched === true).length}개</p>
+                    <p>{tutorMatch?.filter((a) => a.status === 'complete').length}개</p>
                     <p>완료된 수업</p>
                   </S.SummaryItem>
                   <S.SummaryItem>
-                    <p>{tutorMatch?.filter((a) => a.matched === false).length}개</p>
+                    <p>{tutorMatch?.filter((a) => a.status === 'request').length}개</p>
                     <p>대기 요청</p>
                   </S.SummaryItem>
                   <S.SummaryItem>
@@ -74,11 +73,11 @@ const UserInfo = () => {
               ) : user.role === 'student' ? (
                 <>
                   <S.SummaryItem>
-                    <p>{studentMatch?.filter((a) => a.matched === true).length}개</p>
+                    <p>{studentMatch?.filter((a) => a.status === 'complete').length}개</p>
                     <p>완료된 수업</p>
                   </S.SummaryItem>
                   <S.SummaryItem>
-                    <p>{studentMatch?.filter((a) => a.matched === false).length}개</p>
+                    <p>{studentMatch?.filter((a) => a.status === 'request').length}개</p>
                     <p>대기 요청</p>
                   </S.SummaryItem>
                   <S.SummaryItem>

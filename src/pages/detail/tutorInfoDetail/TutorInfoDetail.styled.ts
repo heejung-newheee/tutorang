@@ -275,12 +275,6 @@ export const OverviewItemIcon = styled.img`
   margin-top: 7px;
   height: 37px;
 `;
-export const OverviewItemIcon2 = styled.img`
-  filter: invert(73%) sepia(73%) saturate(2869%) hue-rotate(335deg) brightness(88%) contrast(104%);
-  margin-bottom: 20px;
-  margin-top: 7px;
-  height: 37px;
-`;
 
 export const StarList = styled.ul`
   display: flex;

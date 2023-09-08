@@ -30,7 +30,7 @@ export const matchReview = async (tutorId: string) => {
   return data;
 };
 
-export const matchMyReview = async (id: string) => {
+export const getMyWritiedReview = async (id: string) => {
   const { data, error } = await supabase
     .from(REVIEW_TABLE)
     .select(

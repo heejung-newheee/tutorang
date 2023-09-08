@@ -7,6 +7,7 @@ import RegistTutorForm from '../pages/auth/registTutorForm/RegistTutorForm';
 import Chat from '../pages/chat/Chat';
 import EditTutorForm from '../pages/mypage/EditTutorForm';
 import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateAdditionalInformationForm';
+import EditProfileForm from '../pages/mypage/profileForm/EditProfileForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
 
@@ -21,6 +22,14 @@ const Router = () => {
             element={
               <AuthenticatedRoute>
                 <Mypage />
+              </AuthenticatedRoute>
+            }
+          />
+          <Route
+            path="/edit-profiles"
+            element={
+              <AuthenticatedRoute>
+                <EditProfileForm />
               </AuthenticatedRoute>
             }
           />

@@ -3,19 +3,19 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBoard } from '../../../api/board';
 import { fetchLBookMark } from '../../../api/like';
-import { matchMyReview } from '../../../api/review';
 import { icon_more, starEmpty, starFull } from '../../../assets';
 import { Loading } from '../../../components';
 import CompleteClass from '../../../components/slider/completeClassSlider/CompleteClass';
 import { RootState } from '../../../redux/config/configStore';
 import { openModal, setReview } from '../../../redux/modules';
-import MatchingTutor from '../matchingTab/MatchingTutor';
 import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataStar, DataTitle, InfoNull, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
 import * as S from './StudentInfo.styled';
 
+import { getMyWritiedReview } from '../../../api/review';
 import LikeTutorSlider from '../../../components/slider/tutorSlider/LikeTutorSlider';
 import { BOARD_QUERY_KEY, BOOK_MARK_QUERY_KEY, REVIEW_QUERY_KEY } from '../../../constants/query.constant';
 import { Tables, Views } from '../../../supabase/database.types';
+import MatchingTutor from '../matchingTab/MatchingTutor';
 
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
@@ -28,7 +28,7 @@ const StudentInfo = ({ match }: pageProps) => {
 
   const { data: board, isLoading: boardLoading, isError: boardError } = useQuery([BOARD_QUERY_KEY], getBoard);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery([BOOK_MARK_QUERY_KEY], fetchLBookMark);
-  const myReview = useQuery([REVIEW_QUERY_KEY], () => matchMyReview(user!.id));
+  const myReview = useQuery([REVIEW_QUERY_KEY], () => getMyWritiedReview(user!.id));
 
   if (boardLoading || likeLoading) {
     return <Loading />;
@@ -83,6 +83,7 @@ const StudentInfo = ({ match }: pageProps) => {
         <Container>
           <InfoTitle>튜터링 요청 내역</InfoTitle>
           {matchList.length > 0 ? <MatchingTutor matchList={matchList} /> : <InfoNull>요청한 튜터링 내역이 없습니다</InfoNull>}
+          {/* {matchList.length > 0 ? <MatchingTutorTest matchList={matchList} /> : <InfoNull>요청한 튜터링 내역이 없습니다</InfoNull>} */}
         </Container>
       </InfoSection>
       <InfoSection>
@@ -143,7 +144,6 @@ const StudentInfo = ({ match }: pageProps) => {
       <InfoSection>
         <Container>
           <InfoTitle>내가 남긴 문의</InfoTitle>
-
           <ContentsDataBox>
             {myBoard.length > 0 ? (
               myBoard.map((item: Tables<'board'>) => {

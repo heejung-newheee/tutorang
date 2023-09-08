@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux';
 import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm } from '..';
 import RetrievePendingTutorRegistration from '../../pages/auth/registTutorForm/RetrievePendingTutorRegistration';
 import YoutubeModal from '../../pages/main/youtube/YoutubeModal';
-import EditProfileForm from '../../pages/mypage/profileForm/EditProfileForm';
 import { RootState } from '../../redux/config/configStore';
 import ChatLocationModal from '../chat/modules/ChatLocationModal';
 import MatchedReviewForm from '../review/reviewForm/MatchedReviewForm';
@@ -22,7 +21,6 @@ const GlobalModal = () => {
     reviewUpdate: 'reviewUpdate',
     navbabr: 'navbabr',
     matchedReviewCreate: 'matchedReviewCreate',
-    editProfiles: 'editProfiles',
     reviewYoutube: 'reviewYoutube',
     retrievePendingTutorRegistForm: 'retrievePendingTutorRegistForm',
     chatLocationModal: 'chatLocationModal',
@@ -56,10 +54,6 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.reviewUpdate,
       component: <ReviewUpdateForm />,
-    },
-    {
-      type: MODAL_TYPES.editProfiles,
-      component: <EditProfileForm />,
     },
     {
       type: MODAL_TYPES.reviewYoutube,

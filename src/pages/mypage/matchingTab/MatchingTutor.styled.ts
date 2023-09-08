@@ -38,3 +38,20 @@ export const TutorChatLink = styled.button`
     font-size: 14px;
   }
 `;
+export const ReviewBtn = styled.button`
+  font-size: 14px;
+  line-height: 26px;
+  padding: 0 15px;
+  border-radius: 20px;
+  border: solid 1px #000;
+  margin-top: 8px;
+  transition: all 0.3s;
+  &.review-btn {
+    color: ${colors.primary};
+  }
+  &:hover {
+    border: solid 1px ${colors.primary};
+    background-color: ${colors.primary};
+    color: #fff;
+  }
+`;

@@ -14,7 +14,10 @@ ${reset}
         font-family: 'Noto Sans KR', sans-serif;
     }
     
-    body::-webkit-scrollbar, div::-webkit-scrollbar {
+    body::-webkit-scrollbar{
+        width: 10px;
+    }
+    div::-webkit-scrollbar  {
         width: 8px;
     }
 
@@ -59,7 +62,13 @@ ${reset}
         background: transparent;
         cursor: pointer;
     }
-    
+    img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    }
 `;
 
 export default GlobalStyles;
