@@ -24,7 +24,15 @@ type TypeSelectLocationProps = {
   };
 };
 
-const cities: CityData = { AREA0, 서울, 인천, 대전, 광주, 대구, 울산, 부산, 경기, 강원, 충북, 충남, 전북, 전남, 경북, 경남, 제주 };
+const preCities: CityData = { AREA0, 서울, 인천, 대전, 광주, 대구, 울산, 부산, 경기, 강원, 충북, 충남, 전북, 전남, 경북, 경남, 제주 };
+const cities: CityData = {};
+const preCityKeys = Object.keys(preCities);
+const preCityValues = Object.values(preCities);
+for (let i = 0; i < preCityKeys.length; i++) {
+  const key = preCityKeys[i];
+  cities[key] = preCityValues[i].slice(1);
+}
+console.log(cities);
 
 const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $setLocation, $prevValue }) => {
   const sidoDropContainerRef = useRef<HTMLDivElement>(null);
@@ -40,12 +48,12 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
       $locationType === 'locationType1' ? $setLocation((prev) => ({ ...prev, sido1: option })) : $setLocation((prev) => ({ ...prev, sido2: option }));
 
       setIsDropMenuOpen(() => ({ sido: false, gugun: false }));
-      if (option === '전체') return setSelectedOption((prev) => ({ ...prev, gugun: '구/군 선택' }));
 
       const options = cities[option];
       setGugunOptions(options);
-      setSelectedOption((prev) => ({ sido: prev.sido, gugun: options[0] }));
-      $locationType === 'locationType1' ? $setLocation((prev) => ({ ...prev, gugun1: options[0] })) : $setLocation((prev) => ({ ...prev, gugun2: options[0] }));
+
+      setSelectedOption((prev) => ({ sido: prev.sido, gugun: '구/군 선택' }));
+      $locationType === 'locationType1' ? $setLocation((prev) => ({ ...prev, gugun1: '구/군 선택' })) : $setLocation((prev) => ({ ...prev, gugun2: '구/군 선택' }));
     }
     if (locationDomain === 'gugun') {
       setSelectedOption((prev) => ({ sido: prev.sido, gugun: option }));

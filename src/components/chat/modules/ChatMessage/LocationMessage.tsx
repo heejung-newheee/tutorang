@@ -1,7 +1,6 @@
 import KaKaoStaticMap from '../KaKaoStaticMap';
 import { Tables } from '../../../../supabase/database.types';
 import { LocationDataType } from '../../../../api/chat';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const LocationMessage = ({ message }: { message: Tables<'chat_messages'> }) => {
@@ -12,7 +11,9 @@ const LocationMessage = ({ message }: { message: Tables<'chat_messages'> }) => {
       <KaKaoStaticMap latitude={data.latitude} longitude={data.longitude} />
       <div style={{ padding: '10px' }}>
         <p style={{}}>{data.name}</p>
-        <FindRouteLink to={`https://map.kakao.com/link/to/${data.name},${data.latitude},${data.longitude}`}>길찾기</FindRouteLink>
+        <FindRouteLink href={`https://map.kakao.com/link/to/${data.name},${data.latitude},${data.longitude}`} target="_blank">
+          길찾기
+        </FindRouteLink>
       </div>
     </div>
   );
@@ -20,7 +21,7 @@ const LocationMessage = ({ message }: { message: Tables<'chat_messages'> }) => {
 
 export default LocationMessage;
 
-const FindRouteLink = styled(Link)`
+const FindRouteLink = styled.a`
   display: inline-block;
   width: 100%;
   text-align: center;
