@@ -3,7 +3,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify, starEmpty, starFull } from '../../../assets';
+import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify } from '../../../assets';
 
 import * as S from './TutorInfo.styled';
 
@@ -11,6 +11,7 @@ import { getBoard } from '../../../api/board';
 import { matchReview } from '../../../api/review';
 import { tutorInfoJoin } from '../../../api/tutor';
 import { Loading } from '../../../components';
+import StarRating from '../../../constants/func';
 import { BOARD_QUERY_KEY, REVIEW_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { Tables, Views } from '../../../supabase/database.types';
@@ -56,17 +57,6 @@ const TutorInfo = ({ match }: pageProps) => {
 
   const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.tutor_id) : null;
 
-  const starRating = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= rating) {
-        stars.push(<img key={i} src={starFull} alt={`Full Star`} />);
-      } else {
-        stars.push(<img key={i} src={starEmpty} alt={`Empty Star`} />);
-      }
-    }
-    return stars;
-  };
   return (
     <>
       {tutorInfo && (
@@ -165,7 +155,7 @@ const TutorInfo = ({ match }: pageProps) => {
                               {review.author} / {review.created_at.split('T')[0]}
                             </DataAuth>
                           </div>
-                          <ReviewRating>{starRating(rating)}</ReviewRating>
+                          <ReviewRating>{StarRating(rating)}</ReviewRating>
                         </DataItem>
                       );
                     })}

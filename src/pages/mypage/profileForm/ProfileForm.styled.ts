@@ -67,7 +67,8 @@ export const ProfileImgBox = styled.div`
   width: 150px;
   height: 150px;
   overflow: hidden;
-  margin: 40px auto;
+  margin: 0px auto;
+  margin-bottom: 50px;
 `;
 export const ProfileImg = styled.img`
   border-radius: 50%;

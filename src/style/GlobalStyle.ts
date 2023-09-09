@@ -27,11 +27,11 @@ ${reset}
     }
 
     body::-webkit-scrollbar-thumb {
-        background-color: #a1a1a1;
+        background-color: #ffe2c7;
         border-radius: 5px;
     }
     div::-webkit-scrollbar-thumb {
-        background-color: #ebdaca;
+        background-color: #ffe2c7;
         border-radius: 5px;
     }
 

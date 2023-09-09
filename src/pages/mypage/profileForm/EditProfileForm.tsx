@@ -21,9 +21,7 @@ import * as S from './ProfileForm.styled';
 const EditProfileForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const loginUserId = useSelector((state: RootState) => state.user.user!.id);
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log(loginUser);
 
   const userData = useQuery([USER_PROFILE_QUERY_KEY], () => getUserProfile(loginUser!.id));
   const user = userData.data;
@@ -117,11 +115,11 @@ const EditProfileForm = () => {
 
   return (
     <>
+      <FormHeader $keyword={FORM_CONSTANT_TITLE_PROFILES_EDIT} />
+      <PartitionLine />
       <Section>
         <Container>
           <S.Inner>
-            <FormHeader $keyword={FORM_CONSTANT_TITLE_PROFILES_EDIT} />
-            <PartitionLine />
             <form onSubmit={updateProfilesInfo}>
               <S.ProfileImgBox>
                 <S.ProfileImg src={previewImg?.toString() || user?.avatar_url || undefined} alt="" />
@@ -196,17 +194,7 @@ const EditProfileForm = () => {
                   </SFormItemBodySection>
                 </SFormItemBody>
               </SFormItem>
-              <S.EditSubmitButton
-                type="submit"
-                disabled={
-                  (password !== '' && validPwd && validPwdConfirm) || // 비밀번호 변경 시 유효성 검사 통과하지 못한 경우
-                  (validPwd && validPwdConfirm) ||
-                  validLocation ||
-                  imgFile !== null
-                    ? false
-                    : true
-                }
-              >
+              <S.EditSubmitButton type="submit" disabled={(validPwd && validPwdConfirm) || validLocation || imgFile !== null ? false : true}>
                 수정
               </S.EditSubmitButton>
             </form>

@@ -107,6 +107,7 @@ export const matchedReview = async (id: string) => {
       review_confirm: true,
     })
     .eq('id', id);
+
   if (error) throw error;
 };
 export const tutorMatchedCount = async (id: string) => {

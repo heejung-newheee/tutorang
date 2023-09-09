@@ -3,9 +3,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBoard } from '../../../api/board';
 import { fetchLBookMark } from '../../../api/like';
-import { icon_more, starEmpty, starFull } from '../../../assets';
+import { icon_more } from '../../../assets';
 import { Loading } from '../../../components';
-import CompleteClass from '../../../components/slider/completeClassSlider/CompleteClass';
 import { RootState } from '../../../redux/config/configStore';
 import { openModal, setReview } from '../../../redux/modules';
 import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataStar, DataTitle, InfoNull, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
@@ -13,6 +12,7 @@ import * as S from './StudentInfo.styled';
 
 import { getMyWritiedReview } from '../../../api/review';
 import LikeTutorSlider from '../../../components/slider/tutorSlider/LikeTutorSlider';
+import StarRating from '../../../constants/func';
 import { BOARD_QUERY_KEY, BOOK_MARK_QUERY_KEY, REVIEW_QUERY_KEY } from '../../../constants/query.constant';
 import { Tables, Views } from '../../../supabase/database.types';
 import MatchingTutor from '../matchingTab/MatchingTutor';
@@ -78,17 +78,6 @@ const StudentInfo = ({ match }: pageProps) => {
   const handleIsOpen = (reviewId: number) => {
     setOpenMenuId(reviewId === openMenuId ? 0 : reviewId);
   };
-  const starRating = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= rating) {
-        stars.push(<img key={i} src={starFull} alt={`Full Star`} />);
-      } else {
-        stars.push(<img key={i} src={starEmpty} alt={`Empty Star`} />);
-      }
-    }
-    return stars;
-  };
   return (
     <div>
       <InfoSection>
@@ -101,15 +90,9 @@ const StudentInfo = ({ match }: pageProps) => {
         <Container>
           <InfoTitle>튜터링 요청 내역</InfoTitle>
           {matchList.length > 0 ? <MatchingTutor matchList={matchList} /> : <InfoNull>요청한 튜터링 내역이 없습니다</InfoNull>}
-          {/* {matchList.length > 0 ? <MatchingTutorTest matchList={matchList} /> : <InfoNull>요청한 튜터링 내역이 없습니다</InfoNull>} */}
         </Container>
       </InfoSection>
-      <InfoSection>
-        <Container>
-          <InfoTitle>수업했던 튜터</InfoTitle>
-          {matchList.length > 0 ? <CompleteClass matchList={matchList} /> : <InfoNull>튜터링 완료한 내역이 없습니다</InfoNull>}
-        </Container>
-      </InfoSection>
+
       <InfoSection>
         <Container>
           <InfoTitle>내가 쓴 후기</InfoTitle>
@@ -117,11 +100,12 @@ const StudentInfo = ({ match }: pageProps) => {
             <DataList>
               {myReview.data.length > 0 ? (
                 myReview.data.map((review) => {
+                  const rating = review.rating || 0;
                   return (
                     <DataItem key={review.id} style={{ alignItems: 'start' }}>
                       <div>
                         <DataTitle>{review.title}</DataTitle>
-                        <DataStar>{starRating(review.rating!)}</DataStar>
+                        <DataStar>{StarRating(rating)}</DataStar>
                         <DataContent>{review.content}</DataContent>
                         <DataAuth>{review.reviewed_id.username!}</DataAuth>
                       </div>

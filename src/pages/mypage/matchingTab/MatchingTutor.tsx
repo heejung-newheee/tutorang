@@ -34,17 +34,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const [openMenuId, setOpenMenuId] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<number>(0);
-  const [previousReviewContent, setPreviousReviewContent] = useState('');
   const loginUser = useSelector((state: RootState) => state.user.user);
-  // 내가 작성한 리뷰들 // 이리뷰를 업데이트하려면 같은 쿼리키를 써야해
-  // const myReview = useQuery([REVIEW_QUERY_KEY], () => getMyWritiedReview  (loginUser!.id));
-  // const { data: matcingReview } = useQuery(['review_matching_view'], () => getWritiedReviewMatching(loginUser!.id));
-
-  // console.log(matchList);
-  // console.log('myReview', myReview.data);
-  // console.log('myReview2222222', matcingReview);
 
   const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setActiveTab(newValue);
@@ -75,12 +66,10 @@ const MatchingTutor = ({ matchList }: pageProps) => {
 
   const handleNotCompleteMatch = async (id: string) => {
     if (window.confirm('수업 취소처리 하시겠습니까?')) notCompleteMatchMutation.mutate(id);
-    // if (window.confirm('수업 취소/환불 요청 하시겠습니까?')) notCompleteMatchMutation.mutate(id);
   };
 
   const handleCompleteMatch = async (id: string) => {
     if (window.confirm('수업 완료처리 하시겠습니까?')) completeMatchMutation.mutate(id);
-    // if (window.confirm('수업 취소/환불 요청 하시겠습니까?')) notCompleteMatchMutation.mutate(id);
   };
 
   // 튜터와의 채팅창 이동
@@ -110,10 +99,6 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     dispatch(openModal({ type: 'matchedReviewCreate', targetId: tutor_id, matchingId: matching_id }));
   };
 
-  // 리뷰 수정
-  // const handleOpenReviewUpdateForm = async (tutor_id: string, matching_id: string, user_id: string): Views<''> => {
-  //   dispatch(openModal({ type: 'matchedReviewUpdate', targetId: tutor_id, matchingId: matching_id, userId: user_id }));
-  // };
   const handleRequestReTutoring = async (tutor_id: string, user_id: string) => {
     try {
       await matchingRequest({ tutorId: tutor_id, userId: user_id });
@@ -122,13 +107,6 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     }
     window.alert('성공적으로 튜터링을 요청했습니다.');
   };
-  // const handleReviewDelete = (id: number) => {
-  //   dispatch(openModal({ type: 'confirmRemove', targetId: id }));
-  // };
-
-  // const handleIsOpen = (reviewId: number) => {
-  //   setOpenMenuId(reviewId === openMenuId ? 0 : reviewId);
-  // };
 
   return (
     <div>
@@ -212,7 +190,6 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                         </MatchBtn>
                         <MatchBtn
                           onClick={() => {
-                            console.log('수업취소 누름');
                             item.id !== null && handleNotCompleteMatch(item.id);
                           }}
                         >
@@ -256,24 +233,6 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                           '매칭취소'
                         ) : item.review_confirm === true && item.matched === true ? (
                           <>
-                            {/* <S.ReviewBtn
-                              onClick={() => {
-                                handleOpenReviewUpdateForm(item.tutor_id as string, item.id!, item.user_id as string);
-
-                                // 여기에서 리뷰를 가져오려면
-                                // dispatch(setReview(review));
-                                // handleIsOpen(review.id);
-                              }}
-                            >
-                              수정
-                            </S.ReviewBtn>
-                            <S.ReviewBtn
-                              onClick={() => {
-                                // handleReviewDelete(리뷰게시글id);
-                              }}
-                            >
-                              삭제
-                            </S.ReviewBtn> */}
                             <S.ReviewBtn onClick={() => handleRequestReTutoring(item.tutor_id!, item.user_id!)}>재요청</S.ReviewBtn>
                           </>
                         ) : item.matched === false ? (
