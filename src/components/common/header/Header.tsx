@@ -16,7 +16,10 @@ import SigninUserNav from './SigninUserNav';
 
 type HEADERMENU = { title: string; path: string }[];
 
-const HeaderMenu: HEADERMENU = [{ title: '튜터찾기', path: '/list' }];
+const HeaderMenu: HEADERMENU = [
+  { title: '튜터찾기', path: '/list' },
+  { title: '매칭후기', path: '/review' },
+];
 
 const Header = () => {
   const [sideNavOpen, setSideNavOpen] = useState<boolean>(false);

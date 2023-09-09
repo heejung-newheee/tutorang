@@ -17,11 +17,12 @@ const ProfilesCard = ({ tutor }: pageProps) => {
           <S.TutorName>{tutor.tutor_name}</S.TutorName>
           <S.TutorContent>
             <div>
-              <S.InfoIcon src={icon_location_gray} alt="" /> {tutor.location1_gugun} | {tutor.location2_gugun}
+              <S.InfoIcon src={icon_location_gray} alt="" /> {tutor.location1_sido} | {tutor.location1_gugun}
+              &nbsp;
+              <S.InfoIcon src={icon_location_gray} alt="" /> {tutor.location2_gugun} | {tutor.location2_gugun}
             </div>
             <div>
-              <S.InfoIcon src={icon_school} alt="" />
-              {tutor.university} | {tutor.major}
+              <S.InfoIcon src={icon_school} alt="" /> {tutor.university} | {tutor.major}
             </div>
             <S.Tag>
               {tutor.personality?.map((personal) => {

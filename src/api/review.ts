@@ -23,6 +23,11 @@ export const getReceivedWriteReviewCount = async (id: string) => {
   if (error) throw error;
   return count;
 };
+export const getReviewAuth = async () => {
+  const { data, error } = await supabase.from('review_auth_info').select();
+  if (error) throw error;
+  return data;
+};
 
 export const matchReview = async (tutorId: string) => {
   const { data, error } = await supabase.from(REVIEW_TABLE).select(`*`).eq('reviewed_id', tutorId);
@@ -30,7 +35,7 @@ export const matchReview = async (tutorId: string) => {
   return data;
 };
 
-export const matchMyReview = async (id: string) => {
+export const getMyWritiedReview = async (id: string) => {
   const { data, error } = await supabase
     .from(REVIEW_TABLE)
     .select(
@@ -74,7 +79,7 @@ export const useCreateReviewMutation = () => {
     },
 
     onError: (error, _, context) => {
-      console.log(error);
+      console.error(error);
       queryClient.setQueriesData(REVIEW_QUERY_KEY, context?.previousReview);
     },
 

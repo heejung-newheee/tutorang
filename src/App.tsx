@@ -22,6 +22,7 @@ function App() {
               const additionalData = {
                 username: userName,
                 role: 'student',
+                // provider: session.user.app_metadata.provider,  희정 작업중
               };
               const renewalData = userUpdateAndGet(additionalData, session.user.id);
               return renewalData;

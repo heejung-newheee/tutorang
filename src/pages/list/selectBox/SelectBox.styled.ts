@@ -110,13 +110,11 @@ export const InnerHidden = styled.div<{ $isChevronOpen: boolean; $dddddd: boolea
   margin: 20px 0;
   padding: 0 20px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 
   animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   & > div {
-    padding: 10px;
-
     & > input {
       cursor: pointer;
     }

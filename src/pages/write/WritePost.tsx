@@ -1,14 +1,14 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { v4 } from 'uuid';
+import { RootState } from '../../redux/config/configStore';
 import supabase from '../../supabase';
 import './write.css';
-import styled from 'styled-components';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/config/configStore';
-import { v4 } from 'uuid';
 
 const WritePost = () => {
   const [title, setTitle] = useState('');
@@ -26,7 +26,7 @@ const WritePost = () => {
   const api = async (newInfo: any) => {
     const { error } = await supabase.from('write').insert(newInfo);
 
-    console.log(error);
+    console.error(error);
     if (error) throw error;
   };
 
@@ -35,7 +35,7 @@ const WritePost = () => {
       queryClient.invalidateQueries(['write']);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
   //sfsdsdfsf

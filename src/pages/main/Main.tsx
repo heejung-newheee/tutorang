@@ -75,13 +75,14 @@ export const Section = styled.section`
 export const SectionTitle = styled.h2`
   display: inline-block;
   font-size: 28px;
-  margin: 0 0 58px 0;
+  margin: 0 0 98px 0;
   padding: 0 0 0 10px;
   font-weight: bold;
   line-height: 1;
   border-left: 6px solid ${colors.primary};
   @media screen and (max-width: 768px) {
     font-size: 18px;
+    margin: 0 0 50px 0;
   }
 `;
 export const SectionSubTitle = styled.h3``;

@@ -3,7 +3,6 @@ import { styled } from 'styled-components';
 export const FooterContainer = styled.footer`
   background-color: #f9f9f9;
   padding: 10px;
-  margin-top: 100px;
   @media screen and (max-width: 768px) {
     margin-top: 30px;
   }

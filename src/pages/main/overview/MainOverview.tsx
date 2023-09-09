@@ -4,7 +4,7 @@ import { getAllReviewCount } from '../../../api/review';
 import { getAllTutorCount } from '../../../api/tutor';
 import { icon_class, icon_like, icon_tutor } from '../../../assets';
 import { MATCHED_COUNT_QUERY_KEY, REVIEW_ALL_QUERY_KEY, TUTOR_ALL_QUERY_KEY } from '../../../constants/query.constant';
-import { OverviewItem, OverviewItemIcon, OverviewItemIcon2, OverviewItemNumber } from '../../detail/tutorInfoDetail/TutorInfoDetail.styled';
+import { OverviewItem, OverviewItemIcon, OverviewItemNumber } from '../../detail/tutorInfoDetail/TutorInfoDetail.styled';
 import { Container, Section } from '../Main';
 
 const MainOverview = () => {
@@ -26,7 +26,7 @@ const MainOverview = () => {
             <span>리뷰 수</span>
           </OverviewItem>
           <OverviewItem>
-            <OverviewItemIcon2 src={icon_like} alt="매칭 아이콘" style={{ height: '37px' }} />
+            <OverviewItemIcon src={icon_like} alt="매칭 아이콘" style={{ height: '37px' }} />
             <OverviewItemNumber>{matchCount?.data}건</OverviewItemNumber>
             <span>매칭 횟수</span>
           </OverviewItem>
