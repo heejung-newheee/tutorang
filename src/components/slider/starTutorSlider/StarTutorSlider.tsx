@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Loading } from '../..';
 import { tutorInfoJoin } from '../../../api/tutor';
 import { STAR_TUTORS_QUERY_KEY } from '../../../constants/query.constant';
-import TutorSlider from '../tutorSlider/TutorSlider';
+import TutorSlider from '../tutorSlider/LikeTutorSlider';
 import * as S from './StartTutorSlider.styled';
 
 const StarTutorSlider = () => {

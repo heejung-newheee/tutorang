@@ -5,8 +5,8 @@ import { Button } from '../..';
 import { matchedReview } from '../../../api/match';
 import { useCreateReviewMutation } from '../../../api/review';
 import { close, starEmpty, starFull } from '../../../assets';
+import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { useInput } from '../../../hooks';
-import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../pages/mypage/userInfo/UserInfo';
 import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
 import { reviews } from '../../../supabase/database.types';
@@ -26,7 +26,7 @@ const MatchedReviewForm = () => {
   const createReview = useCreateReviewMutation();
   const matchedReviewMutation = useMutation(matchedReview, {
     onSuccess: () => {
-      queryClient.invalidateQueries(MATCHING_TUTOR_DATA_QUERY_KEY);
+      queryClient.invalidateQueries([MATCHING_TUTOR_DATA_QUERY_KEY]);
     },
   });
 

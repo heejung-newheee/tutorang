@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import FormHeader from '../../../components/Form/FormHeader';
-import { FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE } from '../../../components/Form/formConstant';
+import { FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE } from '../../../constants/formConstant';
 import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/signup.constant';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
@@ -23,7 +23,7 @@ const RegistTutorForm = () => {
   const [checkLanguageItems, setCheckLanguageItems] = useState<string[]>([]);
   const [checkClassLevelItems, setCheckClassLevelItems] = useState<string[]>([]);
   const [validationCheck, setValicationCheck] = useState(false);
-  const [uid, setUid] = useState<string | null>('');
+  const [uid, setUid] = useState<string>('');
   const [email, setEmail] = useState<string | null>('');
   const [classInfo, setClassInfo] = useState('');
   const [university, setUniversity] = useState('');

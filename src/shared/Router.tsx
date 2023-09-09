@@ -25,10 +25,12 @@ const Router = () => {
             }
           />
           <Route path="/detail/:id" element={<Detail />} />
+
           <Route element={<Layout />}>
             <Route path="/list" element={<List />} />
             <Route path="/write/:category" element={<WritePost />} />
             <Route path="/post/:postid" element={<PostDetail />} />
+
             <Route path="/community" element={<Community />}>
               <Route path="free" element={<FreeCommunity />} />
               <Route path="study" element={<StudyCommunity />} />

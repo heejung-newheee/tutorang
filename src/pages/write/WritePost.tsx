@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
+import { v4 } from 'uuid';
 
 const WritePost = () => {
   const [title, setTitle] = useState('');
@@ -50,13 +51,18 @@ const WritePost = () => {
         console.log(file);
 
         try {
-          const { data, error } = await supabase.storage.from('avatars').upload('community/' + file.name, file, {
+          const imgName = v4();
+          const { data, error } = await supabase.storage.from('avatars').upload(`community/${imgName}`, file, {
             cacheControl: '3600',
-            upsert: false,
+            upsert: true,
           });
+
+          // if (data !== null) {
+          //   console.log('이미지 URL:', data);
+          // }
           console.log(data, error);
 
-          const url = 'https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/community/adasd.jpeg';
+          const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
 
           if (QuillRef.current !== undefined) {
             const editor = QuillRef.current.getEditor();
@@ -108,7 +114,7 @@ const WritePost = () => {
   // console.log(data, 'data');
   return (
     <WriteContainer>
-      <div>title</div>
+      {/* <div>title</div> */}
       <Title>
         <input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="제목을 입력해주세요" />
       </Title>

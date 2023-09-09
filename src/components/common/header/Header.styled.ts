@@ -27,7 +27,7 @@ export const WidthLimitContainer = styled.div`
   position: relative;
 
   @media only screen and (max-width: 1200px) {
-    padding: 0 30px;
+    padding: 0 20px 0 15px;
   }
 
   @media only screen and (max-width: 768px) {
@@ -58,7 +58,7 @@ export const LogoH1 = styled.h1`
 
 export const NavLogoImg = styled.img`
   width: auto;
-  height: 25px;
+  height: 35px;
   margin-right: 10px;
 `;
 
@@ -219,6 +219,15 @@ export const PartitionLine = styled.div`
 export const LoginSignUpDiv = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 122px;
+  height: 40px;
+  border-radius: 20px;
+  border: 2px solid ${colors.primary};
+
+  &:hover {
+    background-color: #fe902f16;
+  }
 
   & > span {
     padding: 0 10px;

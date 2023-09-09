@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { BsXLg } from 'react-icons/bs';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { getPendingTutorRegistInfo } from '../../../api/pendingTutorInfo';
+import { close } from '../../../assets';
 import { Container } from '../../../components/review/Review.styled';
 import { PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
@@ -18,11 +19,18 @@ const RetrievePendingTutorRegistration = () => {
   const targetId = useSelector((state: RootState) => state.modal.targetId!);
 
   const { data: pendingTutorRegistInfo } = useQuery(PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY, () => getPendingTutorRegistInfo(targetId), { enabled: !!targetId });
-  console.log(pendingTutorRegistInfo);
 
   const handleOutsideClick = () => {
     dispatch(closeModal());
   };
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
+  if (!pendingTutorRegistInfo) return <div>데이터가 없습니다</div>;
 
   return (
     <Container>
@@ -32,7 +40,8 @@ const RetrievePendingTutorRegistration = () => {
             <h1>튜터변경 신청내역확인</h1>
             <ButtonWrapper>
               <button type="button" onClick={handleOutsideClick}>
-                <BsXLg className="pending_modal_close_btn" />
+                <img src={close} />
+                {/* <BsXLg className="pending_modal_close_btn" /> */}
               </button>
             </ButtonWrapper>
           </ContentsTitle>
@@ -60,9 +69,7 @@ const RetrievePendingTutorRegistration = () => {
                   {/* </CertificateItem> */}
                   {/* <CertificateItem> */}
                   {/* <h3>증명가능 서류</h3> */}
-                  <Figure>
-                    <img src={pendingTutorRegistInfo.certification_image} />
-                  </Figure>
+                  <Figure>{pendingTutorRegistInfo.certification_image && <img src={pendingTutorRegistInfo.certification_image} />}</Figure>
                   {/* </CertificateItem> */}
                 </CertificateContainer>
               </ContentItemBody>
@@ -73,11 +80,7 @@ const RetrievePendingTutorRegistration = () => {
                 <h2>성격</h2>
               </ContentsItemTitle>
               <ContentItemBody>
-                <ContentItemBodyList>
-                  {pendingTutorRegistInfo.personality.map((item: string) => (
-                    <span>{item}</span>
-                  ))}
-                </ContentItemBodyList>
+                <ContentItemBodyList>{pendingTutorRegistInfo.personality && pendingTutorRegistInfo.personality.map((item: string) => <span key={item}>{item}</span>)}</ContentItemBodyList>
               </ContentItemBody>
             </ContentsItem>
 
@@ -88,7 +91,7 @@ const RetrievePendingTutorRegistration = () => {
               <ContentItemBody>
                 <ContentItemBodyList>
                   {pendingTutorRegistInfo.speaking_language.map((item: string) => (
-                    <span>{item}</span>
+                    <span key={item}>{item}</span>
                   ))}
                 </ContentItemBodyList>
               </ContentItemBody>
@@ -101,7 +104,7 @@ const RetrievePendingTutorRegistration = () => {
               <ContentItemBody>
                 <ContentItemBodyList>
                   {pendingTutorRegistInfo.class_level.map((item: string) => (
-                    <span>{item}</span>
+                    <span key={item}>{item}</span>
                   ))}
                 </ContentItemBodyList>
               </ContentItemBody>
@@ -137,17 +140,25 @@ export default RetrievePendingTutorRegistration;
 
 const Inner = styled.div`
   position: absolute;
-  z-index: 999;
+  z-index: 554;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   right: 0;
   padding-top: 150px;
+  @media screen and (max-width: 425px) {
+    padding-top: 120px;
+  }
 `;
 
 const Contents = styled.div`
-  margin: 0 auto;
+  position: fixed;
+  top: 53%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* margin: 0 auto; */
   width: 500px;
   overflow: hidden;
   border-radius: 18px;
@@ -198,7 +209,7 @@ const ContentsBody = styled.div`
   gap: 20px;
   @media screen and (max-width: 420px) {
     padding: 20px 25px;
-    height: 480px;
+    height: 520px;
     overflow-y: scroll;
 
     gap: 15px;
@@ -236,9 +247,15 @@ const ButtonWrapper = styled.div`
   position: absolute;
   /* top: 21px;
   right: 25px; */
-  top: 24px;
+  top: 23px;
   right: 25px;
+  & button {
+    width: 28px;
+  }
+  & img {
+    width: 100%;
+  }
   @media screen and (max-width: 425px) {
-    top: 17px;
+    top: 15px;
   }
 `;

@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import { getTopReviewer } from '../../api/tutor';
 import { Loading } from '../../components';
-import TutorSlider from '../../components/slider/tutorSlider/TutorSlider';
 import { TUTOR_TOP_REVIEW_QUERY_KEY } from '../../constants/query.constant';
 
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import PopTutorSlider from '../../components/slider/mainPopTutor/PopTutorSlider';
 import { closeModal } from '../../redux/modules';
 import { colors } from '../../style/theme/colors';
 import Banner from './banner/Banner';
@@ -42,7 +42,7 @@ const Main = () => {
         <Container>
           <SectionTitle>인기있는 튜터를 만나보세요</SectionTitle>
         </Container>
-        <TutorSlider tutorList={topReviewer} panels={5} uniqueKey="main" />
+        <PopTutorSlider tutorList={topReviewer} panels={5} uniqueKey="main" />
       </Section>
       <MainOverview />
       <Empty />

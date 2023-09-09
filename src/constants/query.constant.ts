@@ -1,3 +1,5 @@
+export const USER_PROFILE_QUERY_KEY = 'profiles';
+
 export const TUTOR_INFO_JOIN_QUERY_KEY = ['tutor_info_join'];
 export const TUTOR_ALL_QUERY_KEY = ['tutorCount'];
 export const STAR_TUTORS_QUERY_KEY = ['starTutors'];
@@ -7,6 +9,7 @@ export const MATCHING_QUERY_KEY = ['matching'];
 export const MATCHED_COUNT_QUERY_KEY = ['matchCount'];
 export const MATCH_BOOK_MARK_QUERY_KEY = ['matchBookMark'];
 export const MATCHING_COUNT_QUERY_KEY = 'matchingCount';
+export const MATCHING_TUTOR_DATA_QUERY_KEY = 'matching_tutor_data';
 
 export const TUTOR_TOP_REVIEW_QUERY_KEY = ['topReviewer'];
 export const REVIEW_ALL_QUERY_KEY = ['reviewCount'];

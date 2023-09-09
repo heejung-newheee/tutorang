@@ -326,8 +326,9 @@ export interface Database {
         Row: {
           created_at: string;
           id: string;
-          matched: boolean | null;
-          review_confirm: boolean | null;
+          matched: boolean;
+          refund: boolean;
+          review_confirm: boolean;
           status: string | null;
           tutor_id: string | null;
           user_id: string | null;
@@ -335,8 +336,9 @@ export interface Database {
         Insert: {
           created_at?: string;
           id?: string;
-          matched?: boolean | null;
-          review_confirm?: boolean | null;
+          matched?: boolean;
+          refund?: boolean;
+          review_confirm?: boolean;
           status?: string | null;
           tutor_id?: string | null;
           user_id?: string | null;
@@ -344,8 +346,9 @@ export interface Database {
         Update: {
           created_at?: string;
           id?: string;
-          matched?: boolean | null;
-          review_confirm?: boolean | null;
+          matched?: boolean;
+          refund?: boolean;
+          review_confirm?: boolean;
           status?: string | null;
           tutor_id?: string | null;
           user_id?: string | null;
@@ -492,6 +495,67 @@ export interface Database {
           },
           {
             foreignKeyName: 'pending_tutor_registration_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_top_reviewer';
+            referencedColumns: ['tutor_id'];
+          },
+        ];
+      };
+      post_comments: {
+        Row: {
+          comment: string | null;
+          created_at: string;
+          id: number;
+          post_id: number | null;
+          user_id: string | null;
+        };
+        Insert: {
+          comment?: string | null;
+          created_at?: string;
+          id?: number;
+          post_id?: number | null;
+          user_id?: string | null;
+        };
+        Update: {
+          comment?: string | null;
+          created_at?: string;
+          id?: number;
+          post_id?: number | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'post_comments_post_id_fkey';
+            columns: ['post_id'];
+            referencedRelation: 'write';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'post_comments_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'post_comments_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'matching_tutor_data';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'post_comments_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'post_comments_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_info_join';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'post_comments_user_id_fkey';
             columns: ['user_id'];
             referencedRelation: 'tutor_top_reviewer';
             referencedColumns: ['tutor_id'];
@@ -981,6 +1045,8 @@ export interface Database {
 
 export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
 export type Views<T extends keyof Database['public']['Views']> = Database['public']['Views'][T]['Row'];
+
+export type UpdatingTables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Update'];
 
 export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'class_info' | 'tuition_fee_offline' | 'tuition_fee_online'> & {
   profiles: Pick<Tables<'profiles'>, 'id' | 'username' | 'avatar_url'>;

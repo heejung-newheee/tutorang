@@ -1,10 +1,10 @@
 import { BsFillCheckCircleFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { home_button_logo } from '../../../assets';
+import { logo04 } from '../../../assets';
 import { SContainer, SPartitionLine } from '../../../components/Form/AuthForm.styled';
 import FormHeader from '../../../components/Form/FormHeader';
-import { FORM_CONSTANT_TITLE_COMPLETE } from '../../../components/Form/formConstant';
+import { FORM_CONSTANT_TITLE_COMPLETE } from '../../../constants/formConstant';
 
 const WelcomeMessagePage = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const WelcomeMessagePage = () => {
       <SPartitionLine />
       <SWelcomeContainer>
         <SWelcomeHeader>
-          <img src={home_button_logo} />
+          <img src={logo04} />
         </SWelcomeHeader>
         <SWelcomeBody>
           <BsFillCheckCircleFill className="welcome_icon" />
@@ -53,8 +53,11 @@ const SWelcomeHeader = styled.header`
   align-items: center;
   & img {
     width: 134px;
+    position: relative;
+    left: -20px;
   }
   border-bottom: 1.5px solid #ffd0a8;
+
   @media screen and (max-width: 420px) {
     height: 70px;
     & img {
