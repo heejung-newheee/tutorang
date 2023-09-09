@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '..';
 import { matchReview } from '../../api/review';
-import { icon_more, starEmpty, starFull } from '../../assets';
+import { icon_more } from '../../assets';
+import StarRating from '../../constants/func';
 import { REVIEW_QUERY_KEY } from '../../constants/query.constant';
 import { RootState } from '../../redux/config/configStore';
 import { openModal, setReview } from '../../redux/modules';
@@ -35,18 +36,6 @@ const Review = ({ id }: ReviewProps) => {
 
   const handleReviewDelete = (id: number) => {
     dispatch(openModal({ type: 'confirmRemove', targetId: id }));
-  };
-
-  const starRating = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= rating) {
-        stars.push(<img key={i} src={starFull} alt={`Full Star`} />);
-      } else {
-        stars.push(<img key={i} src={starEmpty} alt={`Empty Star`} />);
-      }
-    }
-    return stars;
   };
 
   const handleIsOpen = (reviewId: number) => {
@@ -88,7 +77,7 @@ const Review = ({ id }: ReviewProps) => {
   }
 
   if (reviewError) {
-    console.log(error);
+    console.error(error);
     return;
   }
   return (
@@ -143,7 +132,7 @@ const Review = ({ id }: ReviewProps) => {
                           </S.moreMenu>
                         </S.ButtonMoreWrapper>
                       ) : null}
-                      <S.ReviewStar>{starRating(rating)}</S.ReviewStar>
+                      <S.ReviewStar>{StarRating(rating)}</S.ReviewStar>
                     </div>
                   </S.ReviewItem>
                 );

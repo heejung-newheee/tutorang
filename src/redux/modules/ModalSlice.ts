@@ -5,6 +5,7 @@ type ModalState = {
   isOpen?: boolean;
   targetId?: string | number | null;
   matchingId?: string | null;
+  userId?: string;
   message?: string | null;
 };
 
@@ -13,6 +14,7 @@ const initialState: ModalState = {
   isOpen: false,
   targetId: '',
   matchingId: '',
+  userId: '',
   message: '',
 };
 
@@ -23,6 +25,7 @@ const modalSlice = createSlice({
     openModal: (state, action: PayloadAction<ModalState>) => {
       state.type = action.payload.type;
       state.targetId = action.payload.targetId;
+      state.userId = action.payload.userId;
       state.matchingId = action.payload.matchingId;
       state.message = action.payload.message;
       state.isOpen = true;

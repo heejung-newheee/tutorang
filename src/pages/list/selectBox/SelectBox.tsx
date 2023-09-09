@@ -187,7 +187,7 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
             <div></div>
 
             {price.map((item: Price) => (
-              <div>
+              <div key={item.min}>
                 <Checkbox
                   sx={{
                     color: 'gray',
@@ -210,10 +210,9 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
       {selectedArr.length > 0 && selectedArr.filter((i) => i[1] === '전체').length !== selectedArr.length ? (
         <S.FilterBar>
           <S.FiterWrap>
-            {selectedArr.map((item) =>
+            {selectedArr.map((item, index) =>
               item[1] === '전체' ? null : (
-                <S.FiterWrapButton onClick={() => DeleteFilterBar(item)}>
-                  {' '}
+                <S.FiterWrapButton onClick={() => DeleteFilterBar(item)} key={index}>
                   <div>
                     {item[1]}
                     <svg xmlns="http://www.w3.org/2000/svg" fill="white" height="1em" viewBox="0 0 384 512">

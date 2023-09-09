@@ -3,6 +3,67 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export interface Database {
   public: {
     Tables: {
+      announcements: {
+        Row: {
+          content: string | null;
+          created_at: string;
+          id: string;
+          importance: string | null;
+          title: string | null;
+          user_id: string | null;
+          views: number | null;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          id?: string;
+          importance?: string | null;
+          title?: string | null;
+          user_id?: string | null;
+          views?: number | null;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
+          id?: string;
+          importance?: string | null;
+          title?: string | null;
+          user_id?: string | null;
+          views?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'announcements_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'announcements_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'matching_tutor_data';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'announcements_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'announcements_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_info_join';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'announcements_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_top_reviewer';
+            referencedColumns: ['tutor_id'];
+          },
+        ];
+      };
       board: {
         Row: {
           content: string | null;
@@ -322,13 +383,162 @@ export interface Database {
         };
         Relationships: [];
       };
+      customer_support: {
+        Row: {
+          content: string | null;
+          created_at: string;
+          file1: string | null;
+          file2: string | null;
+          id: string;
+          isReplied: boolean | null;
+          title: string | null;
+          user_id: string | null;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          file1?: string | null;
+          file2?: string | null;
+          id?: string;
+          isReplied?: boolean | null;
+          title?: string | null;
+          user_id?: string | null;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
+          file1?: string | null;
+          file2?: string | null;
+          id?: string;
+          isReplied?: boolean | null;
+          title?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'customer_support_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'customer_support_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'matching_tutor_data';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'customer_support_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'customer_support_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_info_join';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'customer_support_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_top_reviewer';
+            referencedColumns: ['tutor_id'];
+          },
+        ];
+      };
+      customer_support_reply: {
+        Row: {
+          content: string | null;
+          created_at: string;
+          cs_table_id: string | null;
+          id: string;
+          user_id: string | null;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          cs_table_id?: string | null;
+          id?: string;
+          user_id?: string | null;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
+          cs_table_id?: string | null;
+          id?: string;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'customer_support_reply_cs_table_id_fkey';
+            columns: ['cs_table_id'];
+            referencedRelation: 'customer_support';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'customer_support_reply_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'customer_support_reply_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'matching_tutor_data';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'customer_support_reply_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'customer_support_reply_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_info_join';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'customer_support_reply_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_top_reviewer';
+            referencedColumns: ['tutor_id'];
+          },
+        ];
+      };
+      faq_frequently_asked_questions: {
+        Row: {
+          category: string | null;
+          content: string | null;
+          created_at: string;
+          id: string;
+          title: string | null;
+        };
+        Insert: {
+          category?: string | null;
+          content?: string | null;
+          created_at?: string;
+          id?: string;
+          title?: string | null;
+        };
+        Update: {
+          category?: string | null;
+          content?: string | null;
+          created_at?: string;
+          id?: string;
+          title?: string | null;
+        };
+        Relationships: [];
+      };
       matching: {
         Row: {
           created_at: string;
           id: string;
-          matched: boolean;
-          refund: boolean;
-          review_confirm: boolean;
+          matched: boolean | null;
+          refund: string | null;
+          review_confirm: boolean | null;
           status: string | null;
           tutor_id: string | null;
           user_id: string | null;
@@ -336,9 +546,9 @@ export interface Database {
         Insert: {
           created_at?: string;
           id?: string;
-          matched?: boolean;
-          refund?: boolean;
-          review_confirm?: boolean;
+          matched?: boolean | null;
+          refund?: string | null;
+          review_confirm?: boolean | null;
           status?: string | null;
           tutor_id?: string | null;
           user_id?: string | null;
@@ -346,9 +556,9 @@ export interface Database {
         Update: {
           created_at?: string;
           id?: string;
-          matched?: boolean;
-          refund?: boolean;
-          review_confirm?: boolean;
+          matched?: boolean | null;
+          refund?: string | null;
+          review_confirm?: boolean | null;
           status?: string | null;
           tutor_id?: string | null;
           user_id?: string | null;
@@ -566,6 +776,7 @@ export interface Database {
         Row: {
           age: number | null;
           avatar_url: string | null;
+          basic_authority: boolean;
           birth: string | null;
           deleted_at: string | null;
           email: string | null;
@@ -582,6 +793,7 @@ export interface Database {
         Insert: {
           age?: number | null;
           avatar_url?: string | null;
+          basic_authority?: boolean;
           birth?: string | null;
           deleted_at?: string | null;
           email?: string | null;
@@ -598,6 +810,7 @@ export interface Database {
         Update: {
           age?: number | null;
           avatar_url?: string | null;
+          basic_authority?: boolean;
           birth?: string | null;
           deleted_at?: string | null;
           email?: string | null;
@@ -626,6 +839,7 @@ export interface Database {
           content: string | null;
           created_at: string;
           id: number;
+          matched_id?: string | null;
           rating: number | null;
           reviewed_id: string | null;
           title: string | null;
@@ -636,6 +850,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           id?: number;
+          matched_id?: string | null;
           rating?: number | null;
           reviewed_id?: string | null;
           title?: string | null;
@@ -646,6 +861,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           id?: number;
+          matched_id?: string | null;
           rating?: number | null;
           reviewed_id?: string | null;
           title?: string | null;
@@ -953,6 +1169,82 @@ export interface Database {
             columns: ['id'];
             referencedRelation: 'users';
             referencedColumns: ['id'];
+          },
+        ];
+      };
+      review_matching_view: {
+        Row: {
+          content: string | null;
+          matched: boolean | null;
+          matched_id: string | null;
+          post_id: number | null;
+          rating: number | null;
+          review_confirm: boolean | null;
+          status: string | null;
+          title: string | null;
+          tutor_id: string | null;
+          user_id: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
+            referencedRelation: 'matching_tutor_data';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
+            referencedRelation: 'tutor_info_join';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
+            referencedRelation: 'tutor_top_reviewer';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'matching_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'matching_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'matching_tutor_data';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'matching_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'matching_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_info_join';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'matching_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_top_reviewer';
+            referencedColumns: ['tutor_id'];
           },
         ];
       };

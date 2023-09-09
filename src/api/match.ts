@@ -1,7 +1,7 @@
 import supabase from '../supabase';
 
 export const getAllMatchCount = async () => {
-  const { count, error } = await supabase.from('matching').select('*', { count: 'estimated', head: true });
+  const { count, error } = await supabase.from('matching').select('*', { count: 'estimated', head: true }).eq('matched', true);
   if (error) throw error;
   return count;
 };
@@ -13,7 +13,7 @@ export const getMatchData = async () => {
 
 //조인한 매칭 테이블 전체
 export const matchingTutorData = async () => {
-  const { data, error } = await supabase.from('matching_tutor_data').select();
+  const { data, error } = await supabase.from('matching_tutor_data').select().order('created_at', { ascending: false });
   if (error) throw error;
   return data;
 };
@@ -49,13 +49,22 @@ export const matchingCancel = async (id: string) => {
   const { error } = await supabase.from('matching').delete().eq('id', id);
   if (error) throw error;
 };
-
+export const matchingPending = async (id: string) => {
+  const { error } = await supabase
+    .from('matching')
+    .update({
+      status: 'pending',
+      matched: false,
+    })
+    .eq('id', id);
+  if (error) throw error;
+};
 export const matchingAccept = async (id: string) => {
   const { error } = await supabase
     .from('matching')
     .update({
-      status: 'complete',
-      matched: true,
+      status: 'pending',
+      matched: false,
     })
     .eq('id', id);
   if (error) throw error;
@@ -65,7 +74,28 @@ export const matchingReject = async (id: string) => {
     .from('matching')
     .update({
       status: 'reject',
-      matched: false,
+      matched: true,
+    })
+    .eq('id', id);
+  if (error) throw error;
+};
+export const matchingRejectStudent = async (id: string) => {
+  const { error } = await supabase
+    .from('matching')
+    .update({
+      status: 'reject',
+      matched: true,
+      refund: 'refundRequest', // null,refundRequest,refundConfirm
+    })
+    .eq('id', id);
+  if (error) throw error;
+};
+export const matchingComplete = async (id: string) => {
+  const { error } = await supabase
+    .from('matching')
+    .update({
+      status: 'complete',
+      matched: true,
     })
     .eq('id', id);
   if (error) throw error;
@@ -77,6 +107,7 @@ export const matchedReview = async (id: string) => {
       review_confirm: true,
     })
     .eq('id', id);
+
   if (error) throw error;
 };
 export const tutorMatchedCount = async (id: string) => {
