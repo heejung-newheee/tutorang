@@ -44,7 +44,7 @@ export const ReviewBtn = styled.button`
   padding: 0 15px;
   border-radius: 20px;
   border: solid 1px #000;
-  margin-top: 8px;
+  margin: 8px 2px;
   transition: all 0.3s;
   &.review-btn {
     color: ${colors.primary};

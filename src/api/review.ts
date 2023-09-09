@@ -42,6 +42,15 @@ export const getMyWritiedReview = async (id: string) => {
   if (error) throw error;
   return data;
 };
+export const getWritiedReviewMatching = async (tutorId: string, matchingId: string, userId: string) => {
+  const { data, error } = await supabase.from('review_matching_view').select().eq('tutor_id', tutorId).eq('matched_id', matchingId).eq('user_id', userId);
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+};
 
 export const reviewRequest = async (newReview: reviews) => {
   const { error } = await supabase.from(REVIEW_TABLE).insert(newReview).select();

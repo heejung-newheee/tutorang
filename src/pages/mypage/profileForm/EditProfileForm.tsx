@@ -21,10 +21,11 @@ import * as S from './ProfileForm.styled';
 const EditProfileForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const loginUserId = useSelector((state: RootState) => state.user.user!.id);
-  // const loginUser = useSelector((state: RootState) => state.user.user);
+  // const loginUserId = useSelector((state: RootState) => state.user.user!.id);
+  const loginUser = useSelector((state: RootState) => state.user.user);
+  console.log(loginUser);
 
-  const userData = useQuery([USER_PROFILE_QUERY_KEY], () => getUserProfile(loginUserId));
+  const userData = useQuery([USER_PROFILE_QUERY_KEY], () => getUserProfile(loginUser!.id));
   const user = userData.data;
 
   if (!user) return;
@@ -180,7 +181,6 @@ const EditProfileForm = () => {
                   <S.EditInput type="password" name="confirmPassword" value={confirmPassword} onChange={changeConfirmPassword} />
                 </div>
               </S.PasswordChangeWrap>
-
               <SFormItem>
                 <SFormItemHeader>
                   <SPGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</SPGuideMessage>

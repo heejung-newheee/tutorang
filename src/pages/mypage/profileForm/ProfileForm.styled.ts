@@ -98,8 +98,10 @@ export const EditInput = styled.input`
   color: #000;
   vertical-align: middle;
   padding: 5px;
-  cursor: pointer;
   margin: 5px 0;
+  &.edit-photo {
+    cursor: pointer;
+  }
   &:focus {
     outline: none;
   }

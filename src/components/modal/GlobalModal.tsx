@@ -5,6 +5,7 @@ import YoutubeModal from '../../pages/main/youtube/YoutubeModal';
 import { RootState } from '../../redux/config/configStore';
 import ChatLocationModal from '../chat/modules/ChatLocationModal';
 import MatchedReviewForm from '../review/reviewForm/MatchedReviewForm';
+import MatchedReviewUpdateForm from '../review/reviewForm/MathchedReviewUpdateForm';
 import * as S from './Modal.styled';
 import ModalPortal from './ModalPortal';
 
@@ -21,6 +22,7 @@ const GlobalModal = () => {
     reviewUpdate: 'reviewUpdate',
     navbabr: 'navbabr',
     matchedReviewCreate: 'matchedReviewCreate',
+    matchedReviewUpdate: 'matchedReviewUpdate',
     reviewYoutube: 'reviewYoutube',
     retrievePendingTutorRegistForm: 'retrievePendingTutorRegistForm',
     chatLocationModal: 'chatLocationModal',
@@ -54,6 +56,10 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.reviewUpdate,
       component: <ReviewUpdateForm />,
+    },
+    {
+      type: MODAL_TYPES.matchedReviewUpdate,
+      component: <MatchedReviewUpdateForm />,
     },
     {
       type: MODAL_TYPES.reviewYoutube,

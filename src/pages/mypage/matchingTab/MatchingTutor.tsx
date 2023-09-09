@@ -1,8 +1,8 @@
 import { Tab, Tabs } from '@mui/material';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
-import { matchingCancel, matchingComplete, matchingRejectStudent } from '../../../api/match';
+import { matchingCancel, matchingComplete, matchingRejectStudent, matchingRequest } from '../../../api/match';
 import { Views } from '../../../supabase/database.types';
 import { ContentsDataBox, MatchBtn } from '../userInfo/UserInfo.styled';
 import * as S from './MatchingTutor.styled';
@@ -11,8 +11,7 @@ import './custom.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../../../api/chat';
-import { getMyWritiedReview } from '../../../api/review';
-import { MATCHING_TUTOR_DATA_QUERY_KEY, REVIEW_QUERY_KEY } from '../../../constants/query.constant';
+import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { openModal } from '../../../redux/modules';
 import { InfoItem, InfoList } from './MatchingTutor.styled';
@@ -37,12 +36,15 @@ const MatchingTutor = ({ matchList }: pageProps) => {
   const navigate = useNavigate();
   const [openMenuId, setOpenMenuId] = useState<number>(0);
   const [activeTab, setActiveTab] = useState<number>(0);
+  const [previousReviewContent, setPreviousReviewContent] = useState('');
   const loginUser = useSelector((state: RootState) => state.user.user);
-  // 내가 작성한 리뷰들
-  const myReview = useQuery([REVIEW_QUERY_KEY], () => getMyWritiedReview(loginUser!.id));
+  // 내가 작성한 리뷰들 // 이리뷰를 업데이트하려면 같은 쿼리키를 써야해
+  // const myReview = useQuery([REVIEW_QUERY_KEY], () => getMyWritiedReview  (loginUser!.id));
+  // const { data: matcingReview } = useQuery(['review_matching_view'], () => getWritiedReviewMatching(loginUser!.id));
 
-  console.log(matchList);
-  console.log('myReview', myReview.data);
+  // console.log(matchList);
+  // console.log('myReview', myReview.data);
+  // console.log('myReview2222222', matcingReview);
 
   const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setActiveTab(newValue);
@@ -106,45 +108,27 @@ const MatchingTutor = ({ matchList }: pageProps) => {
   // 리뷰작성
   const handleReviewCreate = (tutor_id: string, matching_id: string): void => {
     dispatch(openModal({ type: 'matchedReviewCreate', targetId: tutor_id, matchingId: matching_id }));
-    // console.log(matching_id);
   };
-
-  // 리뷰를 가져오기 ***************
-  // const fetchReview = async (tutorId: string, matchingId: string) => {
-  //   try {
-  //     const reviewData = await matchMyReview(loginUser!.id);
-  //     const matchingReview = reviewData.find((review) => review.reviewed_id === tutorId);
-  //     console.log(matchingReview);
-
-  //     return matchingReview;
-  //   } catch (error) {
-  //     console.error(error);
-  //     return null;
-  //   }
-  // };
 
   // 리뷰 수정
-  const handleOpenReviewUpdateForm = (): void => {
-    dispatch(openModal({ type: 'reviewUpdate', targetId: loginUser?.id }));
+  // const handleOpenReviewUpdateForm = async (tutor_id: string, matching_id: string, user_id: string): Views<''> => {
+  //   dispatch(openModal({ type: 'matchedReviewUpdate', targetId: tutor_id, matchingId: matching_id, userId: user_id }));
+  // };
+  const handleRequestReTutoring = async (tutor_id: string, user_id: string) => {
+    try {
+      await matchingRequest({ tutorId: tutor_id, userId: user_id });
+    } catch (error) {
+      if (error instanceof Error) window.alert(error.message || error);
+    }
+    window.alert('성공적으로 튜터링을 요청했습니다.');
   };
-
-  const handleReviewDelete = (id: number) => {
-    dispatch(openModal({ type: 'confirmRemove', targetId: id }));
-  };
-  // const mutationReviewDelete = useMutation(reviewDelete, {
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries([REVIEW_QUERY_KEY]);
-  //   },
-  // });
-
-  // const handleReviewDelete = () => {
-  //   mutationReviewDelete.mutate(Number(_id));
-  //   dispatch(closeModal());
+  // const handleReviewDelete = (id: number) => {
+  //   dispatch(openModal({ type: 'confirmRemove', targetId: id }));
   // };
 
-  const handleIsOpen = (reviewId: number) => {
-    setOpenMenuId(reviewId === openMenuId ? 0 : reviewId);
-  };
+  // const handleIsOpen = (reviewId: number) => {
+  //   setOpenMenuId(reviewId === openMenuId ? 0 : reviewId);
+  // };
 
   return (
     <div>
@@ -270,11 +254,12 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                       <div>
                         {item.status === 'reject' ? (
                           '매칭취소'
-                        ) : item.review_confirm ? (
+                        ) : item.review_confirm === true && item.matched === true ? (
                           <>
-                            <S.ReviewBtn
+                            {/* <S.ReviewBtn
                               onClick={() => {
-                                handleOpenReviewUpdateForm();
+                                handleOpenReviewUpdateForm(item.tutor_id as string, item.id!, item.user_id as string);
+
                                 // 여기에서 리뷰를 가져오려면
                                 // dispatch(setReview(review));
                                 // handleIsOpen(review.id);
@@ -288,8 +273,11 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                               }}
                             >
                               삭제
-                            </S.ReviewBtn>
+                            </S.ReviewBtn> */}
+                            <S.ReviewBtn onClick={() => handleRequestReTutoring(item.tutor_id!, item.user_id!)}>재요청</S.ReviewBtn>
                           </>
+                        ) : item.matched === false ? (
+                          '진행중'
                         ) : (
                           <S.ReviewBtn className="review-btn" onClick={() => handleReviewCreate(item.tutor_id!, item.id!)}>
                             리뷰 쓰기

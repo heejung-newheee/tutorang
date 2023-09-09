@@ -20,6 +20,22 @@ import MatchingTutor from '../matchingTab/MatchingTutor';
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
 }
+
+// type ReviewProfiles = {
+//   profiles : string;
+//   username:string;
+// }
+// type ReviewType = {
+//   author :string;
+// content :string;
+// created_at :string;
+// id :number;
+// matched_id :string;
+// rating:number;
+// reviewed_id :ReviewProfiles;
+// title :string;
+// user_id :string;
+// }
 const StudentInfo = ({ match }: pageProps) => {
   const dispatch = useDispatch();
   const [openMenuId, setOpenMenuId] = useState<number>(0);
@@ -28,7 +44,9 @@ const StudentInfo = ({ match }: pageProps) => {
 
   const { data: board, isLoading: boardLoading, isError: boardError } = useQuery([BOARD_QUERY_KEY], getBoard);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery([BOOK_MARK_QUERY_KEY], fetchLBookMark);
+
   const myReview = useQuery([REVIEW_QUERY_KEY], () => getMyWritiedReview(user!.id));
+  console.log(myReview.data);
 
   if (boardLoading || likeLoading) {
     return <Loading />;
@@ -105,6 +123,7 @@ const StudentInfo = ({ match }: pageProps) => {
                         <DataTitle>{review.title}</DataTitle>
                         <DataStar>{starRating(review.rating!)}</DataStar>
                         <DataContent>{review.content}</DataContent>
+                        <DataAuth>{review.reviewed_id.username!}</DataAuth>
                       </div>
                       <S.ReviewEditBtn>
                         <button onClick={() => handleIsOpen(review.id)}>

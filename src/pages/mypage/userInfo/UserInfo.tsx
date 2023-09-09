@@ -8,7 +8,6 @@ import { icon_edit, icon_location } from '../../../assets';
 import { Loading } from '../../../components';
 import { MATCHING_TUTOR_DATA_QUERY_KEY, RECEIVED_REVIEW_COUNT, USER_PROFILE_QUERY_KEY, WRITE_REVIEW_COUNT } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
-import { openModal } from '../../../redux/modules';
 import StudentInfo from '../studentInfo/StudentInfo';
 import TutorInfo from '../tutorInfo/TutorInfo';
 import * as S from './UserInfo.styled';
@@ -33,7 +32,6 @@ const UserInfo = () => {
     return null;
   }
   const handleEditProfiles = () => {
-    navigate('/edit-profiles');
     // sns 소셜로그인 추가인증 여부 확인 지표로 gender 사용함
     if (!loginUser?.gender) {
       const wannaAddMoreInfo = window.confirm('소셜로그인을 하셨는데 아직 추가정보를 입력하지 않았다구요? 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?');
@@ -41,7 +39,7 @@ const UserInfo = () => {
         navigate('/additional-information');
       } else return false;
     } else {
-      dispatch(openModal({ type: 'editProfiles' }));
+      navigate('/edit-profiles');
     }
   };
 
