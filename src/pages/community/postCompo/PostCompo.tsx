@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as S from './PostCompo.styled';
 import { useNavigate } from 'react-router-dom';
+import { detailDate } from '../utility';
 
 // type USER_ID = {
 //   avatar_url: string;
@@ -28,21 +29,23 @@ type Props = {
 
 const PostCompo = ({ item, lastElement }: Props) => {
   const [mainText, setMainText] = useState('');
-  const [mainImg, setMainImg] = useState('');
+  const [mainImg, setMainImg] = useState<(RegExpMatchArray | null)[]>([]);
 
   const navigate = useNavigate();
 
   const getContentReplace = async () => {
-    // const { data, error } = await supabase.from('profiles').select('*').eq('id', item?.user_id);
-    // console.log(data, error);
-
+    const imgTags = item.content?.match(/<img[^>]*>/g);
     const srcPattern = /src=\"([^\"]+)\"/;
 
-    const imgTags = item.content?.match(/<img[^>]*>/g);
-
+    console.log(imgTags);
     if (imgTags) {
-      const resultArr = imgTags[0].match(srcPattern);
-      resultArr && setMainImg(resultArr[1]);
+      // const resultArr = imgTags[0].match(srcPattern);
+
+      const resultArr = imgTags.map((img) => img.match(srcPattern));
+      // imgTags.forEach(img => )
+
+      // console.log(aaa, 'asdsads');
+      resultArr && setMainImg(resultArr);
     }
 
     let textOnly = item.content?.replace(/<[^>]+>/g, ' ');
@@ -54,25 +57,7 @@ const PostCompo = ({ item, lastElement }: Props) => {
     }
   };
 
-  const detailDate = (a: Date) => {
-    const milliSeconds = new Date().getTime() - a.getTime();
-    const seconds = milliSeconds / 1000;
-    if (seconds < 60) return `방금 전`;
-    const minutes = seconds / 60;
-    if (minutes < 60) return `${Math.floor(minutes)}분 전`;
-    const hours = minutes / 60;
-    if (hours < 24) return `${Math.floor(hours)}시간 전`;
-    const days = hours / 24;
-    if (days < 7) return `${Math.floor(days)}일 전`;
-    const weeks = days / 7;
-    if (weeks < 5) {
-      const year = a.getFullYear().toString().slice(-2);
-      const month = a.getMonth();
-      const day = a.getDay();
-      return `${year}.${month}.${day}`;
-    }
-  };
-
+  // console.log(mainImg && mainImg[0]);
   useEffect(() => {
     getContentReplace();
   }, []);
@@ -88,16 +73,23 @@ const PostCompo = ({ item, lastElement }: Props) => {
           </S.DateNameDiv>
         </S.NameImgDiv>
 
-        <div>
+        <S.TitleTextDiv>
           <S.Title>{item.title}</S.Title>
           <S.Text>{mainText}</S.Text>
-        </div>
+        </S.TitleTextDiv>
+        <S.ResponsiveImg>
+          <div>
+            {mainImg.map((item) => (
+              <img src={item?.[1]} />
+            ))}
+          </div>
+        </S.ResponsiveImg>
         <S.Like>
           <span>좋아요 3423 </span>
           <span>댓글 2324</span>{' '}
         </S.Like>
       </S.UserWrite>
-      <S.UserImg>{mainImg && <img src={mainImg} />}</S.UserImg>
+      <S.UserImg>{mainImg !== null && mainImg.length !== 0 && <img src={mainImg[0]?.[1]} />}</S.UserImg>
     </S.Post>
   );
 };
