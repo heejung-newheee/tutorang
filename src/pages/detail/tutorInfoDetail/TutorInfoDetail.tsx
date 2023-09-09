@@ -82,7 +82,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
   }
 
   if (tutorError || reviewError) {
-    console.log(error);
+    console.error(error);
     return <div>에러</div>;
   }
 

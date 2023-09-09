@@ -30,7 +30,6 @@ export const Title = styled.h2`
     font-size: 18px;
   }
 `;
-// 배너
 export const ReviewBanner = styled.div`
   background-image: url(${reviewTop});
   background-repeat: no-repeat;
@@ -119,9 +118,8 @@ export const ReviewList = styled.div`
 `;
 
 export const ReviewItem = styled.div`
-  /* width: calc((100% - 30px) / 4); */
-  display: inline-block; // 2
-  width: 100%; // 3
+  display: inline-block;
+  width: 100%;
   break-inside: avoid;
   margin-bottom: 50px;
 `;

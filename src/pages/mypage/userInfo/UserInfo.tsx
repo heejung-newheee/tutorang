@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getUserProfile } from '../../../api/chat';
 import { matchingTutorData } from '../../../api/match';
@@ -13,7 +13,6 @@ import TutorInfo from '../tutorInfo/TutorInfo';
 import * as S from './UserInfo.styled';
 
 const UserInfo = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const loginUser = useSelector((state: RootState) => state.user.user!);
   const { data: user, isLoading, isError } = useQuery([USER_PROFILE_QUERY_KEY], () => getUserProfile(loginUser.id));

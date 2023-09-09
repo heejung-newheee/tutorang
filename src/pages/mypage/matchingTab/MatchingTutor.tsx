@@ -41,7 +41,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     setActiveTab(newValue);
   };
 
-  // 아예 요청중 취소
+  // 요청중 취소
   const cancelMatchMutation = useMutation(matchingCancel, {
     onSuccess: () => {
       queryClient.invalidateQueries([MATCHING_TUTOR_DATA_QUERY_KEY]);

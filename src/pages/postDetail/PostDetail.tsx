@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import supabase from '../../supabase';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/config/configStore';
+import supabase from '../../supabase';
 import Comment from './comment/Comment';
 
 const PostDetail = () => {
@@ -33,7 +33,7 @@ const PostDetail = () => {
   const api = async (newInfo: any) => {
     const { error } = await supabase.from('post_comments').insert(newInfo);
 
-    console.log(error);
+    console.error(error);
     if (error) throw error;
   };
 
@@ -42,7 +42,7 @@ const PostDetail = () => {
       queryClient.invalidateQueries(['post_comments']);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
 

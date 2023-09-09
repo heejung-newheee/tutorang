@@ -83,7 +83,6 @@ export const ReviewStar = styled.li`
 `;
 
 export const AuthorInfo = styled.div`
-  width: 20%;
   margin-top: 38px;
   color: #555454;
   opacity: 0.6;

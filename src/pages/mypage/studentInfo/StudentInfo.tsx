@@ -21,21 +21,22 @@ interface pageProps {
   match: Views<'matching_tutor_data'>[];
 }
 
+// username 속성타입오류로 review :any 임시
 // type ReviewProfiles = {
-//   profiles : string;
-//   username:string;
-// }
+//   profiles: string;
+//   username: string;
+// };
 // type ReviewType = {
-//   author :string;
-// content :string;
-// created_at :string;
-// id :number;
-// matched_id :string;
-// rating:number;
-// reviewed_id :ReviewProfiles;
-// title :string;
-// user_id :string;
-// }
+//   author: string;
+//   content: string;
+//   created_at: string;
+//   id: number;
+//   matched_id: string;
+//   rating: number;
+//   reviewed_id: ReviewProfiles;
+//   title: string;
+//   user_id: string;
+// };
 const StudentInfo = ({ match }: pageProps) => {
   const dispatch = useDispatch();
   const [openMenuId, setOpenMenuId] = useState<number>(0);
@@ -45,7 +46,7 @@ const StudentInfo = ({ match }: pageProps) => {
   const { data: board, isLoading: boardLoading, isError: boardError } = useQuery([BOARD_QUERY_KEY], getBoard);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery([BOOK_MARK_QUERY_KEY], fetchLBookMark);
 
-  const myReview = useQuery([REVIEW_QUERY_KEY], () => getMyWritiedReview(user!.id));
+  const myReview: any = useQuery([REVIEW_QUERY_KEY], () => getMyWritiedReview(user!.id));
   console.log(myReview.data);
 
   if (boardLoading || likeLoading) {
@@ -99,7 +100,7 @@ const StudentInfo = ({ match }: pageProps) => {
           <ContentsDataBox>
             <DataList>
               {myReview.data.length > 0 ? (
-                myReview.data.map((review) => {
+                myReview.data.map((review: any) => {
                   const rating = review.rating || 0;
                   return (
                     <DataItem key={review.id} style={{ alignItems: 'start' }}>
