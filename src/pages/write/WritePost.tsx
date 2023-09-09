@@ -38,7 +38,7 @@ const WritePost = () => {
       console.log(error);
     },
   });
-
+  //sfsdsdfsf
   const imageHandler = () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
