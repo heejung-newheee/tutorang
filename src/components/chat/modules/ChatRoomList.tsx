@@ -32,7 +32,7 @@ const calculateTimeDifference = (inputTime: string): string => {
 const ChatRoomList = ({ userId }: { userId: string }) => {
   const [searchInput, setSearchInput] = useState('');
   const { chatRoomList } = useChatContext();
-  const {isMobile} = useViewport()
+  const { isMobile } = useViewport();
 
   const handleClearSearchInput = () => {
     setSearchInput('');
@@ -65,18 +65,20 @@ const ChatRoomList = ({ userId }: { userId: string }) => {
         <S.SearchBarIcon htmlFor="chat_room_search">
           <BiSearchAlt2 color="#C9C9C9" />
         </S.SearchBarIcon>
-        <S.SearchInput id="chat_room_search" type="text" value={searchInput} onChange={handleChangeSearchInput} placeholder='이름으로 검색하세요.'/>
+        <S.SearchInput id="chat_room_search" type="text" value={searchInput} onChange={handleChangeSearchInput} placeholder="이름으로 검색하세요." />
         {searchInput && (
           <S.SearchClearButton onClick={() => handleClearSearchInput()}>
             <AiFillCloseCircle size={16} color="#aaaaaadc" />
           </S.SearchClearButton>
         )}
       </S.SearchBar>
-      <ul>
-        {sortedChatRoomList?.map((room) => (
-          <ChatRoomPreview room={room} key={room.room_id} userId={userId} />
-        ))}
-      </ul>
+      <div style={{ overflowY: 'auto' }}>
+        <ul>
+          {sortedChatRoomList?.map((room) => (
+            <ChatRoomPreview room={room} key={room.room_id} userId={userId} />
+          ))}
+        </ul>
+      </div>
     </S.Container>
   );
 };

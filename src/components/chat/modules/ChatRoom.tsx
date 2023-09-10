@@ -98,6 +98,10 @@ const ChatRoom = ({ userId }: { userId: string }) => {
     });
   };
 
+  const handleOpenDetailModal = (id: string) => {
+    dispatch(openModal({ type: 'chatPlayerDetailModal', targetId: id }));
+  };
+
   useEffect(() => {
     if (!chatAreaRef.current) return;
     chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
@@ -129,11 +133,9 @@ const ChatRoom = ({ userId }: { userId: string }) => {
           {profile && (
             <>
               <S.HeaderTitle>{profile.username}</S.HeaderTitle>
-              {profile.role === 'tutor' && (
-                <S.IconButton as="a" href={`/detail/${profile.id}`} target="_blank">
-                  <IoIosInformationCircleOutline size={22} />
-                </S.IconButton>
-              )}
+              <S.IconButton onClick={() => handleOpenDetailModal(profile.id)}>
+                <IoIosInformationCircleOutline size={22} />
+              </S.IconButton>
             </>
           )}
         </div>

@@ -12,6 +12,11 @@ export const getUser = async (email: string | undefined) => {
   return data;
 };
 
+export const getUserById = async (id: string) => {
+  const { data } = await supabase.from('profiles').select().eq('id', id).single();
+  return data;
+};
+
 export const profileImgUpload = async ({ id, img }: { id: string; img: File }) => {
   try {
     const imgName = v4();

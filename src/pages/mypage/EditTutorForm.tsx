@@ -127,7 +127,7 @@ const EditTutorForm = () => {
     };
     const { error } = await supabase.from('tutor_info').update(formData).eq('user_id', user?.id);
     await supabase.from('profiles').update(locationUpdate).eq('id', user?.id);
-    if (error) console.log(error.message);
+    if (error) console.error(error.message);
     else {
       alert('수업 정보 변경이 완료되었습니다');
       navigate(-1);

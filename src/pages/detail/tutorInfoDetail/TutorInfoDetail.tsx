@@ -82,7 +82,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
   }
 
   if (tutorError || reviewError) {
-    console.log(error);
+    console.error(error);
     return <div>에러</div>;
   }
 
@@ -107,7 +107,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
               <S.InfoWrapper>
                 <S.TutorNameWrapper>
                   <S.TutorName>
-                    {tutor.tutor_name} <S.Age>(나이)</S.Age>
+                    {tutor.tutor_name} <S.Age>({tutor.tutor_age})</S.Age>
                   </S.TutorName>
                   <S.verify>
                     <S.Icon src={icon_verify} />
@@ -190,7 +190,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
             <span>리뷰 수</span>
           </S.OverviewItem>
           <S.OverviewItem>
-            <S.OverviewItemIcon2 src={icon_like} alt="매칭 아이콘" />
+            <S.OverviewItemIcon src={icon_like} alt="매칭 아이콘" />
             <S.OverviewItemNumber>{matchingCount.data?.length}번</S.OverviewItemNumber>
             <span>매칭 횟수</span>
           </S.OverviewItem>

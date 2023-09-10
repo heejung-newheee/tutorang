@@ -5,7 +5,6 @@ export const FlowTabWrap = styled.div`
   gap: 3rem;
   max-width: 890px;
   margin: 0 auto;
-  margin-top: 140px;
   position: relative;
   @media screen and (max-width: 1024px) {
     max-width: 600px;

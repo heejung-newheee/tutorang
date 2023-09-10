@@ -21,6 +21,25 @@ const Community = () => {
         <h1>커뮤니티</h1>
         <p>튜터링을 이용하는 사람들의 이야기를 들어보세요.</p>
       </S.CommunityTitle>
+      <S.ResponsivMenu>
+        <S.ResponsivMenuColor $color={path === 'free'} onClick={() => navigate('free')}>
+          {' '}
+          <span>자유 게시판</span>
+        </S.ResponsivMenuColor>
+        <S.ResponsivMenuColor $color={path === 'question'} onClick={() => navigate('question')}>
+          {' '}
+          <span>질문 게시판</span>
+        </S.ResponsivMenuColor>
+
+        <S.ResponsivMenuColor $color={path === 'study'} onClick={() => navigate('study')}>
+          {' '}
+          <span>학습 정보 게시판</span>
+        </S.ResponsivMenuColor>
+
+        <S.ResponsivMenuColor $color={path === 'region'} onClick={() => navigate('region')}>
+          <span>지역별 게시판</span>
+        </S.ResponsivMenuColor>
+      </S.ResponsivMenu>
       <S.PostContainer>
         <S.Category>
           <S.CategoryColor $color={path === 'free'} onClick={() => navigate('free')}>

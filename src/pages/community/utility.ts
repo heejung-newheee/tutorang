@@ -9,23 +9,22 @@ export const handlePrev = (currentNum: number, setCurrentNum: Dispatch<SetStateA
 };
 
 export const handleNext = (currentNum: number, totalPageNum: number | null, setCurrentNum: Dispatch<SetStateAction<number>>, setHasPageMore: Dispatch<SetStateAction<boolean>>) => {
-  const num = currentNum * pageCount;
-  if (totalPageNum && totalPageNum - num < 0) return;
-  if (totalPageNum && totalPageNum - num > 0) {
+  const totalPostNum = currentNum * pageCount;
+
+  if (totalPageNum && totalPageNum < totalPostNum) return;
+  if (totalPageNum && totalPageNum > totalPostNum) {
     setCurrentNum((pre) => pre + 1);
   }
 
   const nextCurrentNum = currentNum + 1;
-  console.log(currentNum, nextCurrentNum);
-  console.log(totalPageNum && totalPageNum - nextCurrentNum * pageCount, 'totalPageNum && totalPageNum - nextCurrentNum * pageCount <= 0');
-  if (totalPageNum && totalPageNum - nextCurrentNum * pageCount <= 0) {
-    // console.log('sfdsfd');
+  if (totalPageNum && totalPageNum <= nextCurrentNum * pageCount) {
     setHasPageMore(false);
   }
 };
 
 export const handleTotalNext = (totalPageNum: number | null, setCurrentNum: Dispatch<SetStateAction<number>>, setHasPageMore: Dispatch<SetStateAction<boolean>>) => {
-  const totalCurrent = totalPageNum && totalPageNum / pageCount;
+  if (totalPageNum && totalPageNum <= pageCount) return;
+  const totalCurrent = totalPageNum && Math.ceil(totalPageNum / pageCount);
   totalCurrent && setCurrentNum(totalCurrent);
   setHasPageMore(false);
 };
@@ -35,6 +34,21 @@ export const handleCurrentOne = (setCurrentNum: Dispatch<SetStateAction<number>>
   setHasPageMore(true);
 };
 
-// const handleCurrent = (num: number) => {
-//   setCurrentNum(num);
-// };
+export const detailDate = (a: Date) => {
+  const milliSeconds = new Date().getTime() - a.getTime();
+  const seconds = milliSeconds / 1000;
+  if (seconds < 60) return `방금 전`;
+  const minutes = seconds / 60;
+  if (minutes < 60) return `${Math.floor(minutes)}분 전`;
+  const hours = minutes / 60;
+  if (hours < 24) return `${Math.floor(hours)}시간 전`;
+  const days = hours / 24;
+  if (days < 7) return `${Math.floor(days)}일 전`;
+  const weeks = days / 7;
+  if (weeks < 5) {
+    const year = a.getFullYear().toString().slice(-2);
+    const month = a.getMonth();
+    const day = a.getDay();
+    return `${year}.${month}.${day}`;
+  }
+};
