@@ -41,8 +41,6 @@ const TutorApply = () => {
     }
   };
 
-  const handleChangeSuccess = (_state: string, id: number) => {};
-
   if (isLoading) {
     return <Loading />;
   }
@@ -68,10 +66,8 @@ const TutorApply = () => {
           return (
             <S.TutorList key={tutor.id}>
               <S.UserWrapper>
-                <S.Avatar>
-                  <S.AvatarImg src={tutor.user_id.avatar_url} />
-                </S.Avatar>
-                <S.UserName>{tutor.user_id.username}</S.UserName>
+                <S.Avatar>{/* <S.AvatarImg src={tutor.user_id.avatar_url} /> */}</S.Avatar>
+                {/* <S.UserName>{tutor.user_id.username}</S.UserName> */}
               </S.UserWrapper>
 
               <div>

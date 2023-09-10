@@ -772,64 +772,6 @@ export interface Database {
           },
         ];
       };
-      post_like: {
-        Row: {
-          created_at: string;
-          id: string;
-          post_id: number | null;
-          user_id: string | null;
-        };
-        Insert: {
-          created_at?: string;
-          id?: string;
-          post_id?: number | null;
-          user_id?: string | null;
-        };
-        Update: {
-          created_at?: string;
-          id?: string;
-          post_id?: number | null;
-          user_id?: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'post_like_post_id_fkey';
-            columns: ['post_id'];
-            referencedRelation: 'write';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'post_like_user_id_fkey';
-            columns: ['user_id'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'post_like_user_id_fkey';
-            columns: ['user_id'];
-            referencedRelation: 'matching_tutor_data';
-            referencedColumns: ['tutor_id'];
-          },
-          {
-            foreignKeyName: 'post_like_user_id_fkey';
-            columns: ['user_id'];
-            referencedRelation: 'most_review_tutor';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'post_like_user_id_fkey';
-            columns: ['user_id'];
-            referencedRelation: 'tutor_info_join';
-            referencedColumns: ['tutor_id'];
-          },
-          {
-            foreignKeyName: 'post_like_user_id_fkey';
-            columns: ['user_id'];
-            referencedRelation: 'tutor_top_reviewer';
-            referencedColumns: ['tutor_id'];
-          },
-        ];
-      };
       profiles: {
         Row: {
           age: number | null;
@@ -897,7 +839,7 @@ export interface Database {
           content: string | null;
           created_at: string;
           id: number;
-          matched_id: string | null;
+          matched_id?: string | null;
           rating: number | null;
           reviewed_id: string | null;
           title: string | null;
@@ -1076,7 +1018,6 @@ export interface Database {
           content: string | null;
           created_at: string;
           id: number;
-          like: number | null;
           title: string | null;
           user_id: string | null;
         };
@@ -1085,7 +1026,6 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           id?: number;
-          like?: number | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -1094,7 +1034,6 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           id?: number;
-          like?: number | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -1233,83 +1172,76 @@ export interface Database {
           },
         ];
       };
-      review_auth_info: {
+      review_matching_view: {
         Row: {
-          author: string | null;
           content: string | null;
-          created_at: string | null;
-          gender: string | null;
-          id: number | null;
-          location1_gugun: string | null;
-          location1_sido: string | null;
-          location2_gugun: string | null;
-          location2_sido: string | null;
+          matched: boolean | null;
           matched_id: string | null;
+          post_id: number | null;
           rating: number | null;
-          reviewed_id: string | null;
-          role: string | null;
+          review_confirm: boolean | null;
+          status: string | null;
           title: string | null;
-          user_age: number | null;
+          tutor_id: string | null;
           user_id: string | null;
-          user_img: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'review_reviewed_id_fkey';
-            columns: ['reviewed_id'];
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'review_reviewed_id_fkey';
-            columns: ['reviewed_id'];
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
             referencedRelation: 'matching_tutor_data';
             referencedColumns: ['tutor_id'];
           },
           {
-            foreignKeyName: 'review_reviewed_id_fkey';
-            columns: ['reviewed_id'];
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
             referencedRelation: 'most_review_tutor';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'review_reviewed_id_fkey';
-            columns: ['reviewed_id'];
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
             referencedRelation: 'tutor_info_join';
             referencedColumns: ['tutor_id'];
           },
           {
-            foreignKeyName: 'review_reviewed_id_fkey';
-            columns: ['reviewed_id'];
+            foreignKeyName: 'matching_tutor_id_fkey';
+            columns: ['tutor_id'];
             referencedRelation: 'tutor_top_reviewer';
             referencedColumns: ['tutor_id'];
           },
           {
-            foreignKeyName: 'review_user_id_fkey';
+            foreignKeyName: 'matching_user_id_fkey';
             columns: ['user_id'];
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'review_user_id_fkey';
+            foreignKeyName: 'matching_user_id_fkey';
             columns: ['user_id'];
             referencedRelation: 'matching_tutor_data';
             referencedColumns: ['tutor_id'];
           },
           {
-            foreignKeyName: 'review_user_id_fkey';
+            foreignKeyName: 'matching_user_id_fkey';
             columns: ['user_id'];
             referencedRelation: 'most_review_tutor';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'review_user_id_fkey';
+            foreignKeyName: 'matching_user_id_fkey';
             columns: ['user_id'];
             referencedRelation: 'tutor_info_join';
             referencedColumns: ['tutor_id'];
           },
           {
-            foreignKeyName: 'review_user_id_fkey';
+            foreignKeyName: 'matching_user_id_fkey';
             columns: ['user_id'];
             referencedRelation: 'tutor_top_reviewer';
             referencedColumns: ['tutor_id'];
@@ -1321,7 +1253,6 @@ export interface Database {
           class_info: string | null;
           class_level: string[] | null;
           created_at: string | null;
-          enrollmentStatus: string | null;
           gender: string | null;
           location1_gugun: string | null;
           location1_sido: string | null;
@@ -1414,7 +1345,7 @@ export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'c
 };
 
 export type BookMarkType = Pick<Tables<'book_mark'>, 'liked_id' | 'user_id'>;
-export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating' | 'matched_id'>;
+export type reviews = Pick<Tables<'review'>, 'matched_id' | 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
 export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
 export type RoomType = Tables<'chat_rooms'> & {
   chat_room_participants: (Tables<'chat_room_participants'> & { profiles: Tables<'profiles'> })[];
