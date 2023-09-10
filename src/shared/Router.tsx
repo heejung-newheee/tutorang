@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Layout, SignInForm, SignUpForm } from '../components';
+import { AdminLayout, Layout, SignInForm, SignUpForm } from '../components';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
-import { Community, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, WritePost } from '../pages';
+import { Community, Dashboard, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, UserManage, WritePost } from '../pages';
 import WelcomeMessagePage from '../pages/auth/SignUpForm/WelcomeMessagePage';
 import RegistTutorForm from '../pages/auth/registTutorForm/RegistTutorForm';
 import Chat from '../pages/chat/Chat';
@@ -11,13 +11,15 @@ import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateA
 import EditProfileForm from '../pages/mypage/profileForm/EditProfileForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
-import Admin from '../pages/admin/Admin';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/admin/dashboard" element={<Admin />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="user-manage" element={<UserManage />} />
+        </Route>
         <Route element={<GlobalLayout />}>
           <Route path="/" element={<Main />} />
           <Route
