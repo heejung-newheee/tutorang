@@ -897,7 +897,7 @@ export interface Database {
           content: string | null;
           created_at: string;
           id: number;
-          matched_id: string | null;
+          matched_id?: string | null;
           rating: number | null;
           reviewed_id: string | null;
           title: string | null;

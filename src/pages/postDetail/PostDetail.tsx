@@ -22,7 +22,7 @@ const PostDetail = () => {
   const { data } = useQuery(['write'], () => getWriteData(postid));
 
   console.log(data, 'data');
-
+  //ㅁㅇㅁㅇㅁㅇㅁㄴㅇㄴ
   const likemutation = useMutation(async (newInfo: any) => firstClickLikeApi(newInfo, postid, detail_user_id), {
     onSuccess: () => {
       queryClient.invalidateQueries(['write']);

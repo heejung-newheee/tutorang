@@ -22,7 +22,7 @@ const WritePost = () => {
 
   const location = useLocation();
   const path = location.pathname.split('/')[2];
-  const [query, setQuery] = useSearchParams();
+  const [query, _] = useSearchParams();
   const editPostNum = Number(query.get('q'));
 
   const imageHandler = () => {
