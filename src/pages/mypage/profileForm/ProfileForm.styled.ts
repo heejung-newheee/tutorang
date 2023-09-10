@@ -98,7 +98,7 @@ export const EditInput = styled.input`
   border: 1px solid #696969;
   color: #000;
   vertical-align: middle;
-  padding: 5px;
+  padding: 5px 10px;
   margin: 5px 0;
   &.edit-photo {
     cursor: pointer;
@@ -134,6 +134,48 @@ export const PasswordChangeWrap = styled.div`
 export const ConfirmPass = styled.div`
   font-size: 12px;
   color: #ff003e;
+`;
+
+export const PasswordWrap = styled.div`
+  position: relative;
+`;
+export const PasswordEyeButton = styled.div`
+  position: absolute;
+  right: 20px;
+  bottom: 14px;
+  z-index: 3;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  .pw_button_hidden_color {
+    fill: #cdcdcd;
+  }
+  .pw_button_shown_color {
+    fill: #696969;
+  }
+  &:hover {
+    cursor: pointer;
+    .reset_input_btn {
+      fill: #696969;
+    }
+  }
+  &:focus {
+    .reset_input_btn {
+      fill: #696969;
+    }
+  }
+  @media screen and (max-width: 420px) {
+    right: 15px;
+    bottom: 16px;
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
 `;
 
 export const EditSubmitButton = styled.button<{ disabled: boolean }>`

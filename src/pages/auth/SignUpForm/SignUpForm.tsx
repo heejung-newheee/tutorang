@@ -396,7 +396,7 @@ const SButton = styled.button<{ disabled: boolean }>`
   height: 50px;
   line-height: 50px;
   width: 100%;
-  margin: 0 auto;
+  margin: 30px 0 auto;
   background-color: ${(props) => {
     if (props.disabled === true) return '#e7e7e7';
     else return '#FE902F';

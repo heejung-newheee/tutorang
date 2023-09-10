@@ -96,3 +96,101 @@ export const SButton = styled.button<{ disabled: boolean }>`
     line-height: 45px;
   }
 `;
+
+// 약관동의
+
+export const SHeader = styled.header`
+  width: 100%;
+  height: 175px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  & h2 {
+    font-size: 32px;
+    font-weight: 700;
+  }
+  @media screen and (max-width: 420px) {
+    height: 120px;
+    & h2 {
+      font-size: 25px;
+      font-weight: 600;
+    }
+  }
+`;
+
+export const Label = styled.label`
+  width: 100%;
+  color: #3d3d3d;
+`;
+export const Span = styled.span`
+  width: 40px;
+  cursor: pointer;
+  color: #706d6d;
+`;
+
+export const CheckTeramsAndConditions = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  @media screen and (max-width: 420px) {
+    gap: 10px;
+    font-size: 15px;
+  }
+`;
+
+export const SCheckboxContainer = styled.div`
+  width: 100%;
+`;
+
+export const SCheckBox = styled.input`
+  display: none;
+`;
+
+export const SCheckLabel = styled.label`
+  /* width: 30px; */
+  height: 30px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media screen and (max-width: 420px) {
+    height: 27px;
+  }
+`;
+
+export const ConditionsContents = styled.div`
+  padding: 30px;
+  border: solid 1px #efefef;
+  border-radius: 5px;
+  color: #a5a5a5;
+  overflow-y: auto;
+  height: 0;
+  max-height: 0px;
+  transition: all 0.5s ease-in-out;
+  &.show {
+    max-height: 300px;
+    height: 300px;
+    margin: 5px 0 15px;
+  }
+  &.hide {
+    padding: 0 30px;
+    height: 0;
+    border: 0;
+  }
+
+  div {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  ul {
+    padding-left: 18px;
+    margin: 5px 0 15px;
+    li {
+      list-style: disc;
+    }
+  }
+`;

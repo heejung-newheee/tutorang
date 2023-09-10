@@ -1,22 +1,28 @@
-import supabase from '../supabase';
 import { v4 } from 'uuid';
+import supabase from '../supabase';
 
-type tutoringType = 'request' | 'accept' | 'reject';
+type TutorType = 'pending' | 'reject';
+type StudentType = 'request' | 'accept' | 'reject';
 
 export type ImageDataType = {
-  imageUrl: string
-}
+  imageUrl: string;
+};
 
 export type LocationDataType = {
-  name: string,
-  latitude: number,
-  longitude: number
-}
+  name: string;
+  latitude: number;
+  longitude: number;
+};
 
-const TUTORING_MESSAGE = {
-  request: '튜터링을 요청했습니다',
-  accept: '튜터링을 수락했습니다',
-  reject: '튜터링을 거절했습니다',
+const TUTOR_MESSAGE = {
+  pending: '튜터님이 튜터링을 수락했습니다',
+  reject: '튜터님이 튜터링을 거절했습니다',
+};
+
+const STUDENT_MESSAGE = {
+  request: '학생이 튜터링을 요청했습니다',
+  accept: '튜터링을 완료했습니다',
+  reject: '학생이 튜터링을 취소했습니다',
 };
 
 export const createChatRoom = async () => {
@@ -138,8 +144,8 @@ export const sendTextMessage = async (room_id: string, message: string) => {
   if (error) throw error;
 };
 
-export const sendTutoringMessage = async (room_id: string, type: tutoringType) => {
-  const message = TUTORING_MESSAGE[type];
+export const sendTutorMessage = async (room_id: string, type: TutorType) => {
+  const message = TUTOR_MESSAGE[type];
   const { error } = await supabase.from('chat_messages').insert({
     room_id: room_id,
     type,
@@ -148,27 +154,31 @@ export const sendTutoringMessage = async (room_id: string, type: tutoringType) =
   if (error) throw error;
 };
 
+export const sendStudentMessage = async (room_id: string, type: StudentType) => {
+  const message = STUDENT_MESSAGE[type];
+  const { error } = await supabase.from('chat_messages').insert({
+    room_id: room_id,
+    type,
+    content: message,
+  });
+  if (error) throw error;
+};
 
 export const sendImageMessage = async (room_id: string, image_file: File) => {
   const fileType = image_file.type.includes('/') ? image_file.type.split('/')[1] : image_file.type;
-  const fileName = `${v4()}.${fileType}`
+  const fileName = `${v4()}.${fileType}`;
 
-  const imageUploadResult = await supabase.storage
-  .from('chat')
-  .upload(`images/${fileName}`, image_file,{
+  const imageUploadResult = await supabase.storage.from('chat').upload(`images/${fileName}`, image_file, {
     cacheControl: '3600',
-    upsert: false
-  })
+    upsert: false,
+  });
 
-  if(imageUploadResult.error) throw new Error('이미지 업로드에 실패했습니다.')
+  if (imageUploadResult.error) throw new Error('이미지 업로드에 실패했습니다.');
 
-  const getPublicUrlResult = supabase
-  .storage
-  .from('chat')
-  .getPublicUrl(`images/${fileName}`)
+  const getPublicUrlResult = supabase.storage.from('chat').getPublicUrl(`images/${fileName}`);
 
-  const imagUrl = getPublicUrlResult.data.publicUrl
-  if(!imagUrl) throw new Error('이미지 주소를 가져올 수 없습니다.')
+  const imagUrl = getPublicUrlResult.data.publicUrl;
+  if (!imagUrl) throw new Error('이미지 주소를 가져올 수 없습니다.');
 
   const { error } = await supabase.from('chat_messages').insert({
     room_id: room_id,
@@ -177,16 +187,16 @@ export const sendImageMessage = async (room_id: string, image_file: File) => {
     content: '이미지',
   });
 
-  if(error) throw error;
-}
+  if (error) throw error;
+};
 
 export const sendLocationMessage = async (room_id: string, location: LocationDataType) => {
-  if(!room_id) return
+  if (!room_id) return;
   const { error } = await supabase.from('chat_messages').insert({
     room_id,
     type: 'location',
     data: location,
-    content: '위치'
+    content: '위치',
   });
-  if(error) throw error;
-}
+  if (error) throw error;
+};

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { colors } from '../../../style/theme/colors';
 
@@ -16,7 +15,7 @@ export const TutorClassTop = styled.div`
   align-items: center;
   margin-bottom: 21px;
 `;
-export const ClassEditBtn = styled(Link)`
+export const ClassEditBtn = styled.button`
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -25,7 +24,7 @@ export const ClassEditBtn = styled(Link)`
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 8px;
+    padding: 3px;
   }
 `;
 export const TutorClass = styled.div`

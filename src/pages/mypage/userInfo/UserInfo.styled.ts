@@ -14,6 +14,7 @@ export const DataItem = styled.li`
   border-radius: 8px;
   background-color: #fff;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 17px;
@@ -23,16 +24,25 @@ export const DataTitle = styled.h3`
   font-size: 21px;
   font-weight: bold;
   margin: 0 0 20px 0;
+  @media all and (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 export const DataContent = styled.p`
   font-size: 16px;
   margin: 0 0 25px 0;
+  @media all and (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 export const DataAuth = styled.p`
   font-size: 13px;
   color: #999;
+  @media all and (max-width: 768px) {
+    font-size: 10px;
+  }
 `;
 export const DataStar = styled.div`
   img {
@@ -44,9 +54,18 @@ export const ReviewRating = styled.div`
   display: flex;
   flex-wrap: nowrap;
   gap: 5px;
+  margin-left: 30px;
+  @media all and (max-width: 1024px) {
+    gap: 3px;
+    margin-left: 0;
+    margin-top: 5px;
+  }
   img {
     width: 30px;
     filter: invert(78%) sepia(45%) saturate(4904%) hue-rotate(337deg) brightness(102%) contrast(99%);
+    @media all and (max-width: 768px) {
+      width: 15px;
+    }
   }
 `;
 

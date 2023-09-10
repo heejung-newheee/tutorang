@@ -8,11 +8,13 @@ const TUITION_FEE_OFFLINE = [10000, 20000, 30000, 40000, 50000, 60000, 70000, 80
 type SelectTuitionFeeType = {
   $tuitionType: string;
   $selectTuitionFee: (option: number, tuitionType: string) => void;
+  $prevValue: number;
 };
 
-const SelectTuitionFee: React.FC<SelectTuitionFeeType> = ({ $tuitionType, $selectTuitionFee }) => {
+const SelectTuitionFee: React.FC<SelectTuitionFeeType> = ({ $tuitionType, $selectTuitionFee, $prevValue }) => {
   const dropContainerRef = useRef<HTMLDivElement>(null);
-  const [selectedOption, setSelectedOption] = useState(0);
+  const [selectedOption, setSelectedOption] = useState($prevValue || 0);
+
   let options: number[] = [];
   if ($tuitionType === 'online') {
     options = TUITION_FEE_ONLINE;

@@ -153,7 +153,7 @@ const RegistTutorForm = () => {
               <label htmlFor="university">대학교</label>
               <SItemSchool>
                 <SInput type="text" id="university" name="university" value={university} onChange={onChangeInputHandler} />
-                <SelectEnrollmentStatus $setEnrollmentStatus={setEnrollmentStatus} />
+                <SelectEnrollmentStatus $setEnrollmentStatus={setEnrollmentStatus} $selectedOption={classInfo} />
               </SItemSchool>
             </SCertificateItem>
             <SCertificateItem>
@@ -215,14 +215,14 @@ const RegistTutorForm = () => {
                 <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
                 <span>화상 수업</span>
               </SItemHeader>
-              <SelectTuitionFee $tuitionType={'online'} $selectTuitionFee={selectTuitionFee} />
+              <SelectTuitionFee $tuitionType={'online'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOnline} />
             </STuitionItem>
             <STuitionItem>
               <SItemHeader>
                 <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
                 <span>대면 수업</span>
               </SItemHeader>
-              <SelectTuitionFee $tuitionType={'offline'} $selectTuitionFee={selectTuitionFee} />
+              <SelectTuitionFee $tuitionType={'offline'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOffline} />
             </STuitionItem>
           </STuitionItems>
         </SFormItem>
