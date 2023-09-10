@@ -11,11 +11,13 @@ import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateA
 import EditProfileForm from '../pages/mypage/profileForm/EditProfileForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
+import Admin from '../pages/admin/Admin';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/admin/dashboard" element={<Admin />} />
         <Route element={<GlobalLayout />}>
           <Route path="/" element={<Main />} />
           <Route

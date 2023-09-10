@@ -18,3 +18,4 @@ export { default as Review } from './review/Review';
 export { default as ReviewForm } from './review/reviewForm/ReviewForm';
 export { default as ReviewUpdateForm } from './review/reviewForm/ReviewUpdateForm';
 export { default as StarTutorSlider } from './slider/starTutorSlider/StarTutorSlider';
+export { default as Dashboard } from './dashboard/Dashboard';

@@ -3,6 +3,7 @@ export { default as List } from './list/List';
 export { default as Main } from './main/Main';
 export { default as Mypage } from './mypage/Mypage';
 export { default as NotFound } from './notFound/NotFound';
+export { default as Admin } from './admin/Admin';
 export { default as Community } from './community/Community';
 export { default as StudyCommunity } from './community/categoryCommunity/StudyCommunity';
 export { default as RegionCommunity } from './community/categoryCommunity/RegionCommunity';
