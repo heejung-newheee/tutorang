@@ -1,44 +1,30 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
 import { RootState } from '../../redux/config/configStore';
 import supabase from '../../supabase';
 import './write.css';
+import { WriteInsertApi, editUpdateApi } from '../../api/writeCommunity';
 
 const WritePost = () => {
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState<string | null>('');
   const QuillRef = useRef<ReactQuill>();
-  const [contents, setContents] = useState('');
+  const [contents, setContents] = useState<string | null>('');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
   const location = useLocation();
-
   const path = location.pathname.split('/')[2];
+  const [query, _] = useSearchParams();
+  const editPostNum = Number(query.get('q'));
 
-  const api = async (newInfo: any) => {
-    const { error } = await supabase.from('write').insert(newInfo);
-
-    console.error(error);
-    if (error) throw error;
-  };
-
-  const mutation = useMutation(async (newInfo: any) => api(newInfo), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['write']);
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
-  //sfsdsdfsf
   const imageHandler = () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -57,9 +43,6 @@ const WritePost = () => {
             upsert: true,
           });
 
-          // if (data !== null) {
-          //   console.log('이미지 URL:', data);
-          // }
           console.log(data, error);
 
           const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
@@ -94,29 +77,63 @@ const WritePost = () => {
   );
 
   const handleSubmit = async () => {
-    console.log('sfssdfsd');
-    mutation.mutate({
-      title: title,
-      content: contents,
-      user_id: loginUser?.id,
-      category: path,
-    });
+    if (path === 'edit-community') {
+      editUpdateMutation.mutate({
+        title: title,
+        content: contents,
+      });
+    }
+
+    if (path === 'free' || path === 'study' || path === 'question' || path === 'region') {
+      communityMutation.mutate({
+        title: title,
+        content: contents,
+        user_id: loginUser?.id,
+        category: path,
+      });
+    }
   };
-  // const getApi = async () => {
-  //   const { data, error } = await supabase.from('write').select('*');
-  //   console.log(data);
-  //   if (error) throw error;
-  //   return data;
-  // };
 
-  // const { data } = useQuery(['write'], getApi);
+  const editCommunity = async () => {
+    const { data } = await supabase
+      .from('write')
+      .select('*')
+      .eq('id', Number(query.get('q')));
+    setTitle(data && data[0]?.title);
+    setContents(data && data[0]?.content);
+  };
 
-  // console.log(data, 'data');
+  ///community-edit
+  useEffect(() => {
+    if (path === 'edit-community') {
+      editCommunity();
+    }
+  }, []);
+  ///community-insert
+  const communityMutation = useMutation(async (newInfo: any) => WriteInsertApi(newInfo), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['write']);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  //community-edit
+  const editUpdateMutation = useMutation(async (newInfo: any) => editUpdateApi(newInfo, editPostNum), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['write']);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
   return (
     <WriteContainer>
       {/* <div>title</div> */}
       <Title>
-        <input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="제목을 입력해주세요" />
+        <input value={title as string} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="제목을 입력해주세요" />
       </Title>
       <ReactQuill
         ref={(element) => {
@@ -124,7 +141,7 @@ const WritePost = () => {
             QuillRef.current = element;
           }
         }}
-        value={contents}
+        value={contents as string}
         onChange={setContents}
         modules={modules}
         className="quill"

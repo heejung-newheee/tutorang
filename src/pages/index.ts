@@ -10,3 +10,5 @@ export { default as QuestionCommunity } from './community/categoryCommunity/Ques
 export { default as WritePost } from './write/WritePost';
 export { default as FreeCommunity } from './community/categoryCommunity/FreeCommunity';
 export { default as PostDetail } from './postDetail/PostDetail';
+export { default as Dashboard } from './admin/dashboard/Dashboard';
+export { default as UserManage } from './admin/userManage/UserManage';

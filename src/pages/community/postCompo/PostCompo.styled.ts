@@ -9,12 +9,21 @@ export const Post = styled.div<{ $lastElement: boolean }>`
   border-left: 1px solid ${colors.gray_900};
   border-bottom: ${(props) => (props.$lastElement === true ? 'none' : `1px solid ${colors.gray_900}`)};
   position: relative;
+
+  @media all and (max-width: 768px) {
+    border-left: none;
+    height: auto;
+  }
 `;
 
 export const UserWrite = styled.div`
   width: calc(100% - 200px);
   display: flex;
   flex-direction: column;
+
+  @media all and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const UserImg = styled.div`
@@ -22,6 +31,10 @@ export const UserImg = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media all and (max-width: 768px) {
+    display: none;
+  }
 
   & > img {
     width: 100%;
@@ -55,6 +68,12 @@ export const DateNameDiv = styled.div`
   }
 `;
 
+export const TitleTextDiv = styled.div`
+  @media all and (max-width: 768px) {
+    margin-bottom: 50px;
+  }
+`;
+
 export const Title = styled.h1`
   font-weight: 700;
   font-size: 20px;
@@ -66,9 +85,36 @@ export const Title = styled.h1`
 
 export const Text = styled.p`
   font-size: 15px;
+  line-height: 1.6rem;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+
+  @media all and (max-width: 768px) {
+    text-overflow: clip;
+    white-space: normal;
+  }
+`;
+
+export const ResponsiveImg = styled.div`
+  display: none;
+  margin-bottom: 30px;
+
+  & > div {
+    display: flex;
+    align-items: center;
+  }
+  & > div > img {
+    width: 120px;
+    height: 120px;
+    margin-right: 10px;
+    object-fit: cover;
+  }
+
+  @media all and (max-width: 768px) {
+    display: block;
+    width: 100%;
+  }
 `;
 
 export const Like = styled.div`

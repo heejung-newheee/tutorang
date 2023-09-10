@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Layout, SignInForm, SignUpForm } from '../components';
+import { AdminLayout, Layout, SignInForm, SignUpForm } from '../components';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
-import { Community, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, WritePost } from '../pages';
+import { Community, Dashboard, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, UserManage, WritePost } from '../pages';
 import WelcomeMessagePage from '../pages/auth/SignUpForm/WelcomeMessagePage';
 import RegistTutorForm from '../pages/auth/registTutorForm/RegistTutorForm';
 import Chat from '../pages/chat/Chat';
@@ -16,6 +16,10 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="user-manage" element={<UserManage />} />
+        </Route>
         <Route element={<GlobalLayout />}>
           <Route path="/" element={<Main />} />
           <Route
@@ -28,11 +32,11 @@ const Router = () => {
           />
           <Route path="/review" element={<MatchedReview />} />
           <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/post/:postid" element={<PostDetail />} />
 
           <Route element={<Layout />}>
             <Route path="/list" element={<List />} />
             <Route path="/write/:category" element={<WritePost />} />
-            <Route path="/post/:postid" element={<PostDetail />} />
 
             <Route path="/community" element={<Community />}>
               <Route path="free" element={<FreeCommunity />} />
