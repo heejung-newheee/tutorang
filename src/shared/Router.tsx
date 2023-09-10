@@ -1,13 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout, SignInForm, SignUpForm } from '../components';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
-import { Detail, List, Main, Mypage, NotFound } from '../pages';
+import { Community, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, WritePost } from '../pages';
 import WelcomeMessagePage from '../pages/auth/SignUpForm/WelcomeMessagePage';
 import RegistTutorForm from '../pages/auth/registTutorForm/RegistTutorForm';
 import Chat from '../pages/chat/Chat';
 import CustomerService from '../pages/customerService/CustomerService';
 import Announcements from '../pages/customerService/announcements/Announcements';
 import CustomerSupport from '../pages/customerService/customerSupport/CustomerSupport';
+import DetailCustomerSupport from '../pages/customerService/customerSupport/DetailCustomerSupport';
 import LeaveInquiryForm from '../pages/customerService/customerSupport/LeaveInquiryForm';
 import FrequentlyAskedQuestions from '../pages/customerService/fequentlyAskedQuestions/FrequentlyAskedQuestions';
 import EditTutorForm from '../pages/mypage/EditTutorForm';
@@ -31,8 +32,11 @@ const Router = () => {
             }
           />
           <Route path="/detail/:id" element={<Detail />} />
+
           <Route element={<Layout />}>
             <Route path="/list" element={<List />} />
+            <Route path="/write/:category" element={<WritePost />} />
+            <Route path="/post/:postid" element={<PostDetail />} />
             <Route
               path="/leave-inquiry"
               element={
@@ -40,7 +44,7 @@ const Router = () => {
                   <LeaveInquiryForm />
                 </AuthenticatedRoute>
               }
-            ></Route>
+            />
 
             <Route path="/customer-service" element={<CustomerService />}>
               <Route path="announcements" element={<Announcements />} />
@@ -53,6 +57,21 @@ const Router = () => {
                   </AuthenticatedRoute>
                 }
               />
+              <Route
+                path="customer-support/:inquiryid"
+                element={
+                  <AuthenticatedRoute>
+                    <DetailCustomerSupport />
+                  </AuthenticatedRoute>
+                }
+              />
+            </Route>
+
+            <Route path="/community" element={<Community />}>
+              <Route path="free" element={<FreeCommunity />} />
+              <Route path="study" element={<StudyCommunity />} />
+              <Route path="question" element={<QuestionCommunity />} />
+              <Route path="region" element={<RegionCommunity />} />
             </Route>
 
             <Route

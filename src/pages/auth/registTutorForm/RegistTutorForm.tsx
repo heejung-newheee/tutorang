@@ -37,7 +37,7 @@ const RegistTutorForm = () => {
     if (event.target.name === 'university') setUniversity(event.target.value);
     if (event.target.name === 'major') setMajor(event.target.value);
   };
-
+  console.log('checkPersonalityItems', checkPersonalityItems);
   const handleCheckedItems = (checkBoxType: string, value: string, isChecked: boolean) => {
     if (checkBoxType === 'personality') {
       if (isChecked) {

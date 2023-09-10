@@ -18,7 +18,7 @@ const CSHeader = () => {
   return (
     <SHeader>
       <h1>{CSheaderTitle}</h1>
-      <p>쉽고 빠르게 튜터를 만나보는 1:1 매칭 서비스 튜터랑</p>
+      <p>튜터랑의 관련 문의사항을 이야기 해주세요</p>
     </SHeader>
   );
 };
@@ -27,7 +27,10 @@ export default CSHeader;
 
 const SHeader = styled.header`
   width: 100%;
-  height: 155px;
+  max-width: 1140px;
+  height: 190px;
+  margin: 0 auto;
+
   display: flex;
   flex-direction: column;
   justify-content: center;

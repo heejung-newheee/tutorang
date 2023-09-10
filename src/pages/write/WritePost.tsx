@@ -1,42 +1,44 @@
-// import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
-import { CUSTOMER_SUPPORT_QUERY_KEY, TypeNewInquery, insertNewInquiry } from '../../../api/customerSupport';
-import { RootState } from '../../../redux/config/configStore';
-import supabase from '../../../supabase';
-import './../../../pages/write/write.css';
+import { RootState } from '../../redux/config/configStore';
+import supabase from '../../supabase';
+import './write.css';
 
-const LeaveInquiryForm = () => {
+const WritePost = () => {
   const [title, setTitle] = useState('');
   const QuillRef = useRef<ReactQuill>();
-  const [content, setContent] = useState('');
+  const [contents, setContents] = useState('');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  // const api = async (newInfo: any) => {
-  //   const { error } = await supabase.from('write').insert(newInfo);
+  const location = useLocation();
 
-  //   console.log(error);
-  //   if (error) throw error;
-  // };
+  const path = location.pathname.split('/')[2];
 
-  const createInquiryMutation = useMutation(async (newInquiry: TypeNewInquery) => insertNewInquiry(newInquiry), {
+  const api = async (newInfo: any) => {
+    const { error } = await supabase.from('write').insert(newInfo);
+
+    console.log(error);
+    if (error) throw error;
+  };
+
+  const mutation = useMutation(async (newInfo: any) => api(newInfo), {
     onSuccess: () => {
-      queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
+      queryClient.invalidateQueries(['write']);
     },
     onError: (error) => {
       console.log(error);
     },
   });
-
+  //sfsdsdfsf
   const imageHandler = () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -74,9 +76,7 @@ const LeaveInquiryForm = () => {
               editor.setSelection(startIndex, endIndex);
             }
           }
-        } catch (error) {
-          console.log(error);
-        }
+        } catch {}
       }
     };
   };
@@ -92,38 +92,29 @@ const LeaveInquiryForm = () => {
     }),
     [],
   );
-  console.log(content);
+  console.log(contents);
   const handleSubmit = async () => {
     console.log('sfssdfsd');
-    const formData = {
-      title,
-      user_id: loginUser!.id,
-      content,
-      isReplied: false,
-    };
-    console.log(formData);
-    try {
-      await createInquiryMutation.mutate(formData);
-    } catch (error) {
-      console.log('error submit inqury ', error);
-    }
-    // mutation.mutate(formData);
-    navigate('/customer-service/customer-support');
+    mutation.mutate({
+      title: title,
+      content: contents,
+      user_id: loginUser?.id,
+      category: path,
+    });
   };
-
-  if (!loginUser) return <div></div>;
-
-  // const formData = {
-  //   title: 'title',
-  //   user_id: loginUser.id,
-  //   content: '작성내용',
-  //   isReplied: false,
-  //   file1: 'null 들어올 수 있음',
-  //   file2: 'null 들어올 수 있음',
+  // const getApi = async () => {
+  //   const { data, error } = await supabase.from('write').select('*');
+  //   console.log(data);
+  //   if (error) throw error;
+  //   return data;
   // };
 
+  // const { data } = useQuery(['write'], getApi);
+
+  // console.log(data, 'data');
   return (
     <WriteContainer>
+      {/* <div>title</div> */}
       <Title>
         <input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="제목을 입력해주세요" />
       </Title>
@@ -133,8 +124,8 @@ const LeaveInquiryForm = () => {
             QuillRef.current = element;
           }
         }}
-        value={content}
-        onChange={setContent}
+        value={contents}
+        onChange={setContents}
         modules={modules}
         className="quill"
         theme="snow"
@@ -146,7 +137,7 @@ const LeaveInquiryForm = () => {
   );
 };
 
-export default LeaveInquiryForm;
+export default WritePost;
 
 const WriteContainer = styled.div`
   /* display: flex;

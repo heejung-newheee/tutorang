@@ -1,14 +1,17 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { RootState } from '../../redux/config/configStore';
-import { closeModal } from '../../redux/modules';
+import { colors } from '../../style/theme/colors';
 import CSHeader from './CSHeader';
 
 const CustomerService = () => {
   const loginUser = useSelector((state: RootState) => state.user.user);
-  const dispatch = useDispatch();
+  const location = useLocation();
+  const path = location.pathname.split('/')[2];
+  console.log('lookhere', location);
+
   const navigate = useNavigate();
   const handleCustomerSupportNav = () => {
     if (loginUser) {
@@ -30,9 +33,8 @@ const CustomerService = () => {
   };
 
   useEffect(() => {
-    return () => {
-      dispatch(closeModal());
-    };
+    // if
+    // navigate('announcements');
   }, []);
 
   return (
@@ -40,9 +42,15 @@ const CustomerService = () => {
       <CSHeader />
       <CustomerServiceContainer>
         <Category>
-          <CategoryItem onClick={handleAnnouncementsNav}>공지사항</CategoryItem>
-          <CategoryItem onClick={handleFAQNav}>FAQ</CategoryItem>
-          <CategoryItem onClick={handleCustomerSupportNav}>1:1 문의</CategoryItem>
+          <CategoryItem $pathType={'announcements'} $path={path} onClick={handleAnnouncementsNav}>
+            공지사항
+          </CategoryItem>
+          <CategoryItem $pathType={'frequently-asked-questions'} $path={path} onClick={handleFAQNav}>
+            FAQ
+          </CategoryItem>
+          <CategoryItem $pathType={'customer-support'} $path={path} onClick={handleCustomerSupportNav}>
+            1:1 문의
+          </CategoryItem>
         </Category>
         <PostsContainer>
           <Outlet />
@@ -58,25 +66,36 @@ const CustomerServiceContainer = styled.div`
   /* 임시 css */
   box-sizing: border-box;
   width: 100%;
-  height: 850px;
+  max-width: 1140px;
+  margin: 0 auto;
+  height: 1160px;
   display: flex;
   flex-direction: row;
 `;
 
 const Category = styled.nav`
   /* 임시 css */
+  box-sizing: border-box;
   width: 200px;
   height: 100%;
-  padding: 20px;
-  border: 2px solid #cdcdcd;
+  border: 1px solid #cdcdcd;
   display: flex;
   flex-direction: column;
-  gap: 10px;
 `;
 
-const CategoryItem = styled.div`
+const CategoryItem = styled.div<{ $pathType: string; $path: string }>`
   /* 임시 css */
-  border-bottom: 2px solid #cdcdcd;
+  box-sizing: border-box;
+  width: 200px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  border-bottom: 1px solid #cdcdcd;
+  color: ${({ $pathType, $path }) => {
+    if ($pathType === $path) return `${colors.primary}`;
+    else `#000`;
+  }};
   &:hover {
     cursor: pointer;
   }
@@ -85,6 +104,9 @@ const CategoryItem = styled.div`
 `;
 
 const PostsContainer = styled.div`
+  box-sizing: border-box;
   width: 100%;
   height: 100%; // 왜 안돼......ㅜ
+  border: 1px solid #cdcdcd;
+  border-left: none;
 `;

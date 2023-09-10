@@ -1,22 +1,23 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { closeModal } from '../../../redux/modules';
+import { CUSTOMER_SUPPORT_QUERY_KEY, getAllInquiry } from '../../../api/customerSupport';
+import { RootState } from '../../../redux/config/configStore';
 import { colors } from '../../../style/theme/colors';
 
 const CustomerSupport = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    return () => {
-      dispatch(closeModal());
-    };
-  }, []);
+  const user = useSelector((state: RootState) => state.user.user);
+  const userId = user?.id;
+  const inquiryIdFromPath = location.pathname.split(':/')[1];
+  const { data } = useQuery([CUSTOMER_SUPPORT_QUERY_KEY, inquiryIdFromPath], () => getAllInquiry(userId as string), { enabled: !!userId });
+  console.log('데타', data);
 
+  if (!user) return <div></div>;
+  if (!data) return <div></div>;
   return (
     <CustomerSupportContainer>
-      <SearchingSpace></SearchingSpace>
       <TableContainer>
         <Table>
           <Caption>1:1 상담 목록</Caption>
@@ -37,13 +38,21 @@ const CustomerSupport = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+            {data.map((item, index) => (
+              <tr key={item.id}>
+                <td>{index}</td>
+                <td
+                  onClick={() => {
+                    navigate(`/customer-service/customer-support/:${item.id}`, { state: item });
+                  }}
+                >
+                  {item.title}
+                </td>
+                <td>{item.profiles!.inquiryUsername}</td>
+                <td>{item.created_at.split('T')[0]}</td>
+                <td>{item.isReplied ? 'O' : 'X'}</td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </TableContainer>
@@ -53,6 +62,7 @@ const CustomerSupport = () => {
         </button>
       </ButtonSpace>
       <PagenationSpace>pagenation space</PagenationSpace>
+      <SearchingSpace></SearchingSpace>
     </CustomerSupportContainer>
   );
 };
@@ -68,16 +78,10 @@ const CustomerSupportContainer = styled.div`
   justify-content: space-between;
 `;
 
-const SearchingSpace = styled.div`
-  height: 8%;
-  background-color: beige;
-`;
-
 const TableContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: 76%;
-  border: 2px solid #cdcdcd;
+  height: 100%;
 `;
 
 const Table = styled.table`
@@ -110,7 +114,7 @@ const Colgroup = styled.colgroup`
 
 const ButtonSpace = styled.div`
   background-color: #cfebf7;
-  height: 8%;
+  height: 60px;
   display: flex;
   flex-direction: row;
   justify-content: end;
@@ -125,5 +129,10 @@ const ButtonSpace = styled.div`
 const PagenationSpace = styled.div`
   background-color: #abb5d1;
 
-  height: 8%;
+  height: 60px;
+`;
+
+const SearchingSpace = styled.div`
+  height: 70px;
+  background-color: beige;
 `;
