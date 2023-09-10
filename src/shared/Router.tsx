@@ -32,11 +32,11 @@ const Router = () => {
           />
           <Route path="/review" element={<MatchedReview />} />
           <Route path="/detail/:id" element={<Detail />} />
+          <Route path="/post/:postid" element={<PostDetail />} />
 
           <Route element={<Layout />}>
             <Route path="/list" element={<List />} />
             <Route path="/write/:category" element={<WritePost />} />
-            <Route path="/post/:postid" element={<PostDetail />} />
 
             <Route path="/community" element={<Community />}>
               <Route path="free" element={<FreeCommunity />} />

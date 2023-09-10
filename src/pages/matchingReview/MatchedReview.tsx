@@ -45,7 +45,7 @@ const MatchedReview = () => {
                   <S.ReviewItem>
                     <S.ReviewAuth>
                       <div>
-                        <S.Avarta src={review.user_img} alt="" />
+                        <S.Avarta src={review.user_img as string} alt="" />
                       </div>
                       <div>
                         <S.Name>
