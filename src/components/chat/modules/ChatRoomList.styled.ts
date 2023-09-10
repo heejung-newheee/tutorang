@@ -79,11 +79,13 @@ export const ProfileImageWrapper = styled.div`
   align-items: center;
 `;
 
-export const Container = styled.div<{$isMobile: boolean}>`
-    width: ${({$isMobile}) => $isMobile ? '100%' : '410px'};
+export const Container = styled.div<{ $isMobile: boolean }>`
+  width: ${({ $isMobile }) => ($isMobile ? '100%' : '410px')};
   border-right: 1px solid #eaeaea;
   overflow-y: auto;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const ChatRoomPreviewContainer = styled.li<{ $isCurrentRoom: boolean }>`

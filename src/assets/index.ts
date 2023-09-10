@@ -43,3 +43,10 @@ export { default as logo01 } from './logo-01.svg';
 export { default as logo02 } from './logo-02.svg';
 export { default as logo03 } from './logo-03.svg';
 export { default as logo04 } from './logo-04.svg';
+
+export { default as icon_home } from './icon_home.svg';
+export { default as icon_logout } from './icon_logout.svg';
+export { default as icon_more_dashboard } from './icon_more.svg';
+export { default as icon_time_dashboard } from './icon_time_dashboard.svg';
+
+export { default as icon_month } from './icon_month.svg';

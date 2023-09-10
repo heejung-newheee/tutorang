@@ -7,6 +7,7 @@ import ChatLocationModal from '../chat/modules/ChatLocationModal';
 import MatchedReviewForm from '../review/reviewForm/MatchedReviewForm';
 import * as S from './Modal.styled';
 import ModalPortal from './ModalPortal';
+import ChatPlayerDetailModal from '../chat/modules/ChatPlayerDetailModal';
 
 const GlobalModal = () => {
   const { type, isOpen } = useSelector((state: RootState) => state.modal);
@@ -24,6 +25,7 @@ const GlobalModal = () => {
     reviewYoutube: 'reviewYoutube',
     retrievePendingTutorRegistForm: 'retrievePendingTutorRegistForm',
     chatLocationModal: 'chatLocationModal',
+    chatPlayerDetailModal: 'chatPlayerDetailModal',
   };
 
   const MODAL_COMPONENTS = [
@@ -67,6 +69,10 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.chatLocationModal,
       component: <ChatLocationModal />,
+    },
+    {
+      type: MODAL_TYPES.chatPlayerDetailModal,
+      component: <ChatPlayerDetailModal />,
     },
   ];
 

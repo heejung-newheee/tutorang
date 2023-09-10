@@ -1414,7 +1414,7 @@ export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'c
 };
 
 export type BookMarkType = Pick<Tables<'book_mark'>, 'liked_id' | 'user_id'>;
-export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
+export type reviews = Pick<Tables<'review'>, 'matched_id' | 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
 export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
 export type RoomType = Tables<'chat_rooms'> & {
   chat_room_participants: (Tables<'chat_room_participants'> & { profiles: Tables<'profiles'> })[];
