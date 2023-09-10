@@ -107,7 +107,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
               <S.InfoWrapper>
                 <S.TutorNameWrapper>
                   <S.TutorName>
-                    {tutor.tutor_name} <S.Age>(나이)</S.Age>
+                    {tutor.tutor_name} <S.Age>({tutor.tutor_age})</S.Age>
                   </S.TutorName>
                   <S.verify>
                     <S.Icon src={icon_verify} />
