@@ -33,18 +33,12 @@ const PostCompo = ({ item, lastElement }: Props) => {
 
   const navigate = useNavigate();
 
-  const getContentReplace = async () => {
+  const getContentReplace = () => {
     const imgTags = item.content?.match(/<img[^>]*>/g);
     const srcPattern = /src=\"([^\"]+)\"/;
 
-    console.log(imgTags);
     if (imgTags) {
-      // const resultArr = imgTags[0].match(srcPattern);
-
       const resultArr = imgTags.map((img) => img.match(srcPattern));
-      // imgTags.forEach(img => )
-
-      // console.log(aaa, 'asdsads');
       resultArr && setMainImg(resultArr);
     }
 
@@ -57,7 +51,6 @@ const PostCompo = ({ item, lastElement }: Props) => {
     }
   };
 
-  // console.log(mainImg && mainImg[0]);
   useEffect(() => {
     getContentReplace();
   }, []);
@@ -79,8 +72,8 @@ const PostCompo = ({ item, lastElement }: Props) => {
         </S.TitleTextDiv>
         <S.ResponsiveImg>
           <div>
-            {mainImg.map((item) => (
-              <img src={item?.[1]} />
+            {mainImg.map((item, index) => (
+              <img src={item?.[1]} key={index} />
             ))}
           </div>
         </S.ResponsiveImg>

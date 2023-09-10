@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import supabase from '../../../supabase';
 import { useQuery } from '@tanstack/react-query';
 import PostCompo from '../postCompo/PostCompo';
 import Pagination from '../pagination/Pagination';
+import { getCommunityApi } from '../../../api/community';
 
 const StudyCommunity = () => {
   const [currentNum, setCurrentNum] = useState<number>(1);
@@ -14,26 +14,7 @@ const StudyCommunity = () => {
   const location = useLocation();
   const path = location.pathname.split('/')[2];
 
-  const getApi = async () => {
-    const { data, count, error } = await supabase
-      .from('write')
-      .select(
-        `*,
-    user_id (profiles: id, username, avatar_url)
-  `,
-        { count: 'exact' },
-      )
-      .eq('category', path)
-      .range((currentNum - 1) * pageCount, currentNum * pageCount - 1);
-
-    setTotalPageNum(count);
-    console.log(data, 'asdadads', count);
-
-    if (error) throw error;
-    return data;
-  };
-
-  const { data } = useQuery(['write'], getApi);
+  const { data } = useQuery(['write', currentNum], () => getCommunityApi(path, currentNum, pageCount, setTotalPageNum));
 
   return (
     <>
