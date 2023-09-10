@@ -1,12 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout, SignInForm, SignUpForm } from '../components';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
-import { Detail, List, Main, Mypage, NotFound } from '../pages';
+import { Community, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, WritePost } from '../pages';
 import WelcomeMessagePage from '../pages/auth/SignUpForm/WelcomeMessagePage';
 import RegistTutorForm from '../pages/auth/registTutorForm/RegistTutorForm';
 import Chat from '../pages/chat/Chat';
+import MatchedReview from '../pages/matchingReview/MatchedReview';
 import EditTutorForm from '../pages/mypage/EditTutorForm';
 import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateAdditionalInformationForm';
+import EditProfileForm from '../pages/mypage/profileForm/EditProfileForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
 
@@ -24,9 +26,20 @@ const Router = () => {
               </AuthenticatedRoute>
             }
           />
+          <Route path="/review" element={<MatchedReview />} />
           <Route path="/detail/:id" element={<Detail />} />
+
           <Route element={<Layout />}>
             <Route path="/list" element={<List />} />
+            <Route path="/write/:category" element={<WritePost />} />
+            <Route path="/post/:postid" element={<PostDetail />} />
+
+            <Route path="/community" element={<Community />}>
+              <Route path="free" element={<FreeCommunity />} />
+              <Route path="study" element={<StudyCommunity />} />
+              <Route path="question" element={<QuestionCommunity />} />
+              <Route path="region" element={<RegionCommunity />} />
+            </Route>
 
             <Route
               path="/additional-information"
@@ -81,6 +94,14 @@ const Router = () => {
               element={
                 <AuthenticatedRoute>
                   <Chat />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/edit-profiles"
+              element={
+                <AuthenticatedRoute>
+                  <EditProfileForm />
                 </AuthenticatedRoute>
               }
             />

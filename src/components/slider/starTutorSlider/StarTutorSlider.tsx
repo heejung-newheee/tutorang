@@ -12,7 +12,7 @@ const StarTutorSlider = () => {
     return <Loading />;
   }
   if (tutors.isError) {
-    console.log(tutors.error);
+    console.error(tutors.error);
     return;
   }
   return (

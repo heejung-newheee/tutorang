@@ -30,11 +30,15 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
   const [searchParams] = useSearchParams();
   const room_id = searchParams.get('room_id');
 
+  console.log(chatRoomList, 'chatRoomList', chatRoom, 'chatRoom');
   const chatRoomIdRef = useRef<string | null>(null);
   const chatRoomListIdsRef = useRef<string[]>([]);
+  console.log(chatRoomIdRef, 'chatRoomIdRef', chatRoomListIdsRef, 'chatRoomListIdsRef');
 
   const messageSubscriptionRef = useRef<RealtimeChannel | null>(null);
   const participantSubscriptionRef = useRef<RealtimeChannel | null>(null);
+
+  console.log(messageSubscriptionRef, 'messageSubscriptionRef', participantSubscriptionRef, 'participantSubscriptionRef');
 
   const handleGetChatRooms = useCallback(async () => {
     const chatRooms = (await getJoinedChatRooms()) as RoomWithLastMessageType[];

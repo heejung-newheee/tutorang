@@ -29,7 +29,7 @@ const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDo
     $setDuplicatedEmail(isMyEmailHere);
     $setDoneDuplicationCheck(true);
 
-    console.log(error?.message);
+    console.error(error?.message);
   };
 
   const deleteEmail = () => {
