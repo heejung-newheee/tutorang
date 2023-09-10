@@ -12,8 +12,8 @@ export const getTutorApplyInfo = async () => {
   return data;
 };
 
-export const changeStateTutorApply = async (_state: string, id: number) => {
-  const { data, error } = await supabase.from(PENDING_TUTOR_REGISTRATION_TABLE).update({ state: _state }).eq('id', id);
+export const changeStateTutorApply = async (state: string, id: number) => {
+  const { data, error } = await supabase.from(PENDING_TUTOR_REGISTRATION_TABLE).update({ state: state }).eq('id', id);
   if (error) throw error;
   return data;
 };
