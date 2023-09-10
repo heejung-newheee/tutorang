@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import * as S from './Modal.styled';
 import ModalPortal from './ModalPortal';
 
@@ -9,10 +9,6 @@ export type ModalProps = {
 };
 
 const Modal = ({ children, isOpen, closeModal }: ModalProps) => {
-  useEffect(() => {
-    isOpen ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'auto');
-  }, [isOpen]);
-
   const handleClose = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
 

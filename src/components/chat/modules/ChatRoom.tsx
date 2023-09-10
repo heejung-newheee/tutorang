@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { BiImageAdd } from 'react-icons/bi';
-import { IoIosArrowBack, IoIosSend, IoMdAdd } from 'react-icons/io';
+import { IoIosArrowBack, IoIosSend, IoMdAdd, IoIosInformationCircleOutline } from 'react-icons/io';
 import { IoLocationOutline } from 'react-icons/io5';
 import { useDispatch } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { openModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
 import { ChatMessage } from './ChatMessage';
 import * as S from './ChatRoom.styled';
+import { useViewport } from '../../../hooks';
 
 const getDateText = (isoDateString: string): string => {
   const isoDate = new Date(isoDateString);
@@ -19,6 +20,7 @@ const getDateText = (isoDateString: string): string => {
 };
 
 const ChatRoom = ({ userId }: { userId: string }) => {
+  const { isMobile } = useViewport();
   const { chatRoom, chatMessages } = useChatContext();
   const [inputMessage, setInputMessage] = useState('');
   const [isOpenInputMenu, setOpenInputMenu] = useState(false);
@@ -116,17 +118,28 @@ const ChatRoom = ({ userId }: { userId: string }) => {
   return (
     <S.Container>
       <S.Header>
-        <S.IconButton onClick={handleCloseRoom}>
-          <IoIosArrowBack size={30} />
-        </S.IconButton>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <S.HeaderTitle>{profile?.username}</S.HeaderTitle>
-        </div>
         <div>
-          <S.HeaderButton onClick={handleLeaveRoom} color="red">
-            나가기
-          </S.HeaderButton>
+          {isMobile && (
+            <S.IconButton onClick={handleCloseRoom}>
+              <IoIosArrowBack size={30} />
+            </S.IconButton>
+          )}
         </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', overflow: 'hidden' }}>
+          {profile && (
+            <>
+              <S.HeaderTitle>{profile.username}</S.HeaderTitle>
+              {profile.role === 'tutor' && (
+                <S.IconButton as="a" href={`/detail/${profile.id}`} target="_blank">
+                  <IoIosInformationCircleOutline size={22} />
+                </S.IconButton>
+              )}
+            </>
+          )}
+        </div>
+        <S.HeaderButton onClick={handleLeaveRoom} color="red">
+          나가기
+        </S.HeaderButton>
       </S.Header>
 
       <S.ChatArea ref={chatAreaRef}>

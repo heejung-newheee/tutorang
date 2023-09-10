@@ -3,6 +3,8 @@ import { colors } from '../../../style/theme/colors';
 
 export const ContentsDataBox = styled.div`
   max-height: 600px;
+  min-height: 200px;
+  background-color: #fff;
   overflow-y: scroll;
 `;
 export const DataList = styled.ul``;
