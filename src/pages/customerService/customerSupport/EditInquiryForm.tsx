@@ -7,10 +7,6 @@ import { CUSTOMER_SUPPORT_QUERY_KEY, TypeUpdatedInquiry, editInquiry } from '../
 import supabase from '../../../supabase';
 import * as S from './EditInquiryForm.style';
 
-// type TypeOriginalInquiryData = {
-
-// }
-
 const EditInquiryForm = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -98,7 +94,8 @@ const EditInquiryForm = () => {
       console.log('error submit inqury ', error);
     }
     // mutation.mutate(formData);
-    navigate('/customer-service/customer-support');
+    // navigate(`/customer-service/customer-support/${inquiryId}`);
+    navigate(-1);
   };
 
   return (

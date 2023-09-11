@@ -10,8 +10,8 @@ const CustomerSupport = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
   const userId = user?.id;
-  const inquiryIdFromPath = location.pathname.split(':/')[1];
-  const { data } = useQuery([CUSTOMER_SUPPORT_QUERY_KEY, inquiryIdFromPath], () => getAllInquiry(userId as string), { enabled: !!userId });
+  // const inquiryIdFromPath = location.pathname.split(':/')[1];
+  const { data } = useQuery([CUSTOMER_SUPPORT_QUERY_KEY], () => getAllInquiry(userId as string), { enabled: !!userId });
   console.log('데타', data);
 
   if (!user) return <div></div>;
@@ -43,7 +43,7 @@ const CustomerSupport = () => {
                 <td>{index + 1}</td>
                 <td
                   onClick={() => {
-                    navigate(`/customer-service/customer-support/:${item.id}`, { state: item });
+                    navigate(`/customer-service/customer-support/${item.id}`, { state: item });
                   }}
                 >
                   {item.title}

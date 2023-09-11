@@ -28,7 +28,7 @@ const DetailCustomerSupport = () => {
     navigate('/customer-service/customer-support');
   };
   const handleEditInquiry = () => {
-    navigate(`/edit-inquiry/:${inquiryData.id}`, { state: inquiryData });
+    navigate(`/edit-inquiry/${inquiryData.id}`, { state: inquiryData });
   };
   return (
     <S.DetailCustomerSupportContainer>

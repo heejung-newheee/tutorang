@@ -18,6 +18,9 @@ const AdminSidebar = () => {
           </S.NavItem>
           <S.NavItem>게시판</S.NavItem>
           <S.NavItem>환불취소관리</S.NavItem>
+          <S.NavItem>
+            <Link to={'/admin/customer-support-manage'}>1:1 문의관리</Link>
+          </S.NavItem>
         </S.NavList>
       </nav>
       <S.ButtonLogout>
