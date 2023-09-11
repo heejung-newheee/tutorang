@@ -25,7 +25,7 @@ const EditTutorForm = () => {
     sido2: tutorInfo.location2_sido!,
     gugun2: tutorInfo.location2_gugun!,
   });
-  const [prevLocation, _] = useState(location);
+  const [prevLocation, __] = useState(location);
 
   const [university, setUniversity] = useState(tutorInfo.university || '');
   const [enrollmentStatus, setEnrollmentStatus] = useState(tutorInfo.enrollmentStatus || '');
