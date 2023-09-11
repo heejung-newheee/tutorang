@@ -14,7 +14,7 @@ export const ChatMessage = ({ message, isMine }: { message: Tables<'chat_message
   let messageContent = <></>;
 
   if (!message.type) messageContent = <S.ChatTextMessageContent $isMine={isMine}>{message.content}</S.ChatTextMessageContent>;
-  else if (['request', 'accept', 'reject'].includes(message.type)) {
+  else if (['request', 'pending', 'accept', 'reject'].includes(message.type)) {
     messageContent = <TutoringMessage message={message} />;
   } else if (message.type === 'image') {
     messageContent = <ImageMessage message={message} />;

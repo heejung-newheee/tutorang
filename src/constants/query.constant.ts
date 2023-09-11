@@ -28,3 +28,5 @@ export const PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY = ['pending_tutor_registr
 
 export const PENDING_TUTOR_REGISTRATION_TABLE = 'pending_tutor_registration';
 export const PENDING_TUTOR_REGISTRATION_DASHBOARD_QUERY_KEY = ['pending_tutor_registration_dashboard'];
+
+export const BOARD_MANAGEMENT_QUERY_KEY = ['board_management'];

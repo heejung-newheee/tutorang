@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import styled, { css } from "styled-components";
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
 export const ChatCustomMessageContent = styled.div<{ $customType: string }>`
   text-align: center;
@@ -13,6 +13,12 @@ export const ChatCustomMessageContent = styled.div<{ $customType: string }>`
     $customType === 'request'
       ? css`
           background-color: #0085ef;
+          color: #ffffff;
+          padding: 1.25rem 1.5rem;
+        `
+      : $customType === 'pending'
+      ? css`
+          background-color: #3cc9c8;
           color: #ffffff;
           padding: 1.25rem 1.5rem;
         `

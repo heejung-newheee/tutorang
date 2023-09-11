@@ -4,35 +4,57 @@ import { colors } from '../../../style/theme/colors';
 export const ContentsDataBox = styled.div`
   max-height: 600px;
   min-height: 200px;
+  border-radius: 8px;
   background-color: #fff;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 export const DataList = styled.ul``;
 export const DataItem = styled.li`
+  position: relative;
   margin: 10px 0;
   padding: 35px;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   background-color: #fff;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 17px;
+  border-top: solid 1px #efefef;
+  &:first-child {
+    border-top: 0;
+  }
+  div:first-child {
+    width: 70%;
+    @media all and (max-width: 768px) {
+      width: 90%;
+    }
+  }
 `;
 
 export const DataTitle = styled.h3`
   font-size: 21px;
   font-weight: bold;
   margin: 0 0 20px 0;
+  @media all and (max-width: 768px) {
+    font-size: 18px;
+  }
 `;
 
 export const DataContent = styled.p`
   font-size: 16px;
   margin: 0 0 25px 0;
+  @media all and (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 export const DataAuth = styled.p`
   font-size: 13px;
   color: #999;
+  @media all and (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 export const DataStar = styled.div`
   img {
@@ -44,9 +66,18 @@ export const ReviewRating = styled.div`
   display: flex;
   flex-wrap: nowrap;
   gap: 5px;
+  margin-left: 30px;
+  @media all and (max-width: 1024px) {
+    gap: 3px;
+    margin-left: 0;
+    margin-top: 5px;
+  }
   img {
     width: 30px;
     filter: invert(78%) sepia(45%) saturate(4904%) hue-rotate(337deg) brightness(102%) contrast(99%);
+    @media all and (max-width: 768px) {
+      width: 15px;
+    }
   }
 `;
 
@@ -113,6 +144,7 @@ export const EditBtn = styled.button`
   img {
     width: 100%;
     height: 100%;
+    padding: 6px;
     object-fit: contain;
   }
   @media only screen and (max-width: 1024px) {
@@ -210,7 +242,7 @@ export const SummaryItem = styled.div`
   p:last-child {
     font-size: 13px;
     @media screen and (max-width: 1024px) {
-      font-size: 10px;
+      font-size: 12px;
     }
   }
 `;

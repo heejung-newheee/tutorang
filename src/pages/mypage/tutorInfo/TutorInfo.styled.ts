@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { colors } from '../../../style/theme/colors';
 
@@ -16,9 +15,9 @@ export const TutorClassTop = styled.div`
   align-items: center;
   margin-bottom: 21px;
 `;
-export const ClassEditBtn = styled(Link)`
-  width: 32px;
-  height: 32px;
+export const ClassEditBtn = styled.button`
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   background-color: ${colors.primary};
   img {
@@ -48,7 +47,6 @@ export const langLevel = styled.span`
   display: flex;
   justify-content: center;
   background-color: ${colors.gray_200};
-  /* width: 22px; */
   padding: 2px 8px;
   border-radius: 30px;
   margin-left: 6px;

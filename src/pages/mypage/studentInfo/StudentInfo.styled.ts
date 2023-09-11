@@ -30,7 +30,8 @@ export const TutorItem = styled.li`
 `;
 
 export const ReviewEditBtn = styled.div`
-  position: relative;
+  position: absolute;
+  right: 40px;
   button {
     position: absolute;
     right: 0;
