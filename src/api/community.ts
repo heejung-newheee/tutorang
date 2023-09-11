@@ -6,7 +6,7 @@ export const getCommunityApi = async (path: string, currentNum: number, pageCoun
     .from('write')
     .select(
       `*,
-  user_id (profiles: id, username, avatar_url)
+  profiles (id, username, avatar_url)
 `,
       { count: 'exact' },
     )
