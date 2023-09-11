@@ -290,6 +290,11 @@ export const Hamburger = styled.button`
 
   @media only screen and (max-width: 768px) {
     display: block;
+    height: 35px;
+    padding: 6px;
+    img {
+      height: 100%;
+    }
   }
 `;
 export const MobileLogoDiv = styled.div`

@@ -39,6 +39,7 @@ export { default as tabPanel_4 } from './tab-panel-4.png';
 export { default as bubble } from './talk_bubble.png';
 export { default as twitter } from './twitter.png';
 
+export { default as mobileNabBtn } from './hambergerBar.svg';
 export { default as logo01 } from './logo-01.svg';
 export { default as logo02 } from './logo-02.svg';
 export { default as logo03 } from './logo-03.svg';

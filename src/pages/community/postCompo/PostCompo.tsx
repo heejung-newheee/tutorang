@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import * as S from './PostCompo.styled';
 import { useNavigate } from 'react-router-dom';
 import { detailDate } from '../utility';
+import * as S from './PostCompo.styled';
 
 // type USER_ID = {
 //   avatar_url: string;
@@ -54,6 +54,7 @@ const PostCompo = ({ item, lastElement }: Props) => {
   useEffect(() => {
     getContentReplace();
   }, []);
+  console.log(item);
 
   return (
     <S.Post $lastElement={lastElement} onClick={() => navigate(`/post/${item.id}`)}>
