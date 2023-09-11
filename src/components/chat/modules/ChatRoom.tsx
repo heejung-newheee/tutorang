@@ -13,12 +13,7 @@ import supabase from '../../../supabase';
 import { ChatMessage } from './ChatMessage';
 import * as S from './ChatRoom.styled';
 import { RootState } from '../../../redux/config/configStore';
-
-const getDateText = (isoDateString: string): string => {
-  const isoDate = new Date(isoDateString);
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Intl.DateTimeFormat(navigator.language, options).format(isoDate);
-};
+import { getDateTextFromISODate, isSameDate } from '../../../utils/Date';
 
 const ChatRoom = ({ userId }: { userId: string }) => {
   const { isMobile } = useViewport();
@@ -149,13 +144,11 @@ const ChatRoom = ({ userId }: { userId: string }) => {
         <S.ChatList>
           {chatMessages.map((message, index) => {
             let result;
-            const currentDateNumber = getDateText(message.created_at);
-
-            if (index === 0 || currentDateNumber !== getDateText(chatMessages[index - 1].created_at)) {
+            if (index === 0 || !isSameDate(message.created_at, chatMessages[index - 1].created_at)) {
               result = (
                 <li style={{ textAlign: 'center', position: 'relative' }}>
                   <hr style={{ position: 'absolute', top: '50%', left: 0, width: '100%', margin: 0, height: '1px', border: 'none', borderTop: '1px solid #ccc' }} />
-                  <span style={{ color: '#808080', zIndex: 1, position: 'relative', backgroundColor: '#ffffff', padding: '0 0.5rem' }}>{getDateText(message.created_at)}</span>
+                  <span style={{ color: '#808080', zIndex: 1, position: 'relative', backgroundColor: '#ffffff', padding: '0 0.5rem' }}>{getDateTextFromISODate(message.created_at)}</span>
                 </li>
               );
             }
