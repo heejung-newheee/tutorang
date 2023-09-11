@@ -311,7 +311,17 @@ export const MobileLogoDiv = styled.div`
     margin-right: 8px;
   }
 `;
-
+export const NavModalCloseBtn = styled.button`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+  float: right;
+  margin-bottom: 15px;
+  img {
+    height: 100%;
+  }
+`;
 export const SignMobileWrapper = styled.div`
   width: 100%;
   height: 100%;

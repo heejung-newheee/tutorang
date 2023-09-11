@@ -232,8 +232,6 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                       <div>
                         <MatchBtn
                           onClick={() => {
-                            console.log('수업완료 누름');
-
                             item.id !== null && handleCompleteMatch(item.id, item.tutor_id);
                           }}
                         >

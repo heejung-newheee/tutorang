@@ -16,10 +16,9 @@ import StarRating from '../../../constants/func';
 import { BOARD_QUERY_KEY, REVIEW_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { Tables, Views } from '../../../supabase/database.types';
-import { Age, Dot, Icon, InfoItem, PriceItem, PriceList, TagList, TutorName } from '../../detail/tutorInfoDetail/TutorInfoDetail.styled';
+import { Age, ClassLevel, Dot, Icon, InfoItem, PriceItem, PriceList, TagList, TutorName } from '../../detail/tutorInfoDetail/TutorInfoDetail.styled';
 import MatchingStudent from '../matchingTab/MatchingStudent';
 import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataTitle, InfoNull, InfoSection, InfoTitle, ReviewRating } from '../userInfo/UserInfo.styled';
-import ClassDashboard from './ClassDashboard';
 
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
@@ -59,17 +58,6 @@ const TutorInfo = ({ match }: pageProps) => {
   }
 
   const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.tutor_id) : null;
-  console.log(tutorInfo);
-
-  // const handleEditClass = () => {
-  //   navigate('/tutor-class', {
-  //     state: {
-  //       tutor_name,
-  //       tutor_age,
-  //       location1_sido,
-  //     },
-  //   });
-  // };
 
   return (
     <>
@@ -109,7 +97,7 @@ const TutorInfo = ({ match }: pageProps) => {
                     <InfoItem>
                       <Icon src={icon_check} />
                       {tutorInfo.speaking_language?.map((language) => {
-                        return <span key={language}> {language} </span>;
+                        return <ClassLevel key={language}> {language} </ClassLevel>;
                       })}
                       가능
                     </InfoItem>
@@ -207,13 +195,6 @@ const TutorInfo = ({ match }: pageProps) => {
                     );
                   })}
               </ContentsDataBox>
-            </Container>
-          </InfoSection>
-
-          <InfoSection>
-            <Container>
-              <InfoTitle>수강 database</InfoTitle>
-              <ClassDashboard />
             </Container>
           </InfoSection>
         </>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { CheckboxOptionType } from '../../../constants/signup.constant';
 
@@ -10,19 +10,13 @@ type CheckboxType = {
 };
 
 const Checkbox: React.FC<CheckboxType> = ({ $checkboxType, option, handleCheckedItems, checkItems }) => {
-  const [checked, setChecked] = useState(checkItems.includes(option.text)); // 희정 추가
-  // const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(false);
 
-  // console.log($checkboxType);
-  // console.log(option);
-  console.log('총 클릭 : ', checkItems.length);
-  console.log('넘어온 value', checkItems); // 기존값
-  // console.log(checked);
+  useEffect(() => {
+    setChecked(checkItems.includes(option.value));
+  }, [checkItems, option.value]);
 
   const handleCheckedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('value', event.target.value);
-    console.log('checked', event.target.checked);
-    console.log('$checkboxType', $checkboxType);
     if (checkItems.length >= 3 && event.target.checked === true) return false;
     setChecked(!checked);
     handleCheckedItems($checkboxType, event.target.value, event.target.checked);

@@ -26,7 +26,7 @@ export const SOptionContainer = styled.div<{ $selectOptionsType?: string }>`
   width: 100%;
   max-height: 180px;
   left: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
   z-index: ${({ $selectOptionsType }) => {
     if ($selectOptionsType === 'location1') return '3';
     else return '1';

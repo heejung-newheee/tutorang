@@ -31,7 +31,6 @@ const UserInfo = () => {
     return null;
   }
   const handleEditProfiles = () => {
-    // sns 소셜로그인 추가인증 여부 확인 지표로 gender 사용함
     if (!loginUser?.gender) {
       const wannaAddMoreInfo = window.confirm('소셜로그인을 하셨는데 아직 추가정보를 입력하지 않았다구요? 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?');
       if (wannaAddMoreInfo) {

@@ -13,23 +13,19 @@ import Checkbox from '../auth/registTutorForm/Checkbox';
 import * as S from '../auth/registTutorForm/RegistTutorForm.styled';
 import SelectEnrollmentStatus from '../auth/registTutorForm/SelectEnrollmentStatus';
 import SelectTuitionFee from '../auth/registTutorForm/SelectTuitionFee';
-import { classLevelTranslation, personalityEngTranslation, personalityTranslation, speakingLanguageTranslation } from '../auth/registTutorForm/translation';
-
-const REGEX_ENG = /[a-zA-Z]/; // 문자
-const REGEX_KOR = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; // 한글체크
+import { classLevelEngTranslation, classLevelTranslation, personalityEngTranslation, personalityTranslation, speakingLanguageEngTranslation, speakingLanguageTranslation } from '../auth/registTutorForm/translation';
 
 const EditTutorForm = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const tutorInfo = state.tutorInfo;
-  console.log('튜터 데이터 : ', tutorInfo);
-  console.log('튜터 언어 : ', tutorInfo.speaking_language);
   const [location, setLoaction] = useState({
     sido1: tutorInfo.location1_sido!,
     gugun1: tutorInfo.location1_gugun!,
     sido2: tutorInfo.location2_sido!,
     gugun2: tutorInfo.location2_gugun!,
   });
+  const [prevLocation, setPrevLocation] = useState(location);
 
   const [university, setUniversity] = useState(tutorInfo.university || '');
   const [enrollmentStatus, setEnrollmentStatus] = useState(tutorInfo.enrollmentStatus || '');
@@ -42,45 +38,22 @@ const EditTutorForm = () => {
   const [tuitionFeeOffline, setTuitionFeeOffline] = useState(tutorInfo.tuition_fee_offline);
 
   const [uid, setUid] = useState<string | null>('');
-  const [email, setEmail] = useState<string | null>('');
-  const [certificationImgFile, _] = useState<File | undefined>();
-
-  console.log('state personal', checkPersonalityItems);
-  console.log('state lang', checkLanguageItems);
-  console.log('state class', checkClassLevelItems);
-
-  // 이전값
-  const [prevLocation, setPrevLocation] = useState(location);
-
-  // 검사
+  const [_, setEmail] = useState<string | null>('');
   const [validLocation, setValidLocation] = useState(false);
 
   const user = useSelector((state: RootState) => state.user.user);
 
   useEffect(() => {
-    console.log('유즈이팩 작동하니?');
-    // 한글을 영어로 바꿔주는 !
     let personality = tutorInfo.personality;
-    if (REGEX_KOR.test(personality[0])) {
-      personality = personalityEngTranslation(personality);
-    }
+    personality = personalityEngTranslation(personality);
     setCheckPersonalityItems(personality);
 
-    // tutorInfo.class_level
     let class_level = tutorInfo.class_level;
-    console.log('REGEX_KOR', REGEX_KOR.test(class_level[0]));
-    if (REGEX_KOR.test(class_level[0])) {
-      class_level = personalityEngTranslation(class_level);
-      console.log('class_level', class_level);
-    }
+    class_level = classLevelEngTranslation(class_level);
     setCheckClassLevelItems(class_level);
 
-    // tutorInfo.speaking_language
     let speaking_language = tutorInfo.speaking_language;
-    if (REGEX_KOR.test(checkLanguageItems[0])) {
-      speaking_language = personalityEngTranslation(speaking_language);
-    }
-    console.log('speaking_language', speaking_language);
+    speaking_language = speakingLanguageEngTranslation(speaking_language);
     setCheckLanguageItems(speaking_language);
   }, [tutorInfo]);
 
@@ -135,14 +108,9 @@ const EditTutorForm = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    let personality = checkPersonalityItems;
-    if (REGEX_ENG.test(checkPersonalityItems[0])) personality = personalityTranslation(checkPersonalityItems);
-
-    let class_level = checkClassLevelItems;
-    if (REGEX_ENG.test(checkClassLevelItems[0])) class_level = classLevelTranslation(checkClassLevelItems);
-
-    let speaking_language = checkLanguageItems;
-    if (REGEX_ENG.test(checkLanguageItems[0])) speaking_language = speakingLanguageTranslation(checkLanguageItems);
+    const personality = personalityTranslation(checkPersonalityItems);
+    const class_level = classLevelTranslation(checkClassLevelItems);
+    const speaking_language = speakingLanguageTranslation(checkLanguageItems);
 
     const formData = {
       user_id: uid,
@@ -156,7 +124,6 @@ const EditTutorForm = () => {
       tuition_fee_online: tuitionFeeOnline,
       tuition_fee_offline: tuitionFeeOffline,
     };
-    console.log('form Data : ', formData);
     const locationUpdate = {
       location1_sido: location.sido1,
       location1_gugun: location.gugun1,
@@ -179,7 +146,6 @@ const EditTutorForm = () => {
     }
   }, [user]);
 
-  // 지역 새로 클릭시 유효성 검사
   useEffect(() => {
     if (prevLocation.sido1 !== location.sido1 || prevLocation.gugun1 !== location.gugun1 || prevLocation.sido2 !== location.sido2 || prevLocation.gugun2 !== location.gugun2) {
       const checkedValidLocation1 = location.sido1 !== '시/도 선택' && location.sido1 !== '전체' && location.gugun1 !== '구/군 선택' && location.gugun1 !== '전체';
@@ -196,9 +162,6 @@ const EditTutorForm = () => {
     isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
   }
 
-  // if (REGEX_KOR.test(checkPersonalityItems[0])) personalityEngTranslation(checkPersonalityItems);
-
-  // setCheckPersonalityItems(personality);
   return (
     <S.Container>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT} />
@@ -239,7 +202,7 @@ const EditTutorForm = () => {
 
           <S.Items>
             {PERSONALITY_LIST.map((personality) => (
-              <Checkbox key={personality.value} $checkboxType={'personality'} option={personality} handleCheckedItems={handleCheckedItems} checkItems={tutorInfo.personality} />
+              <Checkbox key={personality.value} $checkboxType={'personality'} option={personality} handleCheckedItems={handleCheckedItems} checkItems={checkPersonalityItems} />
             ))}
           </S.Items>
         </S.FormItem>
@@ -249,7 +212,7 @@ const EditTutorForm = () => {
 
           <S.Items>
             {AVAILABLE_LANGUAGE_LIST.map((language) => (
-              <Checkbox key={language.value} $checkboxType={'language'} option={language} handleCheckedItems={handleCheckedItems} checkItems={tutorInfo.speaking_language} />
+              <Checkbox key={language.value} $checkboxType={'language'} option={language} handleCheckedItems={handleCheckedItems} checkItems={checkLanguageItems} />
             ))}
           </S.Items>
         </S.FormItem>
@@ -258,7 +221,7 @@ const EditTutorForm = () => {
           <S.FormItemTitle>수업 level</S.FormItemTitle>
           <S.Items>
             {CLASSLEVEL_LIST.map((classLevel) => (
-              <Checkbox key={classLevel.value} $checkboxType={'classLevel'} option={classLevel} handleCheckedItems={handleCheckedItems} checkItems={tutorInfo.class_level} />
+              <Checkbox key={classLevel.value} $checkboxType={'classLevel'} option={classLevel} handleCheckedItems={handleCheckedItems} checkItems={checkClassLevelItems} />
             ))}
           </S.Items>
           <S.GuideBox>

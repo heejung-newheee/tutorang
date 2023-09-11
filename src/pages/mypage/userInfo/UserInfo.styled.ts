@@ -4,20 +4,32 @@ import { colors } from '../../../style/theme/colors';
 export const ContentsDataBox = styled.div`
   max-height: 600px;
   min-height: 200px;
+  border-radius: 8px;
   background-color: #fff;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 export const DataList = styled.ul``;
 export const DataItem = styled.li`
+  position: relative;
   margin: 10px 0;
   padding: 35px;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   background-color: #fff;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 17px;
+  border-top: solid 1px #efefef;
+  &:first-child {
+    border-top: 0;
+  }
+  div:first-child {
+    width: 70%;
+    @media all and (max-width: 768px) {
+      width: 90%;
+    }
+  }
 `;
 
 export const DataTitle = styled.h3`
@@ -41,7 +53,7 @@ export const DataAuth = styled.p`
   font-size: 13px;
   color: #999;
   @media all and (max-width: 768px) {
-    font-size: 10px;
+    font-size: 12px;
   }
 `;
 export const DataStar = styled.div`
@@ -132,6 +144,7 @@ export const EditBtn = styled.button`
   img {
     width: 100%;
     height: 100%;
+    padding: 6px;
     object-fit: contain;
   }
   @media only screen and (max-width: 1024px) {
@@ -229,7 +242,7 @@ export const SummaryItem = styled.div`
   p:last-child {
     font-size: 13px;
     @media screen and (max-width: 1024px) {
-      font-size: 10px;
+      font-size: 12px;
     }
   }
 `;

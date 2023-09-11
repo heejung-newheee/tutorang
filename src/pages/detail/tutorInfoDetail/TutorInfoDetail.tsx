@@ -125,7 +125,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
                   <S.InfoItem>
                     <S.Icon src={icon_check} />
                     {tutor.speaking_language?.map((language) => {
-                      return <span key={language}> {language} </span>;
+                      return <S.ClassLevel key={language}> {language} </S.ClassLevel>;
                     })}
                     가능
                   </S.InfoItem>

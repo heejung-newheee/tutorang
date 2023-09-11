@@ -6,6 +6,7 @@ import { matchReview } from '../../api/review';
 import { icon_more } from '../../assets';
 import StarRating from '../../constants/func';
 import { REVIEW_QUERY_KEY } from '../../constants/query.constant';
+import { DataAuth, DataContent, DataItem, DataTitle, ReviewRating } from '../../pages/mypage/userInfo/UserInfo.styled';
 import { RootState } from '../../redux/config/configStore';
 import { openModal, setReview } from '../../redux/modules';
 import * as S from './Review.styled';
@@ -95,15 +96,15 @@ const Review = ({ id }: ReviewProps) => {
               {reviews?.map((review) => {
                 const rating = review.rating || 0;
                 return (
-                  <S.ReviewItem key={review.id}>
+                  <DataItem key={review.id}>
                     <div>
-                      <S.ReviewTitle>{review.title}</S.ReviewTitle>
-                      <S.ReviewDescription>{review.content}</S.ReviewDescription>
+                      <DataTitle>{review.title}</DataTitle>
+                      <DataContent>{review.content}</DataContent>
 
-                      <S.AuthorInfo>
+                      <DataAuth>
                         {review.author}
                         <S.Time>{createDate(review.created_at)}</S.Time>
-                      </S.AuthorInfo>
+                      </DataAuth>
                     </div>
                     <div>
                       {loginUser?.id === review.user_id ? (
@@ -132,9 +133,9 @@ const Review = ({ id }: ReviewProps) => {
                           </S.moreMenu>
                         </S.ButtonMoreWrapper>
                       ) : null}
-                      <S.ReviewStar>{StarRating(rating)}</S.ReviewStar>
+                      <ReviewRating>{StarRating(rating)}</ReviewRating>
                     </div>
-                  </S.ReviewItem>
+                  </DataItem>
                 );
               })}
             </>

@@ -16,15 +16,15 @@ export const TutorClassTop = styled.div`
   margin-bottom: 21px;
 `;
 export const ClassEditBtn = styled.button`
-  width: 32px;
-  height: 32px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   background-color: ${colors.primary};
   img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 3px;
+    padding: 8px;
   }
 `;
 export const TutorClass = styled.div`
@@ -47,7 +47,6 @@ export const langLevel = styled.span`
   display: flex;
   justify-content: center;
   background-color: ${colors.gray_200};
-  /* width: 22px; */
   padding: 2px 8px;
   border-radius: 30px;
   margin-left: 6px;
