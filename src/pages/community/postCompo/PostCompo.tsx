@@ -13,6 +13,11 @@ import { detailDate } from '../utility';
 //   // 다른 필드들도 포함해야 할 수 있습니다.
 // };
 
+type PROFILES = {
+  id: string;
+  username: string | null;
+  avatar_url: string | null;
+};
 type Props = {
   item: {
     category: string | null;
@@ -20,9 +25,8 @@ type Props = {
     created_at: string;
     id: number;
     title: string | null;
-    user_id: any;
-    // user_id: USER_ID
-    // profiles: Profile;
+    user_id: string | null;
+    profiles: PROFILES | null;
   };
   lastElement: boolean;
 };
@@ -59,9 +63,9 @@ const PostCompo = ({ item, lastElement }: Props) => {
     <S.Post $lastElement={lastElement} onClick={() => navigate(`/post/${item.id}`)}>
       <S.UserWrite>
         <S.NameImgDiv>
-          <S.ImgDiv src={item.user_id.avatar_url}></S.ImgDiv>
+          <S.ImgDiv src={item && (item.profiles?.avatar_url as string)}></S.ImgDiv>
           <S.DateNameDiv>
-            <span>{item.user_id.username}</span>
+            <span>{item.profiles?.username}</span>
             <span>{detailDate(new Date(item.created_at))}</span>
           </S.DateNameDiv>
         </S.NameImgDiv>
