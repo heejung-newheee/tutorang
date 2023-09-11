@@ -12,3 +12,4 @@ export { default as FreeCommunity } from './community/categoryCommunity/FreeComm
 export { default as PostDetail } from './postDetail/PostDetail';
 export { default as Dashboard } from './admin/dashboard/Dashboard';
 export { default as UserManage } from './admin/userManage/UserManage';
+export { default as BoardManage } from './admin/boardManage/BoardManage';
