@@ -35,7 +35,7 @@ const SHeader = styled.header`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 30px;
   gap: 10px;
   & h1 {
     font-size: 30px;

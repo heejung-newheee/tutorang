@@ -1,34 +1,27 @@
-// import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid';
-import { CUSTOMER_SUPPORT_QUERY_KEY, TypeNewInquiry, insertNewInquiry } from '../../../api/customerSupport';
-import { RootState } from '../../../redux/config/configStore';
+import { CUSTOMER_SUPPORT_QUERY_KEY, TypeUpdatedInquiry, editInquiry } from '../../../api/customerSupport';
 import supabase from '../../../supabase';
-import './../../../pages/write/write.css';
+import * as S from './EditInquiryForm.style';
 
-const LeaveInquiryForm = () => {
-  const [title, setTitle] = useState('');
-  const QuillRef = useRef<ReactQuill>();
-  const [content, setContent] = useState('');
-  const navigate = useNavigate();
+// type TypeOriginalInquiryData = {
+
+// }
+
+const EditInquiryForm = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const pathdata = useLocation();
+  const originalInquiryData = pathdata.state;
+  const inquiryId = originalInquiryData.id as string;
+  const [title, setTitle] = useState(originalInquiryData.title);
+  const QuillRef = useRef<ReactQuill>();
+  const [content, setContent] = useState(originalInquiryData.content);
 
-  const loginUser = useSelector((state: RootState) => state.user.user);
-
-  // const api = async (newInfo: any) => {
-  //   const { error } = await supabase.from('write').insert(newInfo);
-
-  //   console.log(error);
-  //   if (error) throw error;
-  // };
-
-  const createInquiryMutation = useMutation(async (newInquiry: TypeNewInquiry) => insertNewInquiry(newInquiry), {
+  const editInquiryMutation = useMutation(async ({ inquiryId, updatedInquiry }: { inquiryId: string; updatedInquiry: TypeUpdatedInquiry }) => editInquiry(inquiryId, updatedInquiry), {
     onSuccess: () => {
       queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
     },
@@ -36,7 +29,6 @@ const LeaveInquiryForm = () => {
       console.log(error);
     },
   });
-
   const imageHandler = () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -95,15 +87,13 @@ const LeaveInquiryForm = () => {
   console.log(content);
   const handleSubmit = async () => {
     console.log('sfssdfsd');
-    const formData = {
+    const updatedInquiry: TypeUpdatedInquiry = {
       title,
-      user_id: loginUser!.id,
       content,
-      isReplied: false,
     };
-    console.log(formData);
+    console.log(updatedInquiry);
     try {
-      await createInquiryMutation.mutate(formData);
+      await editInquiryMutation.mutate({ inquiryId, updatedInquiry });
     } catch (error) {
       console.log('error submit inqury ', error);
     }
@@ -111,22 +101,11 @@ const LeaveInquiryForm = () => {
     navigate('/customer-service/customer-support');
   };
 
-  if (!loginUser) return <div></div>;
-
-  // const formData = {
-  //   title: 'title',
-  //   user_id: loginUser.id,
-  //   content: '작성내용',
-  //   isReplied: false,
-  //   file1: 'null 들어올 수 있음',
-  //   file2: 'null 들어올 수 있음',
-  // };
-
   return (
-    <WriteContainer>
-      <Title>
-        <input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="제목을 입력해주세요" />
-      </Title>
+    <S.WriteContainer>
+      <S.Title>
+        <input onChange={(e) => setTitle(e.target.value)} value={title} type="text" placeholder="제목을 입력해주세요" />
+      </S.Title>
       <ReactQuill
         ref={(element) => {
           if (element !== null) {
@@ -140,49 +119,10 @@ const LeaveInquiryForm = () => {
         theme="snow"
         placeholder="내용을 입력해주세요."
       />
-      <SubmitBtn onClick={handleSubmit}>저장</SubmitBtn>
-      <BackBtn onClick={() => navigate(-1)}>뒤로가기</BackBtn>
-    </WriteContainer>
+      <S.SubmitBtn onClick={handleSubmit}>저장</S.SubmitBtn>
+      <S.BackBtn onClick={() => navigate(-1)}>뒤로가기</S.BackBtn>
+    </S.WriteContainer>
   );
 };
 
-export default LeaveInquiryForm;
-
-const WriteContainer = styled.div`
-  /* display: flex;
-  justify-content: center;
-  flex-direction: column; */
-  margin-top: 100px;
-  padding: 0 20px;
-`;
-
-const Title = styled.div`
-  width: 100%;
-  height: 50px;
-  border-bottom: 1px solid gray;
-  margin-bottom: 20px;
-  & > input {
-    width: 100%;
-    height: 100%;
-    outline: none;
-    border: none;
-  }
-`;
-
-const SubmitBtn = styled.button`
-  position: fixed;
-  right: 20px;
-  top: 15px;
-  z-index: 100000;
-  border: 1px solid gray;
-  padding: 10px 20px;
-`;
-
-const BackBtn = styled.button`
-  position: fixed;
-  left: 20px;
-  top: 15px;
-  z-index: 100000;
-  border: 1px solid gray;
-  padding: 10px 20px;
-`;
+export default EditInquiryForm;

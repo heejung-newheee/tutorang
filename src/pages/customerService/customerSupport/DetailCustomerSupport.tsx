@@ -1,23 +1,46 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { styled } from 'styled-components';
-import { colors } from '../../../style/theme/colors';
+import { CUSTOMER_SUPPORT_QUERY_KEY, deleteInquiry } from '../../../api/customerSupport';
+import * as S from './DetailCustomerSupport.style';
 
 const DetailCustomerSupport = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const pathdata = useLocation();
   const inquiryData = pathdata.state;
-  console.log('location', location);
+  const replyData = inquiryData.customer_support_reply;
+  const deleteInquiryMutation = useMutation(async (inquiryId: string) => deleteInquiry(inquiryId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  const handleDeleteInquiry = async () => {
+    const wannaDelete = window.confirm('!:1문의를 삭제하시겠습니까?');
+    if (!wannaDelete) return false;
+    try {
+      await deleteInquiryMutation.mutate(inquiryData.id);
+    } catch (error) {
+      console.log(error);
+    }
+    navigate('/customer-service/customer-support');
+  };
+  const handleEditInquiry = () => {
+    navigate(`/edit-inquiry/:${inquiryData.id}`, { state: inquiryData });
+  };
   return (
-    <DetailCustomerSupportContainer>
-      <TableContainer $role={'customer'}>
-        <Table>
-          <Caption>1:1 상담 목록 상세보기</Caption>
-          <Colgroup>
+    <S.DetailCustomerSupportContainer>
+      <S.TableContainer $role={'customer'}>
+        <S.Table>
+          <S.Caption>1:1 상담 목록 상세보기</S.Caption>
+          <S.Colgroup>
             <col />
             <col />
             <col />
             <col />
-          </Colgroup>
+          </S.Colgroup>
           <tbody>
             <tr>
               <th>제목</th>
@@ -35,127 +58,61 @@ const DetailCustomerSupport = () => {
             </tr>
             <tr>
               <td colSpan={4}>
-                <ContentArea>
+                <S.ContentArea>
                   <div dangerouslySetInnerHTML={{ __html: inquiryData.content }}></div>
-                </ContentArea>
+                </S.ContentArea>
               </td>
             </tr>
           </tbody>
-        </Table>
-      </TableContainer>
+        </S.Table>
+      </S.TableContainer>
 
-      <TableContainer $role={'$administrator'}>
-        Table
-        <p>빠른 시간 내에 답변드리겠습니다! 잠시만 기다려 주세요!</p>
-      </TableContainer>
+      <S.TableContainer $role={'$administrator'}>
+        {replyData.length !== 0 ? (
+          <S.Table>
+            <S.Caption>1:1 관리자 답변 등록 상세보기</S.Caption>
+            <S.Colgroup>
+              <col />
+              <col />
+            </S.Colgroup>
+            <tbody>
+              <tr>
+                <th>답변자</th>
+                <td>tutorang</td>
+              </tr>
+              <tr>
+                <th>답변일시</th>
+                <td>{replyData[0].created_at.split('T')[0]}</td>
+              </tr>
+              <tr>
+                <td colSpan={2}>
+                  <S.ContentArea>
+                    <div dangerouslySetInnerHTML={{ __html: replyData[0].content }}></div>
+                  </S.ContentArea>
+                </td>
+              </tr>
+            </tbody>
+          </S.Table>
+        ) : (
+          <S.ReplacementContainer>
+            <p>빠른 시간 내에 답변드리겠습니다! 잠시만 기다려 주세요!</p>
+          </S.ReplacementContainer>
+        )}
+      </S.TableContainer>
 
-      <ButtonsWrapper>
+      <S.ButtonsWrapper>
         <button onClick={() => navigate('/customer-service/customer-support')}>목록</button>
         <div>
           {inquiryData.isReplied === false && (
             <>
-              <button>삭제</button>
-              <button>수정</button>
+              <button onClick={handleDeleteInquiry}>삭제</button>
+              <button onClick={handleEditInquiry}>수정</button>
             </>
           )}
         </div>
-      </ButtonsWrapper>
-    </DetailCustomerSupportContainer>
+      </S.ButtonsWrapper>
+    </S.DetailCustomerSupportContainer>
   );
 };
 
 export default DetailCustomerSupport;
-
-const DetailCustomerSupportContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-// 임시
-
-const TableContainer = styled.div<{ $role: string }>`
-  box-sizing: border-box;
-  width: 100%;
-  /* height: 100%;
-  max-height: ${({ $role }) => {
-    if ($role === 'customer') return '80%';
-    else return '20%';
-  }}; */
-  padding: 20px;
-`;
-
-const Table = styled.table`
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 80px;
-  border-left: 1px solid #696969;
-  border-top: 1px solid #696969;
-  & th {
-    display: flex;
-    justify-content: start;
-    padding: 10px;
-    background-color: #eee;
-    border-right: 1px solid #696969;
-    border-bottom: 1px solid #696969;
-  }
-  & td {
-    padding: 10px;
-    border-right: 1px solid #696969;
-    border-bottom: 1px solid #696969;
-  }
-`;
-
-const Caption = styled.caption`
-  display: none;
-`;
-
-const Colgroup = styled.colgroup`
-  display: table-column-group;
-  & col:nth-child(1) {
-    display: table-column;
-    width: 130px;
-  }
-  & col:nth-child(2) {
-    display: table-column;
-    width: auto;
-  }
-  & col:nth-child(3) {
-    display: table-column;
-    width: 130px;
-  }
-  & col:nth-child(4) {
-    display: table-column;
-    width: auto;
-  }
-`;
-
-const ContentArea = styled.div`
-  padding: 20px 10px;
-  & img {
-    width: 300px;
-  }
-`;
-
-const ButtonsWrapper = styled.div`
-  box-sizing: border-box;
-  padding: 20px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  button {
-    border: 2px solid #cdcdcd;
-    border-radius: 3px;
-    padding: 4px 25px;
-  }
-  button:hover {
-    border: 2px solid ${colors.primary};
-    background-color: #fe902f2c;
-  }
-  & > div > button {
-    margin-left: 10px;
-  }
-`;

@@ -40,7 +40,7 @@ const CustomerSupport = () => {
           <tbody>
             {data.map((item, index) => (
               <tr key={item.id}>
-                <td>{index}</td>
+                <td>{index + 1}</td>
                 <td
                   onClick={() => {
                     navigate(`/customer-service/customer-support/:${item.id}`, { state: item });

@@ -9,6 +9,7 @@ import CustomerService from '../pages/customerService/CustomerService';
 import Announcements from '../pages/customerService/announcements/Announcements';
 import CustomerSupport from '../pages/customerService/customerSupport/CustomerSupport';
 import DetailCustomerSupport from '../pages/customerService/customerSupport/DetailCustomerSupport';
+import EditInquiryForm from '../pages/customerService/customerSupport/EditInquiryForm';
 import LeaveInquiryForm from '../pages/customerService/customerSupport/LeaveInquiryForm';
 import FrequentlyAskedQuestions from '../pages/customerService/fequentlyAskedQuestions/FrequentlyAskedQuestions';
 import MatchedReview from '../pages/matchingReview/MatchedReview';
@@ -50,6 +51,14 @@ const Router = () => {
               element={
                 <AuthenticatedRoute>
                   <LeaveInquiryForm />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/edit-inquiry/:inquiryid"
+              element={
+                <AuthenticatedRoute>
+                  <EditInquiryForm />
                 </AuthenticatedRoute>
               }
             />
