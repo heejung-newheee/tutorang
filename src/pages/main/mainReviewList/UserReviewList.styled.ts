@@ -51,12 +51,22 @@ export const ReviewItemAuthor = styled.span`
   }
 `;
 export const ReviewVideoBox = styled.div`
-  height: 270px;
+  height: 245px;
   overflow: hidden;
   position: relative;
   border-radius: 5px;
   @media screen and (max-width: 1024px) {
     width: 100%;
+    height: 280px;
+  }
+  @media screen and (max-width: 960px) {
+    height: 356px;
+  }
+  @media screen and (max-width: 768px) {
+    height: 310px;
+  }
+  @media screen and (max-width: 480px) {
+    height: 190px;
   }
 `;
 export const ReviewItemImage = styled.img`

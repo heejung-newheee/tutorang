@@ -40,8 +40,7 @@ export const FlowTabItem = styled.li`
 export const FlowPanel = styled.article`
   img {
     transition: all 0.5s;
-    height: 100%;
-    width: 100%;
+    width: 75%;
   }
   @media screen and (max-width: 1024px) {
     display: none;
