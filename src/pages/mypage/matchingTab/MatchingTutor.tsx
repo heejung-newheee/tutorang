@@ -10,7 +10,7 @@ import './custom.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../../../api/chat';
+import { getOrCreatePrivateChatRoom, sendStudentMessage } from '../../../api/chat';
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { openModal } from '../../../redux/modules';
@@ -60,16 +60,43 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     },
   });
 
-  const handleCancelMatch = async (id: string) => {
-    if (window.confirm('요청을 취소 하시겠습니까?')) cancelMatchMutation.mutate(id);
+  const handleCancelMatch = async (id: string, tutor_id: string | null) => {
+    if (!tutor_id) return;
+    if (!loginUser) return;
+    if (!window.confirm('요청을 취소 하시겠습니까?')) return;
+    cancelMatchMutation.mutate(id);
+    try {
+      const room = await getOrCreatePrivateChatRoom(tutor_id);
+      await sendStudentMessage(room.room_id, 'reject');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleNotCompleteMatch = async (id: string) => {
-    if (window.confirm('수업 취소처리 하시겠습니까?')) notCompleteMatchMutation.mutate(id);
+  const handleNotCompleteMatch = async (id: string, tutor_id: string | null) => {
+    if (!tutor_id) return;
+    if (!loginUser) return;
+    if (!window.confirm('수업 취소처리 하시겠습니까?')) return;
+    notCompleteMatchMutation.mutate(id);
+    try {
+      const room = await getOrCreatePrivateChatRoom(tutor_id);
+      await sendStudentMessage(room.room_id, 'reject');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleCompleteMatch = async (id: string) => {
-    if (window.confirm('수업 완료처리 하시겠습니까?')) completeMatchMutation.mutate(id);
+  const handleCompleteMatch = async (id: string, tutor_id: string | null) => {
+    if (!tutor_id) return;
+    if (!loginUser) return;
+    if (!window.confirm('수업 완료처리 하시겠습니까?')) return;
+    completeMatchMutation.mutate(id);
+    try {
+      const room = await getOrCreatePrivateChatRoom(tutor_id);
+      await sendStudentMessage(room.room_id, 'accept');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // 튜터와의 채팅창 이동
@@ -77,18 +104,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     if (!tutorId) return;
 
     try {
-      const chatRoom = await getChatRoomWithTutor(loginUser!.id, tutorId);
-
-      if (chatRoom.length > 0) {
-        navigate(`/chat?room_id=${chatRoom[0].room_id}`);
-        return;
-      }
-
-      const newRoom = await createChatRoom();
-
-      await inviteChatRoom(newRoom.room_id, tutorId);
-
-      navigate(`/chat?room_id=${newRoom.room_id}`);
+      const chatRoom = await getOrCreatePrivateChatRoom(tutorId);
+      navigate(`/chat?room_id=${chatRoom.room_id}`);
     } catch (error) {
       console.error(error);
     }
@@ -143,7 +160,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                       </div>
                       <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
                       <div>
-                        <MatchBtn onClick={() => item.id !== null && handleCancelMatch(item.id)}>요청 취소</MatchBtn>
+                        <MatchBtn onClick={() => item.id !== null && handleCancelMatch(item.id, item.tutor_id)}>요청 취소</MatchBtn>
                       </div>
                     </S.InfoItem>
                   </S.InfoList>
@@ -181,16 +198,14 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                       <div>
                         <MatchBtn
                           onClick={() => {
-                            console.log('수업완료 누름');
-
-                            item.id !== null && handleCompleteMatch(item.id);
+                            item.id !== null && handleCompleteMatch(item.id, item.tutor_id);
                           }}
                         >
                           수업완료
                         </MatchBtn>
                         <MatchBtn
                           onClick={() => {
-                            item.id !== null && handleNotCompleteMatch(item.id);
+                            item.id !== null && handleNotCompleteMatch(item.id, item.tutor_id);
                           }}
                         >
                           수업취소

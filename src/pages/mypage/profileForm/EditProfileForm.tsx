@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { getUserProfile } from '../../../api/chat';
-import { profileImgUpload, userUpdate } from '../../../api/user';
+import { getUserById, profileImgUpload, userUpdate } from '../../../api/user';
 import { edit_photo } from '../../../assets';
 import { SPGuideMessage } from '../../../components/Form/AuthForm.styled';
 import FormHeader from '../../../components/Form/FormHeader';
@@ -23,7 +23,7 @@ const EditProfileForm = () => {
   const navigate = useNavigate();
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const userData = useQuery([USER_PROFILE_QUERY_KEY], () => getUserProfile(loginUser!.id));
+  const userData = useQuery([USER_PROFILE_QUERY_KEY], () => getUserById(loginUser!.id));
   const user = userData.data;
 
   if (!user) return;
@@ -33,6 +33,10 @@ const EditProfileForm = () => {
   const [imgFile, setImgFile] = useState<File | null>(null);
   const [location, setLoaction] = useState({ sido1: user.location1_sido!, gugun1: user.location1_gugun!, sido2: user.location2_sido!, gugun2: user.location2_gugun! });
   const [prevLocation, _] = useState(location);
+
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+  const [isMatchPwHidden, setIsMatchPwHidden] = useState(true);
+
   const [validPwd, setValidPwd] = useState(false);
   const [validPwdConfirm, setValidPwdConfirm] = useState(false);
   const [validLocation, setValidLocation] = useState(false);
@@ -149,7 +153,7 @@ const EditProfileForm = () => {
                   {password.length > 6 && PWD_REGEX.test(password) ? (
                     <p></p>
                   ) : password !== '' ? (
-                    <p>6자 이상 영문 영문, 숫자, 특수문자 포함</p>
+                    <p>문자, 숫자, 특수문자(!@#$%) 포함, 6자 이상의 비밀번호</p>
                   ) : (
                     <p>
                       <br />
@@ -162,22 +166,41 @@ const EditProfileForm = () => {
                       <br />
                     </p>
                   ) : confirmPassword !== '' ? (
-                    <p>비밀번호가 다릅니다</p>
+                    <p>처음에 입력한 비밀번호와 동일해야합니다</p>
                   ) : (
                     <p>
                       <br />
                     </p>
                   )}
                 </S.ConfirmPass>
-                <div>
+                <S.PasswordWrap>
                   <p>비밀번호 변경</p>
-                  <S.EditInput type="password" name="password" value={password} onChange={changeNewpassword} />
-                </div>
+                  <S.EditInput type={isPasswordHidden ? 'password' : 'text'} name="password" value={password} onChange={changeNewpassword} placeholder="비밀번호를 입력하세요" />
+                  {isPasswordHidden ? (
+                    <S.PasswordEyeButton onClick={() => setIsPasswordHidden(false)}>
+                      <BsFillEyeSlashFill className="pw_button_hidden_color" />
+                    </S.PasswordEyeButton>
+                  ) : (
+                    <S.PasswordEyeButton onClick={() => setIsPasswordHidden(true)}>
+                      <BsFillEyeFill className="pw_button_shown_color" />
+                    </S.PasswordEyeButton>
+                  )}
+                </S.PasswordWrap>
 
-                <div>
+                <S.PasswordWrap>
                   <p>비밀번호 확인</p>
-                  <S.EditInput type="password" name="confirmPassword" value={confirmPassword} onChange={changeConfirmPassword} />
-                </div>
+                  <S.EditInput type={isMatchPwHidden ? 'password' : 'text'} name="confirmPassword" value={confirmPassword} onChange={changeConfirmPassword} placeholder="비밀번호 확인 입력하세요" />
+
+                  {isMatchPwHidden ? (
+                    <S.PasswordEyeButton onClick={() => setIsMatchPwHidden(false)}>
+                      <BsFillEyeSlashFill className=" pw_button_hidden_color" />
+                    </S.PasswordEyeButton>
+                  ) : (
+                    <S.PasswordEyeButton onClick={() => setIsMatchPwHidden(true)}>
+                      <BsFillEyeFill className=" pw_button_shown_color" />
+                    </S.PasswordEyeButton>
+                  )}
+                </S.PasswordWrap>
               </S.PasswordChangeWrap>
               <SFormItem>
                 <SFormItemHeader>

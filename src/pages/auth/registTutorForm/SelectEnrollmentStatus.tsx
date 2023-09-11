@@ -5,11 +5,13 @@ import { ENROLLMENT_STATUS } from '../../../constants/signup.constant';
 
 type TypeSelectEnrollmentStatus = {
   $setEnrollmentStatus: React.Dispatch<React.SetStateAction<string>>;
+  $selectedOption: string;
+  //희정 추가
 };
 
-const SelectEnrollmentStatus: React.FC<TypeSelectEnrollmentStatus> = ({ $setEnrollmentStatus }) => {
+const SelectEnrollmentStatus: React.FC<TypeSelectEnrollmentStatus> = ({ $setEnrollmentStatus, $selectedOption }) => {
   const dropContainerRef = useRef<HTMLDivElement>(null);
-  const [selectedOption, setSelectedOption] = useState<string>('');
+  const [selectedOption, setSelectedOption] = useState<string>($selectedOption); // 희정 추가
 
   const [isDropMenuOpen, setIsDropMenuOpen] = useState<boolean>(false);
   const handleOptionClick = async (option: string) => {
@@ -75,7 +77,7 @@ const SDropDownHeader = styled.div`
     line-height: 45px;
   }
 `;
-const SpanDefaultText = styled.span<{ $selectedOption: string }>`
+export const SpanDefaultText = styled.span<{ $selectedOption: string }>`
   width: 100%;
   color: ${({ $selectedOption }) => ($selectedOption === '' ? '#aeaeae;' : '#000')};
 `;

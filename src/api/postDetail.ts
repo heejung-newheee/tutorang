@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import supabase from '../supabase';
 
 export const getWriteData = async (postid: string | undefined) => {
@@ -39,4 +40,40 @@ export const deletePost = async (postid: string | undefined) => {
   if (post_like_DeleteResult.error) throw post_like_DeleteResult.error;
   if (post_comments_DeleteResult.error) throw post_comments_DeleteResult.error;
   if (write_Delete_DeleteResult.error) throw write_Delete_DeleteResult.error;
+};
+
+////community-comments
+
+export const getCommentsApi = async (postid: number) => {
+  const { data, error } = await supabase
+    .from('post_comments')
+    .select(
+      `*,
+      profiles (username, avatar_url)
+`,
+    )
+    .eq('post_id', postid);
+  if (error) throw error;
+  return data;
+};
+
+type NEWINFO = {
+  comment_id: number;
+  user_id: string | null | undefined;
+  post_id: number | null;
+};
+
+export const deleteCommentApi = async (newInfo: NEWINFO) => {
+  await supabase.from('post_comments').delete().eq('id', newInfo.comment_id).eq('user_id', newInfo.user_id).eq('post_id', newInfo.post_id);
+};
+
+type EDITINFO = {
+  comment: string;
+  created_at: string;
+  id: number;
+};
+
+export const handleCommentUpdate = async (newInfo: EDITINFO, setisEdit: Dispatch<SetStateAction<number>>) => {
+  await supabase.from('post_comments').update({ comment: newInfo.comment, created_at: newInfo.created_at }).eq('id', newInfo.id).single();
+  setisEdit(-1);
 };

@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AdminLayout, Layout, SignInForm, SignUpForm } from '../components';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
-import { Community, Dashboard, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, UserManage, WritePost } from '../pages';
+import { BoardManage, Community, Dashboard, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, UserManage, WritePost } from '../pages';
 import CSManage from '../pages/admin/CSManage/CSManage';
 import CSManageDetail from '../pages/admin/CSManage/CSManageDetail/CSManageDetail';
 import WelcomeMessagePage from '../pages/auth/SignUpForm/WelcomeMessagePage';
@@ -30,6 +30,7 @@ const Router = () => {
           <Route path="user-manage" element={<UserManage />} />
           <Route path="customer-support-manage" element={<CSManage />} />
           <Route path="customer-support-manage/:inquiryid" element={<CSManageDetail />} />
+          <Route path="board-manage" element={<BoardManage />} />
         </Route>
 
         <Route element={<GlobalLayout />}>

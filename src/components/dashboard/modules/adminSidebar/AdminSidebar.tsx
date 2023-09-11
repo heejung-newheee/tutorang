@@ -16,7 +16,9 @@ const AdminSidebar = () => {
           <S.NavItem>
             <Link to={'/admin/user-manage'}>사용자관리</Link>
           </S.NavItem>
-          <S.NavItem>게시판</S.NavItem>
+          <S.NavItem>
+            <Link to={'/admin/board-manage'}>게시판</Link>
+          </S.NavItem>
           <S.NavItem>환불취소관리</S.NavItem>
           <S.NavItem>
             <Link to={'/admin/customer-support-manage'}>1:1 문의관리</Link>

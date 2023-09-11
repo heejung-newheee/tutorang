@@ -1,19 +1,17 @@
-<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_1020_754)">
-<mask id="mask0_1020_754" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="36" height="36">
-<path d="M36 0H0V36H36V0Z" fill="white"/>
-</mask>
-<g mask="url(#mask0_1020_754)">
-<path d="M21.039 6.35294H0V2.32941C0 1.05882 1.05195 0 2.31429 0H18.7013C19.987 0 21.039 1.05882 21.039 2.32941V6.35294Z" fill="#FE902F"/>
-<path d="M6.31169 21.1765V0H2.31429C1.05195 0 0 1.05882 0 2.32941V18.8235C0 20.1176 1.05195 21.1765 2.31429 21.1765H6.31169Z" fill="#FE902F"/>
-<path d="M14.9609 29.6484H35.9999V33.672C35.9999 34.9661 34.948 36.0014 33.6856 36.0014H17.2752C15.9895 36.0014 14.9609 34.9426 14.9609 33.672V29.6484Z" fill="#FE902F"/>
-<path d="M29.6875 14.8242V36.0007H33.6849C34.9706 36.0007 35.9992 34.9419 35.9992 33.6713V17.1536C35.9992 15.8595 34.9472 14.8242 33.6849 14.8242H29.6875Z" fill="#FE902F"/>
-<path d="M21.6223 24.3543H11.5703V14.2367C11.5703 12.8014 12.7158 11.6484 14.1417 11.6484H24.1937V21.7661C24.1937 23.2014 23.0482 24.3543 21.6223 24.3543Z" fill="#FE902F"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.8.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="레이어_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 40 40" style="enable-background:new 0 0 40 40;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FE902F;}
+</style>
+<g>
+	<g>
+		<path class="st0" d="M12.6,7.8h13.8V5.2c0-2.8-2.2-4.9-4.9-4.9H5.1c-2.8,0-4.9,2.2-4.9,4.9v16.6c0,2.8,2.2,4.9,4.9,4.9h2.7V12.9
+			C7.7,10.1,10,7.8,12.6,7.8z"/>
+		<path class="st0" d="M35.1,13.7h-2.7v13.8c0,2.8-2.2,4.9-4.9,4.9H13.7v2.7c0,2.8,2.2,4.9,4.9,4.9h16.6c2.8,0,4.9-2.2,4.9-4.9V18.7
+			C40,16,37.9,13.7,35.1,13.7z"/>
+		<path class="st0" d="M13.6,18.7v7.9h7.9c2.8,0,4.9-2.2,4.9-4.9v-7.9h-7.9C15.9,13.7,13.6,16,13.6,18.7z"/>
+	</g>
 </g>
-</g>
-<defs>
-<clipPath id="clip0_1020_754">
-<rect width="36" height="36" fill="white"/>
-</clipPath>
-</defs>
 </svg>

@@ -7,6 +7,7 @@ import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify 
 
 import * as S from './TutorInfo.styled';
 
+import { useNavigate } from 'react-router-dom';
 import { getBoard } from '../../../api/board';
 import { matchReview } from '../../../api/review';
 import { tutorInfoJoin } from '../../../api/tutor';
@@ -15,7 +16,7 @@ import StarRating from '../../../constants/func';
 import { BOARD_QUERY_KEY, REVIEW_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { Tables, Views } from '../../../supabase/database.types';
-import { Age, Dot, Icon, InfoItem, PriceItem, PriceList, TagList, TutorName } from '../../detail/tutorInfoDetail/TutorInfoDetail.styled';
+import { Age, ClassLevel, Dot, Icon, InfoItem, PriceItem, PriceList, TagList, TutorName } from '../../detail/tutorInfoDetail/TutorInfoDetail.styled';
 import MatchingStudent from '../matchingTab/MatchingStudent';
 import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataTitle, InfoNull, InfoSection, InfoTitle, ReviewRating } from '../userInfo/UserInfo.styled';
 
@@ -23,6 +24,7 @@ interface pageProps {
   match: Views<'matching_tutor_data'>[];
 }
 const TutorInfo = ({ match }: pageProps) => {
+  const navigate = useNavigate();
   useEffect(() => {
     AOS.init();
   }, []);
@@ -68,12 +70,18 @@ const TutorInfo = ({ match }: pageProps) => {
                 <S.TutorClassTop>
                   <div>
                     <TutorName>
-                      {tutorInfo.tutor_name} <Age>(나이)</Age>
+                      {tutorInfo.tutor_name} <Age>({tutorInfo.tutor_age})</Age>
                     </TutorName>
                     <Icon src={icon_verify} />
                     학력인증
                   </div>
-                  <S.ClassEditBtn to={'/tutor-class'}>
+                  <S.ClassEditBtn
+                    onClick={() => {
+                      navigate(`/tutor-class`, {
+                        state: { tutorInfo },
+                      });
+                    }}
+                  >
                     <img src={icon_edit_wh} alt="" />
                   </S.ClassEditBtn>
                 </S.TutorClassTop>
@@ -89,7 +97,7 @@ const TutorInfo = ({ match }: pageProps) => {
                     <InfoItem>
                       <Icon src={icon_check} />
                       {tutorInfo.speaking_language?.map((language) => {
-                        return <span key={language}> {language} </span>;
+                        return <ClassLevel key={language}> {language} </ClassLevel>;
                       })}
                       가능
                     </InfoItem>
@@ -187,13 +195,6 @@ const TutorInfo = ({ match }: pageProps) => {
                     );
                   })}
               </ContentsDataBox>
-            </Container>
-          </InfoSection>
-
-          <InfoSection>
-            <Container>
-              <InfoTitle>수강 database</InfoTitle>
-              <div>통계 그래프</div>
             </Container>
           </InfoSection>
         </>

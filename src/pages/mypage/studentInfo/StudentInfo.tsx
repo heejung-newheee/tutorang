@@ -21,7 +21,7 @@ interface pageProps {
   match: Views<'matching_tutor_data'>[];
 }
 
-// username 속성타입오류로 review :any 임시
+// username 속성타입오류로 review :any 임시 *********
 // type ReviewProfiles = {
 //   profiles: string;
 //   username: string;
@@ -47,7 +47,6 @@ const StudentInfo = ({ match }: pageProps) => {
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery([BOOK_MARK_QUERY_KEY], fetchLBookMark);
 
   const myReview: any = useQuery([REVIEW_QUERY_KEY], () => getMyWritiedReview(user!.id));
-  console.log(myReview.data);
 
   if (boardLoading || likeLoading) {
     return <Loading />;

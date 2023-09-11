@@ -290,6 +290,11 @@ export const Hamburger = styled.button`
 
   @media only screen and (max-width: 768px) {
     display: block;
+    height: 35px;
+    padding: 6px;
+    img {
+      height: 100%;
+    }
   }
 `;
 export const MobileLogoDiv = styled.div`
@@ -311,7 +316,17 @@ export const MobileLogoDiv = styled.div`
     margin-right: 8px;
   }
 `;
-
+export const NavModalCloseBtn = styled.button`
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+  float: right;
+  margin-bottom: 15px;
+  img {
+    height: 100%;
+  }
+`;
 export const SignMobileWrapper = styled.div`
   width: 100%;
   height: 100%;

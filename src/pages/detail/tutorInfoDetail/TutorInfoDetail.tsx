@@ -8,7 +8,7 @@ import { openModal } from '../../../redux/modules';
 import * as S from './TutorInfoDetail.styled';
 
 import { useNavigate } from 'react-router-dom';
-import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../../../api/chat';
+import { getOrCreatePrivateChatRoom } from '../../../api/chat';
 import { tutorMatchedCount } from '../../../api/match';
 import { matchReview } from '../../../api/review';
 import { RootState } from '../../../redux/config/configStore';
@@ -38,18 +38,8 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
     }
 
     try {
-      const chatRoom = await getChatRoomWithTutor(loginUser?.id, tutorId);
-
-      if (chatRoom.length > 0) {
-        navigate(`/chat?room_id=${chatRoom[0].room_id}`);
-        return;
-      }
-
-      const newRoom = await createChatRoom();
-
-      await inviteChatRoom(newRoom.room_id, tutorId);
-
-      navigate(`/chat?room_id=${newRoom.room_id}`);
+      const chatRoom = await getOrCreatePrivateChatRoom(tutorId);
+      navigate(`/chat?room_id=${chatRoom.room_id}`);
     } catch (error) {
       console.error(error);
     }
@@ -125,7 +115,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
                   <S.InfoItem>
                     <S.Icon src={icon_check} />
                     {tutor.speaking_language?.map((language) => {
-                      return <span key={language}> {language} </span>;
+                      return <S.ClassLevel key={language}> {language} </S.ClassLevel>;
                     })}
                     가능
                   </S.InfoItem>

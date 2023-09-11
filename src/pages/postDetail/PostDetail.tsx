@@ -110,6 +110,9 @@ const PostDetail = () => {
       {data !== undefined && data !== null ? <MainComments dangerouslySetInnerHTML={{ __html: `${data[0].content}` }}></MainComments> : null}
       <LikeDiv $Like={data?.[0].post_like.some((like) => like.user_id === loginUser?.id) === true ? true : false}>
         <button onClick={handleLike}>like</button>
+        <Placement className="placement">
+          <Heart className="heart"></Heart>
+        </Placement>
       </LikeDiv>
       <CommentDiv>
         <form onSubmit={handleComment}>
@@ -217,4 +220,26 @@ export const InputDiv = styled.div`
     border: none;
     outline: none;
   }
+`;
+
+export const Heart = styled.div`
+  width: 100px;
+  height: 100px;
+  background: url('https://cssanimation.rocks/images/posts/steps/heart.png') no-repeat;
+  background-position: 0 0;
+  cursor: pointer;
+  transition: background-position 1s steps(28);
+  transition-duration: 0s;
+
+  &:active {
+    transition-duration: 1s;
+    background-position: -2800px 0;
+  }
+`;
+
+export const Placement = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
