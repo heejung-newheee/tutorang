@@ -1,9 +1,10 @@
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { getChatRoom, getJoinedChatRooms, getMessagesInChatRoom, getUserProfile } from '../../../api/chat';
+import { getChatRoom, getJoinedChatRooms, getMessagesInChatRoom } from '../../../api/chat';
 import supabase from '../../../supabase';
 import { RoomType, RoomWithLastMessageType, Tables } from '../../../supabase/database.types';
+import { getUserById } from '../../../api/user';
 
 type ChatContextType = {
   chatRoomList: RoomWithLastMessageType[];
@@ -30,15 +31,11 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
   const [searchParams] = useSearchParams();
   const room_id = searchParams.get('room_id');
 
-  console.log(chatRoomList, 'chatRoomList', chatRoom, 'chatRoom');
   const chatRoomIdRef = useRef<string | null>(null);
   const chatRoomListIdsRef = useRef<string[]>([]);
-  console.log(chatRoomIdRef, 'chatRoomIdRef', chatRoomListIdsRef, 'chatRoomListIdsRef');
 
   const messageSubscriptionRef = useRef<RealtimeChannel | null>(null);
   const participantSubscriptionRef = useRef<RealtimeChannel | null>(null);
-
-  console.log(messageSubscriptionRef, 'messageSubscriptionRef', participantSubscriptionRef, 'participantSubscriptionRef');
 
   const handleGetChatRooms = useCallback(async () => {
     const chatRooms = (await getJoinedChatRooms()) as RoomWithLastMessageType[];
@@ -144,7 +141,7 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
               }
             } else {
               try {
-                const profile = await getUserProfile(newParticipant.user_id);
+                const profile = await getUserById(newParticipant.user_id);
                 setChatRoomList((roomList) => {
                   const newRoomList = [...roomList];
                   const roomIndex = roomList.findIndex((room) => room.room_id === newParticipant.room_id);
