@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { CheckboxOptionType } from '../../../constants/signup.constant';
 
@@ -11,6 +11,10 @@ type CheckboxType = {
 
 const Checkbox: React.FC<CheckboxType> = ({ $checkboxType, option, handleCheckedItems, checkItems }) => {
   const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    setChecked(checkItems.includes(option.value));
+  }, [checkItems, option.value]);
 
   const handleCheckedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (checkItems.length >= 3 && event.target.checked === true) return false;

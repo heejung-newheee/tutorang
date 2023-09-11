@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
-import { createChatRoom, getChatRoomWithTutor, inviteChatRoom, sendTutoringMessage } from '../../../api/chat';
+import { createChatRoom, getChatRoomWithTutor, inviteChatRoom, sendStudentMessage, sendTutorMessage } from '../../../api/chat';
 import { matchingPending, matchingReject } from '../../../api/match';
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
@@ -47,12 +47,12 @@ const MatchingStudent = ({ matchList }: pageProps) => {
     try {
       const room = await getChatRoomWithTutor(user.id, student_id);
       if (room.length > 0) {
-        await sendTutoringMessage(room[0].room_id, 'accept');
+        await sendTutorMessage(room[0].room_id, 'pending');
         return;
       }
       const newRoom = await createChatRoom();
       await inviteChatRoom(newRoom.room_id, student_id);
-      await sendTutoringMessage(newRoom.room_id, 'accept');
+      await sendStudentMessage(newRoom.room_id, 'accept');
     } catch (err) {
       console.error(err);
     }
@@ -66,13 +66,13 @@ const MatchingStudent = ({ matchList }: pageProps) => {
       const room = await getChatRoomWithTutor(user.id, student_id);
 
       if (room.length > 0) {
-        await sendTutoringMessage(room[0].room_id, 'reject');
+        await sendTutorMessage(room[0].room_id, 'reject');
         return;
       }
 
       const newRoom = await createChatRoom();
       await inviteChatRoom(newRoom.room_id, student_id);
-      await sendTutoringMessage(newRoom.room_id, 'reject');
+      await sendTutorMessage(newRoom.room_id, 'reject');
     } catch (err) {
       console.error(err);
     }

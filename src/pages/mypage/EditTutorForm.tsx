@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { v4 } from 'uuid';
+import { useLocation, useNavigate } from 'react-router-dom';
 import FormHeader from '../../components/Form/FormHeader';
 import SelectLocation from '../../components/Form/SelectLocation';
 import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../../constants/formConstant';
@@ -14,25 +13,49 @@ import Checkbox from '../auth/registTutorForm/Checkbox';
 import * as S from '../auth/registTutorForm/RegistTutorForm.styled';
 import SelectEnrollmentStatus from '../auth/registTutorForm/SelectEnrollmentStatus';
 import SelectTuitionFee from '../auth/registTutorForm/SelectTuitionFee';
-import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from '../auth/registTutorForm/translation';
+import { classLevelEngTranslation, classLevelTranslation, personalityEngTranslation, personalityTranslation, speakingLanguageEngTranslation, speakingLanguageTranslation } from '../auth/registTutorForm/translation';
 
 const EditTutorForm = () => {
-  const [tuitionFeeOnline, setTuitionFeeOnline] = useState(0);
-  const [tuitionFeeOffline, setTuitionFeeOffline] = useState(0);
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const tutorInfo = state.tutorInfo;
+  const [location, setLoaction] = useState({
+    sido1: tutorInfo.location1_sido!,
+    gugun1: tutorInfo.location1_gugun!,
+    sido2: tutorInfo.location2_sido!,
+    gugun2: tutorInfo.location2_gugun!,
+  });
+  const [prevLocation, __] = useState(location);
+
+  const [university, setUniversity] = useState(tutorInfo.university || '');
+  const [enrollmentStatus, setEnrollmentStatus] = useState(tutorInfo.enrollmentStatus || '');
+  const [major, setMajor] = useState(tutorInfo.major || '');
   const [checkPersonalityItems, setCheckPersonalityItems] = useState<string[]>([]);
   const [checkLanguageItems, setCheckLanguageItems] = useState<string[]>([]);
   const [checkClassLevelItems, setCheckClassLevelItems] = useState<string[]>([]);
-  const [uid, setUid] = useState<string | null>('');
-  const [email, setEmail] = useState<string | null>('');
-  const [classInfo, setClassInfo] = useState('');
-  const [university, setUniversity] = useState('');
-  const [major, setMajor] = useState('');
-  const [certificationImgFile, _] = useState<File | undefined>();
-  const [enrollmentStatus, setEnrollmentStatus] = useState('');
-  const [location, setLoaction] = useState({ sido1: '시/도 선택', gugun1: '구/군 선택', sido2: '시/도 선택', gugun2: '구/군 선택' });
+  const [classInfo, setClassInfo] = useState(tutorInfo.class_info || '');
+  const [tuitionFeeOnline, setTuitionFeeOnline] = useState(tutorInfo.tuition_fee_online);
+  const [tuitionFeeOffline, setTuitionFeeOffline] = useState(tutorInfo.tuition_fee_offline);
 
-  const navigate = useNavigate();
+  const [uid, setUid] = useState<string | null>('');
+  const [_, setEmail] = useState<string | null>('');
+  const [validLocation, setValidLocation] = useState(false);
+
   const user = useSelector((state: RootState) => state.user.user);
+
+  useEffect(() => {
+    let personality = tutorInfo.personality;
+    personality = personalityEngTranslation(personality);
+    setCheckPersonalityItems(personality);
+
+    let class_level = tutorInfo.class_level;
+    class_level = classLevelEngTranslation(class_level);
+    setCheckClassLevelItems(class_level);
+
+    let speaking_language = tutorInfo.speaking_language;
+    speaking_language = speakingLanguageEngTranslation(speaking_language);
+    setCheckLanguageItems(speaking_language);
+  }, [tutorInfo]);
 
   const onChangeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.name === 'university') setUniversity(event.target.value);
@@ -41,7 +64,7 @@ const EditTutorForm = () => {
   const handleCheckedItems = (checkBoxType: string, value: string, isChecked: boolean) => {
     if (checkBoxType === 'personality') {
       if (isChecked) {
-        if (checkPersonalityItems.length >= 3) return false;
+        if (checkPersonalityItems.length >= 5) return false;
         setCheckPersonalityItems([...checkPersonalityItems, value]);
       } else if (!isChecked) {
         const updatedPersonalityItems = checkPersonalityItems.filter((item) => {
@@ -74,22 +97,6 @@ const EditTutorForm = () => {
     }
   };
 
-  const storeAndGetProfileImg = async () => {
-    const imgIdentity = v4();
-    if (certificationImgFile && certificationImgFile !== undefined) {
-      const { error } = await supabase.storage.from('certification-img-file').upload(`${email}/${imgIdentity}`, certificationImgFile, {
-        cacheControl: '3600',
-        upsert: false,
-      });
-      if (error) {
-        console.error('upload error', error);
-      } else {
-        const { data } = await supabase.storage.from('certification-img-file').getPublicUrl(`${email}/${imgIdentity}`);
-        return data?.publicUrl;
-      }
-    } else return undefined;
-  };
-
   const selectTuitionFee = (option: number, tuitionType: string) => {
     if (tuitionType === 'online') {
       setTuitionFeeOnline(option);
@@ -98,18 +105,18 @@ const EditTutorForm = () => {
       setTuitionFeeOffline(option);
     }
   };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const imgUrlList = await storeAndGetProfileImg();
     const personality = personalityTranslation(checkPersonalityItems);
     const class_level = classLevelTranslation(checkClassLevelItems);
     const speaking_language = speakingLanguageTranslation(checkLanguageItems);
+
     const formData = {
       user_id: uid,
       university,
       major,
       enrollmentStatus,
-      certification_image: imgUrlList,
       speaking_language,
       personality,
       class_level,
@@ -139,12 +146,22 @@ const EditTutorForm = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (prevLocation.sido1 !== location.sido1 || prevLocation.gugun1 !== location.gugun1 || prevLocation.sido2 !== location.sido2 || prevLocation.gugun2 !== location.gugun2) {
+      const checkedValidLocation1 = location.sido1 !== '시/도 선택' && location.sido1 !== '전체' && location.gugun1 !== '구/군 선택' && location.gugun1 !== '전체';
+      const checkedValidLocation2 = location.sido2 !== '시/도 선택' && location.sido2 !== '전체' && location.gugun2 !== '구/군 선택' && location.gugun2 !== '전체';
+      const checkedSameLocation = location.sido1 === location.sido2 && location.gugun1 === location.gugun2;
+      setValidLocation(checkedValidLocation1 && checkedValidLocation2 && !checkedSameLocation);
+    }
+  }, [location]);
+
   let isHereguidemessage = '';
   if (location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2) {
     isHereguidemessage = '중복 지역선택 불가';
   } else if (location.sido1 === '시/도 선택' || location.sido2 === '시/도 선택' || location.gugun1 === '구/군 선택' || location.gugun2 === '구/군 선택') {
     isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
   }
+
   return (
     <S.Container>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT} />
@@ -155,15 +172,15 @@ const EditTutorForm = () => {
           <S.FormItemBody>
             <S.FormItemBodySection>
               <span>지역1</span>
-              <SelectLocation $locationType={'locationType1'} $setLocation={setLoaction} />
+              <SelectLocation $locationType={'locationType1'} $setLocation={setLoaction} $prevValue={location} />
             </S.FormItemBodySection>
             <S.FormItemBodySection>
               <span>지역2</span>
-              <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} />
+              <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} $prevValue={location} />
             </S.FormItemBodySection>
           </S.FormItemBody>
           <S.FormItemHeader>
-            <S.PGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</S.PGuideMessage>
+            <S.PGuideMessage style={{ color: 'red', fontSize: '14px' }}>{isHereguidemessage !== '' && isHereguidemessage}</S.PGuideMessage>
           </S.FormItemHeader>
           <S.FormItemTitle>학위/자격 증명</S.FormItemTitle>
           <S.FormCertificateItems>
@@ -171,7 +188,7 @@ const EditTutorForm = () => {
               <label htmlFor="university">대학교</label>
               <S.ItemSchool>
                 <S.Input type="text" id="university" name="university" value={university} onChange={onChangeInputHandler} />
-                <SelectEnrollmentStatus $setEnrollmentStatus={setEnrollmentStatus} />
+                <SelectEnrollmentStatus $selectedOption={enrollmentStatus} $setEnrollmentStatus={setEnrollmentStatus} />
               </S.ItemSchool>
             </S.CertificateItem>
             <S.CertificateItem>
@@ -182,6 +199,7 @@ const EditTutorForm = () => {
         </S.FormItem>
         <S.FormItem>
           <S.FormItemTitle>성격 (최대 3개 선택)</S.FormItemTitle>
+
           <S.Items>
             {PERSONALITY_LIST.map((personality) => (
               <Checkbox key={personality.value} $checkboxType={'personality'} option={personality} handleCheckedItems={handleCheckedItems} checkItems={checkPersonalityItems} />
@@ -191,6 +209,7 @@ const EditTutorForm = () => {
 
         <S.FormItem>
           <S.FormItemTitle>가능언어</S.FormItemTitle>
+
           <S.Items>
             {AVAILABLE_LANGUAGE_LIST.map((language) => (
               <Checkbox key={language.value} $checkboxType={'language'} option={language} handleCheckedItems={handleCheckedItems} checkItems={checkLanguageItems} />
@@ -228,19 +247,21 @@ const EditTutorForm = () => {
                 <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
                 <span>화상 수업</span>
               </S.ItemHeader>
-              <SelectTuitionFee $tuitionType={'online'} $selectTuitionFee={selectTuitionFee} />
+              <SelectTuitionFee $tuitionType={'online'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOnline} />
             </S.TuitionItem>
             <S.TuitionItem>
               <S.ItemHeader>
                 <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
                 <span>대면 수업</span>
               </S.ItemHeader>
-              <SelectTuitionFee $tuitionType={'offline'} $selectTuitionFee={selectTuitionFee} />
+              <SelectTuitionFee $tuitionType={'offline'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOffline} />
             </S.TuitionItem>
           </S.TuitionItems>
         </S.FormItem>
 
-        <S.Button type="submit">정보 수정 완료</S.Button>
+        <S.Button type="submit" disabled={location === prevLocation ? false : !validLocation ? true : false}>
+          정보 수정 완료
+        </S.Button>
       </S.Form>
     </S.Container>
   );

@@ -53,6 +53,7 @@ export const BadgeReviewCount = styled.span`
 
 export const ReviewItem = styled.div`
   position: relative;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -62,7 +63,9 @@ export const ReviewItem = styled.div`
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
 `;
-
+export const ReviewContent = styled.div`
+  width: 70%;
+`;
 export const ReviewTitle = styled.p`
   font-size: 24px;
   font-weight: 600;

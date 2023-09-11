@@ -126,6 +126,18 @@ export const Icon = styled.img`
   margin-top: -1px;
   filter: invert(26%) sepia(4%) saturate(12%) hue-rotate(18deg) brightness(89%) contrast(88%);
 `;
+export const ClassLevel = styled.span`
+  &::after {
+    content: '•';
+    display: inline-block;
+    clear: both;
+    margin-right: 5px;
+  }
+  &:last-child::after {
+    content: '';
+    display: inline-block;
+  }
+`;
 
 export const TagList = styled.ul`
   & li {
