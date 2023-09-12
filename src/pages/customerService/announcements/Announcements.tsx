@@ -1,15 +1,9 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { closeModal } from '../../../redux/modules';
+import { useQuery } from '@tanstack/react-query';
+import { ANNOUNCEMENTS_QUERY_KEY, getAllAnnouncements } from '../../../api/announcements';
 
 const Announcements = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    return () => {
-      dispatch(closeModal());
-    };
-  }, []);
-
+  const data = useQuery([ANNOUNCEMENTS_QUERY_KEY], getAllAnnouncements);
+  console.log(data);
   return <div>Announcements</div>;
 };
 
