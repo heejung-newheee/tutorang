@@ -20,9 +20,7 @@ type InquiryDataProps = {
   content: string | null | TrustedHTML;
   created_at: string;
   file1: string | null;
-  file2: string | null;
   id: string;
-  isReplied: boolean | null;
   title: string | null;
   user_id: string | null;
   profiles: ProfileProps | null;
