@@ -72,7 +72,6 @@ const MatchedReviewForm = () => {
     }
 
     const newReview: reviews = {
-      matched_id: matchingId as string,
       reviewed_id: tutorId as string,
       user_id: loginUser?.id,
       author: loginUser.username,

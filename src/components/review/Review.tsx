@@ -6,7 +6,7 @@ import { matchReview } from '../../api/review';
 import { icon_more } from '../../assets';
 import StarRating from '../../constants/func';
 import { REVIEW_QUERY_KEY } from '../../constants/query.constant';
-import { DataAuth, DataContent, DataItem, DataTitle, ReviewRating } from '../../pages/mypage/userInfo/UserInfo.styled';
+import { DataAuth, DataContent, DataItem, DataTitle, ReviewRating } from '../../pages/mypage/Mypage.styled';
 import { RootState } from '../../redux/config/configStore';
 import { openModal, setReview } from '../../redux/modules';
 import * as S from './Review.styled';

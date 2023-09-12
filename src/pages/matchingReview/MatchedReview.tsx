@@ -26,8 +26,8 @@ const MatchedReview = () => {
         <Container>
           <S.Title>튜터랑을 선택하는 이유는 무엇일까요?</S.Title>
           <S.Inner>
-            <S.ReasonImg className="desk-top" src={reason} alt="" style={{ position: 'relative', left: '50%', transform: 'translate(-50%, 0px)' }} />
-            <S.ReasonImg className="mobile" src={reasonMb} alt="" style={{ position: 'relative', left: '50%', transform: 'translate(-50%, 0px)' }} />
+            <S.ReasonImg className="desk-top" src={reason} alt="reason" style={{ position: 'relative', left: '50%', transform: 'translate(-50%, 0px)' }} />
+            <S.ReasonImg className="mobile" src={reasonMb} alt="reason" style={{ position: 'relative', left: '50%', transform: 'translate(-50%, 0px)' }} />
           </S.Inner>
         </Container>
       </Section>
@@ -42,10 +42,10 @@ const MatchedReview = () => {
               const rating = review.rating || 0;
               return (
                 <>
-                  <S.ReviewItem>
+                  <S.ReviewItem key={review.id}>
                     <S.ReviewAuth>
                       <div>
-                        <S.Avarta src={review.user_img as string} alt="" />
+                        <S.Avarta src={review.user_img as string} alt="user profile" />
                       </div>
                       <div>
                         <S.Name>

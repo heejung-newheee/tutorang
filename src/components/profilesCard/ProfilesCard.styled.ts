@@ -35,6 +35,7 @@ export const TutorTitle = styled.h5`
 export const TutorName = styled.div`
   font-size: 16px;
   margin-bottom: 12px;
+  font-weight: bold;
 `;
 export const TutorContent = styled.div`
   font-size: 13px;
@@ -54,7 +55,7 @@ export const Tag = styled.div`
     font-size: 12px;
     line-height: 26px;
     border-radius: 13px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 4px 0px;
+    border: solid 1px #dbdbdb;
     white-space: nowrap;
   }
 `;

@@ -2,6 +2,10 @@
     width: 200px;
 }
 
+.flicking-camera a {
+    margin: 10px
+}
+
 .flicking-arrow-prev.is-circle, .flicking-arrow-next.is-circle {
     background-color: transparent;
     opacity: 0;

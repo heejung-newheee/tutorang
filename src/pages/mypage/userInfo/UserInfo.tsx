@@ -1,22 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { matchingTutorData } from '../../../api/match';
 import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../../api/review';
+import { getUserById } from '../../../api/user';
 import { icon_edit, icon_location } from '../../../assets';
 import { Loading } from '../../../components';
-import { MATCHING_TUTOR_DATA_QUERY_KEY, RECEIVED_REVIEW_COUNT, USER_PROFILE_QUERY_KEY, WRITE_REVIEW_COUNT } from '../../../constants/query.constant';
+import { RECEIVED_REVIEW_COUNT, USER_PROFILE_QUERY_KEY, WRITE_REVIEW_COUNT } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
-import StudentInfo from '../studentInfo/StudentInfo';
-import TutorInfo from '../tutorInfo/TutorInfo';
+import { Views } from '../../../supabase/database.types';
+import { Container } from '../Mypage.styled';
 import * as S from './UserInfo.styled';
-import { getUserById } from '../../../api/user';
-
-const UserInfo = () => {
+interface pageProps {
+  match: Views<'matching_tutor_data'>[] | undefined;
+}
+const UserInfo = ({ match }: pageProps) => {
   const navigate = useNavigate();
   const loginUser = useSelector((state: RootState) => state.user.user!);
   const { data: user, isLoading, isError } = useQuery([USER_PROFILE_QUERY_KEY], () => getUserById(loginUser.id));
-  const { data: matchList } = useQuery([MATCHING_TUTOR_DATA_QUERY_KEY], matchingTutorData);
+
   const writeReviewCount = useQuery([WRITE_REVIEW_COUNT, user], () => getWriteReviewCount(user!.id), { enabled: !!user });
   const receivedReviewCount = useQuery([RECEIVED_REVIEW_COUNT], () => getReceivedWriteReviewCount(user!.id), { enabled: !!user });
 
@@ -41,17 +42,17 @@ const UserInfo = () => {
     }
   };
 
-  const studentMatch = matchList?.filter((item) => item.user_id === user.id);
-  const tutorMatch = matchList?.filter((item) => item.tutor_id === user.id);
+  const studentMatch = match?.filter((item) => item.user_id === user.id);
+  const tutorMatch = match?.filter((item) => item.tutor_id === user.id);
   return (
     <>
-      <S.MypageContainer>
+      <S.ProfileSection>
         <S.ProfileBox>
-          <S.Container>
+          <Container>
             <S.ProfileImg>
               <S.UserImg src={user.avatar_url ?? ''} alt="user profile" />
               <S.EditBtn onClick={handleEditProfiles}>
-                <img src={icon_edit} alt="" />
+                <img src={icon_edit} alt="profile edit button" />
               </S.EditBtn>
             </S.ProfileImg>
             <S.UserName>
@@ -59,7 +60,7 @@ const UserInfo = () => {
               <span> {user.role}</span>
             </S.UserName>
             <S.TutorLocationBox>
-              <img src={icon_location} alt="" /> {user.location1_sido} | {user.location1_gugun} <img src={icon_location} alt="" /> {user.location2_sido} | {user.location2_gugun}
+              <img src={icon_location} alt="location icon" /> {user.location1_sido} - {user.location1_gugun} | {user.location2_sido} - {user.location2_gugun}
             </S.TutorLocationBox>
             <S.Summary>
               {user.role === 'tutor' ? (
@@ -96,12 +97,9 @@ const UserInfo = () => {
                 <></>
               )}
             </S.Summary>
-          </S.Container>
+          </Container>
         </S.ProfileBox>
-
-        <S.EmptyMypage></S.EmptyMypage>
-        {matchList && matchList.length > 0 ? <>{user.role === 'tutor' ? <TutorInfo match={matchList} /> : <StudentInfo match={matchList} />}</> : <div>매칭 데이터가 없습니다.</div>}
-      </S.MypageContainer>
+      </S.ProfileSection>
     </>
   );
 };

@@ -15,7 +15,7 @@ import { USER_PROFILE_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
-import { Container, Section } from '../../main/Main';
+import { Container, Section } from '../Mypage.styled';
 import * as S from './ProfileForm.styled';
 
 const EditProfileForm = () => {
@@ -126,7 +126,7 @@ const EditProfileForm = () => {
           <S.Inner>
             <form onSubmit={updateProfilesInfo}>
               <S.ProfileImgBox>
-                <S.ProfileImg src={previewImg?.toString() || user?.avatar_url || undefined} alt="" />
+                <S.ProfileImg src={previewImg?.toString() || user?.avatar_url || undefined} alt="user profile" />
                 <S.EditPhotoBtn>
                   <img src={edit_photo} alt="이미지 교체 버튼" />
                 </S.EditPhotoBtn>

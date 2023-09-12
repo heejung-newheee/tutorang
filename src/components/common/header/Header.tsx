@@ -83,7 +83,7 @@ const Header = () => {
           </S.MobileLogo>
 
           <S.Hamburger onClick={() => setSideNavOpen(!sideNavOpen)}>
-            <img src={mobileNabBtn} alt="" />
+            <img src={mobileNabBtn} alt="mobile menu btn" />
           </S.Hamburger>
 
           <HeaderModal sideNavOpen={sideNavOpen} setSideNavOpen={setSideNavOpen} loginUser={loginUser} signOut={signOut} />

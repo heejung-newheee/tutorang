@@ -121,7 +121,11 @@ export const ReviewItem = styled.div`
   display: inline-block;
   width: 100%;
   break-inside: avoid;
-  margin-bottom: 50px;
+  padding: 20px 15px 30px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  border: solid 1px #ececec;
+  /* background: #f7f7f7; */
 `;
 
 export const ReviewAuth = styled.div`
