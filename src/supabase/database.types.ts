@@ -824,6 +824,7 @@ export interface Database {
           avatar_url: string | null;
           basic_authority: boolean;
           birth: string | null;
+          created_at: string | null;
           deleted_at: string | null;
           email: string | null;
           gender: string | null;
@@ -841,6 +842,7 @@ export interface Database {
           avatar_url?: string | null;
           basic_authority?: boolean;
           birth?: string | null;
+          created_at?: string | null;
           deleted_at?: string | null;
           email?: string | null;
           gender?: string | null;
@@ -858,6 +860,7 @@ export interface Database {
           avatar_url?: string | null;
           basic_authority?: boolean;
           birth?: string | null;
+          created_at?: string | null;
           deleted_at?: string | null;
           email?: string | null;
           gender?: string | null;
@@ -1422,32 +1425,35 @@ export interface Database {
       };
     };
     Functions: {
-      get_daily_record_count: {
+      get_converted_tutor_count_by_month: {
         Args: {
-          p_year: number;
-          p_month: number;
-        };
-        Returns: {
-          day: number;
-          count: number;
-        }[];
-      };
-      get_daily_record_counts: {
-        Args: {
-          p_year: number;
-          p_month: number;
+          year: number;
+          month: number;
         };
         Returns: {
           date: string;
-          record_count: number;
+          count: number;
         }[];
       };
-      get_tutor_count_by_year_month: {
+      get_matching_count_by_month: {
         Args: {
-          input_year: number;
-          input_month: number;
+          year: number;
+          month: number;
         };
-        Returns: number;
+        Returns: {
+          date: string;
+          count: number;
+        }[];
+      };
+      get_signup_count_by_month: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          date: string;
+          count: number;
+        }[];
       };
       get_two_person_chat_room: {
         Args: {
