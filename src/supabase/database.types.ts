@@ -1466,6 +1466,26 @@ export interface Database {
           created_at: string;
         }[];
       };
+      getauthenticatedusersbymonth: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          auth_date: string;
+          user_count: number;
+        }[];
+      };
+      gettutorcountbymonth: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          auth_date: string;
+          user_count: number;
+        }[];
+      };
       is_room_participant: {
         Args: {
           room_id: string;
@@ -1502,3 +1522,6 @@ export type RoomType = Tables<'chat_rooms'> & {
 export type RoomWithLastMessageType = RoomType & {
   last_message: Tables<'chat_messages'>[];
 };
+
+export type TutorApplyInfo = Pick<Tables<'pending_tutor_registration'>, 'id' | 'state' | 'class_info' | 'tuition_fee_offline' | 'tuition_fee_online' | 'certification_image' | 'speaking_language' | 'personality' | 'class_level'>;
+export type TutorReport = Pick<Tables<'report'>, 'tutor_id' | 'user_id' | 'state' | 'content'>;

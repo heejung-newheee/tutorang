@@ -11,10 +11,12 @@ import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateA
 import EditProfileForm from '../pages/mypage/profileForm/EditProfileForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
+import GlobalModal from '../components/modal/GlobalModal';
 
 const Router = () => {
   return (
     <BrowserRouter>
+      <GlobalModal />
       <Routes>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
