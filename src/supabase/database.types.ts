@@ -388,9 +388,7 @@ export interface Database {
           content: string | null;
           created_at: string;
           file1: string | null;
-          file2: string | null;
           id: string;
-          isReplied: boolean | null;
           title: string | null;
           user_id: string | null;
         };
@@ -398,9 +396,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           file1?: string | null;
-          file2?: string | null;
           id?: string;
-          isReplied?: boolean | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -408,9 +404,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           file1?: string | null;
-          file2?: string | null;
           id?: string;
-          isReplied?: boolean | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -897,7 +891,7 @@ export interface Database {
           content: string | null;
           created_at: string;
           id: number;
-          matched_id?: string | null;
+          matched_id: string | null;
           rating: number | null;
           reviewed_id: string | null;
           title: string | null;

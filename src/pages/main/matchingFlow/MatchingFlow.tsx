@@ -11,10 +11,10 @@ interface TabViewProps {
 const MatchingFlow = () => {
   const [activeTab, setActiveTab] = useState(0);
   const tabs: TabViewProps[] = [
-    { index: 1, name: <TabTitle1 />, content: <img src={tabPanel_1} alt="" /> },
-    { index: 2, name: <TabTitle2 />, content: <img src={tabPanel_2} alt="" /> },
-    { index: 3, name: <TabTitle3 />, content: <img src={tabPanel_3} alt="" /> },
-    { index: 4, name: <TabTitle4 />, content: <img src={tabPanel_4} alt="" /> },
+    { index: 1, name: <TabTitle1 />, content: <img src={tabPanel_1} alt="flow 01" /> },
+    { index: 2, name: <TabTitle2 />, content: <img src={tabPanel_2} alt="flow 02" /> },
+    { index: 3, name: <TabTitle3 />, content: <img src={tabPanel_3} alt="flow 03" /> },
+    { index: 4, name: <TabTitle4 />, content: <img src={tabPanel_4} alt="flow 04" /> },
   ];
 
   return (
@@ -52,7 +52,7 @@ const TabTitle1 = () => {
       <S.TabNum className="num">1</S.TabNum>
       <S.TabBubble>
         <S.TabBubbleBg>
-          <img src={bubble} alt="" />
+          <img src={bubble} alt="bubble" />
         </S.TabBubbleBg>
         <S.TabBubbleContent>
           <S.BubbletTit>지역설정 하기</S.BubbletTit>
@@ -68,7 +68,7 @@ const TabTitle2 = () => {
       <S.TabNum className="num">2</S.TabNum>
       <S.TabBubble>
         <S.TabBubbleBg>
-          <img src={bubble} alt="" />
+          <img src={bubble} alt="bubble" />
         </S.TabBubbleBg>
         <S.TabBubbleContent>
           <S.BubbletTit>한번 더, 필터링 하기</S.BubbletTit>
@@ -84,7 +84,7 @@ const TabTitle3 = () => {
       <S.TabNum className="num">3</S.TabNum>
       <S.TabBubble>
         <S.TabBubbleBg>
-          <img src={bubble} alt="" />
+          <img src={bubble} alt="bubble" />
         </S.TabBubbleBg>
         <S.TabBubbleContent>
           <S.BubbletTit>튜터와 대화하기</S.BubbletTit>
@@ -100,7 +100,7 @@ const TabTitle4 = () => {
       <S.TabNum className="num">4</S.TabNum>
       <S.TabBubble>
         <S.TabBubbleBg>
-          <img src={bubble} alt="" />
+          <img src={bubble} alt="bubble" />
         </S.TabBubbleBg>
         <S.TabBubbleContent>
           <S.BubbletTit>매칭하기</S.BubbletTit>

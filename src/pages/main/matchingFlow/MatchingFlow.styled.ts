@@ -17,6 +17,9 @@ export const FlowTabWrap = styled.div`
       width: 100%;
     }
   }
+  article {
+    text-align: center;
+  }
 `;
 export const FlowTabList = styled.ul`
   cursor: default;

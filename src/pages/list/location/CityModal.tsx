@@ -24,7 +24,7 @@ const CityModal = ({ isDistrictDropdown, setisDistrictDropdown, checkedcity, han
   return (
     <S.InnerModalBox>
       <S.Title>
-        <img src={marker_location} alt="" />
+        <img src={marker_location} alt="location search" />
         지역을 통해 찾기
       </S.Title>
 

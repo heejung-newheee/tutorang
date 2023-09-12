@@ -1,5 +1,6 @@
 export const USER_PROFILE_QUERY_KEY = 'profiles';
 
+export const TUTOR_INFO_QUERY_KEY = 'tutor_info';
 export const TUTOR_INFO_JOIN_QUERY_KEY = ['tutor_info_join'];
 export const TUTOR_ALL_QUERY_KEY = ['tutorCount'];
 export const STAR_TUTORS_QUERY_KEY = ['starTutors'];

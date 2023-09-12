@@ -32,7 +32,6 @@ export const FilterStart = styled.div`
   padding-left: 20px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid ${colors.gray_100};
 
   & > img {
     height: 15px;
@@ -40,30 +39,15 @@ export const FilterStart = styled.div`
   }
 `;
 
-export const FilterBox = styled.div`
-  width: 100%;
-  height: auto;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  padding: 0 30px;
-  display: flex;
-  overflow: scroll;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
 export const FilterUl = styled.ul`
   width: 100%;
   height: auto;
-  margin-top: 30px;
   margin-bottom: 30px;
-  padding: 0 30px;
+  padding: 0 43px;
   display: flex;
-  overflow: scroll;
-  &::-webkit-scrollbar {
-    display: none;
+  overflow-x: auto;
+  &::-webkit-scrollbar-track {
+    display: none; /*겹쳐보임*/
   }
 `;
 

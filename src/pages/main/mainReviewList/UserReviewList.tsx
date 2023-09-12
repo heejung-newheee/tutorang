@@ -21,7 +21,7 @@ const UserReviewList = () => {
               <S.ReviewItemAuthor>나열심(22)</S.ReviewItemAuthor>
             </S.ReviewItemContent>
             <S.ReviewVideoBox onClick={() => handleYoutubePlayer('NUtFwYGyeTY')}>
-              <S.ReviewItemImage src="https://i1.ytimg.com/vi/NUtFwYGyeTY/sddefault.jpg" />
+              <S.ReviewItemImage src="https://i1.ytimg.com/vi/NUtFwYGyeTY/sddefault.jpg" alt="review video thumb" />
               <S.PlayBtn src={play_button} alt="play button" />
             </S.ReviewVideoBox>
           </S.ReviewItem>
@@ -32,7 +32,7 @@ const UserReviewList = () => {
               <S.ReviewItemAuthor>봉미선(27)</S.ReviewItemAuthor>
             </S.ReviewItemContent>
             <S.ReviewVideoBox onClick={() => handleYoutubePlayer('uFWskJdruQ8')}>
-              <S.ReviewItemImage src="https://i1.ytimg.com/vi/uFWskJdruQ8/sddefault.jpg" />
+              <S.ReviewItemImage src="https://i1.ytimg.com/vi/uFWskJdruQ8/sddefault.jpg" alt="review video thumb" />
               <S.PlayBtn src={play_button} alt="play button" />
             </S.ReviewVideoBox>
           </S.ReviewItem>
@@ -43,7 +43,7 @@ const UserReviewList = () => {
               <S.ReviewItemAuthor>남도일(19)</S.ReviewItemAuthor>
             </S.ReviewItemContent>
             <S.ReviewVideoBox onClick={() => handleYoutubePlayer('jXOWzFr-a_Q')}>
-              <S.ReviewItemImage src="https://i1.ytimg.com/vi/jXOWzFr-a_Q/sddefault.jpg" />
+              <S.ReviewItemImage src="https://i1.ytimg.com/vi/jXOWzFr-a_Q/sddefault.jpg" alt="review video thumb" />
               <S.PlayBtn src={play_button} alt="play button" />
             </S.ReviewVideoBox>
           </S.ReviewItem>

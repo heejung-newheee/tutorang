@@ -106,8 +106,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
                 </S.TutorNameWrapper>
                 <S.TutorInfoWrapper>
                   <S.InfoItem>
-                    <S.Icon src={icon_location_gray} /> {tutor.location1_sido} | {tutor.location1_gugun}
-                    <S.Icon src={icon_location_gray} /> {tutor.location2_sido} | {tutor.location2_gugun}
+                    <S.Icon src={icon_location_gray} /> {tutor.location1_sido} - {tutor.location1_gugun} | {tutor.location2_sido} - {tutor.location2_gugun}
                   </S.InfoItem>
                   <S.InfoItem>
                     <S.Icon src={icon_school} /> {tutor.university} | {tutor.major}

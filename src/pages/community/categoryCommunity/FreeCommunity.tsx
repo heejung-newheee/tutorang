@@ -1,9 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import PostCompo from '../postCompo/PostCompo';
-import Pagination from '../pagination/Pagination';
 import { getCommunityApi } from '../../../api/community';
+import Pagination from '../pagination/Pagination';
+import PostCompo from '../postCompo/PostCompo';
 
 const FreeCommunity = () => {
   const [currentNum, setCurrentNum] = useState<number>(1);
@@ -15,6 +15,7 @@ const FreeCommunity = () => {
   const path = location.pathname.split('/')[2];
 
   const { data } = useQuery(['write', currentNum], () => getCommunityApi(path, currentNum, pageCount, setTotalPageNum));
+  console.log(data);
 
   return (
     <>

@@ -6,9 +6,9 @@ import WelcomeMessagePage from '../pages/auth/SignUpForm/WelcomeMessagePage';
 import RegistTutorForm from '../pages/auth/registTutorForm/RegistTutorForm';
 import Chat from '../pages/chat/Chat';
 import MatchedReview from '../pages/matchingReview/MatchedReview';
-import EditTutorForm from '../pages/mypage/EditTutorForm';
 import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateAdditionalInformationForm';
 import EditProfileForm from '../pages/mypage/profileForm/EditProfileForm';
+import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
 
