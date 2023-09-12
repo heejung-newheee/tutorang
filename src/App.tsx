@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getUser, userUpdateAndGet } from './api/user';
 import { Loading } from './components';
-import { logOutUser, setUser } from './redux/modules/user';
+import { TypeSigninUserDataForRedux, logOutUser, setUser } from './redux/modules/user';
 import Router from './shared/Router';
 import GlobalStyle from './style/GlobalStyle';
 import supabase from './supabase';
@@ -15,6 +15,7 @@ function App() {
   const handleAuth = useCallback(
     (session: Session | null) => {
       if (session) {
+        console.log(session);
         getUser(session.user.email)
           .then((data) => {
             if (data!.username === null) {
@@ -31,9 +32,12 @@ function App() {
             }
           })
           .then((data) => {
-            if (data) dispatch(setUser(data));
-            else dispatch(logOutUser());
-            setLoading(false);
+            if (data !== null) {
+              const imARealSignInUserData: TypeSigninUserDataForRedux = { ...data, signinProvider: session.user.app_metadata.provider, signinProviders: session.user.app_metadata.providers };
+              if (data) dispatch(setUser(imARealSignInUserData));
+              else dispatch(logOutUser());
+              setLoading(false);
+            }
           });
       } else {
         dispatch(logOutUser());

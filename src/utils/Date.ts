@@ -45,10 +45,27 @@ export const getDateTextFromISODate = (isoDateString: string): string => {
   return new Intl.DateTimeFormat(navigator.language, options).format(isoDate);
 };
 
+/**
+ *  ISO 8601 형식의 날짜를 입력받아 현재 언어에 맞는 날짜+시간 텍스트를 반환하는 함수 (2023년 1월 1일 12:00:00)
+ */
+export const getTimeTextFromISODate = (isoDateString: string): string => {
+  const isoDate = new Date(isoDateString);
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+  return new Intl.DateTimeFormat(navigator.language, options).format(isoDate);
+};
+
 // compare is equl two iso date
 export const isSameDate = (isoDateString1: string, isoDateString2: string): boolean => {
   const date1 = new Date(isoDateString1);
   const date2 = new Date(isoDateString2);
 
   return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
+};
+
+// 현재 시간을 기준으로 년도와 월을 반환 (2023-09)
+export const getYearAndMonth = (): string => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  return year + '-' + month;
 };

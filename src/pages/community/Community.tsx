@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import * as S from './Community.styled';
 import { useSelector } from 'react-redux';
@@ -16,6 +17,9 @@ const Community = () => {
     }
     navigate(`../write/${path}`);
   };
+  useEffect(() => {
+    navigate('question');
+  }, []);
   return (
     <S.CommunityContainer>
       <S.CommunityTitle>
