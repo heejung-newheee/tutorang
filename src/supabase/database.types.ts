@@ -8,28 +8,22 @@ export interface Database {
           content: string | null;
           created_at: string;
           id: string;
-          importance: string | null;
           title: string | null;
           user_id: string | null;
-          views: number | null;
         };
         Insert: {
           content?: string | null;
           created_at?: string;
           id?: string;
-          importance?: string | null;
           title?: string | null;
           user_id?: string | null;
-          views?: number | null;
         };
         Update: {
           content?: string | null;
           created_at?: string;
           id?: string;
-          importance?: string | null;
           title?: string | null;
           user_id?: string | null;
-          views?: number | null;
         };
         Relationships: [
           {
@@ -388,9 +382,7 @@ export interface Database {
           content: string | null;
           created_at: string;
           file1: string | null;
-          file2: string | null;
           id: string;
-          isReplied: boolean | null;
           title: string | null;
           user_id: string | null;
         };
@@ -398,9 +390,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           file1?: string | null;
-          file2?: string | null;
           id?: string;
-          isReplied?: boolean | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -408,9 +398,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           file1?: string | null;
-          file2?: string | null;
           id?: string;
-          isReplied?: boolean | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -836,6 +824,7 @@ export interface Database {
           avatar_url: string | null;
           basic_authority: boolean;
           birth: string | null;
+          created_at: string | null;
           deleted_at: string | null;
           email: string | null;
           gender: string | null;
@@ -853,6 +842,7 @@ export interface Database {
           avatar_url?: string | null;
           basic_authority?: boolean;
           birth?: string | null;
+          created_at?: string | null;
           deleted_at?: string | null;
           email?: string | null;
           gender?: string | null;
@@ -870,6 +860,7 @@ export interface Database {
           avatar_url?: string | null;
           basic_authority?: boolean;
           birth?: string | null;
+          created_at?: string | null;
           deleted_at?: string | null;
           email?: string | null;
           gender?: string | null;
@@ -891,13 +882,71 @@ export interface Database {
           },
         ];
       };
+      report: {
+        Row: {
+          content: string | null;
+          created_at: string;
+          id: number;
+          state: string | null;
+          tutor_id: string | null;
+          user_id: string | null;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          id?: number;
+          state?: string | null;
+          tutor_id?: string | null;
+          user_id?: string | null;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
+          id?: number;
+          state?: string | null;
+          tutor_id?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'matching_tutor_data';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_info_join';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_top_reviewer';
+            referencedColumns: ['tutor_id'];
+          },
+        ];
+      };
       review: {
         Row: {
           author: string | null;
           content: string | null;
           created_at: string;
           id: number;
-          matched_id?: string | null;
+          matched_id: string | null;
           rating: number | null;
           reviewed_id: string | null;
           title: string | null;
@@ -1376,6 +1425,26 @@ export interface Database {
       };
     };
     Functions: {
+      get_converted_tutor_count_by_month: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          date: string;
+          count: number;
+        }[];
+      };
+      get_signup_count_by_month: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          date: string;
+          count: number;
+        }[];
+      };
       get_two_person_chat_room: {
         Args: {
           user1_id: string;

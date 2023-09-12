@@ -17,3 +17,15 @@ export const changeStateTutorApply = async (state: string, id: number) => {
   if (error) throw error;
   return data;
 };
+
+export const getNewUserCountMonth = async (year: number, month: number) => {
+  const { data, error } = await supabase.rpc('get_signup_count_by_month', { year: year, month: month });
+  if (error) throw error;
+  return data;
+};
+
+export const getConvertedTutorCountMonth = async (year: number, month: number) => {
+  const { data, error } = await supabase.rpc('get_converted_tutor_count_by_month', { year: year, month: month });
+  if (error) throw error;
+  return data;
+};
