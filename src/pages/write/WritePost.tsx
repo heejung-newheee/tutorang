@@ -6,10 +6,10 @@ import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
+import { WriteInsertApi, editUpdateApi } from '../../api/writeCommunity';
 import { RootState } from '../../redux/config/configStore';
 import supabase from '../../supabase';
 import './write.css';
-import { WriteInsertApi, editUpdateApi } from '../../api/writeCommunity';
 
 const WritePost = () => {
   const [title, setTitle] = useState<string | null>('');
@@ -34,7 +34,6 @@ const WritePost = () => {
     input.onchange = async () => {
       if (input.files) {
         const file = input.files[0];
-        console.log(file);
 
         try {
           const imgName = v4();
@@ -73,7 +72,7 @@ const WritePost = () => {
     }),
     [],
   );
-
+  console.log(contents);
   const handleSubmit = async () => {
     if (!title) {
       return alert('제목을 입력해주세요');

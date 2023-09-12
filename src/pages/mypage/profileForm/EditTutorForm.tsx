@@ -62,6 +62,7 @@ const EditTutorForm = () => {
     if (event.target.name === 'university') setUniversity(event.target.value);
     if (event.target.name === 'major') setMajor(event.target.value);
   };
+
   const handleCheckedItems = (checkBoxType: string, value: string, isChecked: boolean) => {
     if (checkBoxType === 'personality') {
       if (isChecked) {
@@ -74,6 +75,7 @@ const EditTutorForm = () => {
         setCheckPersonalityItems(updatedPersonalityItems);
       }
     }
+
     if (checkBoxType === 'language') {
       if (isChecked) {
         if (checkLanguageItems.length >= 3) return false;

@@ -11,7 +11,6 @@ const MyBoard = () => {
   const user = useSelector((state: RootState) => state.user.user);
   const data = useQuery(['write'], () => getMyBoardList(user!.id));
   const boardData = data.data;
-  console.log(boardData);
 
   if (data.isLoading) {
     return <Loading />;
@@ -29,7 +28,6 @@ const MyBoard = () => {
         <InfoTitle>내가 남긴 문의</InfoTitle>
         <ContentsDataBox>
           {boardData?.length > 0 ? boardData?.map((board) => <BoardItem key={Math.random() * 22229999} item={board} />) : <InfoNull>문의하신 내역이 없습니다</InfoNull>}
-
           {/* 
           {boardData?.length > 0 ? (
             boardData.map((item: Tables<'write'>,index) => {

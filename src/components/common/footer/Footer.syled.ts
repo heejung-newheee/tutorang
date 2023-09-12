@@ -18,38 +18,20 @@ export const FooterWrap = styled.div`
   font-size: 14px;
   color: #444;
   > div {
-    width: 25%;
-    &:first-child {
-      width: 50%;
-      @media screen and (max-width: 768px) {
-        width: 100%;
-      }
+    width: 50%;
+    @media screen and (max-width: 768px) {
+      width: 100%;
     }
   }
 `;
-export const CompanyInfo = styled.div`
-  display: flex;
-  gap: 30px;
-  margin-bottom: 50px;
-  @media screen and (max-width: 768px) {
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-  }
-`;
-
-export const Call = styled.div`
-  font-size: 22px;
-  font-weight: bold;
-  line-height: 1;
-`;
-
 export const FootLink = styled.div`
-  p {
+  display: flex;
+  justify-content: end;
+  .github {
     font-weight: bold;
-    margin-bottom: 20px;
   }
-  li {
-    line-height: 2;
+  a {
+    margin-right: 10px;
   }
   @media screen and (max-width: 768px) {
     display: none;

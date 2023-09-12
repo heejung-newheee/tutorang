@@ -17,7 +17,7 @@ const Banner = () => {
           </S.BannerText>
           <S.BannerBtn to={`/list`}>
             튜터 만나러 가기
-            <img src={arrow_right} alt="" />
+            <img src={arrow_right} alt="button" />
           </S.BannerBtn>
         </S.BannerContent>
       </S.BannerContainer>

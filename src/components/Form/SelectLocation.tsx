@@ -32,7 +32,6 @@ for (let i = 0; i < preCityKeys.length; i++) {
   const key = preCityKeys[i];
   cities[key] = preCityValues[i].slice(1);
 }
-console.log(cities);
 
 const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $setLocation, $prevValue }) => {
   const sidoDropContainerRef = useRef<HTMLDivElement>(null);
