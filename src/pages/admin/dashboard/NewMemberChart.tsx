@@ -8,14 +8,13 @@ type NewMemberChartProps = {
 };
 
 const NewMemberChart = ({ year, month }: NewMemberChartProps) => {
-  console.log(year, month);
   const newMemberData = useQuery(['newMemberData', year, month], () => getNewUserCountMonth(year, month), { enabled: !!year && !!month, refetchOnWindowFocus: false });
   const tutorData = useQuery(['convertedTutorData', year, month], () => getConvertedTutorCountMonth(year, month), { enabled: !!year && !!month, refetchOnWindowFocus: false });
 
   if (!year || !month) return <div>날짜를 선택해주세요</div>;
   if (newMemberData.isLoading || tutorData.isLoading) return <div>Loading...</div>;
   if (!newMemberData.data || !tutorData.data) return <div>Not found</div>;
-  console.log(newMemberData.data, tutorData.data);
+
   return (
     <div>
       <ApexCharts
