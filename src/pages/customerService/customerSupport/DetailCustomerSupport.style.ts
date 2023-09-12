@@ -34,12 +34,11 @@ export const Table = styled.table`
   border-left: 1px solid #696969;
   border-top: 1px solid #696969;
   & th {
-    display: flex;
-    justify-content: start;
     padding: 10px;
     background-color: #eee;
     border-right: 1px solid #696969;
     border-bottom: 1px solid #696969;
+    vertical-align: middle;
   }
   & td {
     padding: 10px;

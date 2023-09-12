@@ -121,7 +121,7 @@ const BoardManage = () => {
       <S.TableContainer>
         <S.Table>
           <S.TableHead>
-            <tr style={{ backgroundColor: '#f4f6f8' }}>
+            <tr>
               <th scope="col">No.</th>
               <th scope="col">
                 <S.SortButton onClick={() => setSort((prev) => ({ ...prev, date: prev.date === 'asc' ? 'desc' : 'asc' }))}>
