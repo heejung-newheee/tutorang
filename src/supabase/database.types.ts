@@ -1423,3 +1423,5 @@ export type RoomType = Tables<'chat_rooms'> & {
 export type RoomWithLastMessageType = RoomType & {
   last_message: Tables<'chat_messages'>[];
 };
+
+export type TutorApplyInfo = Pick<Tables<'pending_tutor_registration'>, 'id' | 'state' | 'class_info' | 'tuition_fee_offline' | 'tuition_fee_online' | 'certification_image' | 'speaking_language' | 'personality' | 'class_level'>;

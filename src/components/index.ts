@@ -19,3 +19,4 @@ export { default as ReviewForm } from './review/reviewForm/ReviewForm';
 export { default as ReviewUpdateForm } from './review/reviewForm/ReviewUpdateForm';
 export { default as StarTutorSlider } from './slider/starTutorSlider/StarTutorSlider';
 export { default as AdminLayout } from './dashboard/AdminLayout';
+export { default as TutorApplyDialog } from './dialog/apply/TutorApplyDialog';

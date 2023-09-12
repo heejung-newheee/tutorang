@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm } from '..';
+import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm, TutorApplyDialog } from '..';
 import RetrievePendingTutorRegistration from '../../pages/auth/registTutorForm/RetrievePendingTutorRegistration';
 import YoutubeModal from '../../pages/main/youtube/YoutubeModal';
 import { RootState } from '../../redux/config/configStore';
@@ -26,6 +26,7 @@ const GlobalModal = () => {
     retrievePendingTutorRegistForm: 'retrievePendingTutorRegistForm',
     chatLocationModal: 'chatLocationModal',
     chatPlayerDetailModal: 'chatPlayerDetailModal',
+    tutorApplyInfo: 'tutorApplyInfo',
   };
 
   const MODAL_COMPONENTS = [
@@ -73,6 +74,10 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.chatPlayerDetailModal,
       component: <ChatPlayerDetailModal />,
+    },
+    {
+      type: MODAL_TYPES.tutorApplyInfo,
+      component: <TutorApplyDialog />,
     },
   ];
 
