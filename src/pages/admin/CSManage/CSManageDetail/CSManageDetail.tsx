@@ -18,30 +18,29 @@ const CSManageDetail = () => {
   const oneInquiryInfo = locationData.state;
   const inquiryWriterInfo = oneInquiryInfo.profiles;
   console.log(oneInquiryInfo.customer_support_reply.length);
-  return (
-    <div>
-      {/* <div>
-        <h2>내용</h2>
-        <div dangerouslySetInnerHTML={{ __html: oneInquiryInfo.content }}></div>
-      </div>
-      {targetReply.length === 0 ? <div>관리자님~ 답변을 어서 등록해주세요!</div> : <div>{targetReply[0].content}</div>}
+  return;
+  // <div>
+  //   <div>
+  //     <h2>내용</h2>
+  //     <div dangerouslySetInnerHTML={{ __html: oneInquiryInfo.content }}></div>
+  //   </div>
+  //   {targetReply.length === 0 ? <div>관리자님~ 답변을 어서 등록해주세요!</div> : <div>{targetReply[0].content}</div>}
 
-      <S.Button>목록</S.Button>
-      {targetReply.length !== 0 && (
-        <>
-          <S.Button>답변수정</S.Button>
-          <S.Button>답변삭제</S.Button>
-        </>
-      )}
-      {targetReply.length === 0 ? (
-        <div>{<CreateReplyCSForm loginUserId={loginUserId} csTableId={oneInquiryInfo.id} />}</div>
-      ) : (
-        <div>
-          <EditReplyCSForm targetReply={targetReply} />
-        </div>
-      )} */}
-    </div>
-  );
+  //   <S.Button>목록</S.Button>
+  //   {targetReply.length !== 0 && (
+  //     <>
+  //       <S.Button>답변수정</S.Button>
+  //       <S.Button>답변삭제</S.Button>
+  //     </>
+  //   )}
+  //   {targetReply.length === 0 ? (
+  //     <div>{<CreateReplyCSForm loginUserId={loginUserId} csTableId={oneInquiryInfo.id} />}</div>
+  //   ) : (
+  //     <div>
+  //       <EditReplyCSForm targetReply={targetReply} />
+  //     </div>
+  //   )}
+  // </div>
 };
 
 export default CSManageDetail;

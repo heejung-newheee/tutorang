@@ -1,14 +1,39 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CUSTOMER_SUPPORT_QUERY_KEY, deleteInquiry } from '../../../api/customerSupport';
+import { CUSTOMER_SUPPORT_QUERY_KEY, ONE_CUSTOMER_INQUIRY_QUERY_KEY, deleteInquiry, getOneInquiry } from '../../../api/customerSupport';
 import * as S from './DetailCustomerSupport.style';
+type ProfileProps = {
+  inquiryUsername: string | null;
+};
+
+type CustomerSupportReply = {
+  content: string | null;
+  created_at: string;
+  cs_table_id: string | null;
+  id: string;
+  user_id: string | null;
+};
+
+type InquiryDataProps = {
+  content: string | null | TrustedHTML;
+  created_at: string;
+  file1: string | null;
+  file2: string | null;
+  id: string;
+  isReplied: boolean | null;
+  title: string | null;
+  user_id: string | null;
+  profiles: ProfileProps | null;
+  customer_support_reply: CustomerSupportReply[];
+};
 
 const DetailCustomerSupport = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const pathdata = useLocation();
-  const inquiryData = pathdata.state;
-  const replyData = inquiryData.customer_support_reply;
+  const inquiryId = pathdata.state.id;
+  console.log('inquiryId 이게 들어와야하는데', inquiryId);
+  const { data } = useQuery([ONE_CUSTOMER_INQUIRY_QUERY_KEY, inquiryId], () => getOneInquiry(inquiryId), { enabled: !!inquiryId });
   const deleteInquiryMutation = useMutation(async (inquiryId: string) => deleteInquiry(inquiryId), {
     onSuccess: () => {
       queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
@@ -17,6 +42,11 @@ const DetailCustomerSupport = () => {
       console.log(error);
     },
   });
+  if (!data) return <div></div>;
+  console.log('지금확인할거', data);
+
+  const inquiryData: InquiryDataProps = data[0];
+  const replyData = data[0].customer_support_reply;
   const handleDeleteInquiry = async () => {
     const wannaDelete = window.confirm('!:1문의를 삭제하시겠습니까?');
     if (!wannaDelete) return false;
@@ -48,7 +78,7 @@ const DetailCustomerSupport = () => {
             </tr>
             <tr>
               <th>작성자</th>
-              <td>{inquiryData.profiles.inquiryUsername}</td>
+              <td>{inquiryData.profiles!.inquiryUsername}</td>
               <th>답변여부</th>
               <td>{inquiryData.isReplied ? 'O' : 'X'}</td>
             </tr>
@@ -59,7 +89,7 @@ const DetailCustomerSupport = () => {
             <tr>
               <td colSpan={4}>
                 <S.ContentArea>
-                  <div dangerouslySetInnerHTML={{ __html: inquiryData.content }}></div>
+                  <div dangerouslySetInnerHTML={{ __html: inquiryData.content || '' }}></div>
                 </S.ContentArea>
               </td>
             </tr>
@@ -87,7 +117,9 @@ const DetailCustomerSupport = () => {
               <tr>
                 <td colSpan={2}>
                   <S.ContentArea>
-                    <div dangerouslySetInnerHTML={{ __html: replyData[0].content }}></div>
+                    <div>
+                      <p>{replyData[0].content}</p>
+                    </div>
                   </S.ContentArea>
                 </td>
               </tr>
