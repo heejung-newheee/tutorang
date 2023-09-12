@@ -30,7 +30,7 @@ export const getAllInquiry = async (id: string) => {
 };
 
 export const getOneInquiry = async (inquiryId: string) => {
-  const { data, error } = await supabase.from(CUSTOMER_SUPPORT_TABLE).select(`*, profiles(inquiryUsername : username), customer_support_reply(*)`).eq('id', inquiryId).order('created_at', { ascending: false });
+  const { data, error } = await supabase.from(CUSTOMER_SUPPORT_TABLE).select(`*, profiles(inquiryUsername : username), customer_support_reply(*)`).eq('id', inquiryId).limit(1).single();
 
   if (error) throw error;
   return data;
