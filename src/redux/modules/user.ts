@@ -1,26 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { Tables } from '../../supabase/database.types';
 
-export type TypeSigninUserDataForRedux = {
-  age?: number | null;
-  avatar_url?: string | null;
-  basic_authority?: boolean;
-  birth?: string | null;
-  deleted_at?: string | null;
-  email?: string | null;
-  gender?: string | null;
-  id: string;
-  location1_gugun?: string | null;
-  location1_sido?: string | null;
-  location2_gugun?: string | null;
-  location2_sido?: string | null;
-  role?: string | null;
-  updated_at?: string | null;
-  username?: string | null;
-  signinProvider?: string;
-  signinProviders?: string[];
-};
 interface UserState {
-  user: TypeSigninUserDataForRedux | null;
+  user: Tables<'profiles'> | null;
 }
 const initialState: UserState = {
   user: null,
@@ -30,7 +12,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<TypeSigninUserDataForRedux>) => {
+    setUser: (state, action: PayloadAction<Tables<'profiles'>>) => {
       state.user = action.payload;
     },
 

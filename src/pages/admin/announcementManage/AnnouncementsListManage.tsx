@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { LiaArrowDownSolid, LiaArrowUpSolid } from 'react-icons/lia';
 import { Link, useNavigate } from 'react-router-dom';
-import { styled } from 'styled-components';
 import { ANNOUNCEMENTS_QUERY_KEY, getAllAnnouncements } from '../../../api/announcements';
 import { FilterContainer, Layout, SortButton, Table, TableContainer, Title } from '../boardManage/BoardManage.styled';
 import * as S from './AnnouncementsListManage.style';
@@ -56,15 +55,3 @@ const AnnouncementsListManage = () => {
 };
 
 export default AnnouncementsListManage;
-
-// 임시
-const LisingContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const ListingItem = styled.div`
-  border: 1px solid #000;
-  padding: 20px;
-`;
