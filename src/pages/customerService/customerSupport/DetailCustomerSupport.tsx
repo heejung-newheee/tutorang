@@ -45,8 +45,8 @@ const DetailCustomerSupport = () => {
   });
   if (!data) return <div></div>;
 
-  const inquiryData: InquiryDataProps = data[0];
-  const replyData = data[0].customer_support_reply;
+  const inquiryData: InquiryDataProps = data;
+  const replyData = data.customer_support_reply;
   const handleDeleteInquiry = async () => {
     const wannaDelete = window.confirm('!:1문의를 삭제하시겠습니까?');
     if (!wannaDelete) return false;

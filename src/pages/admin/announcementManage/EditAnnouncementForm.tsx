@@ -1,36 +1,32 @@
-// import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid';
-import { CUSTOMER_SUPPORT_QUERY_KEY, TypeNewInquiry, insertNewInquiry } from '../../../api/customerSupport';
+import { ANNOUNCEMENTS_QUERY_KEY, ONE_ANNOUNCEMENT_QUERY_KEY, editAnnouncement } from '../../../api/announcements';
 import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
-import './../../../pages/write/write.css';
+import { UpdatingTables } from '../../../supabase/database.types';
+import './../../../components/common/webEditor.css';
+import * as S from './AnnouncementForm.style';
 
-const LeaveInquiryForm = () => {
-  const [title, setTitle] = useState('');
-  const QuillRef = useRef<ReactQuill>();
-  const [content, setContent] = useState('');
+const EditAnnouncementForm = () => {
   const navigate = useNavigate();
+  const QuillRef = useRef<ReactQuill>();
   const queryClient = useQueryClient();
+  const pathdata = useLocation();
+  const originalAnnouncementData = pathdata.state;
+  const announcementId = originalAnnouncementData.id;
+  const [title, setTitle] = useState(originalAnnouncementData.title);
+  const [content, setContent] = useState(originalAnnouncementData.content);
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  // const api = async (newInfo: any) => {
-  //   const { error } = await supabase.from('write').insert(newInfo);
-
-  //   console.log(error);
-  //   if (error) throw error;
-  // };
-
-  const createInquiryMutation = useMutation(async (newInquiry: TypeNewInquiry) => insertNewInquiry(newInquiry), {
+  const editAnnouncementMutation = useMutation(async ({ announcementId, updatedAnnouncement }: { announcementId: string; updatedAnnouncement: UpdatingTables<'announcements'> }) => editAnnouncement(announcementId, updatedAnnouncement), {
     onSuccess: () => {
-      queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
+      queryClient.invalidateQueries([ANNOUNCEMENTS_QUERY_KEY]);
+      queryClient.invalidateQueries([ONE_ANNOUNCEMENT_QUERY_KEY]);
     },
     onError: (error) => {
       console.log(error);
@@ -94,38 +90,28 @@ const LeaveInquiryForm = () => {
   );
   console.log(content);
   const handleSubmit = async () => {
-    console.log('sfssdfsd');
-    const formData = {
-      title,
+    const updatedAnnouncement = {
       user_id: loginUser!.id,
+      title,
       content,
     };
-    console.log(formData);
+    console.log(updatedAnnouncement);
     try {
-      await createInquiryMutation.mutate(formData);
+      await editAnnouncementMutation.mutate({ announcementId, updatedAnnouncement });
     } catch (error) {
       console.log('error submit inqury ', error);
     }
     // mutation.mutate(formData);
-    navigate('/customer-service/customer-support');
+    navigate(`/admin/announcements-manage/${announcementId}`);
   };
 
   if (!loginUser) return <div></div>;
 
-  // const formData = {
-  //   title: 'title',
-  //   user_id: loginUser.id,
-  //   content: '작성내용',
-  //   isReplied: false,
-  //   file1: 'null 들어올 수 있음',
-  //   file2: 'null 들어올 수 있음',
-  // };
-
   return (
-    <WriteContainer>
-      <Title>
-        <input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="제목을 입력해주세요" />
-      </Title>
+    <S.WriteContainer>
+      <S.Title>
+        <input onChange={(e) => setTitle(e.target.value)} value={title} type="text" placeholder="제목을 입력해주세요" />
+      </S.Title>
       <ReactQuill
         ref={(element) => {
           if (element !== null) {
@@ -139,49 +125,10 @@ const LeaveInquiryForm = () => {
         theme="snow"
         placeholder="내용을 입력해주세요."
       />
-      <SubmitBtn onClick={handleSubmit}>저장</SubmitBtn>
-      <BackBtn onClick={() => navigate(-1)}>뒤로가기</BackBtn>
-    </WriteContainer>
+      <S.SubmitBtn onClick={handleSubmit}>저장</S.SubmitBtn>
+      <S.BackBtn onClick={() => navigate(-1)}>뒤로가기</S.BackBtn>
+    </S.WriteContainer>
   );
 };
 
-export default LeaveInquiryForm;
-
-const WriteContainer = styled.div`
-  /* display: flex;
-  justify-content: center;
-  flex-direction: column; */
-  margin-top: 100px;
-  padding: 0 20px;
-`;
-
-const Title = styled.div`
-  width: 100%;
-  height: 50px;
-  border-bottom: 1px solid gray;
-  margin-bottom: 20px;
-  & > input {
-    width: 100%;
-    height: 100%;
-    outline: none;
-    border: none;
-  }
-`;
-
-const SubmitBtn = styled.button`
-  position: fixed;
-  right: 20px;
-  top: 15px;
-  z-index: 100000;
-  border: 1px solid gray;
-  padding: 10px 20px;
-`;
-
-const BackBtn = styled.button`
-  position: fixed;
-  left: 20px;
-  top: 15px;
-  z-index: 100000;
-  border: 1px solid gray;
-  padding: 10px 20px;
-`;
+export default EditAnnouncementForm;

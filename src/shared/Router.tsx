@@ -4,11 +4,17 @@ import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import { BoardManage, Community, Dashboard, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, UserManage, WritePost } from '../pages';
 import CSManage from '../pages/admin/CSManage/CSManage';
 import CSManageDetail from '../pages/admin/CSManage/CSManageDetail/CSManageDetail';
+import AdminRoute from '../pages/admin/announcementManage/AdminRoute';
+import AnnouncementDetailManage from '../pages/admin/announcementManage/AnnouncementDetailManage';
+import AnnouncementsListManage from '../pages/admin/announcementManage/AnnouncementsListManage';
+import CreateAnnouncementForm from '../pages/admin/announcementManage/CreateAnnouncementForm';
+import EditAnnouncementForm from '../pages/admin/announcementManage/EditAnnouncementForm';
 import WelcomeMessagePage from '../pages/auth/SignUpForm/WelcomeMessagePage';
 import RegistTutorForm from '../pages/auth/registTutorForm/RegistTutorForm';
 import Chat from '../pages/chat/Chat';
 import CustomerService from '../pages/customerService/CustomerService';
 import Announcements from '../pages/customerService/announcements/Announcements';
+import DetailAnnouncement from '../pages/customerService/announcements/DetailAnnouncement';
 import CustomerSupport from '../pages/customerService/customerSupport/CustomerSupport';
 import DetailCustomerSupport from '../pages/customerService/customerSupport/DetailCustomerSupport';
 import EditInquiryForm from '../pages/customerService/customerSupport/EditInquiryForm';
@@ -31,6 +37,13 @@ const Router = () => {
           <Route path="customer-support-manage" element={<CSManage />} />
           <Route path="customer-support-manage/:inquiryid" element={<CSManageDetail />} />
           <Route path="board-manage" element={<BoardManage />} />
+
+          <Route path="announcements-manage" element={<AnnouncementsListManage />} />
+          <Route path="announcements-manage/:announcementid" element={<AnnouncementDetailManage />} />
+        </Route>
+        <Route path="/admin-form" element={<AdminRoute />}>
+          <Route path="create-announcement" element={<CreateAnnouncementForm />} />
+          <Route path="edit-announcement/:announcementid" element={<EditAnnouncementForm />} />
         </Route>
 
         <Route element={<GlobalLayout />}>
@@ -71,6 +84,7 @@ const Router = () => {
 
             <Route path="/customer-service" element={<CustomerService />}>
               <Route path="announcements" element={<Announcements />} />
+              <Route path="announcements/:announcementid" element={<DetailAnnouncement />} />
               <Route path="frequently-asked-questions" element={<FrequentlyAskedQuestions />} />
               <Route
                 path="customer-support"
