@@ -3,7 +3,7 @@ import { useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid';
-import { CUSTOMER_SUPPORT_QUERY_KEY, TypeUpdatedInquiry, editInquiry } from '../../../api/customerSupport';
+import { CUSTOMER_SUPPORT_QUERY_KEY, ONE_CUSTOMER_INQUIRY_QUERY_KEY, TypeUpdatedInquiry, editInquiry } from '../../../api/customerSupport';
 import supabase from '../../../supabase';
 import * as S from './EditInquiryForm.style';
 
@@ -20,6 +20,7 @@ const EditInquiryForm = () => {
   const editInquiryMutation = useMutation(async ({ inquiryId, updatedInquiry }: { inquiryId: string; updatedInquiry: TypeUpdatedInquiry }) => editInquiry(inquiryId, updatedInquiry), {
     onSuccess: () => {
       queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
+      queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY]);
     },
     onError: (error) => {
       console.log(error);

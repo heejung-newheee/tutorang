@@ -50,7 +50,7 @@ const CustomerSupport = () => {
                 </td>
                 <td>{item.profiles!.inquiryUsername}</td>
                 <td>{item.created_at.split('T')[0]}</td>
-                <td>{item.isReplied ? 'O' : 'X'}</td>
+                <td>{item.customer_support_reply.length === 0 ? 'X' : 'O'}</td>
               </tr>
             ))}
           </tbody>
