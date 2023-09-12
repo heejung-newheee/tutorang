@@ -2,6 +2,7 @@ import { Arrow } from '@egjs/flicking-plugins';
 import '@egjs/flicking-plugins/dist/arrow.css';
 import Flicking, { ViewportSlot } from '@egjs/react-flicking';
 import '@egjs/react-flicking/dist/flicking.css';
+import { useEffect, useState } from 'react';
 import { Views } from '../../../supabase/database.types';
 import ProfilesCard from '../../profilesCard/ProfilesCard';
 import * as S from '../TutorSlider.styled';
@@ -13,10 +14,30 @@ interface pageProps {
 }
 const LikeTutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
   const _plugins = [new Arrow()];
+  const calcAlign = () => {
+    if (window.innerWidth >= 1600) {
+      return '21%';
+    } else if (window.innerWidth > 1200) {
+      return '16%';
+    } else {
+      return '0%';
+    }
+  };
+  const [align, setAlign] = useState(calcAlign);
 
+  useEffect(() => {
+    const handleResize = () => {
+      const newAlign = calcAlign();
+      setAlign(newAlign);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   return (
     <>
-      <Flicking key={uniqueKey} panelsPerView={panels} align="19%" circular={true} plugins={_plugins} style={{ padding: '0 50px' }}>
+      <Flicking key={uniqueKey} panelsPerView={panels} align={`${align}`} circular={true} plugins={_plugins}>
         {tutorList &&
           tutorList.map((tutor: Views<'tutor_info_join'>) => {
             const key = `${uniqueKey}+${tutor.tutor_id!.split('-')[0]}`;

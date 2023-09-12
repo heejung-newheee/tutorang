@@ -61,3 +61,11 @@ export const isSameDate = (isoDateString1: string, isoDateString2: string): bool
 
   return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate();
 };
+
+// 현재 시간을 기준으로 년도와 월을 반환 (2023-09)
+export const getYearAndMonth = (): string => {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  return year + '-' + month;
+};

@@ -26,7 +26,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
   const { data: tutor, isLoading: tutorLoading, isError: tutorError, error } = useQuery([TUTOR_QUERY_KEY, id], () => matchTutor(id));
   const matchingCount = useQuery([MATCHING_QUERY_KEY, id], () => tutorMatchedCount(id));
   const loginUser = useSelector((state: RootState) => state.user.user);
-
+  console.log(loginUser);
   const navigate = useNavigate();
 
   const handleStartChat = async (tutorId: string) => {
@@ -64,7 +64,11 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
   };
 
   const handleOpenReport = () => {
-    dispatch(openModal({ type: 'report' }));
+    if (loginUser) {
+      dispatch(openModal({ type: 'report', userId: loginUser?.id, targetId: id }));
+    } else {
+      dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
+    }
   };
 
   if (tutorLoading || reviewLoading) {
@@ -106,8 +110,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
                 </S.TutorNameWrapper>
                 <S.TutorInfoWrapper>
                   <S.InfoItem>
-                    <S.Icon src={icon_location_gray} /> {tutor.location1_sido} | {tutor.location1_gugun}
-                    <S.Icon src={icon_location_gray} /> {tutor.location2_sido} | {tutor.location2_gugun}
+                    <S.Icon src={icon_location_gray} /> {tutor.location1_sido} - {tutor.location1_gugun} | {tutor.location2_sido} - {tutor.location2_gugun}
                   </S.InfoItem>
                   <S.InfoItem>
                     <S.Icon src={icon_school} /> {tutor.university} | {tutor.major}

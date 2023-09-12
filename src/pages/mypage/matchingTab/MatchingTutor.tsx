@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { matchingCancel, matchingComplete, matchingRejectStudent, matchingRequest } from '../../../api/match';
 import { Views } from '../../../supabase/database.types';
-import { ContentsDataBox, MatchBtn } from '../userInfo/UserInfo.styled';
-import * as S from './MatchingTutor.styled';
+import * as S from './Matching.styled';
 import './custom.css';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +13,7 @@ import { getOrCreatePrivateChatRoom, sendStudentMessage } from '../../../api/cha
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { openModal } from '../../../redux/modules';
-import { InfoItem, InfoList } from './MatchingTutor.styled';
+import { ContentsDataBox } from '../Mypage.styled';
 
 interface pageProps {
   matchList: Views<'matching_tutor_data'>[];
@@ -160,7 +159,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                       </div>
                       <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
                       <div>
-                        <MatchBtn onClick={() => item.id !== null && handleCancelMatch(item.id, item.tutor_id)}>요청 취소</MatchBtn>
+                        <S.MatchBtn onClick={() => item.id !== null && handleCancelMatch(item.id, item.tutor_id)}>요청 취소</S.MatchBtn>
                       </div>
                     </S.InfoItem>
                   </S.InfoList>
@@ -169,14 +168,14 @@ const MatchingTutor = ({ matchList }: pageProps) => {
         </ContentsDataBox>
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
-        <InfoList>
-          <InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
+        <S.InfoList>
+          <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
             <div>튜터 이름</div>
             <div>지역</div>
             <div>날짜</div>
             <div>확인</div>
-          </InfoItem>
-        </InfoList>
+          </S.InfoItem>
+        </S.InfoList>
 
         <ContentsDataBox>
           {matchList &&
@@ -186,8 +185,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
               })
               .map((item: Views<'matching_tutor_data'>) => {
                 return (
-                  <InfoList key={item.id}>
-                    <InfoItem>
+                  <S.InfoList key={item.id}>
+                    <S.InfoItem>
                       <div>
                         <S.TutorChatLink onClick={() => handleStartChat(item.tutor_id!)}>{item.tutor_name}</S.TutorChatLink>
                       </div>
@@ -195,37 +194,37 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                         {item.tutor_lc_1_gugun} <br /> {item.tutor_lc_2_gugun}
                       </div>
                       <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
-                      <div>
-                        <MatchBtn
+                      <S.MatchBtnWrap>
+                        <S.MatchBtn
                           onClick={() => {
                             item.id !== null && handleCompleteMatch(item.id, item.tutor_id);
                           }}
                         >
-                          수업완료
-                        </MatchBtn>
-                        <MatchBtn
+                          완료
+                        </S.MatchBtn>
+                        <S.MatchBtn
                           onClick={() => {
                             item.id !== null && handleNotCompleteMatch(item.id, item.tutor_id);
                           }}
                         >
-                          수업취소
-                        </MatchBtn>
-                      </div>
-                    </InfoItem>
-                  </InfoList>
+                          취소
+                        </S.MatchBtn>
+                      </S.MatchBtnWrap>
+                    </S.InfoItem>
+                  </S.InfoList>
                 );
               })}
         </ContentsDataBox>
       </TabPanel>
       <TabPanel value={activeTab} index={2}>
-        <InfoList>
-          <InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
+        <S.InfoList>
+          <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
             <div>튜터 이름</div>
             <div>지역</div>
             <div>날짜</div>
             <div>확인</div>
-          </InfoItem>
-        </InfoList>
+          </S.InfoItem>
+        </S.InfoList>
         <ContentsDataBox>
           {matchList &&
             matchList
@@ -234,8 +233,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
               })
               .map((item: Views<'matching_tutor_data'>) => {
                 return (
-                  <InfoList key={item.id}>
-                    <InfoItem>
+                  <S.InfoList key={item.id}>
+                    <S.InfoItem>
                       <div>
                         <S.TutorChatLink onClick={() => handleStartChat(item.tutor_id!)}>{item.tutor_name}</S.TutorChatLink>
                       </div>
@@ -248,18 +247,18 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                           '매칭취소'
                         ) : item.review_confirm === true && item.matched === true ? (
                           <>
-                            <S.ReviewBtn onClick={() => handleRequestReTutoring(item.tutor_id!, item.user_id!)}>재요청</S.ReviewBtn>
+                            <S.MatchBtn onClick={() => handleRequestReTutoring(item.tutor_id!, item.user_id!)}>재요청</S.MatchBtn>
                           </>
                         ) : item.matched === false ? (
                           '진행중'
                         ) : (
-                          <S.ReviewBtn className="review-btn" onClick={() => handleReviewCreate(item.tutor_id!, item.id!)}>
+                          <S.MatchBtn className="review-btn" onClick={() => handleReviewCreate(item.tutor_id!, item.id!)}>
                             리뷰 쓰기
-                          </S.ReviewBtn>
+                          </S.MatchBtn>
                         )}
                       </div>
-                    </InfoItem>
-                  </InfoList>
+                    </S.InfoItem>
+                  </S.InfoList>
                 );
               })}
         </ContentsDataBox>

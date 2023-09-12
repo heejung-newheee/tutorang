@@ -298,7 +298,7 @@ export const Hamburger = styled.button`
   }
 `;
 export const MobileLogoDiv = styled.div`
-  padding: 20px;
+  padding: 15px 20px;
   padding-bottom: 0;
   display: flex;
   flex-direction: column;
@@ -318,7 +318,7 @@ export const MobileLogoDiv = styled.div`
 `;
 export const NavModalCloseBtn = styled.button`
   width: 100%;
-  height: 30px;
+  height: 25px;
   display: flex;
   justify-content: flex-end;
   float: right;

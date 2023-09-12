@@ -20,7 +20,7 @@ const StarTutorSlider = () => {
       <S.Inner>
         <S.Title>인기강사</S.Title>
       </S.Inner>
-      <TutorSlider tutorList={tutors.data} panels={4} uniqueKey="startTutors" />
+      <TutorSlider tutorList={tutors.data} panels={6} uniqueKey="startTutors" />
     </S.Container>
   );
 };

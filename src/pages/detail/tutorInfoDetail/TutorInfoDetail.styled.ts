@@ -145,7 +145,7 @@ export const TagList = styled.ul`
     font-size: 13px;
     padding: 4px 11px;
     border-radius: 30px;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    border: solid 1px #dbdbdb;
     margin-right: 8px;
   }
 `;
@@ -179,7 +179,7 @@ export const Dot = styled.span`
 export const reportButton = styled.button`
   display: flex;
   align-items: center;
-  margin-top: 4px;
+  margin-top: 7px;
 
   & img {
     margin-top: -2px;

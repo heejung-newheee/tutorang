@@ -90,6 +90,6 @@ export const Tag = styled.div`
     padding: 0 11px;
     line-height: 26px;
     border-radius: 13px;
-    border: solid 1px #f3f3f3;
+    border: solid 1px #dbdbdb;
   }
 `;

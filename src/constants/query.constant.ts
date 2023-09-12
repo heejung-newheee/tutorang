@@ -1,5 +1,6 @@
 export const USER_PROFILE_QUERY_KEY = 'profiles';
 
+export const TUTOR_INFO_QUERY_KEY = 'tutor_info';
 export const TUTOR_INFO_JOIN_QUERY_KEY = ['tutor_info_join'];
 export const TUTOR_ALL_QUERY_KEY = ['tutorCount'];
 export const STAR_TUTORS_QUERY_KEY = ['starTutors'];
@@ -30,3 +31,6 @@ export const PENDING_TUTOR_REGISTRATION_TABLE = 'pending_tutor_registration';
 export const PENDING_TUTOR_REGISTRATION_DASHBOARD_QUERY_KEY = ['pending_tutor_registration_dashboard'];
 
 export const BOARD_MANAGEMENT_QUERY_KEY = ['board_management'];
+
+export const REPORT_DASHBOARD_QUERY_KEY = ['report_dashboard'];
+export const REPORT_DETAIL_DASHBOARD_QUERY_KEY = ['tutorReportDetail'];

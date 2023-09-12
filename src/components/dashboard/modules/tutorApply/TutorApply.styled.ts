@@ -37,7 +37,7 @@ export const TutorList = styled.li`
   margin-bottom: 18px;
 `;
 
-export const UserWrapper = styled.div`
+export const UserWrapper = styled.button`
   display: flex;
   align-items: center;
   gap: 10px;

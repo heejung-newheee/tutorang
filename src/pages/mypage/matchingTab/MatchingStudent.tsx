@@ -8,10 +8,9 @@ import { matchingPending, matchingReject } from '../../../api/match';
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { Views } from '../../../supabase/database.types';
-import { ContentsDataBox, MatchBtn } from '../userInfo/UserInfo.styled';
-import * as S from './MatchingTutor.styled';
+import { ContentsDataBox } from '../Mypage.styled';
+import * as S from './Matching.styled';
 import './custom.css';
-
 interface pageProps {
   matchList: Views<'matching_tutor_data'>[];
 }
@@ -102,10 +101,10 @@ const MatchingStudent = ({ matchList }: pageProps) => {
                         {item.student_lc_2_gugun}
                       </div>
                       <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
-                      <div>
-                        <MatchBtn onClick={() => item.id !== null && acceptMatch(item.id, item.user_id!)}>수락</MatchBtn>
-                        <MatchBtn onClick={() => item.id !== null && rejectMatch(item.id, item.user_id!)}>거절</MatchBtn>
-                      </div>
+                      <S.MatchBtnWrap>
+                        <S.MatchBtn onClick={() => item.id !== null && acceptMatch(item.id, item.user_id!)}>수락</S.MatchBtn>
+                        <S.MatchBtn onClick={() => item.id !== null && rejectMatch(item.id, item.user_id!)}>거절</S.MatchBtn>
+                      </S.MatchBtnWrap>
                     </S.InfoItem>
                   </S.InfoList>
                 );

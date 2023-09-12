@@ -3,17 +3,18 @@ import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import FormHeader from '../../components/Form/FormHeader';
-import SelectLocation from '../../components/Form/SelectLocation';
-import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../../constants/formConstant';
-import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../constants/signup.constant';
-import { RootState } from '../../redux/config/configStore';
-import supabase from '../../supabase';
-import Checkbox from '../auth/registTutorForm/Checkbox';
-import * as S from '../auth/registTutorForm/RegistTutorForm.styled';
-import SelectEnrollmentStatus from '../auth/registTutorForm/SelectEnrollmentStatus';
-import SelectTuitionFee from '../auth/registTutorForm/SelectTuitionFee';
-import { classLevelEngTranslation, classLevelTranslation, personalityEngTranslation, personalityTranslation, speakingLanguageEngTranslation, speakingLanguageTranslation } from '../auth/registTutorForm/translation';
+import FormHeader from '../../../components/Form/FormHeader';
+import SelectLocation from '../../../components/Form/SelectLocation';
+import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../../../constants/formConstant';
+import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/signup.constant';
+import { RootState } from '../../../redux/config/configStore';
+import supabase from '../../../supabase';
+import Checkbox from '../../auth/registTutorForm/Checkbox';
+import * as S from '../../auth/registTutorForm/RegistTutorForm.styled';
+import SelectEnrollmentStatus from '../../auth/registTutorForm/SelectEnrollmentStatus';
+import SelectTuitionFee from '../../auth/registTutorForm/SelectTuitionFee';
+import { classLevelEngTranslation, classLevelTranslation, personalityEngTranslation, personalityTranslation, speakingLanguageEngTranslation, speakingLanguageTranslation } from '../../auth/registTutorForm/translation';
+import { Container } from '../Mypage.styled';
 
 const EditTutorForm = () => {
   const navigate = useNavigate();
@@ -165,7 +166,7 @@ const EditTutorForm = () => {
   }
 
   return (
-    <S.Container>
+    <Container>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT} />
       <S.PartitionLine />
       <S.Form onSubmit={handleSubmit}>
@@ -265,7 +266,7 @@ const EditTutorForm = () => {
           정보 수정 완료
         </S.Button>
       </S.Form>
-    </S.Container>
+    </Container>
   );
 };
 

@@ -50,3 +50,8 @@ export const deleteABoard = async (id: number) => {
   const { error } = await supabase.from('write').delete().eq('id', id);
   if (error) throw error;
 };
+export const getMyBoardList = async (id: string) => {
+  const { data, error } = await supabase.from('write').select('*, profiles(id,username,email,avatar_url)').eq('user_id', id).order('created_at', { ascending: false });
+  if (error) throw error;
+  return data;
+};

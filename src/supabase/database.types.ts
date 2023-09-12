@@ -8,28 +8,22 @@ export interface Database {
           content: string | null;
           created_at: string;
           id: string;
-          importance: string | null;
           title: string | null;
           user_id: string | null;
-          views: number | null;
         };
         Insert: {
           content?: string | null;
           created_at?: string;
           id?: string;
-          importance?: string | null;
           title?: string | null;
           user_id?: string | null;
-          views?: number | null;
         };
         Update: {
           content?: string | null;
           created_at?: string;
           id?: string;
-          importance?: string | null;
           title?: string | null;
           user_id?: string | null;
-          views?: number | null;
         };
         Relationships: [
           {
@@ -388,9 +382,7 @@ export interface Database {
           content: string | null;
           created_at: string;
           file1: string | null;
-          file2: string | null;
           id: string;
-          isReplied: boolean | null;
           title: string | null;
           user_id: string | null;
         };
@@ -398,9 +390,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           file1?: string | null;
-          file2?: string | null;
           id?: string;
-          isReplied?: boolean | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -408,9 +398,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           file1?: string | null;
-          file2?: string | null;
           id?: string;
-          isReplied?: boolean | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -836,6 +824,7 @@ export interface Database {
           avatar_url: string | null;
           basic_authority: boolean;
           birth: string | null;
+          created_at: string | null;
           deleted_at: string | null;
           email: string | null;
           gender: string | null;
@@ -853,6 +842,7 @@ export interface Database {
           avatar_url?: string | null;
           basic_authority?: boolean;
           birth?: string | null;
+          created_at?: string | null;
           deleted_at?: string | null;
           email?: string | null;
           gender?: string | null;
@@ -870,6 +860,7 @@ export interface Database {
           avatar_url?: string | null;
           basic_authority?: boolean;
           birth?: string | null;
+          created_at?: string | null;
           deleted_at?: string | null;
           email?: string | null;
           gender?: string | null;
@@ -891,13 +882,70 @@ export interface Database {
           },
         ];
       };
+      report: {
+        Row: {
+          content: string | null;
+          created_at: string;
+          id: number;
+          state: string | null;
+          tutor_id: string | null;
+          user_id: string | null;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          id?: number;
+          state?: string | null;
+          tutor_id?: string | null;
+          user_id?: string | null;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
+          id?: number;
+          state?: string | null;
+          tutor_id?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'matching_tutor_data';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_info_join';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_top_reviewer';
+            referencedColumns: ['tutor_id'];
+          },
+        ];
+      };
       review: {
         Row: {
           author: string | null;
           content: string | null;
           created_at: string;
           id: number;
-          matched_id?: string | null;
           rating: number | null;
           reviewed_id: string | null;
           title: string | null;
@@ -908,7 +956,6 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           id?: number;
-          matched_id?: string | null;
           rating?: number | null;
           reviewed_id?: string | null;
           title?: string | null;
@@ -919,7 +966,6 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           id?: number;
-          matched_id?: string | null;
           rating?: number | null;
           reviewed_id?: string | null;
           title?: string | null;
@@ -1244,7 +1290,6 @@ export interface Database {
           location1_sido: string | null;
           location2_gugun: string | null;
           location2_sido: string | null;
-          matched_id: string | null;
           rating: number | null;
           reviewed_id: string | null;
           role: string | null;
@@ -1376,6 +1421,36 @@ export interface Database {
       };
     };
     Functions: {
+      get_converted_tutor_count_by_month: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          date: string;
+          count: number;
+        }[];
+      };
+      get_matching_count_by_month: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          date: string;
+          count: number;
+        }[];
+      };
+      get_signup_count_by_month: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          date: string;
+          count: number;
+        }[];
+      };
       get_two_person_chat_room: {
         Args: {
           user1_id: string;
@@ -1385,6 +1460,26 @@ export interface Database {
           room_id: string;
           name: string;
           created_at: string;
+        }[];
+      };
+      getauthenticatedusersbymonth: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          auth_date: string;
+          user_count: number;
+        }[];
+      };
+      gettutorcountbymonth: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          auth_date: string;
+          user_count: number;
         }[];
       };
       is_room_participant: {
@@ -1414,7 +1509,7 @@ export type TTutorWithUser = Pick<Tables<'tutor_info'>, 'id' | 'created_at' | 'c
 };
 
 export type BookMarkType = Pick<Tables<'book_mark'>, 'liked_id' | 'user_id'>;
-export type reviews = Pick<Tables<'review'>, 'matched_id' | 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
+export type reviews = Pick<Tables<'review'>, 'title' | 'content' | 'user_id' | 'author' | 'reviewed_id' | 'rating'>;
 export type updateReviews = Pick<Tables<'review'>, 'title' | 'content' | 'rating'>;
 export type RoomType = Tables<'chat_rooms'> & {
   chat_room_participants: (Tables<'chat_room_participants'> & { profiles: Tables<'profiles'> })[];
@@ -1423,3 +1518,6 @@ export type RoomType = Tables<'chat_rooms'> & {
 export type RoomWithLastMessageType = RoomType & {
   last_message: Tables<'chat_messages'>[];
 };
+
+export type TutorApplyInfo = Pick<Tables<'pending_tutor_registration'>, 'id' | 'state' | 'class_info' | 'tuition_fee_offline' | 'tuition_fee_online' | 'certification_image' | 'speaking_language' | 'personality' | 'class_level'>;
+export type TutorReport = Pick<Tables<'report'>, 'tutor_id' | 'user_id' | 'state' | 'content'>;

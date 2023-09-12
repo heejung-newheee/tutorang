@@ -1,14 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import Heart from 'react-animated-heart';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { deletePost, firstClickLikeApi, getWriteData, updateLike } from '../../api/postDetail';
 import { RootState } from '../../redux/config/configStore';
 import supabase from '../../supabase';
-import Comment from './comment/Comment';
-import { getWriteData, firstClickLikeApi, updateLike, deletePost } from '../../api/postDetail';
 import { detailDate } from '../community/utility';
-import Heart from 'react-animated-heart';
 import * as S from './PostDetail.styled';
+import Comment from './comment/Comment';
 
 const PostDetail = () => {
   const [comment, setComment] = useState<string>('');
@@ -123,7 +123,7 @@ const PostDetail = () => {
       {data !== undefined && data !== null ? <S.MainComments dangerouslySetInnerHTML={{ __html: `${data[0].content}` }}></S.MainComments> : null}
       <S.LikeDiv>
         <span>
-          <Heart isClick={data?.[0].post_like.some((like) => like.user_id === loginUser?.id) === true ? true : false} onClick={handleLike} />
+          <Heart isClick={data?.[0].post_like.filter((like) => like.user_id === loginUser?.id).length !== 1 ? true : false} onClick={handleLike} />
         </span>
       </S.LikeDiv>
       <S.Line />

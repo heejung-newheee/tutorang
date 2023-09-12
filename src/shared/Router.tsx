@@ -20,15 +20,17 @@ import DetailCustomerSupport from '../pages/customerService/customerSupport/Deta
 import EditInquiryForm from '../pages/customerService/customerSupport/EditInquiryForm';
 import LeaveInquiryForm from '../pages/customerService/customerSupport/LeaveInquiryForm';
 import MatchedReview from '../pages/matchingReview/MatchedReview';
-import EditTutorForm from '../pages/mypage/EditTutorForm';
 import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateAdditionalInformationForm';
 import EditProfileForm from '../pages/mypage/profileForm/EditProfileForm';
+import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
+import GlobalModal from '../components/modal/GlobalModal';
 
 const Router = () => {
   return (
     <BrowserRouter>
+      <GlobalModal />
       <Routes>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />

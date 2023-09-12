@@ -3,23 +3,19 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify } from '../../../assets';
-
-import * as S from './TutorInfo.styled';
-
 import { useNavigate } from 'react-router-dom';
-import { getBoard } from '../../../api/board';
 import { matchReview } from '../../../api/review';
 import { tutorInfoJoin } from '../../../api/tutor';
+import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify } from '../../../assets';
 import { Loading } from '../../../components';
 import StarRating from '../../../constants/func';
-import { BOARD_QUERY_KEY, REVIEW_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
+import { REVIEW_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
-import { Tables, Views } from '../../../supabase/database.types';
+import { Views } from '../../../supabase/database.types';
 import { Age, ClassLevel, Dot, Icon, InfoItem, PriceItem, PriceList, TagList, TutorName } from '../../detail/tutorInfoDetail/TutorInfoDetail.styled';
+import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataTitle, InfoNull, InfoSection, InfoTitle, ReviewRating } from '../Mypage.styled';
 import MatchingStudent from '../matchingTab/MatchingStudent';
-import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataTitle, InfoNull, InfoSection, InfoTitle, ReviewRating } from '../userInfo/UserInfo.styled';
-
+import * as S from './TutorInfo.styled';
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
 }
@@ -28,13 +24,12 @@ const TutorInfo = ({ match }: pageProps) => {
   useEffect(() => {
     AOS.init();
   }, []);
-  const boardData = useQuery([BOARD_QUERY_KEY], getBoard);
-
-  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery([TUTOR_INFO_JOIN_QUERY_KEY], tutorInfoJoin);
 
   const user = useSelector((state: RootState) => state.user.user);
   if (!user) return null;
   const id = user.id;
+
+  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery([TUTOR_INFO_JOIN_QUERY_KEY], tutorInfoJoin);
   const {
     data: review,
     isLoading: reviewLoading,
@@ -53,7 +48,7 @@ const TutorInfo = ({ match }: pageProps) => {
   if (tutorError || reviewError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
-  if (!tutor || !review || !matchList || !boardData.data) {
+  if (!tutor || !review || !matchList) {
     return null;
   }
 
@@ -82,14 +77,13 @@ const TutorInfo = ({ match }: pageProps) => {
                       });
                     }}
                   >
-                    <img src={icon_edit_wh} alt="" />
+                    <img src={icon_edit_wh} alt="class info edit button" />
                   </S.ClassEditBtn>
                 </S.TutorClassTop>
                 <S.TutorClass>
                   <S.ClassDetail>
                     <InfoItem>
-                      <Icon src={icon_location_gray} /> {tutorInfo.location1_sido} | {tutorInfo.location1_gugun}
-                      <Icon src={icon_location_gray} /> {tutorInfo.location2_sido} | {tutorInfo.location2_gugun}
+                      <Icon src={icon_location_gray} /> {tutorInfo.location1_sido} - {tutorInfo.location1_gugun} | {tutorInfo.location2_sido} - {tutorInfo.location2_gugun}
                     </InfoItem>
                     <InfoItem>
                       <Icon src={icon_school} /> {tutorInfo.university} | {tutorInfo.major}
@@ -148,7 +142,6 @@ const TutorInfo = ({ match }: pageProps) => {
           <InfoSection>
             <Container>
               <InfoTitle>수강생 후기</InfoTitle>
-
               <ContentsDataBox>
                 {review.length > 0 ? (
                   <DataList>
@@ -171,29 +164,6 @@ const TutorInfo = ({ match }: pageProps) => {
                 ) : (
                   <InfoNull>후기가 없습니다</InfoNull>
                 )}
-              </ContentsDataBox>
-            </Container>
-          </InfoSection>
-
-          <InfoSection>
-            <Container>
-              <InfoTitle>내가 남긴 문의</InfoTitle>
-              <ContentsDataBox>
-                {boardData
-                  .data!.filter((board: Tables<'board'>) => {
-                    return board.user_id === user!.id;
-                  })
-                  .map((item: Tables<'board'>) => {
-                    return (
-                      <DataItem key={item.id}>
-                        <div>
-                          <DataTitle>{item.title}</DataTitle>
-                          <DataContent>{item.content}</DataContent>
-                          <DataAuth>{item.created_at.split('T')[0]}</DataAuth>
-                        </div>
-                      </DataItem>
-                    );
-                  })}
               </ContentsDataBox>
             </Container>
           </InfoSection>
