@@ -1,14 +1,14 @@
 import { Dispatch, SetStateAction } from 'react';
 import supabase from '../supabase';
 
-export const getWriteData = async (postid: string | undefined) => {
+export const getWriteData = async (postid: number) => {
   const { data, error } = await supabase.from('write').select(`*, post_like(post_id, user_id),profiles(username,avatar_url)`).eq('id', postid);
 
   if (error) throw error;
   return data;
 };
 
-export const firstClickLikeApi = async (newInfo: any, postid: string | undefined, detail_user_id: string | undefined) => {
+export const firstClickLikeApi = async (newInfo: any, postid: number, detail_user_id: string | undefined) => {
   const writeLikePromise = supabase.from('write').update(newInfo).eq('id', postid).single();
   const postLikePromise = supabase.from('post_like').insert({ user_id: detail_user_id, post_id: Number(postid) });
 
@@ -18,7 +18,7 @@ export const firstClickLikeApi = async (newInfo: any, postid: string | undefined
   if (postLikeResult.error) throw postLikeResult.error;
 };
 
-export const updateLike = async (newInfo: { like: number }, postid: string | undefined, detail_user_id: string | undefined) => {
+export const updateLike = async (newInfo: { like: number }, postid: number, detail_user_id: string | undefined) => {
   const writeMinusLikePromise = supabase.from('write').update(newInfo).eq('id', postid).single();
   const postDeletePromise = supabase.from('post_like').delete().eq('user_id', detail_user_id).eq('post_id', postid);
 
@@ -28,11 +28,9 @@ export const updateLike = async (newInfo: { like: number }, postid: string | und
   if (postLikeResult.error) throw postLikeResult.error;
 };
 
-export const deletePost = async (postid: string | undefined) => {
+export const deletePost = async (postid: number) => {
   const post_like_DeletePromise = supabase.from('post_like').delete().eq('post_id', postid);
-
   const post_comments_DeletePromise = supabase.from('post_comments').delete().eq('post_id', postid);
-
   const write_DeletePromise = supabase.from('write').delete().eq('id', postid);
 
   const [post_like_DeleteResult, post_comments_DeleteResult, write_Delete_DeleteResult] = await Promise.all([post_like_DeletePromise, post_comments_DeletePromise, write_DeletePromise]);
@@ -43,7 +41,6 @@ export const deletePost = async (postid: string | undefined) => {
 };
 
 ////community-comments
-
 export const getCommentsApi = async (postid: number) => {
   const { data, error } = await supabase
     .from('post_comments')
@@ -52,6 +49,7 @@ export const getCommentsApi = async (postid: number) => {
       profiles (username, avatar_url)
 `,
     )
+    .order('created_at', { ascending: false })
     .eq('post_id', postid);
   if (error) throw error;
   return data;

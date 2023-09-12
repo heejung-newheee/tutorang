@@ -5,22 +5,25 @@ const pageCount = 5;
 export const handlePrev = (currentNum: number, setCurrentNum: Dispatch<SetStateAction<number>>, setHasPageMore: Dispatch<SetStateAction<boolean>>) => {
   if (currentNum === 1) return;
   setCurrentNum((pre) => pre - 1);
+
   setHasPageMore(true);
 };
 
-export const handleNext = (currentNum: number, totalPageNum: number | null, setCurrentNum: Dispatch<SetStateAction<number>>, setHasPageMore: Dispatch<SetStateAction<boolean>>) => {
-  const totalPostNum = currentNum * pageCount;
+// export const handleNext = (currentNum: number, totalPageNum: number | null, setCurrentNum: Dispatch<SetStateAction<number>>, setHasPageMore: Dispatch<SetStateAction<boolean>>) => {
+//   const dispatch = useDispatch();
+//   const totalPostNum = currentNum * pageCount;
 
-  if (totalPageNum && totalPageNum < totalPostNum) return;
-  if (totalPageNum && totalPageNum > totalPostNum) {
-    setCurrentNum((pre) => pre + 1);
-  }
+//   if (totalPageNum && totalPageNum < totalPostNum) return;
+//   if (totalPageNum && totalPageNum > totalPostNum) {
+//     setCurrentNum((pre) => pre + 1);
+//     dispatch(setPageNum(currentNum - 1));
+//   }
 
-  const nextCurrentNum = currentNum + 1;
-  if (totalPageNum && totalPageNum <= nextCurrentNum * pageCount) {
-    setHasPageMore(false);
-  }
-};
+//   const nextCurrentNum = currentNum + 1;
+//   if (totalPageNum && totalPageNum <= nextCurrentNum * pageCount) {
+//     setHasPageMore(false);
+//   }
+// };
 
 export const handleTotalNext = (totalPageNum: number | null, setCurrentNum: Dispatch<SetStateAction<number>>, setHasPageMore: Dispatch<SetStateAction<boolean>>) => {
   if (totalPageNum && totalPageNum <= pageCount) return;
