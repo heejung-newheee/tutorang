@@ -125,7 +125,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
         <S.AvatarBtnWholeBody>
           <S.RightButton onClick={toggleAuthNavInfoArea}>
             <div>
-              <S.ProfileImg src={$loginUser!.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="" />
+              <S.ProfileImg src={$loginUser!.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="user profile " />
             </div>
           </S.RightButton>
 
@@ -133,7 +133,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
             <S.AuthNavContainer>
               <S.AuthInfoSection>
                 <S.AuthAvatarContainer>
-                  <S.ProfileImg src={$loginUser!.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="" />
+                  <S.ProfileImg src={$loginUser!.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="user profile" />
                 </S.AuthAvatarContainer>
                 <S.AuthProfileContainer>
                   <p>{$loginUser!.username || '이름 미확인'}</p>

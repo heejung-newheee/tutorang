@@ -34,7 +34,6 @@ const WritePost = () => {
     input.onchange = async () => {
       if (input.files) {
         const file = input.files[0];
-        console.log(file);
 
         try {
           const imgName = v4();

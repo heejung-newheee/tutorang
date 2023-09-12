@@ -18,6 +18,10 @@ import supabase from '../../../supabase';
 import { Container, Section } from '../Mypage.styled';
 import * as S from './ProfileForm.styled';
 
+type sessionType = {
+  provider: string | undefined;
+  providers: string[];
+};
 const EditProfileForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,6 +31,8 @@ const EditProfileForm = () => {
   const user = userData.data;
 
   if (!user) return;
+  const [provider, setProvider] = useState<sessionType>();
+
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | null>(null);
@@ -106,6 +112,15 @@ const EditProfileForm = () => {
     setValidPwd(result);
     const resultMatch = password === confirmPassword;
     setValidPwdConfirm(resultMatch);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      const sessionProvider: string | undefined = session?.user.app_metadata.provider;
+      const sessionProviders: string[] = session?.user.app_metadata.providers;
+      setProvider({
+        provider: sessionProvider,
+        providers: sessionProviders,
+      });
+      return session;
+    });
   }, [password, confirmPassword]);
 
   useEffect(() => {
@@ -148,60 +163,65 @@ const EditProfileForm = () => {
                 <p>이메일</p>
                 <S.UserData>{user?.email}</S.UserData>
               </div>
-              <S.PasswordChangeWrap>
-                <S.ConfirmPass>
-                  {password.length > 6 && PWD_REGEX.test(password) ? (
-                    <p></p>
-                  ) : password !== '' ? (
-                    <p>문자, 숫자, 특수문자(!@#$%) 포함, 6자 이상의 비밀번호</p>
-                  ) : (
-                    <p>
-                      <br />
-                    </p>
-                  )}
-                </S.ConfirmPass>
-                <S.ConfirmPass>
-                  {password === confirmPassword ? (
-                    <p>
-                      <br />
-                    </p>
-                  ) : confirmPassword !== '' ? (
-                    <p>처음에 입력한 비밀번호와 동일해야합니다</p>
-                  ) : (
-                    <p>
-                      <br />
-                    </p>
-                  )}
-                </S.ConfirmPass>
-                <S.PasswordWrap>
-                  <p>비밀번호 변경</p>
-                  <S.EditInput type={isPasswordHidden ? 'password' : 'text'} name="password" value={password} onChange={changeNewpassword} placeholder="비밀번호를 입력하세요" />
-                  {isPasswordHidden ? (
-                    <S.PasswordEyeButton onClick={() => setIsPasswordHidden(false)}>
-                      <BsFillEyeSlashFill className="pw_button_hidden_color" />
-                    </S.PasswordEyeButton>
-                  ) : (
-                    <S.PasswordEyeButton onClick={() => setIsPasswordHidden(true)}>
-                      <BsFillEyeFill className="pw_button_shown_color" />
-                    </S.PasswordEyeButton>
-                  )}
-                </S.PasswordWrap>
+              {provider?.provider === 'email' ? (
+                <S.PasswordChangeWrap>
+                  <S.ConfirmPass>
+                    {password.length > 6 && PWD_REGEX.test(password) ? (
+                      <p></p>
+                    ) : password !== '' ? (
+                      <p>문자, 숫자, 특수문자(!@#$%) 포함, 6자 이상의 비밀번호</p>
+                    ) : (
+                      <p>
+                        <br />
+                      </p>
+                    )}
+                  </S.ConfirmPass>
+                  <S.ConfirmPass>
+                    {password === confirmPassword ? (
+                      <p>
+                        <br />
+                      </p>
+                    ) : confirmPassword !== '' ? (
+                      <p>처음에 입력한 비밀번호와 동일해야합니다</p>
+                    ) : (
+                      <p>
+                        <br />
+                      </p>
+                    )}
+                  </S.ConfirmPass>
+                  <S.PasswordWrap>
+                    <p>비밀번호 변경</p>
+                    <S.EditInput type={isPasswordHidden ? 'password' : 'text'} name="password" value={password} onChange={changeNewpassword} placeholder="비밀번호를 입력하세요" />
+                    {isPasswordHidden ? (
+                      <S.PasswordEyeButton onClick={() => setIsPasswordHidden(false)}>
+                        <BsFillEyeSlashFill className="pw_button_hidden_color" />
+                      </S.PasswordEyeButton>
+                    ) : (
+                      <S.PasswordEyeButton onClick={() => setIsPasswordHidden(true)}>
+                        <BsFillEyeFill className="pw_button_shown_color" />
+                      </S.PasswordEyeButton>
+                    )}
+                  </S.PasswordWrap>
 
-                <S.PasswordWrap>
-                  <p>비밀번호 확인</p>
-                  <S.EditInput type={isMatchPwHidden ? 'password' : 'text'} name="confirmPassword" value={confirmPassword} onChange={changeConfirmPassword} placeholder="비밀번호 확인 입력하세요" />
+                  <S.PasswordWrap>
+                    <p>비밀번호 확인</p>
+                    <S.EditInput type={isMatchPwHidden ? 'password' : 'text'} name="confirmPassword" value={confirmPassword} onChange={changeConfirmPassword} placeholder="비밀번호 확인 입력하세요" />
 
-                  {isMatchPwHidden ? (
-                    <S.PasswordEyeButton onClick={() => setIsMatchPwHidden(false)}>
-                      <BsFillEyeSlashFill className=" pw_button_hidden_color" />
-                    </S.PasswordEyeButton>
-                  ) : (
-                    <S.PasswordEyeButton onClick={() => setIsMatchPwHidden(true)}>
-                      <BsFillEyeFill className=" pw_button_shown_color" />
-                    </S.PasswordEyeButton>
-                  )}
-                </S.PasswordWrap>
-              </S.PasswordChangeWrap>
+                    {isMatchPwHidden ? (
+                      <S.PasswordEyeButton onClick={() => setIsMatchPwHidden(false)}>
+                        <BsFillEyeSlashFill className=" pw_button_hidden_color" />
+                      </S.PasswordEyeButton>
+                    ) : (
+                      <S.PasswordEyeButton onClick={() => setIsMatchPwHidden(true)}>
+                        <BsFillEyeFill className=" pw_button_shown_color" />
+                      </S.PasswordEyeButton>
+                    )}
+                  </S.PasswordWrap>
+                </S.PasswordChangeWrap>
+              ) : (
+                <div> SNS 로그인 사용자입니다 </div>
+              )}
+
               <SFormItem>
                 <SFormItemHeader>
                   <SPGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</SPGuideMessage>

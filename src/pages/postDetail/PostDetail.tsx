@@ -22,8 +22,6 @@ const PostDetail = () => {
 
   const { data } = useQuery(['write'], () => getWriteData(Number(postid)));
 
-  console.log(data, 'data');
-
   //좋아요 데이터가 없을때
   const likemutation = useMutation(async (newInfo: any) => firstClickLikeApi(newInfo, Number(postid), detail_user_id), {
     onSuccess: () => {
@@ -123,7 +121,7 @@ const PostDetail = () => {
       {data !== undefined && data !== null ? <S.MainComments dangerouslySetInnerHTML={{ __html: `${data[0].content}` }}></S.MainComments> : null}
       <S.LikeDiv>
         <span>
-          <Heart isClick={data?.[0].post_like.filter((like) => like.user_id === loginUser?.id).length !== 1 ? true : false} onClick={handleLike} />
+          <Heart isClick={data?.[0].post_like?.filter((like) => like.user_id === loginUser?.id).length !== 1 ? true : false} onClick={handleLike} />
         </span>
       </S.LikeDiv>
       <S.Line />

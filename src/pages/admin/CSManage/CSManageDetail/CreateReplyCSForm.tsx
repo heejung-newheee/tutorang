@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { TypeNewReplyToInquiry, insertNewReplyToInquiry } from '../../../../api/customerSupportReply';
+import styled from 'styled-components';
 import { ONE_CUSTOMER_INQUIRY_QUERY_KEY } from '../../../../api/customerSupport';
+import { TypeNewReplyToInquiry, insertNewReplyToInquiry } from '../../../../api/customerSupportReply';
+import { ButtonAnnouncement, ButtonWrap } from '../../announcementManage/ManageAnnouncementCommon.style';
 
 const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; csTableId: string }) => {
   const queryClient = useQueryClient();
@@ -44,10 +46,19 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
   };
   return (
     <form onSubmit={handleSubmit}>
-      <input type="text" name="content" value={content} onChange={handleContentChange} />
-      <button>등록완료</button>
+      <ReplyArea type="text" name="content" value={content} onChange={handleContentChange} />
+      <ButtonWrap>
+        <ButtonAnnouncement>등록완료</ButtonAnnouncement>
+      </ButtonWrap>
     </form>
   );
 };
 
 export default CreateReplyCSForm;
+
+const ReplyArea = styled.input`
+  width: 100%;
+  padding: 10px 15px;
+  margin: 15px 0;
+  border: solid 1px #ddd;
+`;
