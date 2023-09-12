@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { CS_MANAGE_QUERY_KEY, TypeNewReplyToInquiry, insertNewReplyToInquiry } from '../../../../api/customerSupportReply';
+import { TypeNewReplyToInquiry, insertNewReplyToInquiry } from '../../../../api/customerSupportReply';
+import { ONE_CUSTOMER_INQUIRY_QUERY_KEY } from '../../../../api/customerSupport';
 
 const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; csTableId: string }) => {
   const queryClient = useQueryClient();
   const [content, setContent] = useState('');
-  // const navigate = useNavigate();
 
   const createCSReplyMutation = useMutation(async (newReply: TypeNewReplyToInquiry) => insertNewReplyToInquiry(newReply), {
     onSuccess: () => {
-      queryClient.invalidateQueries([CS_MANAGE_QUERY_KEY, csTableId]);
+      queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY, csTableId]);
     },
     onError: (error) => {
       console.log(error);

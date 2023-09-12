@@ -1,46 +1,50 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { CS_MANAGE_QUERY_KEY, CS_REPLY_QUERY_KEY, getAllCs, getTargetCsReply } from '../../../../api/customerSupportReply';
+import { Link, useLocation } from 'react-router-dom';
 import { RootState } from '../../../../redux/config/configStore';
+import { ONE_CUSTOMER_INQUIRY_QUERY_KEY, getOneInquiry } from '../../../../api/customerSupport';
+import * as S from './CSManageDetail.style';
+import CreateReplyCSForm from './CreateReplyCSForm';
+import EditReplyCSForm from './EditReplyCSForm';
+import { getTimeTextFromISODate } from '../../../../utils/Date';
 
 const CSManageDetail = () => {
   const locationData = useLocation();
   const inquiryId = locationData.state.id;
-  const { data } = useQuery([CS_MANAGE_QUERY_KEY], getAllCs, { enabled: !!inquiryId });
-  const { data: targetReply } = useQuery([CS_REPLY_QUERY_KEY], () => getTargetCsReply(inquiryId), { enabled: !!inquiryId });
-  console.log('이거슨 데이터여', data);
-  console.log('내는 이것을 원했어야', targetReply);
+  const { data: oneInquiryInfo, isLoading, isError } = useQuery([ONE_CUSTOMER_INQUIRY_QUERY_KEY, inquiryId], () => getOneInquiry(inquiryId), { enabled: !!inquiryId });
+
   // 관리자
   const loginUserId = useSelector((state: RootState) => state.user.user!.id);
-  console.log('locationData', locationData);
 
-  const oneInquiryInfo = locationData.state;
-  const inquiryWriterInfo = oneInquiryInfo.profiles;
-  console.log(oneInquiryInfo.customer_support_reply.length);
-  return;
-  // <div>
-  //   <div>
-  //     <h2>내용</h2>
-  //     <div dangerouslySetInnerHTML={{ __html: oneInquiryInfo.content }}></div>
-  //   </div>
-  //   {targetReply.length === 0 ? <div>관리자님~ 답변을 어서 등록해주세요!</div> : <div>{targetReply[0].content}</div>}
+  if (isLoading) return <div>로딩중...</div>;
+  if (isError) return <div>에러가 발생했습니다.</div>;
+  if (!oneInquiryInfo) return <div>데이터가 없습니다.</div>;
 
-  //   <S.Button>목록</S.Button>
-  //   {targetReply.length !== 0 && (
-  //     <>
-  //       <S.Button>답변수정</S.Button>
-  //       <S.Button>답변삭제</S.Button>
-  //     </>
-  //   )}
-  //   {targetReply.length === 0 ? (
-  //     <div>{<CreateReplyCSForm loginUserId={loginUserId} csTableId={oneInquiryInfo.id} />}</div>
-  //   ) : (
-  //     <div>
-  //       <EditReplyCSForm targetReply={targetReply} />
-  //     </div>
-  //   )}
-  // </div>
+  const profiles = oneInquiryInfo.profiles;
+  const reply = oneInquiryInfo.customer_support_reply;
+  return (
+    <div>
+      <div>
+        <p>제목 : {oneInquiryInfo.title}</p>
+        <p>문의자 정보: {profiles?.inquiryUsername}</p>
+        <p>문의 날짜: {getTimeTextFromISODate(oneInquiryInfo.created_at)}</p>
+        <h2>내용</h2>
+        <div dangerouslySetInnerHTML={{ __html: oneInquiryInfo.content || '' }}></div>
+      </div>
+      {reply.length === 0 ? <div>관리자님~ 답변을 어서 등록해주세요!</div> : <div>{reply[0].content}</div>}
+
+      <S.Button>
+        <Link to="/admin/customer-support-manage">목록</Link>
+      </S.Button>
+      {reply.length === 0 ? (
+        <div>{<CreateReplyCSForm loginUserId={loginUserId} csTableId={oneInquiryInfo.id} />}</div>
+      ) : (
+        <div>
+          <EditReplyCSForm replyInfo={reply[0]} />
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default CSManageDetail;
