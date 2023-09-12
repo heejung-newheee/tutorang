@@ -8,7 +8,7 @@ import { getCommunityApi } from '../../../api/community';
 const QuestionCommunity = () => {
   const [query, _] = useSearchParams();
   const editPostNum = Number(query.get('q'));
-  const [hasPageMore, setHasPageMore] = useState<boolean>(true);
+  // const [hasPageMore, setHasPageMore] = useState<boolean>(true);
   const [totalPageNum, setTotalPageNum] = useState<number | null>(null);
   const pageCount = 5;
 
@@ -22,7 +22,7 @@ const QuestionCommunity = () => {
       {data?.map((item, index) => (
         <PostCompo key={Math.random() * 22229999} item={item} lastElement={index === data.length - 1} />
       ))}
-      <Pagination setHasPageMore={setHasPageMore} hasPageMore={hasPageMore} totalPageNum={totalPageNum} pageCount={pageCount} />
+      <Pagination totalPageNum={totalPageNum} pageCount={pageCount} />
     </>
   );
 };
