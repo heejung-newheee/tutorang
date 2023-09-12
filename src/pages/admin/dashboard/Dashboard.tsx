@@ -4,9 +4,11 @@ import { TutorApply } from '../../../components/dashboard/modules';
 import { getYearAndMonth } from '../../../utils/Date';
 import * as S from './Dashboard.styled';
 import NewMemberChart from './NewMemberChart';
+import MatchingChart from './MatchingChart';
 
 const Dashboard = () => {
   const [chartMonth, setChartMonth] = useState(getYearAndMonth());
+  const [matchingChartMonth, setMatchingChartMonth] = useState(getYearAndMonth());
 
   useEffect(() => {
     console.log(chartMonth);
@@ -124,6 +126,11 @@ const Dashboard = () => {
         </S.DashboardItem>
         <S.DashboardItem>
           <S.DashboardItemTitle>월별 매칭 수</S.DashboardItemTitle>
+          <label htmlFor="matchingYearMonth" className="sr-only">
+            년도와 월 선택:
+          </label>
+          <input type="month" id="matchingYearMonth" name="matchingYearMonth" value={matchingChartMonth} onChange={(e) => setMatchingChartMonth(e.target.value)}></input>
+          <MatchingChart year={Number(matchingChartMonth.slice(0, 4))} month={Number(matchingChartMonth.slice(5))} />
         </S.DashboardItem>
       </S.dashboardFirstLayout>
       <section>

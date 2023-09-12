@@ -1435,6 +1435,16 @@ export interface Database {
           count: number;
         }[];
       };
+      get_matching_count_by_month: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          date: string;
+          count: number;
+        }[];
+      };
       get_signup_count_by_month: {
         Args: {
           year: number;

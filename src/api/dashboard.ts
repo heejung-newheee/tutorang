@@ -29,3 +29,9 @@ export const getConvertedTutorCountMonth = async (year: number, month: number) =
   if (error) throw error;
   return data;
 };
+
+export const getMatchingCountMonth = async (year: number, month: number) => {
+  const { data, error } = await supabase.rpc('get_matching_count_by_month', { year: year, month: month });
+  if (error) throw error;
+  return data;
+};
