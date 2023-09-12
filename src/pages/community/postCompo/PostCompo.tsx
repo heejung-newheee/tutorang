@@ -3,16 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { detailDate } from '../utility';
 import * as S from './PostCompo.styled';
 
-// type USER_ID = {
-//   avatar_url: string;
-//   profiles: string;
-//   username: string;
-// };
-// type Profile = {
-//   id: string;
-//   // 다른 필드들도 포함해야 할 수 있습니다.
-// };
-
 type PROFILES = {
   id: string;
   username: string | null;
@@ -25,6 +15,7 @@ type Props = {
     created_at: string;
     id: number;
     title: string | null;
+    like: number | null;
     user_id: string | null;
     profiles: PROFILES | null;
   };
@@ -58,7 +49,6 @@ const PostCompo = ({ item, lastElement }: Props) => {
   useEffect(() => {
     getContentReplace();
   }, []);
-  console.log(item);
 
   return (
     <S.Post $lastElement={lastElement} onClick={() => navigate(`/post/${item.id}`)}>
@@ -83,8 +73,8 @@ const PostCompo = ({ item, lastElement }: Props) => {
           </div>
         </S.ResponsiveImg>
         <S.Like>
-          <span>좋아요 3423 </span>
-          <span>댓글 2324</span>{' '}
+          <span>좋아요 {item.like} </span>
+          {/* <span>{detailDate(new Date(item.created_at))}</span>{' '} */}
         </S.Like>
       </S.UserWrite>
       <S.UserImg>{mainImg !== null && mainImg.length !== 0 && <img src={mainImg[0]?.[1]} />}</S.UserImg>

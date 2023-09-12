@@ -9,7 +9,7 @@ type HEADERMENUMOBILE = { title: string; path: string }[];
 const HeaderMenuMobile: HEADERMENUMOBILE = [
   { title: '튜터찾기', path: '/list' },
   { title: '매칭후기', path: '/review' },
-  { title: '커뮤니티', path: '/community/free' },
+  { title: '커뮤니티', path: '/community/free/?q=1' },
   { title: '고객센터', path: '/' },
 ];
 
