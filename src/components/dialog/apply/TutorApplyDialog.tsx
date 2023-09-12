@@ -7,12 +7,11 @@ import { useQuery } from '@tanstack/react-query';
 import { getTutorDetailInfo } from '../../../api/dashboard';
 
 const TutorApplyDialog = () => {
+  const dispatch = useDispatch();
   const tutorId = useSelector((state: RootState) => state.modal?.userId);
   const { data } = useQuery(['tutorDetailInfo'], () => getTutorDetailInfo(tutorId as string));
   if (!data) return;
   const tutor = data[0];
-
-  const dispatch = useDispatch();
 
   const STATE_MESSAGE = (_state: string) => {
     switch (_state) {

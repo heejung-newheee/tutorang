@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { BiImageAdd } from 'react-icons/bi';
 import { IoIosArrowBack, IoIosInformationCircleOutline, IoIosSend, IoMdAdd } from 'react-icons/io';
 import { IoLocationOutline } from 'react-icons/io5';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { leaveChatRoom, sendImageMessage, sendStudentMessage } from '../../../api/chat';
 import { matchingRequest } from '../../../api/match';
@@ -12,12 +12,8 @@ import { openModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
 import { ChatMessage } from './ChatMessage';
 import * as S from './ChatRoom.styled';
-
-const getDateText = (isoDateString: string): string => {
-  const isoDate = new Date(isoDateString);
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Intl.DateTimeFormat(navigator.language, options).format(isoDate);
-};
+import { RootState } from '../../../redux/config/configStore';
+import { getDateTextFromISODate, isSameDate } from '../../../utils/Date';
 
 const ChatRoom = ({ userId }: { userId: string }) => {
   const { isMobile } = useViewport();
@@ -28,7 +24,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
   const chatAreaRef = useRef<HTMLDivElement>(null);
   const [, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
-
+  const loginUser = useSelector((state: RootState) => state.user.user);
   const handleSubmitCreateMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -46,7 +42,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
   };
 
   const handleRequestTutoring = async () => {
-    if (!chatRoom) return;
+    if (!chatRoom || !loginUser || loginUser.role !== 'student') return;
     const tutor = chatRoom.chat_room_participants.filter((participant) => participant.user_id !== userId);
     if (tutor.length > 1) return;
     try {
@@ -148,13 +144,11 @@ const ChatRoom = ({ userId }: { userId: string }) => {
         <S.ChatList>
           {chatMessages.map((message, index) => {
             let result;
-            const currentDateNumber = getDateText(message.created_at);
-
-            if (index === 0 || currentDateNumber !== getDateText(chatMessages[index - 1].created_at)) {
+            if (index === 0 || !isSameDate(message.created_at, chatMessages[index - 1].created_at)) {
               result = (
                 <li style={{ textAlign: 'center', position: 'relative' }}>
                   <hr style={{ position: 'absolute', top: '50%', left: 0, width: '100%', margin: 0, height: '1px', border: 'none', borderTop: '1px solid #ccc' }} />
-                  <span style={{ color: '#808080', zIndex: 1, position: 'relative', backgroundColor: '#ffffff', padding: '0 0.5rem' }}>{getDateText(message.created_at)}</span>
+                  <span style={{ color: '#808080', zIndex: 1, position: 'relative', backgroundColor: '#ffffff', padding: '0 0.5rem' }}>{getDateTextFromISODate(message.created_at)}</span>
                 </li>
               );
             }
@@ -196,12 +190,14 @@ const ChatRoom = ({ userId }: { userId: string }) => {
               </div>
               <p>위치공유</p>
             </S.InputMenuButtonItem>
-            <S.InputMenuButtonItem type="button" onClick={handleRequestTutoring}>
-              <div>
-                <IoLocationOutline size={28} />
-              </div>
-              <p>튜터링 요청</p>
-            </S.InputMenuButtonItem>
+            {loginUser && loginUser.role === 'student' && (
+              <S.InputMenuButtonItem type="button" onClick={handleRequestTutoring}>
+                <div>
+                  <IoLocationOutline size={28} />
+                </div>
+                <p>튜터링 요청</p>
+              </S.InputMenuButtonItem>
+            )}
           </S.InputMenuInner>
         </S.InputMenu>
       </S.InputArea>

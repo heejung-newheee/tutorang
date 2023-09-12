@@ -10,7 +10,7 @@ import './custom.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createChatRoom, getChatRoomWithTutor, inviteChatRoom, sendStudentMessage } from '../../../api/chat';
+import { getOrCreatePrivateChatRoom, sendStudentMessage } from '../../../api/chat';
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { openModal } from '../../../redux/modules';
@@ -66,16 +66,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     if (!window.confirm('요청을 취소 하시겠습니까?')) return;
     cancelMatchMutation.mutate(id);
     try {
-      const room = await getChatRoomWithTutor(loginUser.id, tutor_id);
-
-      if (room.length > 0) {
-        await sendStudentMessage(room[0].room_id, 'reject');
-        return;
-      }
-
-      const newRoom = await createChatRoom();
-      await inviteChatRoom(newRoom.room_id, tutor_id);
-      await sendStudentMessage(newRoom.room_id, 'reject');
+      const room = await getOrCreatePrivateChatRoom(tutor_id);
+      await sendStudentMessage(room.room_id, 'reject');
     } catch (err) {
       console.error(err);
     }
@@ -87,16 +79,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     if (!window.confirm('수업 취소처리 하시겠습니까?')) return;
     notCompleteMatchMutation.mutate(id);
     try {
-      const room = await getChatRoomWithTutor(loginUser.id, tutor_id);
-
-      if (room.length > 0) {
-        await sendStudentMessage(room[0].room_id, 'reject');
-        return;
-      }
-
-      const newRoom = await createChatRoom();
-      await inviteChatRoom(newRoom.room_id, tutor_id);
-      await sendStudentMessage(newRoom.room_id, 'reject');
+      const room = await getOrCreatePrivateChatRoom(tutor_id);
+      await sendStudentMessage(room.room_id, 'reject');
     } catch (err) {
       console.error(err);
     }
@@ -108,16 +92,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     if (!window.confirm('수업 완료처리 하시겠습니까?')) return;
     completeMatchMutation.mutate(id);
     try {
-      const room = await getChatRoomWithTutor(loginUser.id, tutor_id);
-
-      if (room.length > 0) {
-        await sendStudentMessage(room[0].room_id, 'accept');
-        return;
-      }
-
-      const newRoom = await createChatRoom();
-      await inviteChatRoom(newRoom.room_id, tutor_id);
-      await sendStudentMessage(newRoom.room_id, 'accept');
+      const room = await getOrCreatePrivateChatRoom(tutor_id);
+      await sendStudentMessage(room.room_id, 'accept');
     } catch (err) {
       console.error(err);
     }
@@ -128,18 +104,8 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     if (!tutorId) return;
 
     try {
-      const chatRoom = await getChatRoomWithTutor(loginUser!.id, tutorId);
-
-      if (chatRoom.length > 0) {
-        navigate(`/chat?room_id=${chatRoom[0].room_id}`);
-        return;
-      }
-
-      const newRoom = await createChatRoom();
-
-      await inviteChatRoom(newRoom.room_id, tutorId);
-
-      navigate(`/chat?room_id=${newRoom.room_id}`);
+      const chatRoom = await getOrCreatePrivateChatRoom(tutorId);
+      navigate(`/chat?room_id=${chatRoom.room_id}`);
     } catch (error) {
       console.error(error);
     }

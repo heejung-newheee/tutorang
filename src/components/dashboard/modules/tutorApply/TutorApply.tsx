@@ -10,6 +10,11 @@ import { openModal } from '../../../../redux/modules';
 
 const TutorApply = () => {
   const { data: tutorApplyList, isLoading, isError, error } = useQuery(PENDING_TUTOR_REGISTRATION_DASHBOARD_QUERY_KEY, getTutorApplyInfo);
+
+  if (Array.isArray(tutorApplyList)) {
+    tutorApplyList.sort((a, b) => b.id - a.id);
+  }
+
   const handleChangeStateTutorApply = useChangeStateTutorApply();
 
   const dispatch = useDispatch();

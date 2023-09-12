@@ -4,8 +4,7 @@ import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { getUserProfile } from '../../../api/chat';
-import { profileImgUpload, userUpdate } from '../../../api/user';
+import { getUserById, profileImgUpload, userUpdate } from '../../../api/user';
 import { edit_photo } from '../../../assets';
 import { SPGuideMessage } from '../../../components/Form/AuthForm.styled';
 import FormHeader from '../../../components/Form/FormHeader';
@@ -24,7 +23,7 @@ const EditProfileForm = () => {
   const navigate = useNavigate();
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const userData = useQuery([USER_PROFILE_QUERY_KEY], () => getUserProfile(loginUser!.id));
+  const userData = useQuery([USER_PROFILE_QUERY_KEY], () => getUserById(loginUser!.id));
   const user = userData.data;
 
   if (!user) return;
