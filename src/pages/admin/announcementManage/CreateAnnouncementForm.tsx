@@ -1,31 +1,34 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid';
-import { CUSTOMER_SUPPORT_QUERY_KEY, ONE_CUSTOMER_INQUIRY_QUERY_KEY, TypeUpdatedInquiry, editInquiry } from '../../../api/customerSupport';
+import { ANNOUNCEMENTS_QUERY_KEY, insertNewAnnouncement } from '../../../api/announcements';
+import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
-import * as S from './EditInquiryForm.style';
+import { UpdatingTables } from '../../../supabase/database.types';
+import './../../../components/common/webEditor.css';
+import * as S from './AnnouncementForm.style';
 
-const EditInquiryForm = () => {
-  const queryClient = useQueryClient();
+const CreateAnnouncementForm = () => {
   const navigate = useNavigate();
-  const pathdata = useLocation();
-  const originalInquiryData = pathdata.state;
-  const inquiryId = originalInquiryData.id as string;
-  const [title, setTitle] = useState(originalInquiryData.title);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const QuillRef = useRef<ReactQuill>();
-  const [content, setContent] = useState(originalInquiryData.content);
+  const queryClient = useQueryClient();
 
-  const editInquiryMutation = useMutation(async ({ inquiryId, updatedInquiry }: { inquiryId: string; updatedInquiry: TypeUpdatedInquiry }) => editInquiry(inquiryId, updatedInquiry), {
+  const loginUser = useSelector((state: RootState) => state.user.user);
+
+  const createAnnouncementMutation = useMutation(async (newAnnouncemnet: UpdatingTables<'announcements'>) => insertNewAnnouncement(newAnnouncemnet), {
     onSuccess: () => {
-      queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
-      queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY]);
+      queryClient.invalidateQueries([ANNOUNCEMENTS_QUERY_KEY]);
     },
     onError: (error) => {
       console.log(error);
     },
   });
+
   const imageHandler = () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -83,26 +86,27 @@ const EditInquiryForm = () => {
   );
   console.log(content);
   const handleSubmit = async () => {
-    console.log('sfssdfsd');
-    const updatedInquiry: TypeUpdatedInquiry = {
+    const formData = {
+      user_id: loginUser!.id,
       title,
       content,
     };
-    console.log(updatedInquiry);
+    console.log(formData);
     try {
-      await editInquiryMutation.mutate({ inquiryId, updatedInquiry });
+      await createAnnouncementMutation.mutate(formData);
     } catch (error) {
       console.log('error submit inqury ', error);
     }
     // mutation.mutate(formData);
-    // navigate(`/customer-service/customer-support/${inquiryId}`);
-    navigate(-1);
+    navigate('/admin/announcements-manage');
   };
+
+  if (!loginUser) return <div></div>;
 
   return (
     <S.WriteContainer>
       <S.Title>
-        <input onChange={(e) => setTitle(e.target.value)} value={title} type="text" placeholder="제목을 입력해주세요" />
+        <input onChange={(e) => setTitle(e.target.value)} type="text" placeholder="제목을 입력해주세요" />
       </S.Title>
       <ReactQuill
         ref={(element) => {
@@ -123,4 +127,4 @@ const EditInquiryForm = () => {
   );
 };
 
-export default EditInquiryForm;
+export default CreateAnnouncementForm;

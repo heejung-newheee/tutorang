@@ -32,21 +32,21 @@ const DetailCustomerSupport = () => {
   const navigate = useNavigate();
   const pathdata = useLocation();
   const inquiryId = pathdata.state.id;
-  console.log('inquiryId 이게 들어와야하는데', inquiryId);
   const { data } = useQuery([ONE_CUSTOMER_INQUIRY_QUERY_KEY, inquiryId], () => getOneInquiry(inquiryId), { enabled: !!inquiryId });
+
   const deleteInquiryMutation = useMutation(async (inquiryId: string) => deleteInquiry(inquiryId), {
     onSuccess: () => {
       queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
+      queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY]);
     },
     onError: (error) => {
       console.log(error);
     },
   });
   if (!data) return <div></div>;
-  console.log('지금확인할거', data);
 
-  const inquiryData: InquiryDataProps = data[0];
-  const replyData = data[0].customer_support_reply;
+  const inquiryData: InquiryDataProps = data;
+  const replyData = data.customer_support_reply;
   const handleDeleteInquiry = async () => {
     const wannaDelete = window.confirm('!:1문의를 삭제하시겠습니까?');
     if (!wannaDelete) return false;
@@ -80,7 +80,7 @@ const DetailCustomerSupport = () => {
               <th>작성자</th>
               <td>{inquiryData.profiles!.inquiryUsername}</td>
               <th>답변여부</th>
-              <td>{inquiryData.isReplied ? 'O' : 'X'}</td>
+              <td>{replyData.length === 0 ? 'X' : 'O'}</td>
             </tr>
             <tr>
               <th>문의날짜</th>
@@ -135,7 +135,7 @@ const DetailCustomerSupport = () => {
       <S.ButtonsWrapper>
         <button onClick={() => navigate('/customer-service/customer-support')}>목록</button>
         <div>
-          {inquiryData.isReplied === false && (
+          {replyData.length === 0 && (
             <>
               <button onClick={handleDeleteInquiry}>삭제</button>
               <button onClick={handleEditInquiry}>수정</button>

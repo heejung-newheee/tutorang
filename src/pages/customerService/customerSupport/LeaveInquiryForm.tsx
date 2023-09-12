@@ -99,7 +99,6 @@ const LeaveInquiryForm = () => {
       title,
       user_id: loginUser!.id,
       content,
-      isReplied: false,
     };
     console.log(formData);
     try {

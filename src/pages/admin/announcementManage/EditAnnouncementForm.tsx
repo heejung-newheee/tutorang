@@ -1,31 +1,38 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid';
-import { CUSTOMER_SUPPORT_QUERY_KEY, ONE_CUSTOMER_INQUIRY_QUERY_KEY, TypeUpdatedInquiry, editInquiry } from '../../../api/customerSupport';
+import { ANNOUNCEMENTS_QUERY_KEY, ONE_ANNOUNCEMENT_QUERY_KEY, editAnnouncement } from '../../../api/announcements';
+import { RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
-import * as S from './EditInquiryForm.style';
+import { UpdatingTables } from '../../../supabase/database.types';
+import './../../../components/common/webEditor.css';
+import * as S from './AnnouncementForm.style';
 
-const EditInquiryForm = () => {
-  const queryClient = useQueryClient();
+const EditAnnouncementForm = () => {
   const navigate = useNavigate();
-  const pathdata = useLocation();
-  const originalInquiryData = pathdata.state;
-  const inquiryId = originalInquiryData.id as string;
-  const [title, setTitle] = useState(originalInquiryData.title);
   const QuillRef = useRef<ReactQuill>();
-  const [content, setContent] = useState(originalInquiryData.content);
+  const queryClient = useQueryClient();
+  const pathdata = useLocation();
+  const originalAnnouncementData = pathdata.state;
+  const announcementId = originalAnnouncementData.id;
+  const [title, setTitle] = useState(originalAnnouncementData.title);
+  const [content, setContent] = useState(originalAnnouncementData.content);
 
-  const editInquiryMutation = useMutation(async ({ inquiryId, updatedInquiry }: { inquiryId: string; updatedInquiry: TypeUpdatedInquiry }) => editInquiry(inquiryId, updatedInquiry), {
+  const loginUser = useSelector((state: RootState) => state.user.user);
+
+  const editAnnouncementMutation = useMutation(async ({ announcementId, updatedAnnouncement }: { announcementId: string; updatedAnnouncement: UpdatingTables<'announcements'> }) => editAnnouncement(announcementId, updatedAnnouncement), {
     onSuccess: () => {
-      queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
-      queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY]);
+      queryClient.invalidateQueries([ANNOUNCEMENTS_QUERY_KEY]);
+      queryClient.invalidateQueries([ONE_ANNOUNCEMENT_QUERY_KEY]);
     },
     onError: (error) => {
       console.log(error);
     },
   });
+
   const imageHandler = () => {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
@@ -83,21 +90,22 @@ const EditInquiryForm = () => {
   );
   console.log(content);
   const handleSubmit = async () => {
-    console.log('sfssdfsd');
-    const updatedInquiry: TypeUpdatedInquiry = {
+    const updatedAnnouncement = {
+      user_id: loginUser!.id,
       title,
       content,
     };
-    console.log(updatedInquiry);
+    console.log(updatedAnnouncement);
     try {
-      await editInquiryMutation.mutate({ inquiryId, updatedInquiry });
+      await editAnnouncementMutation.mutate({ announcementId, updatedAnnouncement });
     } catch (error) {
       console.log('error submit inqury ', error);
     }
     // mutation.mutate(formData);
-    // navigate(`/customer-service/customer-support/${inquiryId}`);
-    navigate(-1);
+    navigate(`/admin/announcements-manage/${announcementId}`);
   };
+
+  if (!loginUser) return <div></div>;
 
   return (
     <S.WriteContainer>
@@ -123,4 +131,4 @@ const EditInquiryForm = () => {
   );
 };
 
-export default EditInquiryForm;
+export default EditAnnouncementForm;
