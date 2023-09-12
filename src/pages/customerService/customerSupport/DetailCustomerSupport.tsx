@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CUSTOMER_SUPPORT_QUERY_KEY, ONE_CUSTOMER_INQUIRY_QUERY_KEY, deleteInquiry, getOneInquiry } from '../../../api/customerSupport';
+import * as C from '../CommonCustomerService.style';
 import * as S from './DetailCustomerSupport.style';
+
 type ProfileProps = {
   inquiryUsername: string | null;
 };
@@ -133,12 +135,12 @@ const DetailCustomerSupport = () => {
       </S.TableContainer>
 
       <S.ButtonsWrapper>
-        <button onClick={() => navigate('/customer-service/customer-support')}>목록</button>
+        <C.ButtonCS onClick={() => navigate('/customer-service/customer-support')}>목록</C.ButtonCS>
         <div>
           {replyData.length === 0 && (
             <>
-              <button onClick={handleDeleteInquiry}>삭제</button>
-              <button onClick={handleEditInquiry}>수정</button>
+              <C.ButtonCS onClick={handleDeleteInquiry}>삭제</C.ButtonCS>
+              <C.ButtonCS onClick={handleEditInquiry}>수정</C.ButtonCS>
             </>
           )}
         </div>

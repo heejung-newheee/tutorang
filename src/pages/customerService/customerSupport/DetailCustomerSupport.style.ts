@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import { colors } from '../../../style/theme/colors';
 
 export const DetailCustomerSupportContainer = styled.div`
   width: 100%;
@@ -98,6 +97,11 @@ export const ContentArea = styled.div`
   & img {
     width: 300px;
   }
+  @media screen and (max-width: 420px) {
+    & img {
+      max-width: 240px;
+    }
+  }
 `;
 
 export const ButtonsWrapper = styled.div`
@@ -107,15 +111,6 @@ export const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  button {
-    border: 2px solid #cdcdcd;
-    border-radius: 3px;
-    padding: 4px 25px;
-  }
-  button:hover {
-    border: 2px solid ${colors.primary};
-    background-color: #fe902f2c;
-  }
   & > div > button {
     margin-left: 10px;
   }

@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { RootState } from '../../redux/config/configStore';
@@ -27,25 +26,14 @@ const CustomerService = () => {
   const handleAnnouncementsNav = () => {
     navigate('announcements');
   };
-  const handleFAQNav = () => {
-    navigate('frequently-asked-questions');
-  };
-
-  useEffect(() => {
-    // if
-    // navigate('announcements');
-  }, []);
 
   return (
     <div>
-      <CSHeader />
+      <CSHeader headerType={'cs'} />
       <S.CustomerServiceContainer>
         <S.Category>
           <S.CategoryItem $pathType={'announcements'} $path={path} onClick={handleAnnouncementsNav}>
             공지사항
-          </S.CategoryItem>
-          <S.CategoryItem $pathType={'frequently-asked-questions'} $path={path} onClick={handleFAQNav}>
-            FAQ
           </S.CategoryItem>
           <S.CategoryItem $pathType={'customer-support'} $path={path} onClick={handleCustomerSupportNav}>
             1:1 문의

@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { styled } from 'styled-components';
 import { CUSTOMER_SUPPORT_QUERY_KEY, getAllInquiry } from '../../../api/customerSupport';
 import { RootState } from '../../../redux/config/configStore';
-import { colors } from '../../../style/theme/colors';
+import * as C from '../CommonCustomerService.style';
+import * as S from './CustomerSupport.style';
 
 const CustomerSupport = () => {
   const navigate = useNavigate();
@@ -13,126 +13,66 @@ const CustomerSupport = () => {
   // const inquiryIdFromPath = location.pathname.split(':/')[1];
   const { data } = useQuery([CUSTOMER_SUPPORT_QUERY_KEY], () => getAllInquiry(userId as string), { enabled: !!userId });
   console.log('데타', data);
+  console.log(data);
 
   if (!user) return <div></div>;
   if (!data) return <div></div>;
   return (
-    <CustomerSupportContainer>
-      <TableContainer>
-        <Table>
-          <Caption>1:1 상담 목록</Caption>
-          <Colgroup>
+    <C.OutermostContainer>
+      <C.TableContainer>
+        <C.Table>
+          <C.Caption>1:1 상담 목록</C.Caption>
+          <S.Colgroup>
             <col />
             <col />
             <col />
             <col />
-            <col />
-          </Colgroup>
-          <thead>
+          </S.Colgroup>
+          <C.Thead>
             <tr>
-              <th>번호</th>
+              <th>NO.</th>
               <th>제목</th>
-              <th>작성자</th>
               <th>작성일</th>
               <th>답변</th>
             </tr>
-          </thead>
-          <tbody>
-            {data.map((item, index) => (
-              <tr key={item.id}>
-                <td>{index + 1}</td>
-                <td
-                  onClick={() => {
-                    navigate(`/customer-service/customer-support/${item.id}`, { state: item });
-                  }}
-                >
-                  {item.title}
+          </C.Thead>
+          <C.Tbody>
+            {data.length === 0 ? (
+              <tr>
+                <td colSpan={4}>
+                  <C.ParagraghCSGuide>첫 문의를 등록해보세요</C.ParagraghCSGuide>
                 </td>
-                <td>{item.profiles!.inquiryUsername}</td>
-                <td>{item.created_at.split('T')[0]}</td>
-                <td>{item.customer_support_reply.length === 0 ? 'X' : 'O'}</td>
               </tr>
-            ))}
-          </tbody>
-        </Table>
-      </TableContainer>
-      <ButtonSpace>
-        <button type="button" onClick={() => navigate('/leave-inquiry')}>
+            ) : (
+              data.map((item, index) => (
+                <tr key={item.id}>
+                  <td>{index + 1}</td>
+                  <td>
+                    <C.SpanNavTitle
+                      onClick={() => {
+                        navigate(`/customer-service/customer-support/${item.id}`, { state: item });
+                      }}
+                    >
+                      {item.title}
+                    </C.SpanNavTitle>
+                  </td>
+
+                  <td>{item.created_at.split('T')[0]}</td>
+                  <td>{item.customer_support_reply.length === 0 ? 'X' : 'O'}</td>
+                </tr>
+              ))
+            )}
+          </C.Tbody>
+        </C.Table>
+      </C.TableContainer>
+      <C.PaginationSpace>pagenation space</C.PaginationSpace>
+      <S.ButtonSpace>
+        <C.ButtonCS type="button" onClick={() => navigate('/leave-inquiry')}>
           글쓰기
-        </button>
-      </ButtonSpace>
-      <PagenationSpace>pagenation space</PagenationSpace>
-      <SearchingSpace></SearchingSpace>
-    </CustomerSupportContainer>
+        </C.ButtonCS>
+      </S.ButtonSpace>
+    </C.OutermostContainer>
   );
 };
 
 export default CustomerSupport;
-
-const CustomerSupportContainer = styled.div`
-  // 여기도 이렇게 해주는 게 맞나..
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const TableContainer = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-`;
-
-const Table = styled.table`
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 80px;
-`;
-
-const Caption = styled.caption`
-  display: none;
-`;
-
-const Colgroup = styled.colgroup`
-  & col:nth-child(1) {
-    width: 7%;
-  }
-  & col:nth-child(2) {
-    width: 63%;
-  }
-  & col:nth-child(3) {
-    width: 10%;
-  }
-  & col:nth-child(4) {
-    width: 15%;
-  }
-  & col:nth-child(5) {
-    width: 5%;
-  }
-`;
-
-const ButtonSpace = styled.div`
-  background-color: #cfebf7;
-  height: 60px;
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-  align-items: center;
-  & button {
-    width: 80px;
-    height: 35px;
-    border: 2px solid ${colors.primary};
-    border-radius: 10%;
-  }
-`;
-const PagenationSpace = styled.div`
-  background-color: #abb5d1;
-
-  height: 60px;
-`;
-
-const SearchingSpace = styled.div`
-  height: 70px;
-  background-color: beige;
-`;

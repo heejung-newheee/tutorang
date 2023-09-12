@@ -19,7 +19,6 @@ import CustomerSupport from '../pages/customerService/customerSupport/CustomerSu
 import DetailCustomerSupport from '../pages/customerService/customerSupport/DetailCustomerSupport';
 import EditInquiryForm from '../pages/customerService/customerSupport/EditInquiryForm';
 import LeaveInquiryForm from '../pages/customerService/customerSupport/LeaveInquiryForm';
-import FrequentlyAskedQuestions from '../pages/customerService/fequentlyAskedQuestions/FrequentlyAskedQuestions';
 import MatchedReview from '../pages/matchingReview/MatchedReview';
 import EditTutorForm from '../pages/mypage/EditTutorForm';
 import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateAdditionalInformationForm';
@@ -85,7 +84,6 @@ const Router = () => {
             <Route path="/customer-service" element={<CustomerService />}>
               <Route path="announcements" element={<Announcements />} />
               <Route path="announcements/:announcementid" element={<DetailAnnouncement />} />
-              <Route path="frequently-asked-questions" element={<FrequentlyAskedQuestions />} />
               <Route
                 path="customer-support"
                 element={
