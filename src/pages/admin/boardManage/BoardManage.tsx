@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import * as S from './BoardManage.styled';
-import { BOARD_MANAGEMENT_QUERY_KEY } from '../../../constants/query.constant';
 import { useEffect, useState } from 'react';
-import { deleteABoard, getBoardList } from '../../../api/write';
 import { GoArrowRight } from 'react-icons/go';
-import { LiaArrowUpSolid, LiaArrowDownSolid } from 'react-icons/lia';
+import { LiaArrowDownSolid, LiaArrowUpSolid } from 'react-icons/lia';
+import { deleteABoard, getBoardList } from '../../../api/write';
+import { BOARD_MANAGEMENT_QUERY_KEY } from '../../../constants/query.constant';
+import * as S from './BoardManage.styled';
 
 type CategoryType = 'all' | 'question' | 'free' | 'study' | 'region';
 
@@ -71,7 +71,6 @@ const BoardManage = () => {
     setPage(1);
     refetch();
   };
-  console.log(data);
   return (
     <S.Layout>
       <S.FilterContainer>

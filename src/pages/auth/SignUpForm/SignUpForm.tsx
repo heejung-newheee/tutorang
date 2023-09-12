@@ -152,7 +152,6 @@ const SignUpForm = () => {
   } else if (location.sido1 === '시/도 선택' || location.sido2 === '시/도 선택' || location.gugun1 === '구/군 선택' || location.gugun2 === '구/군 선택') {
     isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
   }
-  console.log(location);
   return (
     <SContainer>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_SIGNUP} />
