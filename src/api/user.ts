@@ -13,7 +13,8 @@ export const getUser = async (email: string | undefined) => {
 };
 
 export const getUserById = async (id: string) => {
-  const { data } = await supabase.from('profiles').select().eq('id', id).single();
+  const { data, error } = await supabase.from('profiles').select().eq('id', id).limit(1).single();
+  if (error) throw error;
   return data;
 };
 

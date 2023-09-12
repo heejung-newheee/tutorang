@@ -6,6 +6,7 @@ import KakaoMap from './KakaoMap';
 import { useState, useCallback, useEffect } from 'react';
 import { LocationDataType, sendLocationMessage } from '../../../api/chat';
 import { IoClose } from 'react-icons/io5';
+
 export const ChatLocationModal = () => {
   const dispatch = useDispatch();
   const { targetId } = useSelector((state: RootState) => state.modal);
