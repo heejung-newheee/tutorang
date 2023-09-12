@@ -8,28 +8,22 @@ export interface Database {
           content: string | null;
           created_at: string;
           id: string;
-          importance: string | null;
           title: string | null;
           user_id: string | null;
-          views: number | null;
         };
         Insert: {
           content?: string | null;
           created_at?: string;
           id?: string;
-          importance?: string | null;
           title?: string | null;
           user_id?: string | null;
-          views?: number | null;
         };
         Update: {
           content?: string | null;
           created_at?: string;
           id?: string;
-          importance?: string | null;
           title?: string | null;
           user_id?: string | null;
-          views?: number | null;
         };
         Relationships: [
           {
@@ -388,9 +382,7 @@ export interface Database {
           content: string | null;
           created_at: string;
           file1: string | null;
-          file2: string | null;
           id: string;
-          isReplied: boolean | null;
           title: string | null;
           user_id: string | null;
         };
@@ -398,9 +390,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           file1?: string | null;
-          file2?: string | null;
           id?: string;
-          isReplied?: boolean | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -408,9 +398,7 @@ export interface Database {
           content?: string | null;
           created_at?: string;
           file1?: string | null;
-          file2?: string | null;
           id?: string;
-          isReplied?: boolean | null;
           title?: string | null;
           user_id?: string | null;
         };
@@ -891,13 +879,71 @@ export interface Database {
           },
         ];
       };
+      report: {
+        Row: {
+          content: string | null;
+          created_at: string;
+          id: number;
+          state: string | null;
+          tutor_id: string | null;
+          user_id: string | null;
+        };
+        Insert: {
+          content?: string | null;
+          created_at?: string;
+          id?: number;
+          state?: string | null;
+          tutor_id?: string | null;
+          user_id?: string | null;
+        };
+        Update: {
+          content?: string | null;
+          created_at?: string;
+          id?: number;
+          state?: string | null;
+          tutor_id?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'matching_tutor_data';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'most_review_tutor';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_info_join';
+            referencedColumns: ['tutor_id'];
+          },
+          {
+            foreignKeyName: 'report_user_id_fkey';
+            columns: ['user_id'];
+            referencedRelation: 'tutor_top_reviewer';
+            referencedColumns: ['tutor_id'];
+          },
+        ];
+      };
       review: {
         Row: {
           author: string | null;
           content: string | null;
           created_at: string;
           id: number;
-          matched_id?: string | null;
+          matched_id: string | null;
           rating: number | null;
           reviewed_id: string | null;
           title: string | null;
@@ -1376,6 +1422,33 @@ export interface Database {
       };
     };
     Functions: {
+      get_daily_record_count: {
+        Args: {
+          p_year: number;
+          p_month: number;
+        };
+        Returns: {
+          day: number;
+          count: number;
+        }[];
+      };
+      get_daily_record_counts: {
+        Args: {
+          p_year: number;
+          p_month: number;
+        };
+        Returns: {
+          date: string;
+          record_count: number;
+        }[];
+      };
+      get_tutor_count_by_year_month: {
+        Args: {
+          input_year: number;
+          input_month: number;
+        };
+        Returns: number;
+      };
       get_two_person_chat_room: {
         Args: {
           user1_id: string;
@@ -1385,6 +1458,26 @@ export interface Database {
           room_id: string;
           name: string;
           created_at: string;
+        }[];
+      };
+      getauthenticatedusersbymonth: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          auth_date: string;
+          user_count: number;
+        }[];
+      };
+      gettutorcountbymonth: {
+        Args: {
+          year: number;
+          month: number;
+        };
+        Returns: {
+          auth_date: string;
+          user_count: number;
         }[];
       };
       is_room_participant: {
@@ -1425,3 +1518,4 @@ export type RoomWithLastMessageType = RoomType & {
 };
 
 export type TutorApplyInfo = Pick<Tables<'pending_tutor_registration'>, 'id' | 'state' | 'class_info' | 'tuition_fee_offline' | 'tuition_fee_online' | 'certification_image' | 'speaking_language' | 'personality' | 'class_level'>;
+export type TutorReport = Pick<Tables<'report'>, 'tutor_id' | 'user_id' | 'state' | 'content'>;
