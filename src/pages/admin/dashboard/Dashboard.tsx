@@ -1,6 +1,6 @@
 import ApexCharts from 'apexcharts';
-import { icon_month, icon_more_dashboard, icon_time_dashboard } from '../../../assets';
-import { TutorApply } from '../../../components/dashboard/modules';
+import { icon_month } from '../../../assets';
+import { TutorApply, TutorReport } from '../../../components/dashboard/modules';
 import * as S from './Dashboard.styled';
 
 const Dashboard = () => {
@@ -51,100 +51,7 @@ const Dashboard = () => {
           </S.DashboardTopWrapper>
           <div id="chart"></div>
         </S.DashboardItem>
-        <S.DashboardItem>
-          <S.DashboardTopWrapper>
-            <S.DashboardItemTitle>튜터 신고 현황</S.DashboardItemTitle>
-            <S.ButtonTime>
-              Week <S.IconMoreWeek src={icon_more_dashboard} />
-            </S.ButtonTime>
-          </S.DashboardTopWrapper>
-          <ul>
-            <S.TutorList>
-              <S.UserWrapper>
-                <S.Avatar>
-                  <S.AvatarImg src="" />
-                </S.Avatar>
-                <S.UserName>김선익</S.UserName>
-              </S.UserWrapper>
-
-              <S.ButtonReportDetail>신고내역</S.ButtonReportDetail>
-
-              <S.StateWrapper>
-                <S.DotState />
-                확인중
-                <S.IconMore src={icon_more_dashboard} />
-              </S.StateWrapper>
-
-              <S.TimeWrapper>
-                <S.IconTime src={icon_time_dashboard} />
-                4시간 전
-              </S.TimeWrapper>
-            </S.TutorList>
-            <S.TutorList>
-              <S.UserWrapper>
-                <S.Avatar>
-                  <S.AvatarImg src="" />
-                </S.Avatar>
-                <S.UserName>김선익</S.UserName>
-              </S.UserWrapper>
-
-              <S.ButtonReportDetail>신고내역</S.ButtonReportDetail>
-
-              <S.StateWrapper>
-                <S.DotState />
-                확인중
-                <S.IconMore src={icon_more_dashboard} />
-              </S.StateWrapper>
-
-              <S.TimeWrapper>
-                <S.IconTime src={icon_time_dashboard} />
-                4시간 전
-              </S.TimeWrapper>
-            </S.TutorList>
-            <S.TutorList>
-              <S.UserWrapper>
-                <S.Avatar>
-                  <S.AvatarImg src="" />
-                </S.Avatar>
-                <S.UserName>김선익</S.UserName>
-              </S.UserWrapper>
-
-              <S.ButtonReportDetail>신고내역</S.ButtonReportDetail>
-
-              <S.StateWrapper>
-                <S.DotState />
-                확인중
-                <S.IconMore src={icon_more_dashboard} />
-              </S.StateWrapper>
-
-              <S.TimeWrapper>
-                <S.IconTime src={icon_time_dashboard} />
-                4시간 전
-              </S.TimeWrapper>
-            </S.TutorList>
-            <S.TutorList>
-              <S.UserWrapper>
-                <S.Avatar>
-                  <S.AvatarImg src="" />
-                </S.Avatar>
-                <S.UserName>김선익</S.UserName>
-              </S.UserWrapper>
-
-              <S.ButtonReportDetail>신고내역</S.ButtonReportDetail>
-
-              <S.StateWrapper>
-                <S.DotState />
-                확인중
-                <S.IconMore src={icon_more_dashboard} />
-              </S.StateWrapper>
-
-              <S.TimeWrapper>
-                <S.IconTime src={icon_time_dashboard} />
-                4시간 전
-              </S.TimeWrapper>
-            </S.TutorList>
-          </ul>
-        </S.DashboardItem>
+        <TutorReport />
         <S.DashboardItem>
           <S.DashboardItemTitle>월별 매칭 수</S.DashboardItemTitle>
         </S.DashboardItem>

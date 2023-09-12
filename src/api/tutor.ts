@@ -1,5 +1,6 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import supabase from '../supabase';
-import { TTutorWithUser } from '../supabase/database.types';
+import { TTutorWithUser, TutorReport } from '../supabase/database.types';
 
 export const getAllTutorCount = async () => {
   const { count, error } = await supabase.from('tutor_info').select('*', { count: 'estimated', head: true });
@@ -57,4 +58,22 @@ export const matchTutor = async (tutorId: string) => {
   const { data, error } = await supabase.from('tutor_info_join').select().match({ tutor_id: tutorId }).single();
   if (error) throw error;
   return data;
+};
+
+export const tutorReport = async (newReport: TutorReport) => {
+  const { data, error } = await supabase.from('report').insert(newReport).select();
+  if (error) throw error;
+  return data;
+};
+
+export const useTutorReport = () => {
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation((newReport: TutorReport) => tutorReport(newReport), {
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+    },
+  });
+
+  return mutate;
 };
