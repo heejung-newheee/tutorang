@@ -42,13 +42,14 @@ const BoardItem = ({ item }: Props) => {
       setMainText(cleanText);
     }
   };
+  console.log(item.id);
 
   useEffect(() => {
     getContentReplace();
   }, []);
 
   return (
-    <S.Post onClick={() => navigate(`/post/${item.id}`)}>
+    <S.Post onClick={() => navigate(`/post/37`)}>
       <S.ContentsText>
         <S.Time>{detailDate(new Date(item.created_at))}</S.Time>
         <S.Title>{item.title}</S.Title>

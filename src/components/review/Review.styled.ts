@@ -15,6 +15,9 @@ export const Container = styled.div`
 export const ReviewContainer = styled.ul`
   width: ${size.globalInner};
   margin: 0 auto;
+  > ul > li {
+    border-radius: 8px;
+  }
 
   @media screen and (max-width: 768px) {
     width: 100%;
