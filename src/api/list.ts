@@ -27,7 +27,8 @@ export const getTutorListPageData = async (page = 1, selectedFilters: SelectedFi
   }
 
   if (searchText) {
-    query = query.textSearch('tutor_name', `${searchText}`);
+    const searchPattern = `%${searchText}%`;
+    query = query.filter('tutor_name', 'ilike', searchPattern);
   }
 
   if (minPrice >= 0 && maxPrice) {

@@ -1,32 +1,44 @@
-import { Dispatch, SetStateAction } from 'react';
-import { handleCurrentOne, handleNext, handlePrev, handleTotalNext } from '../utility';
 import * as S from './Pagination.styled';
+import NextFc from './fuctionCompo/NextFc';
+import PrevFc from './fuctionCompo/PrevFc';
+import TotalNext from './fuctionCompo/TotalNextFc';
+import TotalPrevFc from './fuctionCompo/TotalPrevFc';
+import { useSearchParams } from 'react-router-dom';
 
 type Props = {
-  setCurrentNum: Dispatch<SetStateAction<number>>;
-  setHasPageMore: Dispatch<SetStateAction<boolean>>;
-  currentNum: number;
-  hasPageMore: boolean;
   totalPageNum: number | null;
   pageCount: number;
 };
 
-const Pagination = ({ setCurrentNum, setHasPageMore, currentNum, hasPageMore, totalPageNum, pageCount }: Props) => {
+const Pagination = ({ totalPageNum, pageCount }: Props) => {
+  const [query, _] = useSearchParams();
+  const editPostNum = Number(query.get('q'));
+
+  const isNextPageTrue = (closeness: number) => {
+    const closenessStep = editPostNum + closeness;
+
+    if (totalPageNum && totalPageNum !== 0) {
+      const isTrue = totalPageNum > pageCount && totalPageNum > closenessStep * pageCount;
+      return isTrue && true;
+    }
+
+    return null;
+  };
   return (
     <S.PaginationDiv>
-      <S.LessGreaterThan onClick={() => handleCurrentOne(setCurrentNum, setHasPageMore)}>&laquo;</S.LessGreaterThan>
-      <S.LessGreaterThan onClick={() => handlePrev(currentNum, setCurrentNum, setHasPageMore)}>&lsaquo;</S.LessGreaterThan>
+      <TotalPrevFc />
+      <PrevFc />
 
       <S.PageNmberDiv>
-        {currentNum !== 1 && <div>{currentNum - 1}</div>}
-        <S.CurrentNumberDiv> {currentNum}</S.CurrentNumberDiv>
-        {hasPageMore && totalPageNum !== 0 && totalPageNum && totalPageNum > pageCount && <div>{currentNum + 1}</div>}
+        {editPostNum !== 1 && <div>{editPostNum - 1}</div>}
+        <S.CurrentNumberDiv> {editPostNum}</S.CurrentNumberDiv>
+        {isNextPageTrue(0) && <div>{editPostNum + 1}</div>}
 
-        {hasPageMore && totalPageNum !== 0 && totalPageNum && totalPageNum > pageCount && <S.TotalPageNum> &hellip; {totalPageNum && Math.ceil(totalPageNum / pageCount)}</S.TotalPageNum>}
+        {isNextPageTrue(0) && <S.TotalPageNum> &hellip; {totalPageNum && Math.ceil(totalPageNum / pageCount)}</S.TotalPageNum>}
       </S.PageNmberDiv>
 
-      <S.LessGreaterThan onClick={() => handleNext(currentNum, totalPageNum, setCurrentNum, setHasPageMore)}> &rsaquo;</S.LessGreaterThan>
-      <S.LessGreaterThan onClick={() => handleTotalNext(totalPageNum, setCurrentNum, setHasPageMore)}> &raquo;</S.LessGreaterThan>
+      <NextFc totalPageNum={totalPageNum} pageCount={pageCount} />
+      <TotalNext totalPageNum={totalPageNum} pageCount={pageCount} />
     </S.PaginationDiv>
   );
 };
