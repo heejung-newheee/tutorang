@@ -9,6 +9,7 @@ export const Post = styled.div<{ $lastElement: boolean }>`
   border-left: 1px solid ${colors.gray_900};
   border-bottom: ${(props) => (props.$lastElement === true ? 'none' : `1px solid ${colors.gray_900}`)};
   position: relative;
+  cursor: pointer;
 
   @media all and (max-width: 768px) {
     border-left: none;

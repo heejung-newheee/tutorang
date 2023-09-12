@@ -43,8 +43,6 @@ const WritePost = () => {
             upsert: true,
           });
 
-          console.log(data, error);
-
           const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
 
           if (QuillRef.current !== undefined) {
@@ -77,11 +75,22 @@ const WritePost = () => {
   );
 
   const handleSubmit = async () => {
+    if (!title) {
+      return alert('제목을 입력해주세요');
+    }
+
+    if (!contents) {
+      return alert('내용을 입력해주세요');
+    }
+
     if (path === 'edit-community') {
       editUpdateMutation.mutate({
         title: title,
         content: contents,
       });
+
+      navigate(-1);
+      return;
     }
 
     if (path === 'free' || path === 'study' || path === 'question' || path === 'region') {
@@ -91,6 +100,7 @@ const WritePost = () => {
         user_id: loginUser?.id,
         category: path,
       });
+      navigate(-1);
     }
   };
 
@@ -131,7 +141,6 @@ const WritePost = () => {
 
   return (
     <WriteContainer>
-      {/* <div>title</div> */}
       <Title>
         <input value={title as string} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="제목을 입력해주세요" />
       </Title>
@@ -157,9 +166,6 @@ const WritePost = () => {
 export default WritePost;
 
 const WriteContainer = styled.div`
-  /* display: flex;
-  justify-content: center;
-  flex-direction: column; */
   margin-top: 100px;
   padding: 0 20px;
 `;

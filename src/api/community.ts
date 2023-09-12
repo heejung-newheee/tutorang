@@ -10,6 +10,7 @@ export const getCommunityApi = async (path: string, currentNum: number, pageCoun
 `,
       { count: 'exact' },
     )
+    .order('created_at', { ascending: false })
     .eq('category', path)
     .range((currentNum - 1) * pageCount, currentNum * pageCount - 1);
 
