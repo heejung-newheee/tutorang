@@ -1,5 +1,5 @@
 import ApexCharts from 'apexcharts';
-import { icon_month, icon_more_dashboard, icon_time_dashboard } from '../../../assets';
+import { icon_month } from '../../../assets';
 import { TutorApply, TutorReport } from '../../../components/dashboard/modules';
 import * as S from './Dashboard.styled';
 
