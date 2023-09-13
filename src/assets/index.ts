@@ -29,6 +29,9 @@ export { default as main_banner } from './main-banner.png';
 export { default as marker_location } from './marker-location.png';
 export { default as navericon } from './navericon.png';
 export { default as play_button } from './play_button.svg';
+export { default as reason } from './reason.png';
+export { default as reasonMb } from './reason_mobile.png';
+export { default as reviewTop } from './review_bg.jpg';
 export { default as tabPanel_1 } from './tab-panel-1.png';
 export { default as tabPanel_2 } from './tab-panel-2.png';
 export { default as tabPanel_3 } from './tab-panel-3.png';
@@ -36,7 +39,15 @@ export { default as tabPanel_4 } from './tab-panel-4.png';
 export { default as bubble } from './talk_bubble.png';
 export { default as twitter } from './twitter.png';
 
+export { default as mobileNabBtn } from './hambergerBar.svg';
 export { default as logo01 } from './logo-01.svg';
 export { default as logo02 } from './logo-02.svg';
 export { default as logo03 } from './logo-03.svg';
 export { default as logo04 } from './logo-04.svg';
+
+export { default as icon_home } from './icon_home.svg';
+export { default as icon_logout } from './icon_logout.svg';
+export { default as icon_more_dashboard } from './icon_more.svg';
+export { default as icon_time_dashboard } from './icon_time_dashboard.svg';
+
+export { default as icon_month } from './icon_month.svg';

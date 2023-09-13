@@ -1,9 +1,10 @@
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { createContext, useCallback, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { getChatRoom, getJoinedChatRooms, getMessagesInChatRoom, getUserProfile } from '../../../api/chat';
+import { getChatRoom, getJoinedChatRooms, getMessagesInChatRoom } from '../../../api/chat';
 import supabase from '../../../supabase';
 import { RoomType, RoomWithLastMessageType, Tables } from '../../../supabase/database.types';
+import { getUserById } from '../../../api/user';
 
 type ChatContextType = {
   chatRoomList: RoomWithLastMessageType[];
@@ -68,8 +69,6 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
   useEffect(() => {
     handleGetChatRooms();
   }, [handleGetChatRooms]);
-
-  useEffect(() => {}, [room_id]);
 
   useEffect(() => {
     if (!chatRoom) return;
@@ -140,7 +139,7 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
               }
             } else {
               try {
-                const profile = await getUserProfile(newParticipant.user_id);
+                const profile = await getUserById(newParticipant.user_id);
                 setChatRoomList((roomList) => {
                   const newRoomList = [...roomList];
                   const roomIndex = roomList.findIndex((room) => room.room_id === newParticipant.room_id);

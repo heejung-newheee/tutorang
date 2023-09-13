@@ -63,6 +63,9 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
       setBirth((prev) => ({ ...prev, month: value }));
       $setBirth((prev) => ({ ...prev, month: value }));
       setIsDateOpen((prev) => ({ ...prev, month: !prev.month }));
+      setBirth((prev) => ({ ...prev, day: '' }));
+      $setBirth((prev) => ({ ...prev, day: '' }));
+      setIsDateOpen((prev) => ({ ...prev, day: false }));
     }
     if (dateType === 'day') {
       setBirth((prev) => ({ ...prev, day: value }));

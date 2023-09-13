@@ -1,5 +1,5 @@
-import ReactDom from 'react-dom';
 import { ReactNode } from 'react';
+import ReactDom from 'react-dom';
 
 type ModalPortalProps = {
   children: ReactNode;

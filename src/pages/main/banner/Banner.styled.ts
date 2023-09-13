@@ -46,7 +46,7 @@ export const BannerContent = styled.div`
 
 export const BannerTitle = styled.p`
   font-size: 40px;
-  font-weight: bold;
+  font-weight: 700;
   color: #fff;
   margin-bottom: 20px;
   @media screen and (max-width: 768px) {
@@ -54,7 +54,7 @@ export const BannerTitle = styled.p`
   }
 `;
 export const BannerText = styled.p`
-  font-weight: bold;
+  font-weight: 700;
   color: #fff;
   margin-bottom: 40px;
   @media screen and (max-width: 768px) {
@@ -63,7 +63,7 @@ export const BannerText = styled.p`
 `;
 export const BannerBtn = styled(Link)`
   background-color: #fff;
-  font-weight: bold;
+  font-weight: 700;
   color: ${colors.primary}!important;
   padding: 8px 50px;
   margin-top: 45px;

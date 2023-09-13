@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logo04 } from '../../../assets';
+import { close } from '../../../assets';
 import { Tables } from '../../../supabase/database.types';
 import * as S from './Header.styled';
 
@@ -8,8 +8,8 @@ type HEADERMENUMOBILE = { title: string; path: string }[];
 
 const HeaderMenuMobile: HEADERMENUMOBILE = [
   { title: '튜터찾기', path: '/list' },
-  { title: '매칭후기', path: '/' },
-  { title: '커뮤니티', path: '/' },
+  { title: '매칭후기', path: '/review' },
+  { title: '커뮤니티', path: '/community/free/?q=1' },
   { title: '고객센터', path: '/' },
 ];
 
@@ -22,6 +22,10 @@ type Props = {
 
 const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props) => {
   const navigate = useNavigate();
+  const closeModal = (page: string) => {
+    navigate(page);
+    setSideNavOpen((pre) => !pre);
+  };
   return (
     <S.MobileContainer $sideNavOpen={sideNavOpen} onClick={(pre) => setSideNavOpen(!pre)}>
       <S.MobileInner
@@ -31,15 +35,14 @@ const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props)
         }}
       >
         <S.MobileLogoDiv>
-          <span>
-            <img src={logo04} alt="logo"></img>
-          </span>
+          <S.NavModalCloseBtn onClick={(pre) => setSideNavOpen(!pre)}>
+            <img src={close} alt="menu close btn" />
+          </S.NavModalCloseBtn>
 
           <S.SignMobileWrapper>
             {loginUser ? (
               <>
-                {' '}
-                <button onClick={() => navigate('/mypage')}>마이페이지</button>
+                <button onClick={() => closeModal('/mypage')}>마이페이지</button>
                 <button
                   onClick={() => {
                     signOut();
@@ -52,7 +55,6 @@ const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props)
               </>
             ) : (
               <>
-                {' '}
                 <button
                   onClick={() => {
                     setSideNavOpen(false);
@@ -78,7 +80,14 @@ const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props)
             <S.GnbMobile>
               {HeaderMenuMobile.map((item, index) => (
                 <S.GnbMobileItemList key={index}>
-                  <S.NavLinkSt to={item.path}>{item.title}</S.NavLinkSt>
+                  <S.NavLinkSt
+                    to={item.path}
+                    onClick={() => {
+                      closeModal(item.path);
+                    }}
+                  >
+                    {item.title}
+                  </S.NavLinkSt>
                 </S.GnbMobileItemList>
               ))}
             </S.GnbMobile>

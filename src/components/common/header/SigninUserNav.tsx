@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
-import { BsBell } from 'react-icons/bs';
 import { RiUserStarLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -23,6 +22,8 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   const loginUserId: string | number = $loginUser!.id;
   const { data: pendingTutorRegistInfo } = useQuery(PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY, () => getPendingTutorRegistInfo(loginUserId), { enabled: !!$loginUser });
 
+  const presentUrlPathname = window.location.pathname;
+
   const handleRetrieveTutorRegistInfo = () => {
     if ($loginUser && $loginUser?.id) {
       dispatch(openModal({ type: 'retrievePendingTutorRegistForm', targetId: $loginUser.id }));
@@ -30,11 +31,44 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   };
 
   const navigate = useNavigate();
-  const HandleClickRegisterTutorIcon = () => {
-    if ($loginUser?.role === 'student' && !!pendingTutorRegistInfo) {
-      return alert('관리자가 귀하의 튜터신청서를  검토중입니다');
+
+  const HandleClickChatNav = () => {
+    if (presentUrlPathname === '/additional-information') {
+      alert('추가 정보를 입력해야 채팅이용이 가능합니다~ 작성하시던 추가정보를 먼저 제출해주세요~');
+      return false;
+    }
+
+    if (!$loginUser?.gender) {
+      const wannaAddMoreInfo = window.confirm('소셜로그인을 하셨는데 아직 추가정보를 입력하지 않았다구요? 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?');
+      if (wannaAddMoreInfo) {
+        navigate('/additional-information');
+      } else {
+        return false;
+      }
     } else {
-      return navigate('/tutor-registration');
+      setIsOpenAuthNavInfoArea(false);
+      moveToChatPage();
+    }
+  };
+  const HandleClickRegisterTutorIcon = () => {
+    if (presentUrlPathname === '/additional-information') {
+      alert('추가 정보를 입력해야 튜터 등록이 가능합니다~ 작성하시던 추가정보를 먼저 제출해주세요~');
+      return false;
+    }
+
+    if (!$loginUser?.gender) {
+      const wannaAddMoreInfo = window.confirm('소셜로그인을 하셨는데 아직 추가정보를 입력하지 않았다구요? 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?');
+      if (wannaAddMoreInfo) {
+        navigate('/additional-information');
+      } else {
+        return false;
+      }
+    } else {
+      if ($loginUser?.role === 'student' && !!pendingTutorRegistInfo) {
+        return alert('관리자가 귀하의 튜터신청서를  검토중입니다');
+      } else {
+        return navigate('/tutor-registration');
+      }
     }
   };
   const moveToMyPage = () => navigate('/mypage');
@@ -75,21 +109,11 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
         </S.RegisterTutorBtnContainer>
       )}
 
-      <S.AlarmBtnContainer>
-        <S.BtnWholeBody>
-          <S.RightButton>
-            <S.IconCover>
-              <BsBell className="right_icon" />
-            </S.IconCover>
-          </S.RightButton>
-        </S.BtnWholeBody>
-      </S.AlarmBtnContainer>
-
       <S.AvatarBtnContainer ref={AuthNavInfoAreaRef}>
         <S.AvatarBtnWholeBody>
           <S.RightButton onClick={toggleAuthNavInfoArea}>
             <div>
-              <S.ProfileImg src={$loginUser!.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="" />
+              <S.ProfileImg src={$loginUser!.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="user profile " />
             </div>
           </S.RightButton>
 
@@ -97,7 +121,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
             <S.AuthNavContainer>
               <S.AuthInfoSection>
                 <S.AuthAvatarContainer>
-                  <S.ProfileImg src={$loginUser!.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="" />
+                  <S.ProfileImg src={$loginUser!.avatar_url || `https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png`} alt="user profile" />
                 </S.AuthAvatarContainer>
                 <S.AuthProfileContainer>
                   <p>{$loginUser!.username || '이름 미확인'}</p>
@@ -114,12 +138,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
                 >
                   <Link to="#">마이페이지</Link>
                 </S.AuthNavItem>
-                <S.AuthNavItem
-                  onClick={() => {
-                    setIsOpenAuthNavInfoArea(false);
-                    moveToChatPage();
-                  }}
-                >
+                <S.AuthNavItem onClick={HandleClickChatNav}>
                   <Link to="#">1:1 채팅</Link>
                 </S.AuthNavItem>
                 {$loginUser?.role === 'student' && !!pendingTutorRegistInfo && (

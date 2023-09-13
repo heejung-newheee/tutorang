@@ -37,7 +37,6 @@ const RegistTutorForm = () => {
     if (event.target.name === 'university') setUniversity(event.target.value);
     if (event.target.name === 'major') setMajor(event.target.value);
   };
-
   const handleCheckedItems = (checkBoxType: string, value: string, isChecked: boolean) => {
     if (checkBoxType === 'personality') {
       if (isChecked) {
@@ -119,7 +118,7 @@ const RegistTutorForm = () => {
       tuition_fee_offline: tuitionFeeOffline,
     };
     const { error } = await supabase.from('pending_tutor_registration').insert(formData);
-    if (error) console.log(error.message);
+    if (error) console.error(error.message);
     else {
       alert('튜터신청이 완료되었습니다! 관리자의 승인을 기다려주세염');
       navigate(-1);
@@ -153,7 +152,7 @@ const RegistTutorForm = () => {
               <label htmlFor="university">대학교</label>
               <SItemSchool>
                 <SInput type="text" id="university" name="university" value={university} onChange={onChangeInputHandler} />
-                <SelectEnrollmentStatus $setEnrollmentStatus={setEnrollmentStatus} />
+                <SelectEnrollmentStatus $setEnrollmentStatus={setEnrollmentStatus} $selectedOption={classInfo} />
               </SItemSchool>
             </SCertificateItem>
             <SCertificateItem>
@@ -215,14 +214,14 @@ const RegistTutorForm = () => {
                 <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
                 <span>화상 수업</span>
               </SItemHeader>
-              <SelectTuitionFee $tuitionType={'online'} $selectTuitionFee={selectTuitionFee} />
+              <SelectTuitionFee $tuitionType={'online'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOnline} />
             </STuitionItem>
             <STuitionItem>
               <SItemHeader>
                 <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
                 <span>대면 수업</span>
               </SItemHeader>
-              <SelectTuitionFee $tuitionType={'offline'} $selectTuitionFee={selectTuitionFee} />
+              <SelectTuitionFee $tuitionType={'offline'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOffline} />
             </STuitionItem>
           </STuitionItems>
         </SFormItem>

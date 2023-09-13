@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { BsXCircleFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { css, styled } from 'styled-components';
-import { googleicon, kakaotalk, navericon } from '../../../assets';
+import { googleicon, kakaotalk } from '../../../assets';
 import { SButton, SContainer, SForm, SFormContainer, SFormItem, SInput, SPGuideMessage, SPartitionLine } from '../../../components/Form/AuthForm.styled';
 import FormHeader from '../../../components/Form/FormHeader';
 import '../../../components/Form/icon.css';
@@ -74,10 +74,6 @@ const SignInForm = () => {
     if (error) alert(error.message);
   };
 
-  const naverLogin = () => {
-    alert('네이버 간편 로그인/회원가입 기능 준비중입니다. 다른 간편 로그인/회원가입 서비스를 이용해주세요!');
-  };
-
   const emailCheckFromDB = async (enteredEmail: string) => {
     const { data: profiles } = await supabase.from('profiles').select('email');
 
@@ -104,14 +100,22 @@ const SignInForm = () => {
           <SFormItem>
             <label htmlFor="email">이메일</label>
             <SInput type="text" id="email" placeholder="이메일을 입력하세요" name="email" value={email} onChange={handleInput} />
-            {email && <BsXCircleFill className="reset_signin_input_btn" onClick={() => setEmail('')} />}
+            {email && (
+              <SignInResetButton type="button" onClick={() => setEmail('')}>
+                <BsXCircleFill className="reset_signin_input_btn" />
+              </SignInResetButton>
+            )}
             <SPGuideMessage>{guideMessage.email && guideMessage.email}</SPGuideMessage>
           </SFormItem>
 
           <SFormItem>
             <label htmlFor="password">비밀번호</label>
             <SInput type="password" id="password" placeholder="비밀번호를 입력하세요" name="password" value={password} onChange={handleInput} />
-            {password && <BsXCircleFill className="reset_signin_input_btn" onClick={() => setPassword('')} />}
+            {password && (
+              <SignInResetButton type="button" onClick={() => setPassword('')}>
+                <BsXCircleFill className="reset_signin_input_btn" />
+              </SignInResetButton>
+            )}
             <SPGuideMessage>{guideMessage.password && guideMessage.password}</SPGuideMessage>
           </SFormItem>
 
@@ -133,9 +137,8 @@ const SignInForm = () => {
       </SPartitionLine>
       <SFooter>
         <SsnsIconContainer>
-          <SsnsIcon src={kakaotalk} onClick={() => kakaoLogin()} />
-          <SsnsIcon src={googleicon} $iconType={'google'} onClick={() => googleLogin()} />
-          <SsnsIcon src={navericon} onClick={() => naverLogin()} />
+          <SsnsIcon src={kakaotalk} onClick={() => kakaoLogin()} alt="kakao login" />
+          <SsnsIcon src={googleicon} $iconType={'google'} onClick={() => googleLogin()} alt="google login" />
         </SsnsIconContainer>
       </SFooter>
     </SContainer>
@@ -207,5 +210,41 @@ const SsnsIconContainer = styled.div`
   gap: 45px;
   @media screen and (max-width: 420px) {
     gap: 35px;
+  }
+`;
+
+const SignInResetButton = styled.button`
+  position: absolute;
+  right: 22px;
+  bottom: 37px;
+  z-index: 3;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  cursor: pointer;
+  .reset_signin_input_btn {
+    fill: #cdcdcd;
+  }
+  &:hover {
+    cursor: pointer;
+    .reset_signin_input_btn {
+      fill: #696969;
+    }
+  }
+  &:focus {
+    .reset_signin_input_btn {
+      fill: #696969;
+    }
+  }
+  @media screen and (max-width: 420px) {
+    right: 18px;
+    bottom: 37px;
+    width: 15px;
+    height: 15px;
+    font-size: 15px;
   }
 `;

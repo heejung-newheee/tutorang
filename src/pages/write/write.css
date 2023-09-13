@@ -1,0 +1,102 @@
+.ql-container {
+  box-sizing: border-box;
+  font-family: 'Gowun Batang';
+  font-size: 1.25rem;
+  color: #565759;
+  border: none !important;
+  min-height: 40rem;
+  margin: 0px;
+  position: relative;
+}
+
+@media screen and (max-width: 600px) {
+  .ql-container {
+    font-size: 1.125rem;
+  }
+}
+
+.ql-editor {
+  text-align: center;
+}
+
+.ql-toolbar.ql-snow {
+  border: none !important;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+  flex-wrap: nowrap;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 100%;
+  z-index: 100000;
+}
+
+.ql-toolbar.ql-snow .ql-formats {
+  border-right: 1px solid black;
+  margin: 5px;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: scroll;
+}
+
+.ql-formats {
+  margin: 5px;
+  display: flex;
+  flex-wrap: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.ql-bold,
+.ql-italic,
+.ql-underline,
+.ql-strike,
+.ql-blockquote {
+  margin: 0 10px;
+  overflow: scroll;
+  display: flex;
+  flex-wrap: nowrap;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
+
+
+.ql-color-picker {
+  margin-right: 15px;
+}
+
+.ql-list {
+  margin-right: 15px;
+}
+
+.ql-image {
+  margin-right: 15px;
+}
+
+.ql-bold {
+  font-weight: 700 !important;
+}
+
+.ql-stroke {
+  fill: #cde097;
+}
+
+strong {
+  font-weight: 700 !important;
+}
+
+em {
+  font-style: italic !important;
+}
+
+.ql-snow .ql-editor img {
+  max-width: 80%;
+}

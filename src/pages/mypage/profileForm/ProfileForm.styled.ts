@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { colors } from '../../../style/theme/colors';
 
 export const SDropdownField = styled.div`
   display: flex;
@@ -25,7 +26,7 @@ export const SOptionContainer = styled.div<{ $selectOptionsType?: string }>`
   width: 100%;
   max-height: 180px;
   left: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
   z-index: ${({ $selectOptionsType }) => {
     if ($selectOptionsType === 'location1') return '3';
     else return '1';
@@ -42,39 +43,47 @@ export const SOption = styled.li<{ $selectedOption: boolean }>`
     else return '#fff';
   }};
 `;
-export const EditFormTop = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-export const CloseBtn = styled.button`
-  position: absolute;
-  right: 30px;
-  height: 30px;
-  img {
-    height: 100%;
+
+export const Inner = styled.div`
+  max-width: 610px;
+  margin: 0 auto;
+
+  @media screen and (max-width: 768px) {
+    margin: 50px 0 0;
+    width: 100%;
+    padding: 20px 0;
   }
+`;
+
+export const Title = styled.h3`
+  font-size: 20px;
+  font-weight: 700;
+  color: #2c2c2c;
+  padding: 0 0 0 10px;
+  border-left: solid 3px ${colors.primary};
 `;
 export const ProfileImgBox = styled.div`
   position: relative;
   width: 150px;
   height: 150px;
-  border-radius: 50%;
   overflow: hidden;
-  margin: 0 auto;
-  margin-bottom: 20px;
+  margin: 0px auto;
+  margin-bottom: 50px;
 `;
 export const ProfileImg = styled.img`
+  border-radius: 50%;
   width: 100%;
   height: 100%;
   object-fit: cover;
 `;
 export const EditPhotoBtn = styled.div`
-  width: 100%;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   position: absolute;
-  bottom: 0%;
-  left: 0;
-  padding: 7px 0;
+  bottom: 5px;
+  right: 10px;
+  border-radius: 50%;
+  padding: 8px 0;
   display: flex;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
@@ -85,13 +94,15 @@ export const EditPhotoBtn = styled.div`
 export const EditInput = styled.input`
   width: 100%;
   height: 40px;
+  border-radius: 5px;
   border: 1px solid #696969;
   color: #000;
   vertical-align: middle;
-  border-radius: 3px;
-  padding: 5px;
-  cursor: pointer;
+  padding: 5px 10px;
   margin: 5px 0;
+  &.edit-photo {
+    cursor: pointer;
+  }
   &:focus {
     outline: none;
   }
@@ -102,27 +113,69 @@ export const EditInput = styled.input`
     opacity: 0;
   }
 `;
-export const EditFormFlex = styled.div`
-  display: flex;
-  p {
-    width: 30%;
-  }
+
+export const UserData = styled.div`
+  width: 100%;
+  height: 40px;
+  line-height: 38px;
+  border-radius: 5px;
+  border: 1px solid #696969;
+  background: #f1f1f1;
+  vertical-align: middle;
+  padding: 0 10px;
+  cursor: default;
+  margin: 5px 0 20px;
 `;
 export const PasswordChangeWrap = styled.div`
-  display: flex;
-  flex-wrap: wrap;
   gap: 0 12px;
   margin-top: 30px;
-  > p {
-    width: 100%;
-  }
-  > div {
-    width: calc((100% - 20px) / 2);
-  }
+  position: relative;
 `;
 export const ConfirmPass = styled.div`
-  color: #9d9d9d;
-  font-size: 0.8rem;
+  font-size: 12px;
+  color: #ff003e;
+`;
+
+export const PasswordWrap = styled.div`
+  position: relative;
+`;
+export const PasswordEyeButton = styled.div`
+  position: absolute;
+  right: 20px;
+  bottom: 14px;
+  z-index: 3;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  .pw_button_hidden_color {
+    fill: #cdcdcd;
+  }
+  .pw_button_shown_color {
+    fill: #696969;
+  }
+  &:hover {
+    cursor: pointer;
+    .reset_input_btn {
+      fill: #696969;
+    }
+  }
+  &:focus {
+    .reset_input_btn {
+      fill: #696969;
+    }
+  }
+  @media screen and (max-width: 420px) {
+    right: 15px;
+    bottom: 16px;
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
 `;
 
 export const EditSubmitButton = styled.button<{ disabled: boolean }>`
@@ -139,6 +192,7 @@ export const EditSubmitButton = styled.button<{ disabled: boolean }>`
   color: #fff;
   width: 100%;
   height: 48px;
+  margin: 50px 0;
 
   background-color: ${(props) => {
     if (props.disabled === true) return '#e7e7e7';

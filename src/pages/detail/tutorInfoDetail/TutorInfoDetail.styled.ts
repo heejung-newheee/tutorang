@@ -126,6 +126,18 @@ export const Icon = styled.img`
   margin-top: -1px;
   filter: invert(26%) sepia(4%) saturate(12%) hue-rotate(18deg) brightness(89%) contrast(88%);
 `;
+export const ClassLevel = styled.span`
+  &::after {
+    content: '•';
+    display: inline-block;
+    clear: both;
+    margin-right: 5px;
+  }
+  &:last-child::after {
+    content: '';
+    display: inline-block;
+  }
+`;
 
 export const TagList = styled.ul`
   & li {
@@ -133,7 +145,7 @@ export const TagList = styled.ul`
     font-size: 13px;
     padding: 4px 11px;
     border-radius: 30px;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    border: solid 1px #dbdbdb;
     margin-right: 8px;
   }
 `;
@@ -167,7 +179,7 @@ export const Dot = styled.span`
 export const reportButton = styled.button`
   display: flex;
   align-items: center;
-  margin-top: 4px;
+  margin-top: 7px;
 
   & img {
     margin-top: -2px;
@@ -179,7 +191,7 @@ export const ButtonWrapper = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  margin-top: 96px;
+  margin-top: 50px;
 
   & span {
     position: absolute;
@@ -271,12 +283,6 @@ export const OverviewItemNumber = styled.p`
 `;
 
 export const OverviewItemIcon = styled.img`
-  margin-bottom: 20px;
-  margin-top: 7px;
-  height: 37px;
-`;
-export const OverviewItemIcon2 = styled.img`
-  filter: invert(73%) sepia(73%) saturate(2869%) hue-rotate(335deg) brightness(88%) contrast(104%);
   margin-bottom: 20px;
   margin-top: 7px;
   height: 37px;

@@ -23,11 +23,13 @@ export const getTutorListPageData = async (page = 1, selectedFilters: SelectedFi
   if (age.length !== 0) {
     const minAge = age.sort()[0];
     const maxAge = age.sort()[age.length - 1];
-    query = query.gte('age', minAge).lte('age', maxAge);
+
+    query = query.gte('tutor_age', minAge - 10).lte('tutor_age', maxAge + 10);
   }
 
   if (searchText) {
-    query = query.textSearch('tutor_name', `${searchText}`);
+    const searchPattern = `%${searchText}%`;
+    query = query.filter('tutor_name', 'ilike', searchPattern);
   }
 
   if (minPrice >= 0 && maxPrice) {

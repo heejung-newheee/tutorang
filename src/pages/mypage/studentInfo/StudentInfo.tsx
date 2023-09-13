@@ -1,42 +1,41 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBoard } from '../../../api/board';
 import { fetchLBookMark } from '../../../api/like';
-import { matchMyReview } from '../../../api/review';
-import { icon_more, starEmpty, starFull } from '../../../assets';
+import { getMyWritiedReview } from '../../../api/review';
+import { icon_more } from '../../../assets';
 import { Loading } from '../../../components';
-import CompleteClass from '../../../components/slider/completeClassSlider/CompleteClass';
+import LikeTutorSlider from '../../../components/slider/tutorSlider/LikeTutorSlider';
+import StarRating from '../../../constants/func';
+import { BOOK_MARK_QUERY_KEY, REVIEW_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { openModal, setReview } from '../../../redux/modules';
-import MatchingTutor from '../matchingTab/MatchingTutor';
-import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataStar, DataTitle, InfoNull, InfoSection, InfoTitle } from '../userInfo/UserInfo.styled';
-import * as S from './StudentInfo.styled';
-
-import LikeTutorSlider from '../../../components/slider/tutorSlider/LikeTutorSlider';
-import { BOARD_QUERY_KEY, BOOK_MARK_QUERY_KEY, REVIEW_QUERY_KEY } from '../../../constants/query.constant';
 import { Tables, Views } from '../../../supabase/database.types';
+import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataStar, DataTitle, InfoNull, InfoSection, InfoTitle } from '../Mypage.styled';
+import MatchingTutor from '../matchingTab/MatchingTutor';
+import * as S from './StudentInfo.styled';
 
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
 }
+
 const StudentInfo = ({ match }: pageProps) => {
   const dispatch = useDispatch();
   const [openMenuId, setOpenMenuId] = useState<number>(0);
   const user = useSelector((state: RootState) => state.user.user);
   const tutors = useSelector((state: RootState) => state.tutor.tutor);
 
-  const { data: board, isLoading: boardLoading, isError: boardError } = useQuery([BOARD_QUERY_KEY], getBoard);
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery([BOOK_MARK_QUERY_KEY], fetchLBookMark);
-  const myReview = useQuery([REVIEW_QUERY_KEY], () => matchMyReview(user!.id));
 
-  if (boardLoading || likeLoading) {
+  const myReview = useQuery([REVIEW_QUERY_KEY], () => getMyWritiedReview(user!.id));
+
+  if (likeLoading) {
     return <Loading />;
   }
-  if (boardError || likeError) {
+  if (likeError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
-  if (!board || !like || !tutors || !myReview.data) {
+  if (!like || !tutors || !myReview.data) {
     return null;
   }
 
@@ -45,9 +44,6 @@ const StudentInfo = ({ match }: pageProps) => {
 
   const matchingData = Array.isArray(match) ? match : [match];
   const matchList = matchingData.filter((item: Views<'matching_tutor_data'>) => item.user_id === user!.id);
-  const myBoard = board!.filter((board: Tables<'board'>) => {
-    return board.user_id === user!.id;
-  });
 
   const handleOpenReviewUpdateForm = (): void => {
     dispatch(openModal({ type: 'reviewUpdate', targetId: user?.id }));
@@ -59,17 +55,6 @@ const StudentInfo = ({ match }: pageProps) => {
 
   const handleIsOpen = (reviewId: number) => {
     setOpenMenuId(reviewId === openMenuId ? 0 : reviewId);
-  };
-  const starRating = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= rating) {
-        stars.push(<img key={i} src={starFull} alt={`Full Star`} />);
-      } else {
-        stars.push(<img key={i} src={starEmpty} alt={`Empty Star`} />);
-      }
-    }
-    return stars;
   };
   return (
     <div>
@@ -85,29 +70,26 @@ const StudentInfo = ({ match }: pageProps) => {
           {matchList.length > 0 ? <MatchingTutor matchList={matchList} /> : <InfoNull>요청한 튜터링 내역이 없습니다</InfoNull>}
         </Container>
       </InfoSection>
-      <InfoSection>
-        <Container>
-          <InfoTitle>수업했던 튜터</InfoTitle>
-          {matchList.length > 0 ? <CompleteClass matchList={matchList} /> : <InfoNull>튜터링 완료한 내역이 없습니다</InfoNull>}
-        </Container>
-      </InfoSection>
+
       <InfoSection>
         <Container>
           <InfoTitle>내가 쓴 후기</InfoTitle>
-          <ContentsDataBox>
-            <DataList>
-              {myReview.data.length > 0 ? (
-                myReview.data.map((review) => {
+          {myReview.data.length > 0 ? (
+            <ContentsDataBox>
+              <DataList>
+                {myReview.data.map((review: any) => {
+                  const rating = review.rating || 0;
                   return (
                     <DataItem key={review.id} style={{ alignItems: 'start' }}>
                       <div>
                         <DataTitle>{review.title}</DataTitle>
-                        <DataStar>{starRating(review.rating!)}</DataStar>
+                        <DataStar>{StarRating(rating)}</DataStar>
                         <DataContent>{review.content}</DataContent>
+                        <DataAuth>{review.reviewed_id.username!}</DataAuth>
                       </div>
                       <S.ReviewEditBtn>
                         <button onClick={() => handleIsOpen(review.id)}>
-                          <img src={icon_more} alt="" />
+                          <img src={icon_more} alt="review button" />
                         </button>
                         <S.moreMenu className={review.id === openMenuId ? 'active' : ''}>
                           <S.moreMenuItem
@@ -132,35 +114,12 @@ const StudentInfo = ({ match }: pageProps) => {
                       </S.ReviewEditBtn>
                     </DataItem>
                   );
-                })
-              ) : (
-                <InfoNull>작성한 후기가 없습니다</InfoNull>
-              )}
-            </DataList>
-          </ContentsDataBox>
-        </Container>
-      </InfoSection>
-      <InfoSection>
-        <Container>
-          <InfoTitle>내가 남긴 문의</InfoTitle>
-
-          <ContentsDataBox>
-            {myBoard.length > 0 ? (
-              myBoard.map((item: Tables<'board'>) => {
-                return (
-                  <DataItem key={item.id}>
-                    <div>
-                      <DataTitle>{item.title}</DataTitle>
-                      <DataContent>{item.content}</DataContent>
-                      <DataAuth>{item.created_at.split('T')[0]}</DataAuth>
-                    </div>
-                  </DataItem>
-                );
-              })
-            ) : (
-              <InfoNull>문의하신 내역이 없습니다</InfoNull>
-            )}
-          </ContentsDataBox>
+                })}
+              </DataList>
+            </ContentsDataBox>
+          ) : (
+            <InfoNull>작성한 후기가 없습니다</InfoNull>
+          )}
         </Container>
       </InfoSection>
     </div>

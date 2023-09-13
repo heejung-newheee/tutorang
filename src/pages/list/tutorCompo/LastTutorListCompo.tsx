@@ -1,6 +1,6 @@
-import { Views } from '../../../supabase/database.types';
-import icon_location from '../../../assets/marker-location.png';
 import graduation from '../../../assets/graduation-hat.png';
+import icon_location from '../../../assets/marker-location.png';
+import { Views } from '../../../supabase/database.types';
 import * as S from './TutorListCompo.styled';
 
 type Props = {
@@ -18,12 +18,11 @@ const LastTutorListCompo = ({ LastelementRef, userInfo }: Props) => {
           <S.Name>{userInfo?.tutor_name}</S.Name>
           <S.LocationDiv>
             <div>
-              <img src={icon_location} alt="" />
+              <img src={icon_location} alt="location" />
               {userInfo.location1_gugun} | {userInfo.location2_gugun}
             </div>
             <div>
-              {' '}
-              <img src={graduation} alt="" />
+              <img src={graduation} alt="graduation" />
               {userInfo.university} | {userInfo.major}
             </div>
           </S.LocationDiv>

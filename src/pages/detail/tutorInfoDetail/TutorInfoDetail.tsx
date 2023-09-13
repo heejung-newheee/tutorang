@@ -8,7 +8,7 @@ import { openModal } from '../../../redux/modules';
 import * as S from './TutorInfoDetail.styled';
 
 import { useNavigate } from 'react-router-dom';
-import { createChatRoom, getChatRoomWithTutor, inviteChatRoom } from '../../../api/chat';
+import { getOrCreatePrivateChatRoom } from '../../../api/chat';
 import { tutorMatchedCount } from '../../../api/match';
 import { matchReview } from '../../../api/review';
 import { RootState } from '../../../redux/config/configStore';
@@ -26,7 +26,6 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
   const { data: tutor, isLoading: tutorLoading, isError: tutorError, error } = useQuery([TUTOR_QUERY_KEY, id], () => matchTutor(id));
   const matchingCount = useQuery([MATCHING_QUERY_KEY, id], () => tutorMatchedCount(id));
   const loginUser = useSelector((state: RootState) => state.user.user);
-
   const navigate = useNavigate();
 
   const handleStartChat = async (tutorId: string) => {
@@ -38,18 +37,8 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
     }
 
     try {
-      const chatRoom = await getChatRoomWithTutor(loginUser?.id, tutorId);
-
-      if (chatRoom.length > 0) {
-        navigate(`/chat?room_id=${chatRoom[0].room_id}`);
-        return;
-      }
-
-      const newRoom = await createChatRoom();
-
-      await inviteChatRoom(newRoom.room_id, tutorId);
-
-      navigate(`/chat?room_id=${newRoom.room_id}`);
+      const chatRoom = await getOrCreatePrivateChatRoom(tutorId);
+      navigate(`/chat?room_id=${chatRoom.room_id}`);
     } catch (error) {
       console.error(error);
     }
@@ -74,7 +63,11 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
   };
 
   const handleOpenReport = () => {
-    dispatch(openModal({ type: 'report' }));
+    if (loginUser) {
+      dispatch(openModal({ type: 'report', userId: loginUser?.id, targetId: id }));
+    } else {
+      dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
+    }
   };
 
   if (tutorLoading || reviewLoading) {
@@ -82,7 +75,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
   }
 
   if (tutorError || reviewError) {
-    console.log(error);
+    console.error(error);
     return <div>에러</div>;
   }
 
@@ -107,7 +100,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
               <S.InfoWrapper>
                 <S.TutorNameWrapper>
                   <S.TutorName>
-                    {tutor.tutor_name} <S.Age>(나이)</S.Age>
+                    {tutor.tutor_name} <S.Age>({tutor.tutor_age})</S.Age>
                   </S.TutorName>
                   <S.verify>
                     <S.Icon src={icon_verify} />
@@ -116,8 +109,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
                 </S.TutorNameWrapper>
                 <S.TutorInfoWrapper>
                   <S.InfoItem>
-                    <S.Icon src={icon_location_gray} /> {tutor.location1_sido} | {tutor.location1_gugun}
-                    <S.Icon src={icon_location_gray} /> {tutor.location2_sido} | {tutor.location2_gugun}
+                    <S.Icon src={icon_location_gray} /> {tutor.location1_sido} - {tutor.location1_gugun} | {tutor.location2_sido} - {tutor.location2_gugun}
                   </S.InfoItem>
                   <S.InfoItem>
                     <S.Icon src={icon_school} /> {tutor.university} | {tutor.major}
@@ -125,7 +117,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
                   <S.InfoItem>
                     <S.Icon src={icon_check} />
                     {tutor.speaking_language?.map((language) => {
-                      return <span key={language}> {language} </span>;
+                      return <S.ClassLevel key={language}> {language} </S.ClassLevel>;
                     })}
                     가능
                   </S.InfoItem>
@@ -147,14 +139,14 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
                 <S.PriceItem>
                   <span>
                     <S.Dot />
-                    30분 화상 만남
+                    30분 화상 수업
                   </span>
                   <span>{tutor.tuition_fee_online}</span>
                 </S.PriceItem>
                 <S.PriceItem>
                   <span>
                     <S.Dot />
-                    30분 직접 만남
+                    30분 직접 수업
                   </span>
                   <span>{tutor.tuition_fee_offline}</span>
                 </S.PriceItem>
@@ -166,7 +158,6 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
             <Button variant="solid" color="primary" size="Medium" onClick={() => handleStartChat(id)}>
               튜터랑 대화하기
             </Button>
-            <span>바로 상담가능</span>
           </S.ButtonWrapper>
         </S.Container>
       </section>
@@ -190,7 +181,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
             <span>리뷰 수</span>
           </S.OverviewItem>
           <S.OverviewItem>
-            <S.OverviewItemIcon2 src={icon_like} alt="매칭 아이콘" />
+            <S.OverviewItemIcon src={icon_like} alt="매칭 아이콘" />
             <S.OverviewItemNumber>{matchingCount.data?.length}번</S.OverviewItemNumber>
             <span>매칭 횟수</span>
           </S.OverviewItem>

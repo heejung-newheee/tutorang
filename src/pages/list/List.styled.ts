@@ -10,7 +10,7 @@ export const Container = styled.div`
 
 export const TutorList = styled.div`
   width: 100%;
-  margin-top: 100px;
+  margin-top: 80px;
   display: grid;
   justify-content: center;
   grid-template-columns: repeat(3, 1fr);
@@ -18,9 +18,11 @@ export const TutorList = styled.div`
 
   @media only screen and (max-width: 900px) {
     grid-template-columns: repeat(2, 1fr);
+    margin-top: 50px;
   }
 
   @media only screen and (max-width: 500px) {
+    margin-top: 30px;
     grid-template-columns: repeat(1, 1fr);
   }
 `;
@@ -46,7 +48,6 @@ export const SearchWrap = styled.div`
   color: ${colors.white};
   padding: 0 20px;
   background-color: #f5f5f5;
-  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
   border-radius: 8px;
 
   & > input {

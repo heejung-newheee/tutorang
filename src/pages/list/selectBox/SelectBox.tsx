@@ -1,14 +1,12 @@
 import Checkbox from '@mui/material/Checkbox';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { filterIcon, icon_location } from '../../../assets';
-// import { Price, SelectedFilters, age, gender, handleAgeFilter, handleDeleteFilterBar, handleGenderFilter, handleLanguageFilter,  level, price, speakingLanguage } from '../components/list/utility';o
 import { age, gender, level, speakingLanguage } from '../../../constants/signup.constant';
+import { price } from '../../../constants/signup.constant';
+import { handleAgeFilter, handleDeleteFilterBar, handleGenderFilter, handleLanguageFilter, handleLevelFilter, handlePriceFilter } from '../utility';
+import * as S from './SelectBox.styled';
 
 import { FilterMenuObj, Price, SelectedFilters } from '../../../@types/list/listType';
-
-import { price } from '../../../constants/signup.constant';
-import { handleAgeFilter, handleDeleteFilterBar, handleGenderFilter, handleLanguageFilter, handleLevelFilter } from '../utility';
-import * as S from './SelectBox.styled';
 
 const obj: FilterMenuObj = {
   gender,
@@ -71,16 +69,6 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
         break;
     }
   };
-  const handleFilterdObjPrice = (item: Price) => {
-    if (item.optionPrice === '전체') {
-      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: item.min });
-      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-    } else {
-      setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: item.min });
-      setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
-      setSelectedArr((pre) => [...pre, ['price', item.optionPrice]]);
-    }
-  };
 
   const isColorTrue = (item: string) => {
     let isTrue = selectedArr.find((i) => i[0] === item);
@@ -92,7 +80,7 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
     return false;
   };
 
-  const ischevronOpen = (item: string) => {
+  const handleChevronOpen = (item: string) => {
     return isChevronOpen === true && filteredMenu === item;
   };
 
@@ -106,7 +94,7 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
 
     if (isTrue === true) {
       return true;
-    } else if (!DefaltCheck && item === '전체') true;
+    }
 
     return false;
   };
@@ -127,31 +115,31 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
         <S.FilterUl>
           <S.FilterLi $isIn={isColorTrue('speakingLanguage')} onClick={() => handleHiddenBox('speakingLanguage')}>
             언어
-            <S.ChevronSpan $chevron={ischevronOpen('speakingLanguage')}></S.ChevronSpan>
+            <S.ChevronSpan $chevron={handleChevronOpen('speakingLanguage')}></S.ChevronSpan>
           </S.FilterLi>
 
           <S.FilterLi $isIn={isColorTrue('level')} onClick={() => handleHiddenBox('level')}>
             난이도
-            <S.ChevronSpan $chevron={ischevronOpen('level')}></S.ChevronSpan>
+            <S.ChevronSpan $chevron={handleChevronOpen('level')}></S.ChevronSpan>
           </S.FilterLi>
           <S.FilterLi $isIn={isColorTrue('gender')} onClick={() => handleHiddenBox('gender')}>
             성별
-            <S.ChevronSpan $chevron={ischevronOpen('gender')}></S.ChevronSpan>
+            <S.ChevronSpan $chevron={handleChevronOpen('gender')}></S.ChevronSpan>
           </S.FilterLi>
 
           <S.FilterLi $isIn={isColorTrue('age')} onClick={() => handleHiddenBox('age')}>
             연령대
-            <S.ChevronSpan $chevron={ischevronOpen('age')}></S.ChevronSpan>
+            <S.ChevronSpan $chevron={handleChevronOpen('age')}></S.ChevronSpan>
           </S.FilterLi>
 
           <S.FilterLi $isIn={selectedArr.some((i) => i[0] === 'price') ? true : false} onClick={() => handleHiddenBox('price')}>
             가격
-            <S.ChevronSpan $chevron={ischevronOpen('price')}></S.ChevronSpan>
+            <S.ChevronSpan $chevron={handleChevronOpen('price')}></S.ChevronSpan>
           </S.FilterLi>
         </S.FilterUl>
 
         {filteredMenu !== 'price' && isChevronOpen ? (
-          <S.InnerHidden key={filteredMenu} $isChevronOpen={isChevronOpen} $dddddd={filteredMenu !== 'price' && isChevronOpen}>
+          <S.InnerHidden key={filteredMenu} $isChevronOpen={isChevronOpen}>
             {obj[filteredMenu]?.map((item: string) => (
               <div key={`check-${item}`}>
                 <Checkbox
@@ -173,7 +161,7 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
         ) : null}
 
         {filteredMenu === 'price' && isChevronOpen ? (
-          <S.InnerHiddenPrice key={filteredMenu} $isChevronOpen={isChevronOpen} $dddddd={filteredMenu === 'price' && isChevronOpen}>
+          <S.InnerHiddenPrice key={filteredMenu} $isChevronOpen={isChevronOpen}>
             <S.PriceClassType>
               <div>
                 {selectedFilters.classStyle === 'onLine' ? <span>OnLine - Class </span> : null}
@@ -187,7 +175,7 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
             <div></div>
 
             {price.map((item: Price) => (
-              <div>
+              <div key={item.min}>
                 <Checkbox
                   sx={{
                     color: 'gray',
@@ -196,7 +184,7 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
                     },
                   }}
                   id={`check-${item.optionPrice}`}
-                  onClick={() => handleFilterdObjPrice(item)}
+                  onClick={() => handlePriceFilter(item, setSelectedFilters, setSelectedArr)}
                   checked={isChecked(item.optionPrice)}
                   inputProps={{ 'aria-label': 'controlled' }}
                 />
@@ -210,10 +198,9 @@ const SelectBox = ({ initialSelectedFilters, openModal, selectedArr, setSelected
       {selectedArr.length > 0 && selectedArr.filter((i) => i[1] === '전체').length !== selectedArr.length ? (
         <S.FilterBar>
           <S.FiterWrap>
-            {selectedArr.map((item) =>
+            {selectedArr.map((item, index) =>
               item[1] === '전체' ? null : (
-                <S.FiterWrapButton onClick={() => DeleteFilterBar(item)}>
-                  {' '}
+                <S.FiterWrapButton onClick={() => DeleteFilterBar(item)} key={index}>
                   <div>
                     {item[1]}
                     <svg xmlns="http://www.w3.org/2000/svg" fill="white" height="1em" viewBox="0 0 384 512">

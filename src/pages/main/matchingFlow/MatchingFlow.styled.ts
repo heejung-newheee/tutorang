@@ -5,7 +5,6 @@ export const FlowTabWrap = styled.div`
   gap: 3rem;
   max-width: 890px;
   margin: 0 auto;
-  margin-top: 140px;
   position: relative;
   @media screen and (max-width: 1024px) {
     max-width: 600px;
@@ -17,6 +16,9 @@ export const FlowTabWrap = styled.div`
     @media screen and (max-width: 1024px) {
       width: 100%;
     }
+  }
+  article {
+    text-align: center;
   }
 `;
 export const FlowTabList = styled.ul`
@@ -41,6 +43,7 @@ export const FlowTabItem = styled.li`
 export const FlowPanel = styled.article`
   img {
     transition: all 0.5s;
+    width: 75%;
   }
   @media screen and (max-width: 1024px) {
     display: none;
@@ -65,7 +68,7 @@ export const TabNum = styled.div`
   margin-top: 7px;
   text-align: center;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 36px;
   color: #fff;
   background-color: #d8d8d8;
@@ -99,7 +102,7 @@ export const TabBubbleContent = styled.div`
 `;
 export const BubbletTit = styled.p`
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 5px;
   @media screen and (max-width: 768px) {
     font-size: 14px;

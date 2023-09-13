@@ -32,7 +32,6 @@ export const FilterStart = styled.div`
   padding-left: 20px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid ${colors.gray_100};
 
   & > img {
     height: 15px;
@@ -40,30 +39,15 @@ export const FilterStart = styled.div`
   }
 `;
 
-export const FilterBox = styled.div`
-  width: 100%;
-  height: auto;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  padding: 0 30px;
-  display: flex;
-  overflow: scroll;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
 export const FilterUl = styled.ul`
   width: 100%;
   height: auto;
-  margin-top: 30px;
   margin-bottom: 30px;
-  padding: 0 30px;
+  padding: 0 43px;
   display: flex;
-  overflow: scroll;
-  &::-webkit-scrollbar {
-    display: none;
+  overflow-x: auto;
+  &::-webkit-scrollbar-track {
+    display: none; /*겹쳐보임*/
   }
 `;
 
@@ -105,18 +89,16 @@ const slideUp = keyframes`
   }
 `;
 
-export const InnerHidden = styled.div<{ $isChevronOpen: boolean; $dddddd: boolean }>`
+export const InnerHidden = styled.div<{ $isChevronOpen: boolean }>`
   width: 100%;
   margin: 20px 0;
   padding: 0 20px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 
   animation: ${(props) => (props.$isChevronOpen ? slideDown : slideUp)} 1s ease;
 
   & > div {
-    padding: 10px;
-
     & > input {
       cursor: pointer;
     }
@@ -129,7 +111,7 @@ export const InnerHidden = styled.div<{ $isChevronOpen: boolean; $dddddd: boolea
   }
 `;
 
-export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean; $dddddd: boolean }>`
+export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean }>`
   width: 100%;
   margin: 30px 0;
   padding: 0 20px;
@@ -157,7 +139,7 @@ export const PriceClassType = styled.div`
   margin-bottom: 20px;
   display: flex;
   align-items: center;
-  font-weight: 800;
+  font-weight: 700;
   color: ${colors.primary};
 
   & > div > span {
@@ -238,5 +220,5 @@ export const ChevronSpan = styled.span<{ $chevron: boolean }>`
   width: 12px;
   height: 12px;
   margin-left: 3px;
-  background-image: ${(props) => (props.$chevron === false ? `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_up-12.svg)` : `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_down-12.svg)`)};
+  background-image: ${(props) => (props.$chevron === false ? `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_down-12.svg)` : `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_up-12.svg)`)};
 `;

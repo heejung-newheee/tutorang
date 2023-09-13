@@ -29,7 +29,7 @@ const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDo
     $setDuplicatedEmail(isMyEmailHere);
     $setDoneDuplicationCheck(true);
 
-    console.log(error?.message);
+    console.error(error?.message);
   };
 
   const deleteEmail = () => {
@@ -44,22 +44,26 @@ const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDo
       <label htmlFor="email">이메일</label>
       <SEmailInputWrapper>
         <SInput type="text" id="email" ref={emailRef} autoComplete="off" onChange={(e) => $setEmail(e.target.value)} required placeholder="이메일을 입력하세요" />
+        {$email && (
+          <ResetButton type="button" onClick={deleteEmail}>
+            <BsXCircleFill className="reset_input_btn" />
+          </ResetButton>
+        )}
         <SEmailButton type="button" disabled={!$email || !$validEmail} onClick={() => duplicationCheck($email)}>
           중복확인
         </SEmailButton>
-        {$email && <BsXCircleFill className="reset_input_btn" onClick={deleteEmail} />}
       </SEmailInputWrapper>
-      <SPGuideMessage $guideMessageColor={'안내'}>
-        <span style={{ display: 'flex', justifyContent: 'center', alignContent: 'center', width: '18px', height: '18px', lineHeight: '18px' }}>
+      <SGuideMessage $guideMessageColor={'안내'} style={{ display: 'flex', alignContent: 'center', height: '18px', lineHeight: '18px' }}>
+        <span style={{ width: '18px', height: '18px', padding: '3px 0' }}>
           <FaInfoCircle className="info_icon" />
         </span>
-        최종 회원가입 승인메일을 보낼 예정이오니 실제 열람가능한 이메일을 기입해주시기 바랍니다.
-      </SPGuideMessage>
-      <SPGuideMessage $guideMessageColor={!$duplicatedEmail ? '확인' : ''}>
+        <p>해당 이메일로 회원가입 승인메일이 전송됩니다.</p>
+      </SGuideMessage>
+      <SGuideMessage $guideMessageColor={!$duplicatedEmail ? '확인' : ''}>
         {!!$email && !$validEmail && '이메일 형식으로 입력해주세요'}
         {!!$email && $validEmail && $doneDuplicationCheck && $duplicatedEmail && '이미 가입된 이메일 입니다. 새로운 이메일을 입력하세요'}
         {!!$email && $validEmail && $doneDuplicationCheck && !$duplicatedEmail && '입력된 이메일을 사용할 수 있습니다!'}
-      </SPGuideMessage>
+      </SGuideMessage>
     </>
   );
 };
@@ -85,7 +89,7 @@ const SInput = styled.input<{ id?: string }>`
   color: #000;
   padding: ${({ id }) => {
     if (id === 'email' || id === 'confirm_pwd' || id === 'password') {
-      return '5px 40px 5px 12px';
+      return '5px 50px 5px 12px';
     } else {
       return '5px 12px 5px 12px';
     }
@@ -97,10 +101,17 @@ const SInput = styled.input<{ id?: string }>`
   @media screen and (max-width: 420px) {
     height: 45px;
     line-height: 45px;
+    padding: ${({ id }) => {
+      if (id === 'email' || id === 'confirm_pwd' || id === 'password') {
+        return '5px 40px 5px 12px';
+      } else {
+        return '5px 12px 5px 12px';
+      }
+    }};
   }
 `;
 
-const SPGuideMessage = styled.p<{ $guideMessageColor?: string }>`
+const SGuideMessage = styled.div<{ $guideMessageColor?: string }>`
   min-width: 10px;
   height: 18px;
   display: flex;
@@ -154,5 +165,38 @@ const SEmailButton = styled.button<{ disabled: boolean }>`
     min-width: 90px;
     height: 45px;
     line-height: 45px;
+  }
+`;
+
+const ResetButton = styled.button`
+  position: absolute;
+  right: 136px;
+  top: 18px;
+  z-index: 2;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  .reset_input_btn {
+    fill: #cdcdcd;
+  }
+  &:hover {
+    cursor: pointer;
+    .reset_input_btn:hover {
+      fill: #696969;
+    }
+  }
+  &:focus {
+    .reset_input_btn:hover {
+      fill: #696969;
+    }
+  }
+  @media screen and (max-width: 420px) {
+    right: 115px;
+    top: 15.5px;
+    font-size: 15px;
   }
 `;

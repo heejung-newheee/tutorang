@@ -3,36 +3,41 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify, starEmpty, starFull } from '../../../assets';
-
-import * as S from './TutorInfo.styled';
-
-import { getBoard } from '../../../api/board';
+import { useNavigate } from 'react-router-dom';
+import { matchReview } from '../../../api/review';
 import { tutorInfoJoin } from '../../../api/tutor';
-import { fetchReview } from '../../../api/user';
+import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify } from '../../../assets';
 import { Loading } from '../../../components';
-import { BOARD_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
+import StarRating from '../../../constants/func';
+import { REVIEW_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
-import { Tables, Views } from '../../../supabase/database.types';
-import { Age, Dot, Icon, InfoItem, PriceItem, PriceList, TagList, TutorName } from '../../detail/tutorInfoDetail/TutorInfoDetail.styled';
+import { Views } from '../../../supabase/database.types';
+import { Age, ClassLevel, Dot, Icon, InfoItem, PriceItem, PriceList, TagList, TutorName } from '../../detail/tutorInfoDetail/TutorInfoDetail.styled';
+import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataTitle, InfoNull, InfoSection, InfoTitle, ReviewRating } from '../Mypage.styled';
 import MatchingStudent from '../matchingTab/MatchingStudent';
-import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataTitle, InfoNull, InfoSection, InfoTitle, ReviewRating } from '../userInfo/UserInfo.styled';
-
+import * as S from './TutorInfo.styled';
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
 }
 const TutorInfo = ({ match }: pageProps) => {
+  const navigate = useNavigate();
   useEffect(() => {
     AOS.init();
   }, []);
-  const boardData = useQuery([BOARD_QUERY_KEY], getBoard);
-
-  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery([TUTOR_INFO_JOIN_QUERY_KEY], tutorInfoJoin);
-
-  const { data: review, isLoading: reviewLoading, isError: reviewError } = useQuery([TUTOR_INFO_JOIN_QUERY_KEY], fetchReview);
 
   const user = useSelector((state: RootState) => state.user.user);
   if (!user) return null;
+  const id = user.id;
+
+  const { data: tutor, isLoading: tutorLoading, isError: tutorError } = useQuery([TUTOR_INFO_JOIN_QUERY_KEY], tutorInfoJoin);
+  const {
+    data: review,
+    isLoading: reviewLoading,
+    isError: reviewError,
+  } = useQuery([REVIEW_QUERY_KEY, id], async () => {
+    const data = await matchReview(id);
+    return data;
+  });
 
   const matchingData = Array.isArray(match) ? match : [match];
   const matchList = matchingData.filter((item: Views<'matching_tutor_data'>) => item.tutor_id === user!.id);
@@ -43,27 +48,12 @@ const TutorInfo = ({ match }: pageProps) => {
   if (tutorError || reviewError) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
-  if (!tutor || !review || !matchList || !boardData.data) {
+  if (!tutor || !review || !matchList) {
     return null;
   }
 
-  const reviewData = review?.filter((item) => {
-    return user!.id === item.reviewed_id;
-  });
-
   const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.tutor_id) : null;
 
-  const starRating = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= rating) {
-        stars.push(<img key={i} src={starFull} alt={`Full Star`} />);
-      } else {
-        stars.push(<img key={i} src={starEmpty} alt={`Empty Star`} />);
-      }
-    }
-    return stars;
-  };
   return (
     <>
       {tutorInfo && (
@@ -75,20 +65,25 @@ const TutorInfo = ({ match }: pageProps) => {
                 <S.TutorClassTop>
                   <div>
                     <TutorName>
-                      {tutorInfo.tutor_name} <Age>(나이)</Age>
+                      {tutorInfo.tutor_name} <Age>({tutorInfo.tutor_age})</Age>
                     </TutorName>
                     <Icon src={icon_verify} />
                     학력인증
                   </div>
-                  <S.ClassEditBtn to={'/tutor-class'}>
-                    <img src={icon_edit_wh} alt="" />
+                  <S.ClassEditBtn
+                    onClick={() => {
+                      navigate(`/tutor-class`, {
+                        state: { tutorInfo },
+                      });
+                    }}
+                  >
+                    <img src={icon_edit_wh} alt="class info edit button" />
                   </S.ClassEditBtn>
                 </S.TutorClassTop>
                 <S.TutorClass>
                   <S.ClassDetail>
                     <InfoItem>
-                      <Icon src={icon_location_gray} /> {tutorInfo.location1_sido} | {tutorInfo.location1_gugun}
-                      <Icon src={icon_location_gray} /> {tutorInfo.location2_sido} | {tutorInfo.location2_gugun}
+                      <Icon src={icon_location_gray} /> {tutorInfo.location1_sido} - {tutorInfo.location1_gugun} | {tutorInfo.location2_sido} - {tutorInfo.location2_gugun}
                     </InfoItem>
                     <InfoItem>
                       <Icon src={icon_school} /> {tutorInfo.university} | {tutorInfo.major}
@@ -96,7 +91,7 @@ const TutorInfo = ({ match }: pageProps) => {
                     <InfoItem>
                       <Icon src={icon_check} />
                       {tutorInfo.speaking_language?.map((language) => {
-                        return <span key={language}> {language} </span>;
+                        return <ClassLevel key={language}> {language} </ClassLevel>;
                       })}
                       가능
                     </InfoItem>
@@ -116,14 +111,14 @@ const TutorInfo = ({ match }: pageProps) => {
                       <PriceItem>
                         <span>
                           <Dot />
-                          30분 화상 만남
+                          30분 화상 수업
                         </span>
                         <span>{tutorInfo.tuition_fee_online}</span>
                       </PriceItem>
                       <PriceItem>
                         <span>
                           <Dot />
-                          30분 직접 만남
+                          30분 직접 수업
                         </span>
                         <span>{tutorInfo.tuition_fee_offline}</span>
                       </PriceItem>
@@ -147,11 +142,10 @@ const TutorInfo = ({ match }: pageProps) => {
           <InfoSection>
             <Container>
               <InfoTitle>수강생 후기</InfoTitle>
-
               <ContentsDataBox>
-                {reviewData.length > 0 ? (
+                {review.length > 0 ? (
                   <DataList>
-                    {reviewData.map((review) => {
+                    {review.map((review) => {
                       const rating = review.rating || 0;
                       return (
                         <DataItem key={review.id}>
@@ -162,7 +156,7 @@ const TutorInfo = ({ match }: pageProps) => {
                               {review.author} / {review.created_at.split('T')[0]}
                             </DataAuth>
                           </div>
-                          <ReviewRating>{starRating(rating)}</ReviewRating>
+                          <ReviewRating>{StarRating(rating)}</ReviewRating>
                         </DataItem>
                       );
                     })}
@@ -171,36 +165,6 @@ const TutorInfo = ({ match }: pageProps) => {
                   <InfoNull>후기가 없습니다</InfoNull>
                 )}
               </ContentsDataBox>
-            </Container>
-          </InfoSection>
-
-          <InfoSection>
-            <Container>
-              <InfoTitle>내가 남긴 문의</InfoTitle>
-              <ContentsDataBox>
-                {boardData
-                  .data!.filter((board: Tables<'board'>) => {
-                    return board.user_id === user!.id;
-                  })
-                  .map((item: Tables<'board'>) => {
-                    return (
-                      <DataItem key={item.id}>
-                        <div>
-                          <DataTitle>{item.title}</DataTitle>
-                          <DataContent>{item.content}</DataContent>
-                          <DataAuth>{item.created_at.split('T')[0]}</DataAuth>
-                        </div>
-                      </DataItem>
-                    );
-                  })}
-              </ContentsDataBox>
-            </Container>
-          </InfoSection>
-
-          <InfoSection>
-            <Container>
-              <InfoTitle>수강 database</InfoTitle>
-              <div>통계 그래프</div>
             </Container>
           </InfoSection>
         </>

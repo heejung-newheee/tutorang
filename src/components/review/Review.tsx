@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '..';
 import { matchReview } from '../../api/review';
-import { icon_more, starEmpty, starFull } from '../../assets';
+import { icon_more } from '../../assets';
+import StarRating from '../../constants/func';
 import { REVIEW_QUERY_KEY } from '../../constants/query.constant';
+import { DataAuth, DataContent, DataItem, DataTitle, ReviewRating } from '../../pages/mypage/Mypage.styled';
 import { RootState } from '../../redux/config/configStore';
 import { openModal, setReview } from '../../redux/modules';
 import * as S from './Review.styled';
@@ -20,33 +22,12 @@ const Review = ({ id }: ReviewProps) => {
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  // const handleOpenReviewCreateForm = () => {
-  //   if (!loginUser) {
-  //     dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
-  //     return;
-  //   }
-
-  //   dispatch(openModal({ type: 'reviewCreate', targetId: id }));
-  // };
-
   const handleOpenReviewUpdateForm = () => {
     dispatch(openModal({ type: 'reviewUpdate', targetId: id }));
   };
 
   const handleReviewDelete = (id: number) => {
     dispatch(openModal({ type: 'confirmRemove', targetId: id }));
-  };
-
-  const starRating = (rating: number) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= rating) {
-        stars.push(<img key={i} src={starFull} alt={`Full Star`} />);
-      } else {
-        stars.push(<img key={i} src={starEmpty} alt={`Empty Star`} />);
-      }
-    }
-    return stars;
   };
 
   const handleIsOpen = (reviewId: number) => {
@@ -88,7 +69,7 @@ const Review = ({ id }: ReviewProps) => {
   }
 
   if (reviewError) {
-    console.log(error);
+    console.error(error);
     return;
   }
   return (
@@ -106,15 +87,15 @@ const Review = ({ id }: ReviewProps) => {
               {reviews?.map((review) => {
                 const rating = review.rating || 0;
                 return (
-                  <S.ReviewItem key={review.id}>
+                  <DataItem key={review.id}>
                     <div>
-                      <S.ReviewTitle>{review.title}</S.ReviewTitle>
-                      <S.ReviewDescription>{review.content}</S.ReviewDescription>
+                      <DataTitle>{review.title}</DataTitle>
+                      <DataContent>{review.content}</DataContent>
 
-                      <S.AuthorInfo>
+                      <DataAuth>
                         {review.author}
                         <S.Time>{createDate(review.created_at)}</S.Time>
-                      </S.AuthorInfo>
+                      </DataAuth>
                     </div>
                     <div>
                       {loginUser?.id === review.user_id ? (
@@ -143,9 +124,9 @@ const Review = ({ id }: ReviewProps) => {
                           </S.moreMenu>
                         </S.ButtonMoreWrapper>
                       ) : null}
-                      <S.ReviewStar>{starRating(rating)}</S.ReviewStar>
+                      <ReviewRating>{StarRating(rating)}</ReviewRating>
                     </div>
-                  </S.ReviewItem>
+                  </DataItem>
                 );
               })}
             </>

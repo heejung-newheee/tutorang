@@ -3,15 +3,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
-import { createChatRoom, getChatRoomWithTutor, inviteChatRoom, sendTutoringMessage } from '../../../api/chat';
-import { matchingAccept, matchingReject } from '../../../api/match';
+import { getOrCreatePrivateChatRoom, sendTutorMessage } from '../../../api/chat';
+import { matchingPending, matchingReject } from '../../../api/match';
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { Views } from '../../../supabase/database.types';
-import { ContentsDataBox, MatchBtn } from '../userInfo/UserInfo.styled';
-import * as S from './MatchingTutor.styled';
+import { ContentsDataBox } from '../Mypage.styled';
+import * as S from './Matching.styled';
 import './custom.css';
-
 interface pageProps {
   matchList: Views<'matching_tutor_data'>[];
 }
@@ -29,51 +28,36 @@ const MatchingStudent = ({ matchList }: pageProps) => {
   const user = useSelector((state: RootState) => state.user.user);
   const queryClient = useQueryClient();
 
-  const acceptMatchMutation = useMutation(matchingAccept, {
+  const acceptMatchMutation = useMutation(matchingPending, {
     onSuccess: () => {
       queryClient.invalidateQueries([MATCHING_TUTOR_DATA_QUERY_KEY]);
     },
   });
 
-  // 수락
+  const rejectMatchMutation = useMutation(matchingReject, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([MATCHING_TUTOR_DATA_QUERY_KEY]);
+    },
+  });
+  // 튜터가 수락
   const acceptMatch = async (id: string, student_id: string) => {
     if (!user) return;
     acceptMatchMutation.mutate(id);
     try {
-      const room = await getChatRoomWithTutor(user.id, student_id);
-      if (room.length > 0) {
-        await sendTutoringMessage(room[0].room_id, 'accept');
-        return;
-      }
-      const newRoom = await createChatRoom();
-      await inviteChatRoom(newRoom.room_id, student_id);
-      await sendTutoringMessage(newRoom.room_id, 'accept');
+      const room = await getOrCreatePrivateChatRoom(student_id);
+      await sendTutorMessage(room.room_id, 'pending');
     } catch (err) {
       console.error(err);
     }
   };
 
-  const rejectMatchMutation = useMutation(matchingReject, {
-    onSuccess: () => {
-      queryClient.invalidateQueries([MATCHING_TUTOR_DATA_QUERY_KEY]); // ********
-    },
-  });
-
-  // 거절
+  // 튜터가 거절
   const rejectMatch = async (id: string, student_id: string) => {
     if (!user) return;
     rejectMatchMutation.mutate(id);
     try {
-      const room = await getChatRoomWithTutor(user.id, student_id);
-
-      if (room.length > 0) {
-        await sendTutoringMessage(room[0].room_id, 'reject');
-        return;
-      }
-
-      const newRoom = await createChatRoom();
-      await inviteChatRoom(newRoom.room_id, student_id);
-      await sendTutoringMessage(newRoom.room_id, 'reject');
+      const room = await getOrCreatePrivateChatRoom(student_id);
+      await sendTutorMessage(room.room_id, 'reject');
     } catch (err) {
       console.error(err);
     }
@@ -87,8 +71,9 @@ const MatchingStudent = ({ matchList }: pageProps) => {
   return (
     <div>
       <Tabs value={activeTab} onChange={handleTabChange} aria-label="tab menu">
-        <Tab label="요청 대기" />
-        <Tab label="매칭 완료" />
+        <Tab label="요청중" />
+        <Tab label="요청완료" />
+        <Tab label="수업완료" />
       </Tabs>
       <TabPanel value={activeTab} index={0}>
         <S.InfoList>
@@ -103,7 +88,7 @@ const MatchingStudent = ({ matchList }: pageProps) => {
           {matchList &&
             matchList
               .filter((item: Views<'matching_tutor_data'>) => {
-                return item.matched === false;
+                return item.status === 'request';
               })
               .map((item: Views<'matching_tutor_data'>) => {
                 return (
@@ -116,10 +101,10 @@ const MatchingStudent = ({ matchList }: pageProps) => {
                         {item.student_lc_2_gugun}
                       </div>
                       <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
-                      <div>
-                        <MatchBtn onClick={() => item.id !== null && acceptMatch(item.id, item.user_id!)}>수락</MatchBtn>
-                        <MatchBtn onClick={() => item.id !== null && rejectMatch(item.id, item.user_id!)}>거절</MatchBtn>
-                      </div>
+                      <S.MatchBtnWrap>
+                        <S.MatchBtn onClick={() => item.id !== null && acceptMatch(item.id, item.user_id!)}>수락</S.MatchBtn>
+                        <S.MatchBtn onClick={() => item.id !== null && rejectMatch(item.id, item.user_id!)}>거절</S.MatchBtn>
+                      </S.MatchBtnWrap>
                     </S.InfoItem>
                   </S.InfoList>
                 );
@@ -139,7 +124,7 @@ const MatchingStudent = ({ matchList }: pageProps) => {
           {matchList &&
             matchList
               .filter((item: Views<'matching_tutor_data'>) => {
-                return item.matched === true;
+                return item.status === 'pending';
               })
               .map((item: Views<'matching_tutor_data'>) => {
                 return (
@@ -152,7 +137,40 @@ const MatchingStudent = ({ matchList }: pageProps) => {
                         {item.student_lc_2_gugun}
                       </div>
                       <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
-                      <div>완료</div>
+                      <div>매칭 진행중</div>
+                    </S.InfoItem>
+                  </S.InfoList>
+                );
+              })}
+        </ContentsDataBox>
+      </TabPanel>
+      <TabPanel value={activeTab} index={2}>
+        <S.InfoList>
+          <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
+            <div>학생 이름</div>
+            <div>지역</div>
+            <div>날짜</div>
+            <div>확인</div>
+          </S.InfoItem>
+        </S.InfoList>
+        <ContentsDataBox>
+          {matchList &&
+            matchList
+              .filter((item: Views<'matching_tutor_data'>) => {
+                return item.status === 'reject' || 'complete';
+              })
+              .map((item: Views<'matching_tutor_data'>) => {
+                return (
+                  <S.InfoList key={item.id}>
+                    <S.InfoItem>
+                      <div>{item.student_name}</div>
+                      <div>
+                        {item.student_lc_1_gugun}
+                        <br />
+                        {item.student_lc_2_gugun}
+                      </div>
+                      <div>{item.created_at ? item.created_at.split('T')[0] : '날짜 없음'}</div>
+                      <div>{item.status === 'reject' ? '매칭취소' : '매칭완료'}</div>
                     </S.InfoItem>
                   </S.InfoList>
                 );

@@ -11,8 +11,9 @@ export const TutorContainer = styled(Link)`
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     width: 100%;
-    height: 230px;
+    height: 280px;
     object-fit: cover;
+    object-position: top;
   }
 `;
 
@@ -43,14 +44,13 @@ export const Name = styled.div`
   display: block;
   overflow: hidden;
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 700;
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
 
 export const LocationDiv = styled.div`
   margin: 10px 0;
-  /* display: flex; */
   align-items: center;
   flex-wrap: wrap;
   font-size: 13px;
@@ -90,6 +90,6 @@ export const Tag = styled.div`
     padding: 0 11px;
     line-height: 26px;
     border-radius: 13px;
-    border: solid 1px #f3f3f3;
+    border: solid 1px #dbdbdb;
   }
 `;

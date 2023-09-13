@@ -14,7 +14,10 @@ ${reset}
         font-family: 'Noto Sans KR', sans-serif;
     }
     
-    body::-webkit-scrollbar, div::-webkit-scrollbar {
+    body::-webkit-scrollbar{
+        width: 10px;
+    }
+    div::-webkit-scrollbar  {
         width: 8px;
     }
 
@@ -24,11 +27,11 @@ ${reset}
     }
 
     body::-webkit-scrollbar-thumb {
-        background-color: #a1a1a1;
+        background-color: #ffe2c7;
         border-radius: 5px;
     }
     div::-webkit-scrollbar-thumb {
-        background-color: #ebdaca;
+        background-color: #ffe2c7;
         border-radius: 5px;
     }
 
@@ -58,8 +61,25 @@ ${reset}
         border: 0;
         background: transparent;
         cursor: pointer;
+        padding: 0;
     }
-    
+    img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    }
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
 `;
 
 export default GlobalStyles;

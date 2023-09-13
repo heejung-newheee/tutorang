@@ -1,13 +1,14 @@
 import { useSelector } from 'react-redux';
-import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm } from '..';
+import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm, TutorApplyDialog } from '..';
 import RetrievePendingTutorRegistration from '../../pages/auth/registTutorForm/RetrievePendingTutorRegistration';
 import YoutubeModal from '../../pages/main/youtube/YoutubeModal';
-import EditProfileForm from '../../pages/mypage/profileForm/EditProfileForm';
 import { RootState } from '../../redux/config/configStore';
 import ChatLocationModal from '../chat/modules/ChatLocationModal';
 import MatchedReviewForm from '../review/reviewForm/MatchedReviewForm';
 import * as S from './Modal.styled';
 import ModalPortal from './ModalPortal';
+import ChatPlayerDetailModal from '../chat/modules/ChatPlayerDetailModal';
+import DashboardReport from '../dialog/report/DashboardReport';
 
 const GlobalModal = () => {
   const { type, isOpen } = useSelector((state: RootState) => state.modal);
@@ -22,10 +23,12 @@ const GlobalModal = () => {
     reviewUpdate: 'reviewUpdate',
     navbabr: 'navbabr',
     matchedReviewCreate: 'matchedReviewCreate',
-    editProfiles: 'editProfiles',
     reviewYoutube: 'reviewYoutube',
     retrievePendingTutorRegistForm: 'retrievePendingTutorRegistForm',
     chatLocationModal: 'chatLocationModal',
+    chatPlayerDetailModal: 'chatPlayerDetailModal',
+    tutorApplyInfo: 'tutorApplyInfo',
+    dashboardReport: 'dashboardReport',
   };
 
   const MODAL_COMPONENTS = [
@@ -57,10 +60,7 @@ const GlobalModal = () => {
       type: MODAL_TYPES.reviewUpdate,
       component: <ReviewUpdateForm />,
     },
-    {
-      type: MODAL_TYPES.editProfiles,
-      component: <EditProfileForm />,
-    },
+
     {
       type: MODAL_TYPES.reviewYoutube,
       component: <YoutubeModal />,
@@ -72,6 +72,18 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.chatLocationModal,
       component: <ChatLocationModal />,
+    },
+    {
+      type: MODAL_TYPES.chatPlayerDetailModal,
+      component: <ChatPlayerDetailModal />,
+    },
+    {
+      type: MODAL_TYPES.tutorApplyInfo,
+      component: <TutorApplyDialog />,
+    },
+    {
+      type: MODAL_TYPES.dashboardReport,
+      component: <DashboardReport />,
     },
   ];
 

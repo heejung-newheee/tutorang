@@ -18,13 +18,13 @@ const CreateAdditionalInformationForm = () => {
 
   const [email, setEmail] = useState('');
 
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState(user?.username || '');
   const [validUsername, setValidUsername] = useState(false);
 
   const [checkedGender, setCheckedGender] = useState({ female: false, male: false });
   const [validGender, setValidGender] = useState(false);
 
-  const [location, setLoaction] = useState({ sido1: '1지역 시/도 선택', gugun1: '1지역 구/군 선택', sido2: '2지역 시/도 선택', gugun2: '2지역 구/군 선택' });
+  const [location, setLoaction] = useState({ sido1: '시/도 선택', gugun1: '구/군 선택', sido2: '시/도 선택', gugun2: '구/군 선택' });
   const [validLocation, setValidLocation] = useState(false);
 
   const [birth, setBirth] = useState({
@@ -55,14 +55,13 @@ const CreateAdditionalInformationForm = () => {
   }, [checkedGender]);
 
   useEffect(() => {
-    const checkedValidLocation1 = location.sido1 !== '시/도 선택' && location.sido1 !== '전체' && location.gugun1 !== '구/군 선택';
-    const checkedValidLocation2 = location.sido2 !== '시/도 선택' && location.sido2 !== '전체' && location.gugun2 !== '구/군 선택';
+    const checkedValidLocation1 = location.sido1 !== '시/도 선택' && location.gugun1 !== '구/군 선택';
+    const checkedValidLocation2 = location.sido2 !== '시/도 선택' && location.gugun2 !== '구/군 선택';
     const checkedSameLocation = location.sido1 === location.sido2 && location.gugun1 === location.gugun2;
     setValidLocation(checkedValidLocation1 && checkedValidLocation2 && !checkedSameLocation);
   }, [location]);
 
   const now = new Date();
-
   const calculateAge = () => {
     const thisYear = now.getFullYear();
     const thisMonth = now.getMonth() + 1;
@@ -106,9 +105,9 @@ const CreateAdditionalInformationForm = () => {
         data: { role: 'student' },
       });
       if (ErrorOfUpdatingProfile) {
-        console.log(ErrorOfUpdatingProfile, ErrorOfUpdatingProfile.message);
+        console.error(ErrorOfUpdatingProfile, ErrorOfUpdatingProfile.message);
       } else if (ErrorOfUpdatingAuth) {
-        console.log(ErrorOfUpdatingAuth, ErrorOfUpdatingAuth.message);
+        console.error(ErrorOfUpdatingAuth, ErrorOfUpdatingAuth.message);
         alert('회원가입 실패');
       } else {
         alert('추가정보 입력이 완료됐습니다. 더 다양한 기능을 이용해보세요~');
@@ -116,6 +115,13 @@ const CreateAdditionalInformationForm = () => {
       }
     }
   };
+  let isHereguidemessage = '';
+  if (location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2) {
+    isHereguidemessage = '중복 지역선택 불가';
+  } else if (location.sido1 === '시/도 선택' || location.sido2 === '시/도 선택' || location.gugun1 === '구/군 선택' || location.gugun2 === '구/군 선택') {
+    isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
+  }
+
   if (!user) return <div>로딩중</div>;
 
   return (
@@ -145,17 +151,14 @@ const CreateAdditionalInformationForm = () => {
             <label htmlFor="username">
               <SFormItemTitle>이름</SFormItemTitle>
             </label>
-            <SInput type="text" id="username" onChange={(e) => setUsername(e.target.value)} required placeholder="실명을 입력하세요" autoComplete="off" />
+            <SInput type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required placeholder="실명을 입력하세요" autoComplete="off" />
             <SPGuideMessage>{!!username && !validUsername && '2자 이상 6자미만의 한국실명 또는 2자이상 20자 미만의 영문실명을 입력하세요.'}</SPGuideMessage>
           </SFormItem>
 
           <SFormItem>
             <SFormItemHeader>
               <SFormItemTitle>활동선호지역</SFormItemTitle>
-              <SPGuideMessage>
-                {location.sido1 !== '시/도 선택' && location.sido2 !== '시/도 선택' && location.sido1 === location.sido2 && location.gugun1 === location.gugun2 && '중복 지역선택 불가'}
-                {(location.sido1 === '전체' || location.sido2 === '전체') && '지역1, 지역2 모두 특정지역 선택 필수'}
-              </SPGuideMessage>
+              <SPGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</SPGuideMessage>
             </SFormItemHeader>
             <SFormItemBody>
               <SFormItemBodySection>

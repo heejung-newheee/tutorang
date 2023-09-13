@@ -1,81 +1,34 @@
 import styled from 'styled-components';
 import { colors } from '../../../style/theme/colors';
 
-export const ContentsDataBox = styled.div`
-  max-height: 600px;
-  overflow-y: scroll;
-`;
-export const DataList = styled.ul``;
-export const DataItem = styled.li`
-  margin: 10px 0;
-  padding: 35px;
-  border-radius: 8px;
-  background-color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 17px;
-`;
-
-export const DataTitle = styled.h3`
-  font-size: 21px;
-  font-weight: bold;
-  margin: 0 0 20px 0;
-`;
-
-export const DataContent = styled.p`
-  font-size: 16px;
-  margin: 0 0 25px 0;
-`;
-
-export const DataAuth = styled.p`
-  font-size: 13px;
-  color: #999;
-`;
-export const DataStar = styled.div`
-  img {
-    width: 16px;
-    filter: invert(48%) sepia(0%) saturate(2647%) hue-rotate(312deg) brightness(93%) contrast(76%);
-  }
-`;
-export const ReviewRating = styled.div`
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 5px;
-  img {
-    width: 30px;
-    filter: invert(78%) sepia(45%) saturate(4904%) hue-rotate(337deg) brightness(102%) contrast(99%);
-  }
-`;
-
-export const MypageContainer = styled.section`
+export const ProfileSection = styled.section`
   margin-top: 70px;
+  background-color: ${colors.primary};
+  border-radius: 0 0 40px 40px;
+  @media only screen and (max-width: 1024px) {
+    border-radius: 0 0 20px 20px;
+  }
   @media all and (max-width: 768px) {
     margin-top: 50px;
+    border-radius: 0 0 0 0;
   }
 `;
-export const ProfileBox = styled.section`
-  text-align: center;
-  background-color: ${colors.primary};
+
+export const ProfileBox = styled.div`
   position: relative;
   height: 528px;
   padding-top: 45px;
-  border-radius: 0 0 40px 40px;
+  text-align: center;
   @media only screen and (max-width: 1024px) {
-    padding-top: 30px;
     height: 350px;
-    border-radius: 0 0 20px 20px;
+    padding-top: 30px;
   }
   @media only screen and (max-width: 768px) {
     padding-top: 25px;
     height: 269px;
-    border-radius: 0 0 0 0;
   }
 `;
-export const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-`;
+
 export const ProfileImg = styled.div`
   width: 236px;
   height: 236px;
@@ -111,6 +64,7 @@ export const EditBtn = styled.button`
   img {
     width: 100%;
     height: 100%;
+    padding: 6px;
     object-fit: contain;
   }
   @media only screen and (max-width: 1024px) {
@@ -128,13 +82,13 @@ export const EditBtn = styled.button`
 `;
 export const UserName = styled.p`
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 700;
   margin: 17px 0;
   color: #fff;
   span {
     font-size: 13px;
     line-height: 1;
-    font-weight: bold;
+    font-weight: 700;
     color: #e5e5e5;
   }
   @media only screen and (max-width: 768px) {
@@ -196,7 +150,7 @@ export const SummaryItem = styled.div`
   p:first-child {
     padding-bottom: 30px;
     font-size: 31px;
-    font-weight: bold;
+    font-weight: 700;
     @media screen and (max-width: 1024px) {
       padding-bottom: 14px;
       font-size: 20px;
@@ -208,51 +162,7 @@ export const SummaryItem = styled.div`
   p:last-child {
     font-size: 13px;
     @media screen and (max-width: 1024px) {
-      font-size: 10px;
+      font-size: 12px;
     }
-  }
-`;
-
-export const InfoSection = styled.section`
-  background-color: ${colors.gray_100};
-  padding: 55px 10px;
-  margin: 40px 0;
-`;
-
-export const InfoTitle = styled.h2`
-  font-size: 28px;
-  line-height: 1;
-  font-weight: bold;
-  margin-bottom: 40px;
-  padding-left: 15px;
-  border-left: solid 6px ${colors.primary};
-`;
-export const InfoNull = styled.p`
-  color: #bebebe;
-`;
-export const MatchBtn = styled.button`
-  display: inline-block;
-  font-size: 16px;
-  line-height: 32px;
-  padding: 0 18px;
-  margin: 0 5px;
-  border-radius: 20px;
-  border: solid 1px #000;
-  transition: all 0.3s;
-  &:hover {
-    background-color: ${colors.primary};
-    color: #fff;
-    border: solid 1px ${colors.primary};
-  }
-  @media screen and (max-width: 1024px) {
-    padding: 0 15px;
-    margin: 3px 0;
-  }
-`;
-
-export const EmptyMypage = styled.div`
-  height: 120px;
-  @media screen and (max-width: 1024px) {
-    height: 50px;
   }
 `;
