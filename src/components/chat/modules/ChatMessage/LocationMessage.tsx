@@ -1,33 +1,22 @@
 import KaKaoStaticMap from '../KaKaoStaticMap';
 import { Tables } from '../../../../supabase/database.types';
 import { LocationDataType } from '../../../../api/chat';
-import styled from 'styled-components';
+import * as S from './LocationMessage.styled';
 
 const LocationMessage = ({ message }: { message: Tables<'chat_messages'> }) => {
-  const data = message.data as LocationDataType;
+  const { latitude, longitude, name } = message.data as LocationDataType;
 
   return (
-    <div style={{ border: '1px solid #ccc', borderRadius: '10px', overflow: 'hidden', width: '200px' }}>
-      <KaKaoStaticMap latitude={data.latitude} longitude={data.longitude} />
-      <div style={{ padding: '10px' }}>
-        <p style={{}}>{data.name}</p>
-        <FindRouteLink href={`https://map.kakao.com/link/to/${data.name},${data.latitude},${data.longitude}`} target="_blank">
+    <S.Container>
+      <KaKaoStaticMap latitude={latitude} longitude={longitude} />
+      <S.InfoContainer>
+        <S.Name>{name}</S.Name>
+        <S.FindRouteLink href={`https://map.kakao.com/link/to/${name},${latitude},${longitude}`} target="_blank">
           길찾기
-        </FindRouteLink>
-      </div>
-    </div>
+        </S.FindRouteLink>
+      </S.InfoContainer>
+    </S.Container>
   );
 };
 
 export default LocationMessage;
-
-const FindRouteLink = styled.a`
-  display: inline-block;
-  width: 100%;
-  text-align: center;
-  border-radius: 10px;
-  margin-top: 10px;
-  font-size: 1rem;
-  padding: 10px;
-  background-color: rgb(238, 238, 238);
-`;

@@ -10,17 +10,31 @@ const getTimeText = (isoDateString: string) => {
   return new Intl.DateTimeFormat(navigator.language, options).format(isoDate);
 };
 
-export const ChatMessage = ({ message, isMine }: { message: Tables<'chat_messages'>; isMine: boolean }) => {
-  let messageContent = <></>;
+type ChatMessageProps = {
+  message: Tables<'chat_messages'>;
+  isMine: boolean;
+};
 
-  if (!message.type) messageContent = <S.ChatTextMessageContent $isMine={isMine}>{message.content}</S.ChatTextMessageContent>;
-  else if (['request', 'pending', 'accept', 'reject'].includes(message.type)) {
-    messageContent = <TutoringMessage message={message} />;
-  } else if (message.type === 'image') {
-    messageContent = <ImageMessage message={message} />;
-  } else if (message.type === 'location') {
-    messageContent = <LocationMessage message={message} />;
+const ChatMessage = ({ message, isMine }: ChatMessageProps) => {
+  let messageContent;
+
+  switch (message.type) {
+    case 'request':
+    case 'pending':
+    case 'accept':
+    case 'reject':
+      messageContent = <TutoringMessage message={message} />;
+      break;
+    case 'image':
+      messageContent = <ImageMessage message={message} />;
+      break;
+    case 'location':
+      messageContent = <LocationMessage message={message} />;
+      break;
+    default:
+      messageContent = <S.ChatTextMessageContent $isMine={isMine}>{message.content}</S.ChatTextMessageContent>;
   }
+
   return (
     <S.ChatMessage $isMine={isMine} $isCustom={!!message.type}>
       {messageContent}
@@ -28,3 +42,5 @@ export const ChatMessage = ({ message, isMine }: { message: Tables<'chat_message
     </S.ChatMessage>
   );
 };
+
+export default ChatMessage;

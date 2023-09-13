@@ -1,11 +1,19 @@
-import { Tables } from '../../../../supabase/database.types'
+import { Tables } from '../../../../supabase/database.types';
 import { ImageDataType } from '../../../../api/chat';
+import * as S from './ImageMessages.styled';
 
-const ImageMessage = ({message}: {message: Tables<'chat_messages'>}) => {
-  const data = message.data as ImageDataType;
+type Props = {
+  message: Tables<'chat_messages'>;
+};
+
+const ImageMessage = ({ message }: Props) => {
+  const { imageUrl } = message.data as ImageDataType;
+
   return (
-    <div><img width={200} src={data['imageUrl']} style={{borderRadius:'10px',objectFit:'cover'}}/></div>
-  )
-}
+    <div>
+      <S.ImageMessages src={imageUrl} alt="message image" width={200} />
+    </div>
+  );
+};
 
-export default ImageMessage
+export default ImageMessage;

@@ -8,6 +8,29 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
+export const NoRoomContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+`;
+
+export const NoRoomText = styled.p`
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #808080;
+`;
+
+export const HeaderLeft = styled.div``;
+
+export const HeaderCenter = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  overflow: hidden;
+`;
+
 export const Header = styled.div`
   display: flex;
   justify-content: space-between;
@@ -50,6 +73,30 @@ export const ChatList = styled.ul`
   overflow-y: auto;
 `;
 
+export const ChatDate = styled.li`
+  text-align: center;
+  position: relative;
+`;
+
+export const ChatDateDivider = styled.hr`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  height: 1px;
+  border: none;
+  border-top: 1px solid #ccc;
+`;
+
+export const ChatDateText = styled.span`
+  color: #808080;
+  z-index: 1;
+  position: relative;
+  background-color: #ffffff;
+  padding: 0 0.5rem;
+`;
+
 export const InputArea = styled.div`
   padding: 0.625rem 1rem;
   width: 100%;
@@ -63,34 +110,37 @@ export const FormInner = styled.div`
   gap: 1rem;
 `;
 
-export const InputMenuButton =styled.button<{$isOpen: boolean}>`
+export const InputMenuButton = styled.button<{ $isOpen: boolean }>`
   display: flex;
   padding: 0.5rem;
   border-radius: 50%;
   transition: transform 200ms;
-  ${({$isOpen})=> $isOpen && css`transform:rotate(135deg);`}
+  ${({ $isOpen }) =>
+    $isOpen &&
+    css`
+      transform: rotate(135deg);
+    `}
 
   &:hover,
   &:focus,
   &:focus-within {
     background-color: #eee;
   }
-`
+`;
 
-export const InputMenu = styled.div<{$isOpen: boolean}>`
-
+export const InputMenu = styled.div<{ $isOpen: boolean }>`
   width: 100%;
-  height: ${({$isOpen}) => $isOpen ? '100px' : '0'};
+  height: ${({ $isOpen }) => ($isOpen ? '100px' : '0')};
   transition: height 200ms ease-out;
   overflow: hidden;
-`
+`;
 
-export const InputMenuInner =styled.div`
+export const InputMenuInner = styled.div`
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 2rem;
-`
+`;
 
 export const InputMenuButtonItem = styled.button`
   padding: 0;
@@ -102,7 +152,7 @@ export const InputMenuButtonItem = styled.button`
   &:focus-within {
     background-color: #eee;
   }
-`
+`;
 
 export const MessageInput = styled.input`
   font-size: 1rem;
@@ -146,4 +196,4 @@ export const IconButton = styled.button`
   &:focus-within {
     background-color: #e7e7e7;
   }
-`
+`;
