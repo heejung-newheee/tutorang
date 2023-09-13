@@ -32,7 +32,14 @@ export const OutermostContainer = styled.div`
 export const TableContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  padding: 0px 20px;
+  @media screen and (max-width: 420px) {
+    font-size: 15px;
+  }
+  @media screen and (max-width: 300px) {
+    font-size: 13px;
+    padding: 0px 10px;
+  }
 `;
 
 export const Thead = styled.thead`
@@ -46,11 +53,15 @@ export const Thead = styled.thead`
 
 export const Tbody = styled.tbody`
   width: 100%;
+  & th {
+    font-weight: 600;
+  }
   & tr {
     border-bottom: 1px solid #eee;
   }
   & td {
-    padding: 15px 0px;
+    padding: 17px 0px;
+    border-bottom: 1px solid #eee;
   }
   & td:nth-child(2) {
     text-align: start;
@@ -101,5 +112,24 @@ export const ContentArea = styled.div`
     & img {
       max-width: 240px;
     }
+  }
+`;
+
+export const PartitionLine = styled.div`
+  height: 3px;
+  width: 100%;
+  background-color: #eee;
+  margin: 15px 0px;
+`;
+
+export const ButtonsWrapper = styled.div`
+  box-sizing: border-box;
+  padding: 10px 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  & div > button {
+    margin-left: 10px;
   }
 `;

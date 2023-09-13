@@ -63,9 +63,9 @@ const DetailCustomerSupport = () => {
     navigate(`/edit-inquiry/${inquiryData.id}`, { state: inquiryData });
   };
   return (
-    <S.DetailCustomerSupportContainer>
-      <S.TableContainer $role={'customer'}>
-        <S.Table>
+    <C.OutermostContainer>
+      <C.TableContainer>
+        <C.Table>
           <S.Caption>1:1 상담 목록 상세보기</S.Caption>
           <S.Colgroup>
             <col />
@@ -73,7 +73,7 @@ const DetailCustomerSupport = () => {
             <col />
             <col />
           </S.Colgroup>
-          <tbody>
+          <C.Tbody>
             <tr>
               <th>제목</th>
               <td colSpan={3}>{inquiryData.title}</td>
@@ -90,24 +90,24 @@ const DetailCustomerSupport = () => {
             </tr>
             <tr>
               <td colSpan={4}>
-                <S.ContentArea>
+                <C.ContentArea>
                   <div dangerouslySetInnerHTML={{ __html: inquiryData.content || '' }}></div>
-                </S.ContentArea>
+                </C.ContentArea>
               </td>
             </tr>
-          </tbody>
-        </S.Table>
-      </S.TableContainer>
-
-      <S.TableContainer $role={'$administrator'}>
+          </C.Tbody>
+        </C.Table>
+      </C.TableContainer>
+      <C.PartitionLine />
+      <C.TableContainer>
         {replyData.length !== 0 ? (
-          <S.Table>
+          <C.Table style={{ borderTop: '1px solid #eee' }}>
             <S.Caption>1:1 관리자 답변 등록 상세보기</S.Caption>
             <S.Colgroup>
               <col />
               <col />
             </S.Colgroup>
-            <tbody>
+            <C.Tbody>
               <tr>
                 <th>답변자</th>
                 <td>tutorang</td>
@@ -118,24 +118,31 @@ const DetailCustomerSupport = () => {
               </tr>
               <tr>
                 <td colSpan={2}>
-                  <S.ContentArea>
+                  <C.ContentArea>
                     <div>
                       <p>{replyData[0].content}</p>
                     </div>
-                  </S.ContentArea>
+                  </C.ContentArea>
                 </td>
               </tr>
-            </tbody>
-          </S.Table>
+            </C.Tbody>
+          </C.Table>
         ) : (
           <S.ReplacementContainer>
             <p>빠른 시간 내에 답변드리겠습니다! 잠시만 기다려 주세요!</p>
           </S.ReplacementContainer>
         )}
-      </S.TableContainer>
+      </C.TableContainer>
 
+<<<<<<< HEAD
       <S.ButtonsWrapper>
         <C.ButtonCS to={'/customer-service/customer-support'}>목록</C.ButtonCS>
+=======
+      <C.PartitionLine />
+
+      <C.ButtonsWrapper>
+        <C.ButtonCS onClick={() => navigate('/customer-service/customer-support')}>목록</C.ButtonCS>
+>>>>>>> a22227bacd6e4f67292ba6e5cd0d0a82b6bee58b
         <div>
           {replyData.length === 0 && (
             <>
@@ -148,8 +155,8 @@ const DetailCustomerSupport = () => {
             </>
           )}
         </div>
-      </S.ButtonsWrapper>
-    </S.DetailCustomerSupportContainer>
+      </C.ButtonsWrapper>
+    </C.OutermostContainer>
   );
 };
 

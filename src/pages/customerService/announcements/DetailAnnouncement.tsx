@@ -12,13 +12,13 @@ const DetailAnnouncement = () => {
   return (
     <C.OutermostContainer>
       <C.TableContainer>
-        <C.Tbody>
+        <C.Table>
           <C.Caption>공지사항 상세게시물</C.Caption>
           <S.Colgroup>
             <col />
             <col />
           </S.Colgroup>
-          <C.Tbody>
+          <S.Tbody>
             <tr>
               <th>제목</th>
               <td>{data.title}</td>
@@ -29,17 +29,22 @@ const DetailAnnouncement = () => {
             </tr>
             <tr>
               <td colSpan={2}>
-                <S.ContentArea>
-                  <div dangerouslySetInnerHTML={{ __html: data.content || '' }}></div>
-                </S.ContentArea>
+                <S.ContentArea dangerouslySetInnerHTML={{ __html: data.content || '' }}></S.ContentArea>
               </td>
             </tr>
-          </C.Tbody>
-        </C.Tbody>
+          </S.Tbody>
+        </C.Table>
       </C.TableContainer>
+<<<<<<< HEAD
       <div>
         <C.ButtonCS to={'/customer-service/announcements'}>목록</C.ButtonCS>
       </div>
+=======
+      <C.PartitionLine />
+      <C.ButtonsWrapper>
+        <C.ButtonCS onClick={moveToPageForAnnouncementListManage}>목록</C.ButtonCS>
+      </C.ButtonsWrapper>
+>>>>>>> a22227bacd6e4f67292ba6e5cd0d0a82b6bee58b
     </C.OutermostContainer>
   );
 };

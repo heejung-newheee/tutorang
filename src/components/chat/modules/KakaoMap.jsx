@@ -1,8 +1,18 @@
+<<<<<<< HEAD
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import useThrottle from '../../../hooks/usethrottle';
 import './KaKaoMap.css';
 const { kakao } = window;
+=======
+import { useCallback, useEffect, useRef, useState, memo } from "react"
+import './KaKaoMap.css'
+import useThrottle from "../../../hooks/usethrottle"
+import * as S from './KaKaoMap.styled'
+import { HiMagnifyingGlass } from "react-icons/hi2"
+import Marker from "./Marker"
+const { kakao } = window
+>>>>>>> a22227bacd6e4f67292ba6e5cd0d0a82b6bee58b
 
 const KakaoMap = ({ onChange }) => {
   const mapRef = useRef(null);
@@ -41,9 +51,15 @@ const KakaoMap = ({ onChange }) => {
   }, []);
 
   function searchAddrFromCoords(coords, callback) {
+<<<<<<< HEAD
     // 좌표로 행정동 주소 정보를 요청합니다
     if (!geocoderRef.current) return;
     geocoderRef.current.coord2Address(coords.getLng(), coords.getLat(), callback);
+=======
+
+    if(!geocoderRef.current) return
+    geocoderRef.current.coord2Address(coords.getLng(), coords.getLat(), callback);         
+>>>>>>> a22227bacd6e4f67292ba6e5cd0d0a82b6bee58b
   }
 
   useEffect(() => {
@@ -91,6 +107,7 @@ const KakaoMap = ({ onChange }) => {
     searchPlaces(debouncedValue);
   }, [debouncedValue, searchPlaces]);
 
+<<<<<<< HEAD
   return (
     <Container>
       <MapContainer id="map" style={{}}>
@@ -171,3 +188,29 @@ const Marker = ({ map, place }) => {
 
   return null;
 };
+=======
+  return(<S.Container>
+    <S.MapContainer 
+      id="map"
+    >
+       {!isLoading &&  selectedLocation && <Marker map={mapRef.current} place={selectedLocation}/>} 
+    </S.MapContainer>
+    <S.SearchContainer >
+
+      <S.SearchBar>
+      <S.SearchIcon><HiMagnifyingGlass size={20} color={'#8f8f8f'}/></S.SearchIcon>
+      <label className="sr-only">위치 검색</label>
+      <S.LocationInput placeholder="위치를 입력해주세요" type='text' value={inputKeyword} onChange={(e)=>setInputKeyword(e.target.value)} />
+      </S.SearchBar>
+
+      <S.PlaceList>
+        {placesResult.map((place)=> <S.ListItem key={`${place.latitude},${place.longitude}`} onClick={()=>setSelectLocation(place)}>{place.name}</S.ListItem>)}
+      </S.PlaceList>
+
+    </S.SearchContainer>
+  </S.Container>)
+}
+
+const MemoizedKakaoMap = memo(KakaoMap)
+export default MemoizedKakaoMap;
+>>>>>>> a22227bacd6e4f67292ba6e5cd0d0a82b6bee58b

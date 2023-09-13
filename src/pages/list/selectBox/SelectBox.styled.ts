@@ -89,7 +89,7 @@ const slideUp = keyframes`
   }
 `;
 
-export const InnerHidden = styled.div<{ $isChevronOpen: boolean; $dddddd: boolean }>`
+export const InnerHidden = styled.div<{ $isChevronOpen: boolean }>`
   width: 100%;
   margin: 20px 0;
   padding: 0 20px;
@@ -111,7 +111,7 @@ export const InnerHidden = styled.div<{ $isChevronOpen: boolean; $dddddd: boolea
   }
 `;
 
-export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean; $dddddd: boolean }>`
+export const InnerHiddenPrice = styled.div<{ $isChevronOpen: boolean }>`
   width: 100%;
   margin: 30px 0;
   padding: 0 20px;
