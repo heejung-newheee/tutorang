@@ -70,8 +70,6 @@ const ChatContextProvider = ({ children, userId }: { children: React.ReactNode; 
     handleGetChatRooms();
   }, [handleGetChatRooms]);
 
-  useEffect(() => {}, [room_id]);
-
   useEffect(() => {
     if (!chatRoom) return;
     chatRoomIdRef.current = chatRoom.room_id;
