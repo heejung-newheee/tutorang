@@ -62,6 +62,7 @@ const List = () => {
         return null;
       }
       if (observer.current) observer.current.disconnect();
+
       observer.current = new IntersectionObserver((entries, _) => {
         if (entries[0].isIntersecting) {
           fetchNextPage();

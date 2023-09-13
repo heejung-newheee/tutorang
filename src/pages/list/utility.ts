@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { SelectedFilters } from '../../@types/list/listType';
+import { Price, SelectedFilters } from '../../@types/list/listType';
 
 export const handleAgeNum = (item: string) => {
   let ageNum = 0;
@@ -131,6 +131,17 @@ export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateActio
     setSelectedArr((pre) => [...pre.filter((item) => item[0] !== 'location2'), ['location2', checkedGunGu]]);
   }
   return;
+};
+
+export const handlePriceFilter = (item: Price, setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
+  if (item.optionPrice === '전체') {
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: item.min });
+    setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
+  } else {
+    setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, maxPrice: item.max, minPrice: item.min });
+    setSelectedArr((pre) => pre.filter((item) => item[0] !== 'price'));
+    setSelectedArr((pre) => [...pre, ['price', item.optionPrice]]);
+  }
 };
 
 export const handleDeleteFilterBar = (item: string[], setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
