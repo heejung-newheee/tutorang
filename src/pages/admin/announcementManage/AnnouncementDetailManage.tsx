@@ -9,10 +9,7 @@ const AnnouncementDetailManage = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const announcementId = useLocation().pathname.split('/')[3];
-  console.log(announcementId);
-  // const announcementId = pathdata.state.id;
   const { data } = useQuery([ONE_ANNOUNCEMENT_QUERY_KEY, announcementId], () => getOneAnnouncement(announcementId), { enabled: !!announcementId });
-  console.log(data);
 
   const deleteAnnouncementMutation = useMutation(async (announcementId: string) => deleteAnnouncement(announcementId), {
     onSuccess: () => {
@@ -20,7 +17,7 @@ const AnnouncementDetailManage = () => {
       queryClient.invalidateQueries([ONE_ANNOUNCEMENT_QUERY_KEY]);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
 
@@ -36,7 +33,7 @@ const AnnouncementDetailManage = () => {
     try {
       await deleteAnnouncementMutation.mutate(announcementId);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     navigate('/admin/announcements-manage');
   };

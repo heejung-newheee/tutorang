@@ -5,19 +5,11 @@ export const DetailCustomerSupportContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  /* gap: 5px; */
 `;
-
-// 임시
 
 export const TableContainer = styled.div<{ $role: string }>`
   box-sizing: border-box;
   width: 100%;
-  /* height: 100%;
-  max-height: ${({ $role }) => {
-    if ($role === 'customer') return '80%';
-    else return '20%';
-  }}; */
   padding: 20px;
   @media screen and (max-width: 420px) {
     font-size: 15px;

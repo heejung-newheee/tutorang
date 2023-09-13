@@ -20,13 +20,6 @@ const Checkbox: React.FC<CheckboxType> = ({ $checkboxType, option, handleChecked
     if (checkItems.length >= 3 && event.target.checked === true) return false;
     setChecked(!checked);
     handleCheckedItems($checkboxType, event.target.value, event.target.checked);
-
-    // if ((checkItems.length <= 3 && event.target.checked === false) || (checkItems.length < 3 && event.target.checked === true)) {
-    //   setChecked(!checked);
-    //   handleCheckedItems($checkboxType, event.target.value, event.target.checked);
-    // } else {
-    //   return false;
-    // }
   };
 
   return (

@@ -23,7 +23,6 @@ export const DataItem = styled.li`
   position: relative;
   margin: 10px 0;
   padding: 35px;
-  /* border-radius: 8px; */
   background-color: #fff;
   display: flex;
   flex-wrap: wrap;
@@ -44,7 +43,7 @@ export const DataItem = styled.li`
 
 export const DataTitle = styled.h3`
   font-size: 21px;
-  font-weight: bold;
+  font-weight: 700;
   margin: 0 0 20px 0;
   @media all and (max-width: 768px) {
     font-size: 18px;
@@ -100,7 +99,7 @@ export const InfoSection = styled.section`
 export const InfoTitle = styled.h2`
   font-size: 28px;
   line-height: 1;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 40px;
   padding-left: 15px;
   border-left: solid 6px ${colors.primary};

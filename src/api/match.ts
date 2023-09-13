@@ -26,8 +26,6 @@ export const matchingRequest = async ({ tutorId, userId }: { tutorId: string; us
   }
   if (data.length > 0) {
     throw new Error('이미 요청한 튜터입니다.');
-
-    // 여기서 메세지를 보내줘야하나?
   } else {
     // 요청된 내역이 없을 경우 요청
     const { error: insertError } = await supabase.from('matching').insert([

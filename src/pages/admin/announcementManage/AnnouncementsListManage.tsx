@@ -9,7 +9,6 @@ import * as C from './ManageAnnouncementCommon.style';
 const AnnouncementsListManage = () => {
   const navigate = useNavigate();
   const { data } = useQuery([ANNOUNCEMENTS_QUERY_KEY], getAllAnnouncements);
-  console.log(data);
 
   const moveToPageForCreateAnnouncementForm = () => navigate('/admin-form/create-announcement');
   const [sort, setSort] = useState({

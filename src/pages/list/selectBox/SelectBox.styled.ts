@@ -139,7 +139,7 @@ export const PriceClassType = styled.div`
   margin-bottom: 20px;
   display: flex;
   align-items: center;
-  font-weight: 800;
+  font-weight: 700;
   color: ${colors.primary};
 
   & > div > span {

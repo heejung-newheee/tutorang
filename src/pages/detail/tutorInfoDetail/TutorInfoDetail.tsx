@@ -26,7 +26,6 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
   const { data: tutor, isLoading: tutorLoading, isError: tutorError, error } = useQuery([TUTOR_QUERY_KEY, id], () => matchTutor(id));
   const matchingCount = useQuery([MATCHING_QUERY_KEY, id], () => tutorMatchedCount(id));
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log(loginUser);
   const navigate = useNavigate();
 
   const handleStartChat = async (tutorId: string) => {

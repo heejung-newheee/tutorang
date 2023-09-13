@@ -141,9 +141,9 @@ const SignInForm = () => {
       </SPartitionLine>
       <SFooter>
         <SsnsIconContainer>
-          <SsnsIcon src={kakaotalk} onClick={() => kakaoLogin()} />
-          <SsnsIcon src={googleicon} $iconType={'google'} onClick={() => googleLogin()} />
-          <SsnsIcon src={navericon} onClick={() => naverLogin()} />
+          <SsnsIcon src={kakaotalk} onClick={() => kakaoLogin()} alt="kakao login" />
+          <SsnsIcon src={googleicon} $iconType={'google'} onClick={() => googleLogin()} alt="google login" />
+          <SsnsIcon src={navericon} onClick={() => naverLogin()} alt="naver login" />
         </SsnsIconContainer>
       </SFooter>
     </SContainer>

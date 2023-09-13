@@ -72,25 +72,3 @@ export const MatchBtn = styled.button`
     font-size: 12px;
   }
 `;
-
-// export const ReviewBtn = styled.button`
-//   font-size: 14px;
-//   line-height: 26px;
-//   padding: 0 15px;
-//   border-radius: 20px;
-//   border: solid 1px #000;
-//   margin: 8px 2px;
-//   transition: all 0.3s;
-//   &.review-btn {
-//     color: ${colors.primary};
-//   }
-//   &:hover {
-//     border: solid 1px ${colors.primary};
-//     background-color: ${colors.primary};
-//     color: #fff;
-//   }
-//   @media only screen and (max-width: 768px) {
-//     width: 100%;
-//     font-size: 10px;
-//   }
-// `;

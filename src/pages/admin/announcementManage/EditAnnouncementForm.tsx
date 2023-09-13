@@ -42,7 +42,6 @@ const EditAnnouncementForm = () => {
     input.onchange = async () => {
       if (input.files) {
         const file = input.files[0];
-        console.log(file);
 
         try {
           const imgName = v4();
@@ -50,10 +49,6 @@ const EditAnnouncementForm = () => {
             cacheControl: '3600',
             upsert: true,
           });
-
-          // if (data !== null) {
-          //   console.log('이미지 URL:', data);
-          // }
           console.log(data, error);
 
           const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
@@ -88,20 +83,17 @@ const EditAnnouncementForm = () => {
     }),
     [],
   );
-  console.log(content);
   const handleSubmit = async () => {
     const updatedAnnouncement = {
       user_id: loginUser!.id,
       title,
       content,
     };
-    console.log(updatedAnnouncement);
     try {
       await editAnnouncementMutation.mutate({ announcementId, updatedAnnouncement });
     } catch (error) {
-      console.log('error submit inqury ', error);
+      console.error('error submit inqury ', error);
     }
-    // mutation.mutate(formData);
     navigate(`/admin/announcements-manage/${announcementId}`);
   };
 

@@ -23,12 +23,7 @@ export const profileImgUpload = async ({ id, img }: { id: string; img: File }) =
     const imgName = v4();
     const imgUpload = await supabase.storage.from('avatars').upload(`profiles/${id}/${imgName}`, img, {
       contentType: 'image/webp',
-      cacheControl: 'public, max-age=31536000', // 캐시 제어 설정
-      // transform: {
-      //   width: 500, // 원하는 너비로 변경
-      //   height: 600, // 원하는 높이로 변경
-      //   format: 'webp', // 이미지 포맷을 'webp'로 설정
-      // },
+      cacheControl: 'public, max-age=31536000',
     });
 
     if (imgUpload.error) throw new Error('프로필 이미지 업로드 실패');

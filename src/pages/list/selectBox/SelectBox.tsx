@@ -1,7 +1,6 @@
 import Checkbox from '@mui/material/Checkbox';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { filterIcon, icon_location } from '../../../assets';
-// import { Price, SelectedFilters, age, gender, handleAgeFilter, handleDeleteFilterBar, handleGenderFilter, handleLanguageFilter,  level, price, speakingLanguage } from '../components/list/utility';o
 import { age, gender, level, speakingLanguage } from '../../../constants/signup.constant';
 
 import { FilterMenuObj, Price, SelectedFilters } from '../../../@types/list/listType';

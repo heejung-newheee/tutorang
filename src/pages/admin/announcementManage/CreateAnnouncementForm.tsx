@@ -25,7 +25,7 @@ const CreateAnnouncementForm = () => {
       queryClient.invalidateQueries([ANNOUNCEMENTS_QUERY_KEY]);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
 
@@ -38,7 +38,6 @@ const CreateAnnouncementForm = () => {
     input.onchange = async () => {
       if (input.files) {
         const file = input.files[0];
-        console.log(file);
 
         try {
           const imgName = v4();
@@ -46,11 +45,6 @@ const CreateAnnouncementForm = () => {
             cacheControl: '3600',
             upsert: true,
           });
-
-          // if (data !== null) {
-          //   console.log('이미지 URL:', data);
-          // }
-          console.log(data, error);
 
           const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
 
@@ -67,7 +61,7 @@ const CreateAnnouncementForm = () => {
             }
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
     };
@@ -84,20 +78,17 @@ const CreateAnnouncementForm = () => {
     }),
     [],
   );
-  console.log(content);
   const handleSubmit = async () => {
     const formData = {
       user_id: loginUser!.id,
       title,
       content,
     };
-    console.log(formData);
     try {
       await createAnnouncementMutation.mutate(formData);
     } catch (error) {
-      console.log('error submit inqury ', error);
+      console.error('error submit inqury ', error);
     }
-    // mutation.mutate(formData);
     navigate('/admin/announcements-manage');
   };
 

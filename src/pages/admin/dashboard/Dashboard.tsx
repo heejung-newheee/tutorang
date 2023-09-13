@@ -1,17 +1,15 @@
+import { useEffect, useState } from 'react';
 import { TutorApply, TutorReport } from '../../../components/dashboard/modules';
-import { useState, useEffect } from 'react';
 import { getYearAndMonth } from '../../../utils/Date';
 import * as S from './Dashboard.styled';
-import NewMemberChart from './NewMemberChart';
 import MatchingChart from './MatchingChart';
+import NewMemberChart from './NewMemberChart';
 
 const Dashboard = () => {
   const [chartMonth, setChartMonth] = useState(getYearAndMonth());
   const [matchingChartMonth, setMatchingChartMonth] = useState(getYearAndMonth());
 
-  useEffect(() => {
-    console.log(chartMonth);
-  }, [chartMonth]);
+  useEffect(() => {}, [chartMonth]);
 
   return (
     <div>
@@ -19,9 +17,6 @@ const Dashboard = () => {
         <S.DashboardItem>
           <S.DashboardTopWrapper>
             <S.DashboardItemTitle>신규 가입자 현황</S.DashboardItemTitle>
-            {/* <S.ButtonTimeWrapper>
-              2023.9.7 <S.IconMonth src={icon_month} />
-            </S.ButtonTimeWrapper> */}
             <label htmlFor="yearMonth" className="sr-only">
               년도와 월 선택:
             </label>

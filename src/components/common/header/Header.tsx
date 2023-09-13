@@ -19,7 +19,7 @@ type HEADERMENU = { title: string; path: string }[];
 const HeaderMenu: HEADERMENU = [
   { title: '튜터찾기', path: '/list' },
   { title: '매칭후기', path: '/review' },
-  { title: '커뮤니티', path: '/community' },
+  { title: '커뮤니티', path: '/community/free/?q=1' },
   { title: '고객센터', path: '/customer-service/announcements' },
 ];
 
@@ -66,9 +66,7 @@ const Header = () => {
           <S.HeaderLeft>
             <S.LogoWrap to="/">
               <S.NavLogoImg src={logo04} alt="logo"></S.NavLogoImg>
-              {/* <S.LogoH1>튜터랑</S.LogoH1> */}
             </S.LogoWrap>
-            {/* 채팅 다른 곳으로 뺄꺼라 지금 당장은 HeaderMenu가 하나밖에 없어서 map 돌릴 필요가 없지만 곧 다른 카테고리도 넣을거라 일단 map 부분은 수정 안하고 남겨두겠습니다! */}
             <S.Gnb>
               {HeaderMenu.map((item, index) => (
                 <S.NavLinkSt key={index} to={item.path}>

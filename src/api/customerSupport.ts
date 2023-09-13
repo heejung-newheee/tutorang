@@ -16,12 +16,6 @@ export const CUSTOMER_SUPPORT_TABLE = 'customer_support';
 export const CUSTOMER_SUPPORT_QUERY_KEY = 'allCustomerSupport';
 export const ONE_CUSTOMER_INQUIRY_QUERY_KEY = 'oneTargetInquiry';
 
-// export const getAllInquiry = async (id: string) => {
-//   const { data, error } = await supabase.from(CUSTOMER_SUPPORT_TABLE).select(`*,user_id (profiles: id, username)`).eq('user_id', id).order('created_at', { ascending: false });
-
-//   if (error) throw error;
-//   return data;
-// };
 export const getAllInquiry = async (id: string) => {
   const { data, error } = await supabase.from(CUSTOMER_SUPPORT_TABLE).select(`*, profiles(inquiryUsername : username), customer_support_reply(*)`).eq('user_id', id).order('created_at', { ascending: false });
 

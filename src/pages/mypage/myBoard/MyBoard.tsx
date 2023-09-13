@@ -26,25 +26,7 @@ const MyBoard = () => {
     <InfoSection>
       <Container>
         <InfoTitle>내가 남긴 문의</InfoTitle>
-        <ContentsDataBox>
-          {boardData?.length > 0 ? boardData?.map((board) => <BoardItem key={Math.random() * 22229999} item={board} />) : <InfoNull>문의하신 내역이 없습니다</InfoNull>}
-          {/* 
-          {boardData?.length > 0 ? (
-            boardData.map((item: Tables<'write'>,index) => {
-              return (
-                <DataItem key={item.id} onClick={() => navigate(`/post/${item.id}`)}>
-                  <div>
-                    <DataTitle>{item.title}</DataTitle>
-                    <DataContent>{item.content}</DataContent>
-                    <DataAuth>{item.created_at.split('T')[0]}</DataAuth>
-                  </div>
-                </DataItem>
-              );
-            })
-          ) : (
-            <InfoNull>문의하신 내역이 없습니다</InfoNull>
-          )} */}
-        </ContentsDataBox>
+        <ContentsDataBox>{boardData?.length > 0 ? boardData?.map((board) => <BoardItem key={Math.random() * 22229999} item={board} />) : <InfoNull>문의하신 내역이 없습니다</InfoNull>}</ContentsDataBox>
       </Container>
     </InfoSection>
   );
