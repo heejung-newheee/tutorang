@@ -70,12 +70,15 @@ export const TableHead = styled.thead`
   color: #637381;
 
   & > tr > th {
+    background-color: #f4f6f8;
     padding: 1em 0.5em;
     text-align: left;
+    text-align: center;
+    font-size: 15px;
   }
 
   & > tr > th:nth-child(1) {
-    width: 100px;
+    width: 50px;
   }
   & > tr > th:nth-child(2) {
     width: 100px;
@@ -85,10 +88,10 @@ export const TableHead = styled.thead`
   }
 
   & > tr > th:nth-child(5) {
-    width: 250px;
+    width: 100px;
   }
   & > tr > th:nth-child(6) {
-    width: 90px;
+    width: 100px;
   }
 `;
 
@@ -99,6 +102,9 @@ export const TableBody = styled.tbody`
     border-bottom: 1px solid #f1f3f4;
     white-space: nowrap;
     max-width: 250px;
+    &:not(:nth-child(4)) {
+      text-align: center;
+    }
   }
   & > tr > td:nth-child(4) {
     overflow: hidden;
@@ -113,12 +119,11 @@ export const TableBody = styled.tbody`
 export const SortButton = styled.button`
   display: flex;
   align-items: flex-end;
-  font-size: 1em;
+  margin: 0 auto;
   font-weight: 600;
   color: #46515b;
   & > svg {
-    position: relative;
-    bottom: 3px;
+    margin-left: 2px;
   }
 `;
 

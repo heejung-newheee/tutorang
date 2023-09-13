@@ -20,6 +20,12 @@ const AdminSidebar = () => {
             <Link to={'/admin/board-manage'}>게시판</Link>
           </S.NavItem>
           <S.NavItem>환불취소관리</S.NavItem>
+          <S.NavItem>
+            <Link to={'/admin/announcements-manage'}>공지사항 관리</Link>
+          </S.NavItem>
+          <S.NavItem>
+            <Link to={'/admin/customer-support-manage'}>1:1 문의관리</Link>
+          </S.NavItem>
         </S.NavList>
       </nav>
       <S.ButtonLogout>

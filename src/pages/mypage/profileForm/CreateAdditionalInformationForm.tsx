@@ -105,9 +105,9 @@ const CreateAdditionalInformationForm = () => {
         data: { role: 'student' },
       });
       if (ErrorOfUpdatingProfile) {
-        console.log(ErrorOfUpdatingProfile, ErrorOfUpdatingProfile.message);
+        console.error(ErrorOfUpdatingProfile, ErrorOfUpdatingProfile.message);
       } else if (ErrorOfUpdatingAuth) {
-        console.log(ErrorOfUpdatingAuth, ErrorOfUpdatingAuth.message);
+        console.error(ErrorOfUpdatingAuth, ErrorOfUpdatingAuth.message);
         alert('회원가입 실패');
       } else {
         alert('추가정보 입력이 완료됐습니다. 더 다양한 기능을 이용해보세요~');

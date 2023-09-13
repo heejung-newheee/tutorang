@@ -105,7 +105,7 @@ const SignInForm = () => {
             <label htmlFor="email">이메일</label>
             <SInput type="text" id="email" placeholder="이메일을 입력하세요" name="email" value={email} onChange={handleInput} />
             {email && (
-              <SignInResetButton onClick={() => setEmail('')}>
+              <SignInResetButton type="button" onClick={() => setEmail('')}>
                 <BsXCircleFill className="reset_signin_input_btn" />
               </SignInResetButton>
             )}
@@ -116,7 +116,7 @@ const SignInForm = () => {
             <label htmlFor="password">비밀번호</label>
             <SInput type="password" id="password" placeholder="비밀번호를 입력하세요" name="password" value={password} onChange={handleInput} />
             {password && (
-              <SignInResetButton onClick={() => setPassword('')}>
+              <SignInResetButton type="button" onClick={() => setPassword('')}>
                 <BsXCircleFill className="reset_signin_input_btn" />
               </SignInResetButton>
             )}
