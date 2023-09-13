@@ -10,10 +10,10 @@ import { useViewport } from '../../../hooks';
 import useChatContext from '../../../hooks/useChatContext';
 import { openModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
-import { ChatMessage } from './ChatMessage';
 import * as S from './ChatRoom.styled';
 import { RootState } from '../../../redux/config/configStore';
 import { getDateTextFromISODate, isSameDate } from '../../../utils/Date';
+import ChatMessage from './ChatMessage';
 
 const ChatRoom = ({ userId }: { userId: string }) => {
   const { isMobile } = useViewport();
@@ -109,23 +109,23 @@ const ChatRoom = ({ userId }: { userId: string }) => {
   if (!chatRoom)
     return (
       <S.Container>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', width: '100%' }}>
-          <p style={{ fontSize: '1.25rem', fontWeight: '700', color: '#808080' }}>채팅방을 선택하세요</p>
-        </div>
+        <S.NoRoomContainer>
+          <S.NoRoomText>채팅방을 선택하세요</S.NoRoomText>
+        </S.NoRoomContainer>
       </S.Container>
     );
 
   return (
     <S.Container>
       <S.Header>
-        <div>
+        <S.HeaderLeft>
           {isMobile && (
             <S.IconButton onClick={handleCloseRoom}>
               <IoIosArrowBack size={30} />
             </S.IconButton>
           )}
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', overflow: 'hidden' }}>
+        </S.HeaderLeft>
+        <S.HeaderCenter>
           {profile && (
             <>
               <S.HeaderTitle>{profile.username}</S.HeaderTitle>
@@ -134,7 +134,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
               </S.IconButton>
             </>
           )}
-        </div>
+        </S.HeaderCenter>
         <S.HeaderButton onClick={handleLeaveRoom} color="red">
           나가기
         </S.HeaderButton>
@@ -146,10 +146,10 @@ const ChatRoom = ({ userId }: { userId: string }) => {
             let result;
             if (index === 0 || !isSameDate(message.created_at, chatMessages[index - 1].created_at)) {
               result = (
-                <li style={{ textAlign: 'center', position: 'relative' }}>
-                  <hr style={{ position: 'absolute', top: '50%', left: 0, width: '100%', margin: 0, height: '1px', border: 'none', borderTop: '1px solid #ccc' }} />
-                  <span style={{ color: '#808080', zIndex: 1, position: 'relative', backgroundColor: '#ffffff', padding: '0 0.5rem' }}>{getDateTextFromISODate(message.created_at)}</span>
-                </li>
+                <S.ChatDate>
+                  <S.ChatDateDivider />
+                  <S.ChatDateText>{getDateTextFromISODate(message.created_at)}</S.ChatDateText>
+                </S.ChatDate>
               );
             }
 
@@ -177,7 +177,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
         </form>
         <S.InputMenu $isOpen={isOpenInputMenu}>
           <S.InputMenuInner>
-            <input ref={inputImageRef} type="file" id="chat_image" name="chat_image" accept="image/png, image/jpeg" onChange={handleChangeInputImage} style={{ display: 'none' }} />
+            <input ref={inputImageRef} type="file" id="chat_image" name="chat_image" accept="image/png, image/jpeg" onChange={handleChangeInputImage} hidden />
             <S.InputMenuButtonItem type="button" onClick={() => inputImageRef.current?.click()}>
               <div>
                 <BiImageAdd size={28} />

@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useRef, useState, memo } from "react"
 import './KaKaoMap.css'
 import useThrottle from "../../../hooks/usethrottle"
-import styled from "styled-components"
+import * as S from './KaKaoMap.styled'
+import { HiMagnifyingGlass } from "react-icons/hi2"
+import Marker from "./Marker"
 const { kakao } = window
 
 const KakaoMap = ({ onChange }) => {
@@ -41,7 +43,7 @@ const KakaoMap = ({ onChange }) => {
   },[])
 
   function searchAddrFromCoords(coords, callback) {
-    // 좌표로 행정동 주소 정보를 요청합니다
+
     if(!geocoderRef.current) return
     geocoderRef.current.coord2Address(coords.getLng(), coords.getLat(), callback);         
   }
@@ -98,84 +100,27 @@ const KakaoMap = ({ onChange }) => {
     searchPlaces(debouncedValue)
   },[debouncedValue,searchPlaces])
 
-  return(<Container>
-    <MapContainer 
-    id="map"
-    style={{ 
-      
-    }}>
+  return(<S.Container>
+    <S.MapContainer 
+      id="map"
+    >
        {!isLoading &&  selectedLocation && <Marker map={mapRef.current} place={selectedLocation}/>} 
-    </MapContainer>
-    <SearchContainer >
-      <input placeholder="검색어를 입력하세요" type='text' value={inputKeyword} onChange={(e)=>setInputKeyword(e.target.value)} style={{fontSize:'1rem',padding:'6px 10px',border: 'none',borderRadius:'10px',backgroundColor:'#eee'}}/>
-      <ul style={{ display:'flex',flexDirection:'column',marginTop:'1rem',overflowY:'auto'}}>
-        {placesResult.map((place)=> <ListItem key={`${place.latitude},${place.longitude}`} onClick={()=>setSelectLocation(place)}>{place.name}</ListItem>)}
-      </ul>
-    </SearchContainer>
-  </Container>)
+    </S.MapContainer>
+    <S.SearchContainer >
+
+      <S.SearchBar>
+      <S.SearchIcon><HiMagnifyingGlass size={20} color={'#8f8f8f'}/></S.SearchIcon>
+      <label className="sr-only">위치 검색</label>
+      <S.LocationInput placeholder="위치를 입력해주세요" type='text' value={inputKeyword} onChange={(e)=>setInputKeyword(e.target.value)} />
+      </S.SearchBar>
+
+      <S.PlaceList>
+        {placesResult.map((place)=> <S.ListItem key={`${place.latitude},${place.longitude}`} onClick={()=>setSelectLocation(place)}>{place.name}</S.ListItem>)}
+      </S.PlaceList>
+
+    </S.SearchContainer>
+  </S.Container>)
 }
 
 const MemoizedKakaoMap = memo(KakaoMap)
 export default MemoizedKakaoMap;
-
-const Container = styled.div`
-  display: flex;
-  gap: 1rem;
-  height:300px;
-  @media screen and (max-width: 768px) {
-    height: auto;
-    overflow: hidden;
-    flex-direction: column;
-    flex: 1;
-  }
-`
-
-const MapContainer = styled.div`
-  width: 100%;
-  height: 300px;
-  border-radius: 10px;
-
-`
-
-const ListItem = styled.li`
-  padding: 10px;
-  border-radius: 10px;
-  &:hover,
-  &:focus,
-  &:focus-within {
-    background-color: #eeeeee81;
-  }
-`
-
-const SearchContainer =styled.div`
-  display: flex;
-  flex-direction: column;
-  @media screen and (max-width: 768px) {
-    overflow: hidden;
-    flex: 1;
-  }
-  
-`
-
-
-const Marker = ({ map, place }) => {
-  useEffect(() => {
-    const markerPosition = new kakao.maps.LatLng(place.latitude, place.longitude);
-    const marker = new kakao.maps.Marker({
-      position: markerPosition,
-      clickable: true,
-    });
-    marker.setMap(map);
-    const infoWindow = new kakao.maps.InfoWindow({
-      position : markerPosition, 
-      content : `<div class='bAddr'>${place.name}</div>` 
-    });
-    infoWindow.open(map,marker)
-    return () => {
-      marker.setMap(null)
-      infoWindow.close()
-    };
-  }, [map, place]);
-
-  return null;
-}
