@@ -9,6 +9,7 @@ import supabase from '../../supabase';
 import { detailDate } from '../community/utility';
 import * as S from './PostDetail.styled';
 import Comment from './comment/Comment';
+import { Loading } from '../../components';
 
 const PostDetail = () => {
   const [comment, setComment] = useState<string>('');
@@ -20,7 +21,7 @@ const PostDetail = () => {
 
   const queryClient = useQueryClient();
 
-  const { data } = useQuery(['write'], () => getWriteData(Number(postid)));
+  const { data, isLoading } = useQuery(['write'], () => getWriteData(Number(postid)));
 
   //좋아요 데이터가 없을때
   const likemutation = useMutation(async (newInfo: any) => firstClickLikeApi(newInfo, Number(postid), detail_user_id), {
@@ -68,6 +69,7 @@ const PostDetail = () => {
 
     if (error) throw error;
   };
+
   const postmutation = useMutation(async (newInfo: any) => postApi(newInfo), {
     onSuccess: () => {
       queryClient.invalidateQueries(['post_comments']);
@@ -97,10 +99,24 @@ const PostDetail = () => {
   };
 
   const deletePostAndNavi = () => {
-    deletePost(Number(postid));
+    deleteMutation.mutate(postid);
     navigate(-1);
   };
 
+  const deleteMutation = useMutation(async (newInfo: any) => deletePost(newInfo), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['write']);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const isLikeTrue = data?.[0].post_like?.some((like) => like.user_id === loginUser?.id);
+
+  if (isLoading) {
+    return <Loading />;
+  }
   return (
     <S.Container>
       <S.TitleWrap>
@@ -121,7 +137,7 @@ const PostDetail = () => {
       {data !== undefined && data !== null ? <S.MainComments dangerouslySetInnerHTML={{ __html: `${data[0].content}` }}></S.MainComments> : null}
       <S.LikeDiv>
         <span>
-          <Heart isClick={data?.[0].post_like?.filter((like) => like.user_id === loginUser?.id).length !== 1 ? true : false} onClick={handleLike} />
+          <Heart isClick={isLikeTrue !== undefined && isLikeTrue} onClick={handleLike} />
         </span>
       </S.LikeDiv>
       <S.Line />
