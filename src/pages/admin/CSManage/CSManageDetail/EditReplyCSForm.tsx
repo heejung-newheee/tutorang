@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { TypeReply, deleteReplyToInquiry, editReplyToInquiry } from '../../../../api/customerSupportReply';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { ONE_CUSTOMER_INQUIRY_QUERY_KEY } from '../../../../api/customerSupport';
+import { TypeReply, deleteReplyToInquiry, editReplyToInquiry } from '../../../../api/customerSupportReply';
 
 type EditReplyCSFormProps = {
   replyInfo: TypeReply;
@@ -42,7 +42,6 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
   const handleDeleteReply = () => {
     const deleteCheck = window.confirm('정말로 삭제하시겠습니까?');
     if (!deleteCheck) return;
-    console.log(replyInfo);
     deleteReplyMutation.mutate(replyInfo.id);
   };
 

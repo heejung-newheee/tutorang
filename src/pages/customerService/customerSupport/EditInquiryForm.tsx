@@ -35,7 +35,6 @@ const EditInquiryForm = () => {
     input.onchange = async () => {
       if (input.files) {
         const file = input.files[0];
-        console.log(file);
 
         try {
           const imgName = v4();
@@ -44,9 +43,6 @@ const EditInquiryForm = () => {
             upsert: true,
           });
 
-          // if (data !== null) {
-          //   console.log('이미지 URL:', data);
-          // }
           console.log(data, error);
 
           const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
@@ -81,21 +77,16 @@ const EditInquiryForm = () => {
     }),
     [],
   );
-  console.log(content);
   const handleSubmit = async () => {
-    console.log('sfssdfsd');
     const updatedInquiry: TypeUpdatedInquiry = {
       title,
       content,
     };
-    console.log(updatedInquiry);
     try {
       await editInquiryMutation.mutate({ inquiryId, updatedInquiry });
     } catch (error) {
-      console.log('error submit inqury ', error);
+      console.error('error submit inqury ', error);
     }
-    // mutation.mutate(formData);
-    // navigate(`/customer-service/customer-support/${inquiryId}`);
     navigate(-1);
   };
 

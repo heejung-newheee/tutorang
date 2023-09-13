@@ -1,18 +1,11 @@
 import supabase from '../supabase';
 import { UpdatingTables } from '../supabase/database.types';
 
-// export type TypeNewAnnouncement = {
-//   user_id?: string;
-//   title: string;
-//   content: string;
-// };
-
 export const ANNOUNCEMENTS_TABLE = 'announcements';
 export const ANNOUNCEMENTS_QUERY_KEY = 'allAnnouncements';
 export const ONE_ANNOUNCEMENT_QUERY_KEY = 'oneTargetAnnouncement';
 
 export const getAllAnnouncements = async () => {
-  // const { data, error } = await supabase.from(ANNOUNCEMENTS_TABLE).select().order('created_at', { ascending: false });
   const { data, error } = await supabase.from(ANNOUNCEMENTS_TABLE).select();
 
   if (error) throw error;

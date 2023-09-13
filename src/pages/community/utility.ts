@@ -9,22 +9,6 @@ export const handlePrev = (currentNum: number, setCurrentNum: Dispatch<SetStateA
   setHasPageMore(true);
 };
 
-// export const handleNext = (currentNum: number, totalPageNum: number | null, setCurrentNum: Dispatch<SetStateAction<number>>, setHasPageMore: Dispatch<SetStateAction<boolean>>) => {
-//   const dispatch = useDispatch();
-//   const totalPostNum = currentNum * pageCount;
-
-//   if (totalPageNum && totalPageNum < totalPostNum) return;
-//   if (totalPageNum && totalPageNum > totalPostNum) {
-//     setCurrentNum((pre) => pre + 1);
-//     dispatch(setPageNum(currentNum - 1));
-//   }
-
-//   const nextCurrentNum = currentNum + 1;
-//   if (totalPageNum && totalPageNum <= nextCurrentNum * pageCount) {
-//     setHasPageMore(false);
-//   }
-// };
-
 export const handleTotalNext = (totalPageNum: number | null, setCurrentNum: Dispatch<SetStateAction<number>>, setHasPageMore: Dispatch<SetStateAction<boolean>>) => {
   if (totalPageNum && totalPageNum <= pageCount) return;
   const totalCurrent = totalPageNum && Math.ceil(totalPageNum / pageCount);

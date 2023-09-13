@@ -39,7 +39,7 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
     try {
       await createCSReplyMutation.mutate(newReply);
     } catch (error) {
-      console.log('error submit cs reply', error);
+      console.error('error submit cs reply', error);
     }
     setContent('');
     alert('답변이 정상적으로 등록되었습니다!');

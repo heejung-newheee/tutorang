@@ -68,7 +68,6 @@ export const Button = styled.button<ButtonProps>`
           display: inline-block;
           min-width: 120px;
           text-align: center;
-          color: ${colors.white};
         `;
     }
   }}

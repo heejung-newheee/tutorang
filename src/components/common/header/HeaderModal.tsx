@@ -35,9 +35,6 @@ const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props)
         }}
       >
         <S.MobileLogoDiv>
-          {/* <span>
-            <img src={logo04} alt="logo"></img>
-          </span> */}
           <S.NavModalCloseBtn onClick={(pre) => setSideNavOpen(!pre)}>
             <img src={close} alt="menu close btn" />
           </S.NavModalCloseBtn>

@@ -1,4 +1,3 @@
-// import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
@@ -21,13 +20,6 @@ const LeaveInquiryForm = () => {
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  // const api = async (newInfo: any) => {
-  //   const { error } = await supabase.from('write').insert(newInfo);
-
-  //   console.log(error);
-  //   if (error) throw error;
-  // };
-
   const createInquiryMutation = useMutation(async (newInquiry: TypeNewInquiry) => insertNewInquiry(newInquiry), {
     onSuccess: () => {
       queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
@@ -46,7 +38,6 @@ const LeaveInquiryForm = () => {
     input.onchange = async () => {
       if (input.files) {
         const file = input.files[0];
-        console.log(file);
 
         try {
           const imgName = v4();
@@ -55,9 +46,6 @@ const LeaveInquiryForm = () => {
             upsert: true,
           });
 
-          // if (data !== null) {
-          //   console.log('이미지 URL:', data);
-          // }
           console.log(data, error);
 
           const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
@@ -92,34 +80,21 @@ const LeaveInquiryForm = () => {
     }),
     [],
   );
-  console.log(content);
   const handleSubmit = async () => {
-    console.log('sfssdfsd');
     const formData = {
       title,
       user_id: loginUser!.id,
       content,
     };
-    console.log(formData);
     try {
       await createInquiryMutation.mutate(formData);
     } catch (error) {
-      console.log('error submit inqury ', error);
+      console.error('error submit inqury ', error);
     }
-    // mutation.mutate(formData);
     navigate('/customer-service/customer-support');
   };
 
   if (!loginUser) return <div></div>;
-
-  // const formData = {
-  //   title: 'title',
-  //   user_id: loginUser.id,
-  //   content: '작성내용',
-  //   isReplied: false,
-  //   file1: 'null 들어올 수 있음',
-  //   file2: 'null 들어올 수 있음',
-  // };
 
   return (
     <WriteContainer>
@@ -148,9 +123,6 @@ const LeaveInquiryForm = () => {
 export default LeaveInquiryForm;
 
 const WriteContainer = styled.div`
-  /* display: flex;
-  justify-content: center;
-  flex-direction: column; */
   margin-top: 100px;
   padding: 0 20px;
 `;

@@ -1,6 +1,5 @@
 import { styled } from 'styled-components';
 
-// [ ] 여긴 다름
 export const Colgroup = styled.colgroup`
   & col:nth-child(1) {
     width: 6.5%;
@@ -31,7 +30,6 @@ export const Colgroup = styled.colgroup`
 `;
 
 export const ButtonSpace = styled.div`
-  /* height: 60px; */
   padding: 10px 0px;
   display: flex;
   flex-direction: row;

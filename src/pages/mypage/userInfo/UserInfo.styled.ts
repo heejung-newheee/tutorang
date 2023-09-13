@@ -82,13 +82,13 @@ export const EditBtn = styled.button`
 `;
 export const UserName = styled.p`
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 700;
   margin: 17px 0;
   color: #fff;
   span {
     font-size: 13px;
     line-height: 1;
-    font-weight: bold;
+    font-weight: 700;
     color: #e5e5e5;
   }
   @media only screen and (max-width: 768px) {
@@ -150,7 +150,7 @@ export const SummaryItem = styled.div`
   p:first-child {
     padding-bottom: 30px;
     font-size: 31px;
-    font-weight: bold;
+    font-weight: 700;
     @media screen and (max-width: 1024px) {
       padding-bottom: 14px;
       font-size: 20px;

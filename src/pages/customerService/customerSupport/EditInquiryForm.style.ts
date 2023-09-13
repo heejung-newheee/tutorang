@@ -1,9 +1,6 @@
 import { styled } from 'styled-components';
 
 export const WriteContainer = styled.div`
-  /* display: flex;
-  justify-content: center;
-  flex-direction: column; */
   margin-top: 100px;
   padding: 0 20px;
 `;

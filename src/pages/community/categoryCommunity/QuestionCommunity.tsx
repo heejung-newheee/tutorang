@@ -1,14 +1,13 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import PostCompo from '../postCompo/PostCompo';
-import Pagination from '../pagination/Pagination';
 import { getCommunityApi } from '../../../api/community';
+import Pagination from '../pagination/Pagination';
+import PostCompo from '../postCompo/PostCompo';
 
 const QuestionCommunity = () => {
   const [query, _] = useSearchParams();
   const editPostNum = Number(query.get('q'));
-  // const [hasPageMore, setHasPageMore] = useState<boolean>(true);
   const [totalPageNum, setTotalPageNum] = useState<number | null>(null);
   const pageCount = 5;
 

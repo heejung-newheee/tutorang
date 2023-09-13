@@ -82,7 +82,7 @@
 }
 
 .ql-bold {
-  font-weight: bold !important;
+  font-weight: 700 !important;
 }
 
 .ql-stroke {
@@ -90,7 +90,7 @@
 }
 
 strong {
-  font-weight: bold !important;
+  font-weight: 700 !important;
 }
 
 em {

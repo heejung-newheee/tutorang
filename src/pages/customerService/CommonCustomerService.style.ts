@@ -1,23 +1,25 @@
+import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { colors } from '../../style/theme/colors';
 
-// export const ButtonCS = styled.button`
-//   border: 2px solid #cdcdcd;
-//   border-radius: 3px;
-//   padding: 7px 25px;
-//   &:hover {
-//     border: 2px solid ${colors.primary};
-//     background-color: #fe902f2c;
-//   }
-// `;
-
-export const ButtonCS = styled.button`
-  /* border: 2px solid #cdcdcd; */
-  background-color: ${colors.primary};
-  color: #fff;
-  border-radius: 3px;
-  padding: 10px 25px;
-  font-size: 16px;
+export const ButtonCS = styled(Link)`
+  display: inline-block;
+  min-width: 120px;
+  text-align: center;
+  border: 1px solid ${colors.primary};
+  border-radius: 6px;
+  padding: 11px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3 ease;
+  line-height: 1;
+  &:link,
+  &:focus,
+  &:active,
+  &:visited,
+  &:hover {
+    color: ${colors.primary};
+  }
   @media screen and (max-width: 420px) {
     padding: 7px 20px;
     font-size: 12px;
@@ -26,7 +28,6 @@ export const ButtonCS = styled.button`
 `;
 
 export const OutermostContainer = styled.div`
-  // 여기도 이렇게 해주는 게 맞나..
   width: 100%;
   height: 100%;
   display: flex;
@@ -63,10 +64,12 @@ export const Tbody = styled.tbody`
   }
   & tr {
     border-bottom: 1px solid #eee;
+    &:nth-child(4) {
+      border-bottom: 0;
+    }
   }
   & td {
     padding: 17px 0px;
-    border-bottom: 1px solid #eee;
   }
   & td:nth-child(2) {
     text-align: start;
@@ -110,6 +113,7 @@ export const Table = styled.table`
 
 export const ContentArea = styled.div`
   padding: 20px 10px;
+  text-align: center;
   & img {
     width: 300px;
   }
@@ -134,7 +138,7 @@ export const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  & div > button {
+  margin-top: 15px & div > button {
     margin-left: 10px;
   }
 `;

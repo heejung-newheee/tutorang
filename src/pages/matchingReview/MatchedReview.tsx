@@ -16,8 +16,8 @@ const MatchedReview = () => {
           <S.BannerContent>
             <S.BannerTitle>100% 찐 후기들의 이야기</S.BannerTitle>
             <S.BannerText>
-              튜터랑을 통해 만난 튜터와의
-              <br /> 만남 찐 후기 스토리
+              튜터랑을 통해 만난 튜터와의 <br />
+              수업 찐 후기 스토리
             </S.BannerText>
           </S.BannerContent>
         </S.BannerContainer>
@@ -41,24 +41,22 @@ const MatchedReview = () => {
             {reviews?.map((review) => {
               const rating = review.rating || 0;
               return (
-                <>
-                  <S.ReviewItem key={review.id}>
-                    <S.ReviewAuth>
-                      <div>
-                        <S.Avarta src={review.user_img as string} alt="user profile" />
-                      </div>
-                      <div>
-                        <S.Name>
-                          {review.author}
-                          <span> ({review.user_age})</span>
-                        </S.Name>
-                        <S.Rating>{StarRating(rating)}</S.Rating>
-                      </div>
-                    </S.ReviewAuth>
+                <S.ReviewItem key={review.id}>
+                  <S.ReviewAuth>
+                    <div>
+                      <S.Avarta src={review.user_img as string} alt="user profile" />
+                    </div>
+                    <div>
+                      <S.Name>
+                        {review.author}
+                        <span> ({review.user_age})</span>
+                      </S.Name>
+                      <S.Rating>{StarRating(rating)}</S.Rating>
+                    </div>
+                  </S.ReviewAuth>
 
-                    <div>{review.content}</div>
-                  </S.ReviewItem>
-                </>
+                  <div>{review.content}</div>
+                </S.ReviewItem>
               );
             })}
           </S.ReviewList>

@@ -1,17 +1,10 @@
 import { styled } from 'styled-components';
 import { colors } from '../../../style/theme/colors';
 
-// export const ButtonsWrapper = styled.div`
-//   box-sizing: border-box;
-//   padding: 20px;
-//   width: 100%;
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: space-between;
-// `;
 export const ButtonWrap = styled.div`
   display: flex;
   justify-content: end;
+  margin: 5px 0;
 `;
 export const ButtonAnnouncement = styled.button`
   border: 2px solid #cdcdcd;

@@ -21,10 +21,8 @@ export const getTutorDetailInfo = async (userId: string) => {
 };
 
 export const changeStateTutorApply = async (state: string, id: number) => {
-  console.log('1', state, id);
   const { data, error } = await supabase.from(PENDING_TUTOR_REGISTRATION_TABLE).update({ state: state }).eq('id', id).select();
   if (error) throw error;
-  console.log('2', data);
   return data;
 };
 
@@ -70,9 +68,7 @@ export const useChangeStateTutorApply = () => {
       throw error;
     },
 
-    onSuccess: () => {
-      console.log('동헌님 성공');
-    },
+    onSuccess: () => {},
 
     onSettled: () => {
       queryClient.invalidateQueries(PENDING_TUTOR_REGISTRATION_DASHBOARD_QUERY_KEY);
