@@ -191,7 +191,7 @@ export const ButtonWrapper = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  margin-top: 96px;
+  margin-top: 50px;
 
   & span {
     position: absolute;

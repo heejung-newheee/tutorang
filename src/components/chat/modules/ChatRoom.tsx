@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { BiImageAdd } from 'react-icons/bi';
+import { BsChatHeart } from 'react-icons/bs';
 import { IoIosArrowBack, IoIosInformationCircleOutline, IoIosSend, IoMdAdd } from 'react-icons/io';
 import { IoLocationOutline } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,12 +9,12 @@ import { leaveChatRoom, sendImageMessage, sendStudentMessage } from '../../../ap
 import { matchingRequest } from '../../../api/match';
 import { useViewport } from '../../../hooks';
 import useChatContext from '../../../hooks/useChatContext';
+import { RootState } from '../../../redux/config/configStore';
 import { openModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
-import * as S from './ChatRoom.styled';
-import { RootState } from '../../../redux/config/configStore';
 import { getDateTextFromISODate, isSameDate } from '../../../utils/Date';
 import ChatMessage from './ChatMessage';
+import * as S from './ChatRoom.styled';
 
 const ChatRoom = ({ userId }: { userId: string }) => {
   const { isMobile } = useViewport();
@@ -193,7 +194,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
             {loginUser && loginUser.role === 'student' && (
               <S.InputMenuButtonItem type="button" onClick={handleRequestTutoring}>
                 <div>
-                  <IoLocationOutline size={28} />
+                  <BsChatHeart size={28} />
                 </div>
                 <p>튜터링 요청</p>
               </S.InputMenuButtonItem>

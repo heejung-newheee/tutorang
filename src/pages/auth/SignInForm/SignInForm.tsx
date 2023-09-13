@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { BsXCircleFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { css, styled } from 'styled-components';
-import { googleicon, kakaotalk, navericon } from '../../../assets';
+import { googleicon, kakaotalk } from '../../../assets';
 import { SButton, SContainer, SForm, SFormContainer, SFormItem, SInput, SPGuideMessage, SPartitionLine } from '../../../components/Form/AuthForm.styled';
 import FormHeader from '../../../components/Form/FormHeader';
 import '../../../components/Form/icon.css';
@@ -74,10 +74,6 @@ const SignInForm = () => {
     if (error) alert(error.message);
   };
 
-  const naverLogin = () => {
-    alert('네이버 간편 로그인/회원가입 기능 준비중입니다. 다른 간편 로그인/회원가입 서비스를 이용해주세요!');
-  };
-
   const emailCheckFromDB = async (enteredEmail: string) => {
     const { data: profiles } = await supabase.from('profiles').select('email');
 
@@ -143,7 +139,6 @@ const SignInForm = () => {
         <SsnsIconContainer>
           <SsnsIcon src={kakaotalk} onClick={() => kakaoLogin()} alt="kakao login" />
           <SsnsIcon src={googleicon} $iconType={'google'} onClick={() => googleLogin()} alt="google login" />
-          <SsnsIcon src={navericon} onClick={() => naverLogin()} alt="naver login" />
         </SsnsIconContainer>
       </SFooter>
     </SContainer>

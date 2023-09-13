@@ -101,32 +101,24 @@ const DetailCustomerSupport = () => {
       <C.PartitionLine />
       <C.TableContainer>
         {replyData.length !== 0 ? (
-          <C.Table style={{ borderTop: '1px solid #eee' }}>
+          <>
             <S.Caption>1:1 관리자 답변 등록 상세보기</S.Caption>
-            <S.Colgroup>
-              <col />
-              <col />
-            </S.Colgroup>
-            <C.Tbody>
-              <tr>
-                <th>답변자</th>
-                <td>tutorang</td>
-              </tr>
-              <tr>
-                <th>답변일시</th>
-                <td>{replyData[0].created_at.split('T')[0]}</td>
-              </tr>
-              <tr>
-                <td colSpan={2}>
-                  <C.ContentArea>
-                    <div>
-                      <p>{replyData[0].content}</p>
-                    </div>
-                  </C.ContentArea>
-                </td>
-              </tr>
-            </C.Tbody>
-          </C.Table>
+            <S.ReplyWrap>
+              <S.Replier>
+                <div>답변자</div>
+                <div>tutorang</div>
+              </S.Replier>
+              <S.Replier>
+                <div>답변일시</div>
+                <div>{replyData[0].created_at.split('T')[0]}</div>
+              </S.Replier>
+              <S.RpContents>
+                <C.ContentArea>
+                  <p>{replyData[0].content}</p>
+                </C.ContentArea>
+              </S.RpContents>
+            </S.ReplyWrap>
+          </>
         ) : (
           <S.ReplacementContainer>
             <p>빠른 시간 내에 답변드리겠습니다! 잠시만 기다려 주세요!</p>
@@ -134,15 +126,9 @@ const DetailCustomerSupport = () => {
         )}
       </C.TableContainer>
 
-<<<<<<< HEAD
-      <S.ButtonsWrapper>
-        <C.ButtonCS to={'/customer-service/customer-support'}>목록</C.ButtonCS>
-=======
       <C.PartitionLine />
-
       <C.ButtonsWrapper>
-        <C.ButtonCS onClick={() => navigate('/customer-service/customer-support')}>목록</C.ButtonCS>
->>>>>>> a22227bacd6e4f67292ba6e5cd0d0a82b6bee58b
+        <C.ButtonCS to={'/customer-service/customer-support'}>목록</C.ButtonCS>
         <div>
           {replyData.length === 0 && (
             <>

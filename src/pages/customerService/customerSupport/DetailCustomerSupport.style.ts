@@ -1,6 +1,5 @@
 import { styled } from 'styled-components';
 
-<<<<<<< HEAD
 export const DetailCustomerSupportContainer = styled.div`
   width: 100%;
   height: 100%;
@@ -40,8 +39,6 @@ export const Table = styled.table`
   }
 `;
 
-=======
->>>>>>> a22227bacd6e4f67292ba6e5cd0d0a82b6bee58b
 export const Caption = styled.caption`
   display: none;
 `;
@@ -95,3 +92,23 @@ export const ReplacementContainer = styled.div`
   width: 100%;
   padding: 10px 20px;
 `;
+
+export const ReplyWrap = styled.div``;
+
+export const Replier = styled.div`
+  display: flex;
+  div {
+    padding: 17px 0px;
+    border-bottom: solid 1px #eee;
+    &:first-child {
+      width: 100px;
+      text-align: center;
+      font-weight: 600;
+    }
+    &:last-child {
+      width: calc(100% - 100px);
+    }
+  }
+`;
+
+export const RpContents = styled.div``;

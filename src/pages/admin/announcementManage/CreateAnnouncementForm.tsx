@@ -41,7 +41,7 @@ const CreateAnnouncementForm = () => {
 
         try {
           const imgName = v4();
-          const { data, error } = await supabase.storage.from('avatars').upload(`community/${imgName}`, file, {
+          const { data } = await supabase.storage.from('avatars').upload(`community/${imgName}`, file, {
             cacheControl: '3600',
             upsert: true,
           });

@@ -4,6 +4,7 @@ import { colors } from '../../../style/theme/colors';
 export const ButtonWrap = styled.div`
   display: flex;
   justify-content: end;
+  margin: 5px 0;
 `;
 export const ButtonAnnouncement = styled.button`
   border: 2px solid #cdcdcd;

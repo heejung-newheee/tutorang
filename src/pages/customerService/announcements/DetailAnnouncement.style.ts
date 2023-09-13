@@ -28,6 +28,9 @@ export const Tbody = styled.tbody`
   width: 100%;
   & tr {
     border-bottom: 1px solid #eee;
+    &:nth-child(3) {
+      border: 0;
+    }
   }
   & th {
     font-weight: 600;

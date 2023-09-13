@@ -1,13 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { CUSTOMER_SUPPORT_QUERY_KEY, getAllInquiry } from '../../../api/customerSupport';
 import { RootState } from '../../../redux/config/configStore';
 import * as C from '../CommonCustomerService.style';
 import * as S from './CustomerSupport.style';
 
 const CustomerSupport = () => {
-  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
   const userId = user?.id;
   const { data } = useQuery([CUSTOMER_SUPPORT_QUERY_KEY], () => getAllInquiry(userId as string), { enabled: !!userId });

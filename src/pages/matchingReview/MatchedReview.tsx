@@ -16,8 +16,8 @@ const MatchedReview = () => {
           <S.BannerContent>
             <S.BannerTitle>100% 찐 후기들의 이야기</S.BannerTitle>
             <S.BannerText>
-              튜터랑을 통해 만난 튜터와의
-              <br /> 만남 찐 후기 스토리
+              튜터랑을 통해 만난 튜터와의 <br />
+              수업 찐 후기 스토리
             </S.BannerText>
           </S.BannerContent>
         </S.BannerContainer>

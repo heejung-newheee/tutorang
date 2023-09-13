@@ -26,7 +26,15 @@ const MyBoard = () => {
     <InfoSection>
       <Container>
         <InfoTitle>내가 남긴 문의</InfoTitle>
-        <ContentsDataBox>{boardData?.length > 0 ? boardData?.map((board) => <BoardItem key={Math.random() * 22229999} item={board} />) : <InfoNull>문의하신 내역이 없습니다</InfoNull>}</ContentsDataBox>
+        {boardData?.length > 0 ? (
+          <ContentsDataBox>
+            {boardData?.map((board) => (
+              <BoardItem key={Math.random() * 22229999} item={board} />
+            ))}
+          </ContentsDataBox>
+        ) : (
+          <InfoNull>문의하신 내역이 없습니다</InfoNull>
+        )}
       </Container>
     </InfoSection>
   );

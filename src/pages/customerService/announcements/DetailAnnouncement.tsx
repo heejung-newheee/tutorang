@@ -35,16 +35,10 @@ const DetailAnnouncement = () => {
           </S.Tbody>
         </C.Table>
       </C.TableContainer>
-<<<<<<< HEAD
-      <div>
-        <C.ButtonCS to={'/customer-service/announcements'}>목록</C.ButtonCS>
-      </div>
-=======
       <C.PartitionLine />
       <C.ButtonsWrapper>
-        <C.ButtonCS onClick={moveToPageForAnnouncementListManage}>목록</C.ButtonCS>
+        <C.ButtonCS to={'/customer-service/announcements'}>목록</C.ButtonCS>
       </C.ButtonsWrapper>
->>>>>>> a22227bacd6e4f67292ba6e5cd0d0a82b6bee58b
     </C.OutermostContainer>
   );
 };
