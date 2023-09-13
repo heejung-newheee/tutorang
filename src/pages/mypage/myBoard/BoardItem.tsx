@@ -49,7 +49,7 @@ const BoardItem = ({ item }: Props) => {
   }, []);
 
   return (
-    <S.Post onClick={() => navigate(`/post/37`)}>
+    <S.Post onClick={() => navigate(`../post/37`)}>
       <S.ContentsText>
         <S.Time>{detailDate(new Date(item.created_at))}</S.Time>
         <S.Title>{item.title}</S.Title>
