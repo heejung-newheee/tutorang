@@ -2,6 +2,8 @@ import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import useThrottle from '../../../hooks/usethrottle';
 import './KaKaoMap.css';
 import Marker from './Marker';
+import * as S from './KaKaoMap.styled';
+import { HiMagnifyingGlass } from 'react-icons/hi2';
 const { kakao } = window;
 
 const KakaoMap = ({ onChange }) => {
