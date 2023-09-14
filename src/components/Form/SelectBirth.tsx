@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { styled } from 'styled-components';
+import * as C from './SelectBoxCommon.style';
 
 type TypeSelectBirthType = {
   $setBirth: React.Dispatch<
@@ -76,6 +77,9 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
 
   useEffect(() => {
     const handleOutSideClose = (event: MouseEvent) => {
+      console.log('yearDropContainerRef.current', yearDropContainerRef.current);
+      console.log(event.target);
+      console.log(isDateOpen.year);
       if (
         (isDateOpen.year && !yearDropContainerRef.current?.contains(event.target as Node)) ||
         (isDateOpen.month && !monthDropContainerRef.current?.contains(event.target as Node)) ||
@@ -96,7 +100,7 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
       <SDropdownWrapper ref={yearDropContainerRef}>
         <SDropDownHeader id="birthYearDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, year: !prev.year }))}>
           <span>{birth.year || '년도'}</span>
-          {isDateOpen.year ? <FaAngleUp /> : <FaAngleDown />}
+          <C.SvgAngleUpDownCover>{isDateOpen.year ? <FaAngleUp /> : <FaAngleDown />}</C.SvgAngleUpDownCover>
         </SDropDownHeader>
         {isDateOpen.year && (
           <SOptionContainer>
@@ -113,7 +117,7 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
       <SDropdownWrapper ref={monthDropContainerRef}>
         <SDropDownHeader id="birthMonthDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, month: !prev.month }))}>
           <span>{birth.month || '월'}</span>
-          {isDateOpen.month ? <FaAngleUp /> : <FaAngleDown />}
+          <C.SvgAngleUpDownCover>{isDateOpen.month ? <FaAngleUp /> : <FaAngleDown />}</C.SvgAngleUpDownCover>
         </SDropDownHeader>
         {isDateOpen.month && (
           <SOptionContainer>
@@ -130,7 +134,7 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
       <SDropdownWrapper ref={dayDropContainerRef}>
         <SDropDownHeader id="birthDayDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, day: !prev.day }))}>
           <span>{birth.day || '일'}</span>
-          {isDateOpen.day ? <FaAngleUp /> : <FaAngleDown />}
+          <C.SvgAngleUpDownCover>{isDateOpen.day ? <FaAngleUp /> : <FaAngleDown />}</C.SvgAngleUpDownCover>
         </SDropDownHeader>
         {isDateOpen.day && (
           <SOptionContainer>

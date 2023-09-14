@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { styled } from 'styled-components';
 import { ENROLLMENT_STATUS } from '../../../constants/signup.constant';
+import * as C from './../../../components/Form/SelectBoxCommon.style';
 
 type TypeSelectEnrollmentStatus = {
   $setEnrollmentStatus: React.Dispatch<React.SetStateAction<string>>;
@@ -31,7 +32,7 @@ const SelectEnrollmentStatus: React.FC<TypeSelectEnrollmentStatus> = ({ $setEnro
     <SDropdownWrapper ref={dropContainerRef}>
       <SDropDownHeader id="selectbox" onClick={() => setIsDropMenuOpen((prev) => !prev)}>
         <SpanDefaultText $selectedOption={selectedOption}>{selectedOption === '' ? '재학여부' : selectedOption}</SpanDefaultText>
-        {isDropMenuOpen ? <FaAngleUp /> : <FaAngleDown />}
+        <C.SvgAngleUpDownCover>{isDropMenuOpen ? <FaAngleUp /> : <FaAngleDown />}</C.SvgAngleUpDownCover>
       </SDropDownHeader>
       {isDropMenuOpen && (
         <SOptionContainer>

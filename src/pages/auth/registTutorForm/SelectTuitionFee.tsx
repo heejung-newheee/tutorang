@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import { styled } from 'styled-components';
+import * as C from './../../../components/Form/SelectBoxCommon.style';
 
 const TUITION_FEE_ONLINE = [5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000];
 const TUITION_FEE_OFFLINE = [10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000];
@@ -41,7 +42,7 @@ const SelectTuitionFee: React.FC<SelectTuitionFeeType> = ({ $tuitionType, $selec
     <SDropdownWrapper ref={dropContainerRef}>
       <SDropDownHeader id={$tuitionType + 'Selectbox'} onClick={() => setIsDropMenuOpen((prev) => !prev)}>
         <SpanDefaultText $selectedOption={selectedOption}>{selectedOption === 0 ? '선택하세요' : selectedOption}</SpanDefaultText>
-        {isDropMenuOpen ? <FaAngleUp /> : <FaAngleDown />}
+        <C.SvgAngleUpDownCover>{isDropMenuOpen ? <FaAngleUp /> : <FaAngleDown />}</C.SvgAngleUpDownCover>
       </SDropDownHeader>
       {isDropMenuOpen && (
         <SOptionContainer $tuitionType={$tuitionType}>
