@@ -4,7 +4,7 @@ import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import GlobalModal from '../components/modal/GlobalModal';
 import { BoardManage, Community, Dashboard, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, UserManage, WritePost } from '../pages';
 import CSManage from '../pages/admin/CSManage/CSManage';
-import CSManageDetail from '../pages/admin/CSManage/CSManageDetail/CSManageDetail';
+import CSManageDetail from '../pages/admin/CSManage/CSManageDetail/DetailCSManage';
 import AdminRoute from '../pages/admin/announcementManage/AdminRoute';
 import AnnouncementDetailManage from '../pages/admin/announcementManage/AnnouncementDetailManage';
 import AnnouncementsListManage from '../pages/admin/announcementManage/AnnouncementsListManage';

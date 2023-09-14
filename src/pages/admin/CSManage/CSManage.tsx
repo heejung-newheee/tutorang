@@ -66,7 +66,6 @@ const CSManage = () => {
           </S.TableBody>
         </Table>
       </TableContainer>
-      <S.SectionFalseReplied></S.SectionFalseReplied>
     </Layout>
   );
 };
