@@ -1,6 +1,5 @@
 import { styled } from 'styled-components';
 
-// [ ] 여긴 다름
 export const Colgroup = styled.colgroup`
   & col:nth-child(1) {
     width: 7%;

@@ -68,7 +68,7 @@ export const TabNum = styled.div`
   margin-top: 7px;
   text-align: center;
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 36px;
   color: #fff;
   background-color: #d8d8d8;
@@ -102,7 +102,7 @@ export const TabBubbleContent = styled.div`
 `;
 export const BubbletTit = styled.p`
   font-size: 20px;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 5px;
   @media screen and (max-width: 768px) {
     font-size: 14px;

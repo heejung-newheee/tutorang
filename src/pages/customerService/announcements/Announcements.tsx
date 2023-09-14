@@ -6,7 +6,6 @@ import * as S from './Announcements.style';
 
 const Announcements = () => {
   const { data } = useQuery([ANNOUNCEMENTS_QUERY_KEY], getAllAnnouncements);
-  console.log(data);
 
   if (!data) return <div></div>;
   return (
@@ -38,13 +37,6 @@ const Announcements = () => {
                 <tr key={announcementItem.id}>
                   <td>{index + 1}</td>
                   <td>
-                    {/* <C.SpanNavTitle
-                      onClick={() => {
-                        navigate(`/customer-service/announcements/${announcementItem.id}`);
-                      }}
-                    >
-                      {announcementItem.title}
-                    </C.SpanNavTitle> */}
                     <Link to={`/customer-service/announcements/${announcementItem.id}`}>{announcementItem.title}</Link>
                   </td>
 
@@ -55,31 +47,8 @@ const Announcements = () => {
           </C.Tbody>
         </C.Table>
       </C.TableContainer>
-      <C.PaginationSpace>pagenation space</C.PaginationSpace>
     </C.OutermostContainer>
-    // <div>
-    //   {' '}
-    //   <LisingContainer>
-    //     {data?.map((announcementItem) => (
-    //       <ListingItem key={announcementItem.id}>
-    //         <Link to={`/customer-service/announcements/${announcementItem.id}`}>{announcementItem.title}</Link>
-    //       </ListingItem>
-    //     ))}
-    //   </LisingContainer>
-    // </div>
   );
 };
 
 export default Announcements;
-
-// 임시
-// const LisingContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   gap: 10px;
-// `;
-
-// const ListingItem = styled.div`
-//   border: 1px solid #000;
-//   padding: 20px;
-// `;

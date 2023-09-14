@@ -10,7 +10,7 @@ const HeaderMenuMobile: HEADERMENUMOBILE = [
   { title: '튜터찾기', path: '/list' },
   { title: '매칭후기', path: '/review' },
   { title: '커뮤니티', path: '/community/free/?q=1' },
-  { title: '고객센터', path: '/' },
+  { title: '고객센터', path: '/customer-service/announcements' },
 ];
 
 type Props = {
@@ -35,9 +35,6 @@ const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props)
         }}
       >
         <S.MobileLogoDiv>
-          {/* <span>
-            <img src={logo04} alt="logo"></img>
-          </span> */}
           <S.NavModalCloseBtn onClick={(pre) => setSideNavOpen(!pre)}>
             <img src={close} alt="menu close btn" />
           </S.NavModalCloseBtn>

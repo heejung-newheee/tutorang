@@ -36,9 +36,9 @@ export const ListItem = styled.li`
 export const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
   @media screen and (max-width: 768px) {
     overflow: hidden;
-    flex: 1;
   }
 `;
 

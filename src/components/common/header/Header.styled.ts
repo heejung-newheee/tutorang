@@ -110,12 +110,6 @@ export const RegisterTutorBtnContainer = styled.div`
   width: 50px;
   height: 50px;
 `;
-export const AlarmBtnContainer = styled.div`
-  box-sizing: border-box;
-  padding: 5px 0;
-  width: 50px;
-  height: 50px;
-`;
 export const AvatarBtnContainer = styled.div`
   box-sizing: border-box;
   padding: 5px 5px 5px 15px;
@@ -335,10 +329,12 @@ export const SignMobileWrapper = styled.div`
   justify-content: center;
   gap: 18px;
   margin-bottom: 10px;
-
+  button {
+    white-space: nowrap;
+  }
   & button:first-child {
     width: 110px;
-    padding: 15px 22px;
+    padding: 15px 3px;
     font-size: 14px;
     border-radius: 5px;
     background-color: ${colors.primary};
@@ -347,7 +343,7 @@ export const SignMobileWrapper = styled.div`
 
   & button:last-child {
     width: 110px;
-    padding: 15px 22px;
+    padding: 15px 3px;
     font-size: 14px;
     border-radius: 5px;
     border: 1px solid ${colors.primary};

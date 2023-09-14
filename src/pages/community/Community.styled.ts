@@ -24,7 +24,7 @@ export const CommunityTitle = styled.div`
 
   & > h1 {
     margin-bottom: 10px;
-    font-weight: 900;
+    font-weight: 700;
     font-size: 25px;
   }
 

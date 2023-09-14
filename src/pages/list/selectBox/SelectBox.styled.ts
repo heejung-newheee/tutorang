@@ -139,7 +139,7 @@ export const PriceClassType = styled.div`
   margin-bottom: 20px;
   display: flex;
   align-items: center;
-  font-weight: 800;
+  font-weight: 700;
   color: ${colors.primary};
 
   & > div > span {
@@ -220,5 +220,5 @@ export const ChevronSpan = styled.span<{ $chevron: boolean }>`
   width: 12px;
   height: 12px;
   margin-left: 3px;
-  background-image: ${(props) => (props.$chevron === false ? `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_up-12.svg)` : `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_down-12.svg)`)};
+  background-image: ${(props) => (props.$chevron === false ? `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_down-12.svg)` : `url(https://www.ssfshop.com/v3/images/uxui/icon/chevron_up-12.svg)`)};
 `;

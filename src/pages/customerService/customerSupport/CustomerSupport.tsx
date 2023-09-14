@@ -1,19 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { CUSTOMER_SUPPORT_QUERY_KEY, getAllInquiry } from '../../../api/customerSupport';
 import { RootState } from '../../../redux/config/configStore';
 import * as C from '../CommonCustomerService.style';
 import * as S from './CustomerSupport.style';
 
 const CustomerSupport = () => {
-  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
   const userId = user?.id;
-  // const inquiryIdFromPath = location.pathname.split(':/')[1];
   const { data } = useQuery([CUSTOMER_SUPPORT_QUERY_KEY], () => getAllInquiry(userId as string), { enabled: !!userId });
-  console.log('데타', data);
-  console.log(data);
 
   if (!user) return <div></div>;
   if (!data) return <div></div>;
@@ -48,13 +44,7 @@ const CustomerSupport = () => {
                 <tr key={item.id}>
                   <td>{index + 1}</td>
                   <td>
-                    <C.SpanNavTitle
-                      onClick={() => {
-                        navigate(`/customer-service/customer-support/${item.id}`, { state: item });
-                      }}
-                    >
-                      {item.title}
-                    </C.SpanNavTitle>
+                    <Link to={`/customer-service/customer-support/${item.id}`}>{item.title}</Link>
                   </td>
 
                   <td>{item.created_at.split('T')[0]}</td>
@@ -65,11 +55,8 @@ const CustomerSupport = () => {
           </C.Tbody>
         </C.Table>
       </C.TableContainer>
-      <C.PaginationSpace>pagenation space</C.PaginationSpace>
       <S.ButtonSpace>
-        <C.ButtonCS type="button" onClick={() => navigate('/leave-inquiry')}>
-          글쓰기
-        </C.ButtonCS>
+        <C.ButtonCS to={'/leave-inquiry'}>글쓰기</C.ButtonCS>
       </S.ButtonSpace>
     </C.OutermostContainer>
   );

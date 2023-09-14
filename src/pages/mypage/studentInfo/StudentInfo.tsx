@@ -74,10 +74,10 @@ const StudentInfo = ({ match }: pageProps) => {
       <InfoSection>
         <Container>
           <InfoTitle>내가 쓴 후기</InfoTitle>
-          <ContentsDataBox>
-            <DataList>
-              {myReview.data.length > 0 ? (
-                myReview.data.map((review: any) => {
+          {myReview.data.length > 0 ? (
+            <ContentsDataBox>
+              <DataList>
+                {myReview.data.map((review: any) => {
                   const rating = review.rating || 0;
                   return (
                     <DataItem key={review.id} style={{ alignItems: 'start' }}>
@@ -114,12 +114,12 @@ const StudentInfo = ({ match }: pageProps) => {
                       </S.ReviewEditBtn>
                     </DataItem>
                   );
-                })
-              ) : (
-                <InfoNull>작성한 후기가 없습니다</InfoNull>
-              )}
-            </DataList>
-          </ContentsDataBox>
+                })}
+              </DataList>
+            </ContentsDataBox>
+          ) : (
+            <InfoNull>작성한 후기가 없습니다</InfoNull>
+          )}
         </Container>
       </InfoSection>
     </div>

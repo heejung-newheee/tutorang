@@ -1,10 +1,10 @@
+import { useQuery } from '@tanstack/react-query';
 import { useDispatch, useSelector } from 'react-redux';
-import * as S from './TutorApplyDialog.styled';
-import { closeModal } from '../../../redux/modules';
+import { getTutorDetailInfo } from '../../../api/dashboard';
 import { close } from '../../../assets';
 import { RootState } from '../../../redux/config/configStore';
-import { useQuery } from '@tanstack/react-query';
-import { getTutorDetailInfo } from '../../../api/dashboard';
+import { closeModal } from '../../../redux/modules';
+import * as S from './TutorApplyDialog.styled';
 
 const TutorApplyDialog = () => {
   const dispatch = useDispatch();
@@ -110,7 +110,7 @@ const TutorApplyDialog = () => {
                 </S.PriceItem>
                 <S.PriceItem>
                   <S.Dot />
-                  <span>30분 오프라인 만남 - </span>
+                  <span>30분 오프라인 수업 - </span>
                   <span>{tutor?.tuition_fee_offline}</span>
                 </S.PriceItem>
               </S.PriceItemList>

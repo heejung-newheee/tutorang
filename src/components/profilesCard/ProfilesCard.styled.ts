@@ -22,7 +22,7 @@ export const TutorImg = styled.div`
 export const TutorInfo = styled.div`
   padding: 18px;
 `;
-export const TutorTitle = styled.h5`
+export const TutorTitle = styled.p`
   font-size: 17px;
   font-weight: bold;
   border-left: 3px solid ${colors.primary};

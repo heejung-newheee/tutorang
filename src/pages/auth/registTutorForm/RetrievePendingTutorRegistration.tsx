@@ -41,7 +41,6 @@ const RetrievePendingTutorRegistration = () => {
             <ButtonWrapper>
               <button type="button" onClick={handleOutsideClick}>
                 <img src={close} />
-                {/* <BsXLg className="pending_modal_close_btn" /> */}
               </button>
             </ButtonWrapper>
           </ContentsTitle>
@@ -61,16 +60,11 @@ const RetrievePendingTutorRegistration = () => {
               </ContentsItemTitle>
               <ContentItemBody>
                 <CertificateContainer>
-                  {/* <CertificateItem> */}
-                  {/* <h3>학교/학과/재학여부</h3> */}
                   <p>
                     <span>학교 : {pendingTutorRegistInfo.university}</span> / <span>학과 : {pendingTutorRegistInfo.major}</span> / <span>재학여부 : {pendingTutorRegistInfo.enrollmentStatus}</span>
                   </p>
-                  {/* </CertificateItem> */}
-                  {/* <CertificateItem> */}
-                  {/* <h3>증명가능 서류</h3> */}
+
                   <Figure>{pendingTutorRegistInfo.certification_image && <img src={pendingTutorRegistInfo.certification_image} />}</Figure>
-                  {/* </CertificateItem> */}
                 </CertificateContainer>
               </ContentItemBody>
             </ContentsItem>
@@ -158,7 +152,6 @@ const Contents = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 
-  /* margin: 0 auto; */
   width: 500px;
   overflow: hidden;
   border-radius: 18px;
@@ -234,8 +227,6 @@ const ContentItemBodyList = styled.div`
 `;
 
 const CertificateContainer = styled.div``;
-// const CertificateItem = styled.div``;
-// const Certificate;
 
 const Figure = styled.figure`
   & img {
@@ -245,8 +236,6 @@ const Figure = styled.figure`
 
 const ButtonWrapper = styled.div`
   position: absolute;
-  /* top: 21px;
-  right: 25px; */
   top: 23px;
   right: 25px;
   & button {

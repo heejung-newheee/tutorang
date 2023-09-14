@@ -8,7 +8,6 @@ const CustomerService = () => {
   const loginUser = useSelector((state: RootState) => state.user.user);
   const location = useLocation();
   const path = location.pathname.split('/')[2];
-  console.log('lookhere', location);
 
   const navigate = useNavigate();
   const handleCustomerSupportNav = () => {

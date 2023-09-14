@@ -33,7 +33,6 @@ type TypeinquiryItem = {
 const CSManage = () => {
   const navigate = useNavigate();
   const { data } = useQuery([CS_MANAGE_QUERY_KEY], getAllCs);
-  console.log('여기 뭐뭐 들었어', data);
 
   const moveTodetailCSQuiryPage = (inquiryId: string, inquiryitem: TypeinquiryItem) => navigate(`/admin/customer-support-manage/${inquiryId}`, { state: inquiryitem });
   if (!data) return <div></div>;
