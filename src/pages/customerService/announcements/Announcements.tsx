@@ -1,11 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ANNOUNCEMENTS_QUERY_KEY, getAllAnnouncements } from '../../../api/announcements';
 import * as C from './../CommonCustomerService.style';
 import * as S from './Announcements.style';
 
 const Announcements = () => {
-  const navigate = useNavigate();
   const { data } = useQuery([ANNOUNCEMENTS_QUERY_KEY], getAllAnnouncements);
   console.log(data);
 
@@ -39,13 +38,14 @@ const Announcements = () => {
                 <tr key={announcementItem.id}>
                   <td>{index + 1}</td>
                   <td>
-                    <C.SpanNavTitle
+                    {/* <C.SpanNavTitle
                       onClick={() => {
                         navigate(`/customer-service/announcements/${announcementItem.id}`);
                       }}
                     >
                       {announcementItem.title}
-                    </C.SpanNavTitle>
+                    </C.SpanNavTitle> */}
+                    <Link to={`/customer-service/announcements/${announcementItem.id}`}>{announcementItem.title}</Link>
                   </td>
 
                   <td>{announcementItem.created_at.split('T')[0]}</td>

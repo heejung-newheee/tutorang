@@ -30,8 +30,8 @@ type InquiryDataProps = {
 const DetailCustomerSupport = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const pathdata = useLocation();
-  const inquiryId = pathdata.state.id;
+  const inquiryId = useLocation().pathname.split('/')[3];
+
   const { data } = useQuery([ONE_CUSTOMER_INQUIRY_QUERY_KEY, inquiryId], () => getOneInquiry(inquiryId), { enabled: !!inquiryId });
 
   const deleteInquiryMutation = useMutation(async (inquiryId: string) => deleteInquiry(inquiryId), {
