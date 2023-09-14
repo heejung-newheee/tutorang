@@ -30,6 +30,14 @@ const CustomerService = () => {
     <div>
       <CSHeader headerType={'cs'} />
       <S.CustomerServiceContainer>
+        <S.ResponsivMenu>
+          <S.ResponsivMenuItem $pathType={'announcements'} $path={path} onClick={handleAnnouncementsNav}>
+            공지사항
+          </S.ResponsivMenuItem>
+          <S.ResponsivMenuItem $pathType={'customer-support'} $path={path} onClick={handleCustomerSupportNav}>
+            1:1문의
+          </S.ResponsivMenuItem>
+        </S.ResponsivMenu>
         <S.Category>
           <S.CategoryItem $pathType={'announcements'} $path={path} onClick={handleAnnouncementsNav}>
             공지사항

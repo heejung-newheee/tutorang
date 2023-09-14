@@ -21,6 +21,7 @@ export const ButtonCS = styled(Link)`
     color: ${colors.primary};
   }
   @media screen and (max-width: 420px) {
+    min-width: 120px;
     padding: 7px 20px;
     font-size: 12px;
     margin-right: 12px;
