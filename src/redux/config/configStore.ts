@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { modalSlice, userSlice, matchSlice, reviewSlice, PageNumSlice } from '../modules';
+import { modalSlice, userSlice, matchSlice, reviewSlice, PageNumSlice, toastSlice } from '../modules';
 import tutorSlice from '../modules/tutorSlice';
 
 const store = configureStore({
@@ -10,8 +10,10 @@ const store = configureStore({
     modal: modalSlice,
     review: reviewSlice,
     PageNum: PageNumSlice,
+    toast: toastSlice,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;
