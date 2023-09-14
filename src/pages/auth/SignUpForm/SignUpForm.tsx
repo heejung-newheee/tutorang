@@ -140,7 +140,7 @@ const SignUpForm = () => {
       if (error) {
         console.error(error);
         console.warn(error);
-        alert('회원가입 실패');
+        alert('회원가입 과정에서 문제가 발생했습니다. 고객센터로 문의주세요!');
       } else {
         navigate('/welcome-to-tutorang');
       }

@@ -108,7 +108,7 @@ const CreateAdditionalInformationForm = () => {
         console.error(ErrorOfUpdatingProfile, ErrorOfUpdatingProfile.message);
       } else if (ErrorOfUpdatingAuth) {
         console.error(ErrorOfUpdatingAuth, ErrorOfUpdatingAuth.message);
-        alert('회원가입 실패');
+        alert('입력한 정보를 저장하는데 문제가 발생했습니다! 고객센터로 문의주세요!');
       } else {
         alert('추가정보 입력이 완료됐습니다. 더 다양한 기능을 이용해보세요~');
         navigate('/mypage');

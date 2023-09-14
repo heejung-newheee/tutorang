@@ -120,7 +120,7 @@ const RegistTutorForm = () => {
     const { error } = await supabase.from('pending_tutor_registration').insert(formData);
     if (error) console.error(error.message);
     else {
-      alert('튜터신청이 완료되었습니다! 관리자의 승인을 기다려주세염');
+      alert('튜터신청이 완료되었습니다. 관리자의 승인을 기다려주세요!');
       navigate(-1);
     }
   };

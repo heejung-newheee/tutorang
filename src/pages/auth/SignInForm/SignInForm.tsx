@@ -58,7 +58,7 @@ const SignInForm = () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
     });
-    if (error) alert(error.message);
+    if (error) console.log(error.message);
   };
 
   const googleLogin = async () => {
@@ -71,7 +71,7 @@ const SignInForm = () => {
         },
       },
     });
-    if (error) alert(error.message);
+    if (error) console.log(error.message);
   };
 
   const emailCheckFromDB = async (enteredEmail: string) => {

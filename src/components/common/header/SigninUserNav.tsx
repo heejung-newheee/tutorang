@@ -34,7 +34,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
 
   const HandleClickChatNav = () => {
     if (presentUrlPathname === '/additional-information') {
-      alert('추가 정보를 입력해야 채팅이용이 가능합니다~ 작성하시던 추가정보를 먼저 제출해주세요~');
+      alert('추가 정보를 입력해야 채팅이용이 가능합니다! 작성하시던 추가정보를 먼저 제출해주세요!');
       return false;
     }
 
