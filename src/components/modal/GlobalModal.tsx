@@ -9,6 +9,7 @@ import * as S from './Modal.styled';
 import ModalPortal from './ModalPortal';
 import ChatPlayerDetailModal from '../chat/modules/ChatPlayerDetailModal';
 import DashboardReport from '../dialog/report/DashboardReport';
+import ImageResizeForm from '../Form/imageResizeForm/ImageResizeForm';
 
 const GlobalModal = () => {
   const { type, isOpen } = useSelector((state: RootState) => state.modal);
@@ -29,6 +30,7 @@ const GlobalModal = () => {
     chatPlayerDetailModal: 'chatPlayerDetailModal',
     tutorApplyInfo: 'tutorApplyInfo',
     dashboardReport: 'dashboardReport',
+    imageResizeForm: 'imageResizeForm',
   };
 
   const MODAL_COMPONENTS = [
@@ -84,6 +86,10 @@ const GlobalModal = () => {
     {
       type: MODAL_TYPES.dashboardReport,
       component: <DashboardReport />,
+    },
+    {
+      type: MODAL_TYPES.imageResizeForm,
+      component: <ImageResizeForm />,
     },
   ];
 
