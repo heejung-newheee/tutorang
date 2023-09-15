@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AdminLayout, Layout, SignInForm, SignUpForm } from '../components';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
+import ToastContainer from '../components/dialog/toast/ToastContainer';
 import GlobalModal from '../components/modal/GlobalModal';
 import { BoardManage, Community, Dashboard, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, UserManage, WritePost } from '../pages';
 import Test from '../pages/Test';
@@ -24,8 +25,7 @@ import LeaveInquiryForm from '../pages/customerService/customerSupport/LeaveInqu
 import MatchedReview from '../pages/matchingReview/MatchedReview';
 import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateAdditionalInformationForm';
 import EditProfileForm from '../pages/mypage/profileForm/EditProfileForm';
-// import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
-import ToastContainer from '../components/dialog/toast/ToastContainer';
+import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
 
@@ -132,14 +132,14 @@ const Router = () => {
                 </AuthenticatedRoute>
               }
             />
-            {/* <Route
+            <Route
               path="/tutor-class"
               element={
                 <AuthenticatedRoute>
                   <EditTutorForm />
                 </AuthenticatedRoute>
               }
-            /> */}
+            />
             <Route
               path="/signin"
               element={
