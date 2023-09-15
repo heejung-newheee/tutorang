@@ -314,6 +314,7 @@ const SUnderFormSubmitButtonContainer = styled.div`
   max-width: 650px;
   width: 100%;
   padding: 0 20px;
+  margin-top: 30px;
 `;
 const SButton = styled.button<{ disabled: boolean }>`
   height: 50px;

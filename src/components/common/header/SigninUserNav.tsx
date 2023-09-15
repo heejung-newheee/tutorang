@@ -5,12 +5,12 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { getPendingTutorRegistInfo } from '../../../api/pendingTutorInfo';
 import { PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY } from '../../../constants/query.constant';
+import { AppDispatch } from '../../../redux/config/configStore';
 import { displayToastAsync, openModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
 import { Tables } from '../../../supabase/database.types';
 import * as S from './Header.styled';
 import './headericon.css';
-import { AppDispatch } from '../../../redux/config/configStore';
 
 type TypeSiginUserNavProps = {
   $loginUser: Tables<'profiles'> | null;
@@ -53,12 +53,12 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   };
   const HandleClickRegisterTutorIcon = () => {
     if (presentUrlPathname === '/additional-information') {
-      dispatch(displayToastAsync({ id: Date.now(), type: 'info', message: '추가 정보를 입력해야 튜터 등록이 가능합니다~ 작성하시던 추가정보를 먼저 제출해주세요~' }));
+      alert('추가 정보를 입력해야 튜터 등록이 가능합니다. 작성하시던 추가정보를 먼저 제출해주세요.');
       return false;
     }
 
     if (!$loginUser?.gender) {
-      const wannaAddMoreInfo = window.confirm('소셜로그인을 하셨는데 아직 추가정보를 입력하지 않았다구요? 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?');
+      const wannaAddMoreInfo = window.confirm('소셜로그인 사용자 추가정보 미입력 하셨습니다. 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?');
       if (wannaAddMoreInfo) {
         navigate('/additional-information');
       } else {
@@ -101,6 +101,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
       {$loginUser?.role === 'student' && (
         <S.RegisterTutorBtnContainer>
           <S.BtnWholeBody onClick={HandleClickRegisterTutorIcon}>
+            <div>튜터신청</div>
             <S.RightButton>
               <S.IconCover>
                 <RiUserStarLine className="right_icon register_tutor_icon" />

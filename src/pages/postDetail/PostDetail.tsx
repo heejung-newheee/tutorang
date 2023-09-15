@@ -4,16 +4,17 @@ import Heart from 'react-animated-heart';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { deletePost, firstClickLikeApi, getWriteData, updateLike } from '../../api/postDetail';
+import { Loading } from '../../components';
 import { AppDispatch, RootState } from '../../redux/config/configStore';
+import { displayToastAsync } from '../../redux/modules';
 import supabase from '../../supabase';
 import { detailDate } from '../community/utility';
 import * as S from './PostDetail.styled';
 import Comment from './comment/Comment';
-import { Loading } from '../../components';
-import { displayToastAsync } from '../../redux/modules';
 
 const PostDetail = () => {
   const [comment, setComment] = useState<string>('');
+  const [isThrottled, setIsThrottled] = useState(false);
   const loginUser = useSelector((state: RootState) => state.user.user);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -49,9 +50,12 @@ const PostDetail = () => {
     if (!loginUser) {
       return dispatch(displayToastAsync({ id: Date.now(), type: 'info', message: '로그인 후 이용해주세요' }));
     }
-
+    if (isThrottled) {
+      return;
+    }
     const LikeUserSameLoginUser = data?.[0].post_like.some((like) => like.user_id === loginUser?.id);
 
+    setIsThrottled(true);
     if (LikeUserSameLoginUser) {
       if (data?.[0].like !== null && data?.[0].like !== undefined) {
         const minusLike = data?.[0].like - 1;
@@ -65,6 +69,9 @@ const PostDetail = () => {
         });
       }
     }
+    setTimeout(() => {
+      setIsThrottled(false);
+    }, 500);
   };
   const postApi = async (newInfo: any) => {
     const { error } = await supabase.from('post_comments').insert(newInfo);

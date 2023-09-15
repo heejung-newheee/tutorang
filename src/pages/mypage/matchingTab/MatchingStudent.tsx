@@ -1,7 +1,9 @@
 import { Tab, Tabs } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
+import { IoChatbubblesSharp } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { getOrCreatePrivateChatRoom, sendTutorMessage } from '../../../api/chat';
 import { matchingPending, matchingReject } from '../../../api/match';
@@ -25,6 +27,7 @@ const TabPanel = (props: any) => {
   );
 };
 const MatchingStudent = ({ matchList }: pageProps) => {
+  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user.user);
   const queryClient = useQueryClient();
 
@@ -67,7 +70,17 @@ const MatchingStudent = ({ matchList }: pageProps) => {
   const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
     setActiveTab(newValue);
   };
+  // 튜터와의 채팅창 이동
+  const handleStartChat = async (tutorId: string) => {
+    if (!tutorId) return;
 
+    try {
+      const chatRoom = await getOrCreatePrivateChatRoom(tutorId);
+      navigate(`/chat?room_id=${chatRoom.room_id}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div>
       <Tabs value={activeTab} onChange={handleTabChange} aria-label="tab menu">
@@ -94,7 +107,17 @@ const MatchingStudent = ({ matchList }: pageProps) => {
                 return (
                   <S.InfoList key={item.id}>
                     <S.InfoItem>
-                      <div>{item.student_name}</div>
+                      <div>
+                        <div>
+                          <S.UserAvatar src={item.student_img!} alt="tutor avatar" />
+                          <p>{item.student_name}</p>
+                        </div>
+                        <S.UserLinkWrap>
+                          <S.ChatLink onClick={() => handleStartChat(item.user_id!)}>
+                            <IoChatbubblesSharp />
+                          </S.ChatLink>
+                        </S.UserLinkWrap>
+                      </div>
                       <div>
                         {item.student_lc_1_gugun}
                         <br />
@@ -130,7 +153,17 @@ const MatchingStudent = ({ matchList }: pageProps) => {
                 return (
                   <S.InfoList key={item.id}>
                     <S.InfoItem>
-                      <div>{item.student_name}</div>
+                      <div>
+                        <div>
+                          <S.UserAvatar src={item.student_img!} alt="tutor avatar" />
+                          <p>{item.student_name}</p>
+                        </div>
+                        <S.UserLinkWrap>
+                          <S.ChatLink onClick={() => handleStartChat(item.user_id!)}>
+                            <IoChatbubblesSharp />
+                          </S.ChatLink>
+                        </S.UserLinkWrap>
+                      </div>
                       <div>
                         {item.student_lc_1_gugun}
                         <br />
@@ -163,7 +196,17 @@ const MatchingStudent = ({ matchList }: pageProps) => {
                 return (
                   <S.InfoList key={item.id}>
                     <S.InfoItem>
-                      <div>{item.student_name}</div>
+                      <div>
+                        <div>
+                          <S.UserAvatar src={item.student_img!} alt="tutor avatar" />
+                          <p>{item.student_name}</p>
+                        </div>
+                        <S.UserLinkWrap>
+                          <S.ChatLink onClick={() => handleStartChat(item.user_id!)}>
+                            <IoChatbubblesSharp />
+                          </S.ChatLink>
+                        </S.UserLinkWrap>
+                      </div>
                       <div>
                         {item.student_lc_1_gugun}
                         <br />
