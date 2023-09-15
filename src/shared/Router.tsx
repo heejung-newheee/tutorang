@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AdminLayout, Layout, SignInForm, SignUpForm } from '../components';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
-import ToastContainer from '../components/dialog/toast/ToastContainer';
 import GlobalModal from '../components/modal/GlobalModal';
 import { BoardManage, Community, Dashboard, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, UserManage, WritePost } from '../pages';
 import CSManage from '../pages/admin/CSManage/CSManage';
@@ -27,11 +26,14 @@ import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateA
 import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
+import ScrollToTop from '../components/common/ScrollToTop';
+import ToastContainer from '../components/dialog/toast/ToastContainer';
 
 //
 const Router = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <GlobalModal />
       <ToastContainer />
       <Routes>

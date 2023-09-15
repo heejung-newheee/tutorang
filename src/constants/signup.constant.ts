@@ -1,4 +1,4 @@
-import { Price } from '../@types/list/listType';
+import { FilterMenuObj, Price } from '../@types/list/listType';
 
 export type CheckboxOptionType = { value: string; text: string; description?: string };
 
@@ -47,3 +47,10 @@ export const price: Price[] = [
   { optionPrice: '30,000 ~ 40,000', min: 30000, max: 40000 },
   { optionPrice: '50,000 ~', min: 50000, max: 100000 },
 ];
+
+export const filterMenuObj: FilterMenuObj = {
+  gender,
+  level,
+  age,
+  speakingLanguage,
+};

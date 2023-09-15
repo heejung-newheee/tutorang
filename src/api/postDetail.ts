@@ -1,14 +1,14 @@
 import { Dispatch, SetStateAction } from 'react';
 import supabase from '../supabase';
 
-export const getWriteData = async (postid: number) => {
+export const getPostData = async (postid: number) => {
   const { data, error } = await supabase.from('write').select(`*, post_like(post_id, user_id),profiles(username,avatar_url)`).eq('id', postid);
 
   if (error) throw error;
   return data;
 };
 
-export const firstClickLikeApi = async (newInfo: any, postid: number, detail_user_id: string | undefined) => {
+export const firstClickLikeApi = async (newInfo: { like: number }, postid: number, detail_user_id: string | undefined) => {
   const writeLikePromise = supabase.from('write').update(newInfo).eq('id', postid).single();
   const postLikePromise = supabase.from('post_like').insert({ user_id: detail_user_id, post_id: Number(postid) });
 
@@ -71,6 +71,20 @@ type EDITINFO = {
   id: number;
 };
 
+type PostInfo = {
+  post_id: number | undefined | null;
+  comment: string;
+  user_id: string | null;
+};
+
+//댓글 생성
+export const putCommentApi = async (postInfo: PostInfo) => {
+  const { error } = await supabase.from('post_comments').insert(postInfo);
+
+  if (error) throw error;
+};
+
+//댓글 수정
 export const handleCommentUpdate = async (newInfo: EDITINFO, setisEdit: Dispatch<SetStateAction<number>>) => {
   await supabase.from('post_comments').update({ comment: newInfo.comment, created_at: newInfo.created_at }).eq('id', newInfo.id).single();
   setisEdit(-1);
