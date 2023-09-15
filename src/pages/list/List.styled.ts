@@ -48,7 +48,6 @@ export const SearchWrap = styled.div`
   color: ${colors.white};
   padding: 0 20px;
   background-color: #f5f5f5;
-  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
   border-radius: 8px;
 
   & > input {

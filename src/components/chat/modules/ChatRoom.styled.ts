@@ -144,7 +144,7 @@ export const InputMenuInner = styled.div`
 
 export const InputMenuButtonItem = styled.button`
   padding: 0;
-  width: 70px;
+  width: 75px;
   height: 60px;
   border-radius: 10px;
   &:hover,

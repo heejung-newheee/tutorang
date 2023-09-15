@@ -1,23 +1,25 @@
+import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { colors } from '../../style/theme/colors';
 
-// export const ButtonCS = styled.button`
-//   border: 2px solid #cdcdcd;
-//   border-radius: 3px;
-//   padding: 7px 25px;
-//   &:hover {
-//     border: 2px solid ${colors.primary};
-//     background-color: #fe902f2c;
-//   }
-// `;
-
-export const ButtonCS = styled.button`
-  /* border: 2px solid #cdcdcd; */
-  background-color: ${colors.primary};
-  color: #fff;
-  border-radius: 3px;
-  padding: 10px 25px;
-  font-size: 16px;
+export const ButtonCS = styled(Link)`
+  display: inline-block;
+  min-width: 120px;
+  text-align: center;
+  border: 1px solid ${colors.primary};
+  border-radius: 6px;
+  padding: 11px 16px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3 ease;
+  line-height: 1;
+  &:link,
+  &:focus,
+  &:active,
+  &:visited,
+  &:hover {
+    color: ${colors.primary};
+  }
   @media screen and (max-width: 420px) {
     padding: 7px 20px;
     font-size: 12px;
@@ -26,7 +28,6 @@ export const ButtonCS = styled.button`
 `;
 
 export const OutermostContainer = styled.div`
-  // 여기도 이렇게 해주는 게 맞나..
   width: 100%;
   height: 100%;
   display: flex;
@@ -37,7 +38,14 @@ export const OutermostContainer = styled.div`
 export const TableContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  padding: 0px 20px;
+  @media screen and (max-width: 420px) {
+    font-size: 15px;
+  }
+  @media screen and (max-width: 300px) {
+    font-size: 13px;
+    padding: 0px 10px;
+  }
 `;
 
 export const Thead = styled.thead`
@@ -51,11 +59,17 @@ export const Thead = styled.thead`
 
 export const Tbody = styled.tbody`
   width: 100%;
+  & th {
+    font-weight: 600;
+  }
   & tr {
     border-bottom: 1px solid #eee;
+    &:nth-child(4) {
+      border-bottom: 0;
+    }
   }
   & td {
-    padding: 15px 0px;
+    padding: 17px 0px;
   }
   & td:nth-child(2) {
     text-align: start;
@@ -99,6 +113,7 @@ export const Table = styled.table`
 
 export const ContentArea = styled.div`
   padding: 20px 10px;
+  text-align: center;
   & img {
     width: 300px;
   }
@@ -106,5 +121,24 @@ export const ContentArea = styled.div`
     & img {
       max-width: 240px;
     }
+  }
+`;
+
+export const PartitionLine = styled.div`
+  height: 3px;
+  width: 100%;
+  background-color: #eee;
+  margin: 15px 0px;
+`;
+
+export const ButtonsWrapper = styled.div`
+  box-sizing: border-box;
+  padding: 10px 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15px & div > button {
+    margin-left: 10px;
   }
 `;

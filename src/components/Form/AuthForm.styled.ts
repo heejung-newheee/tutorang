@@ -97,8 +97,6 @@ export const SButton = styled.button<{ disabled: boolean }>`
   }
 `;
 
-// 약관동의
-
 export const SHeader = styled.header`
   width: 100%;
   height: 175px;
@@ -151,7 +149,6 @@ export const SCheckBox = styled.input`
 `;
 
 export const SCheckLabel = styled.label`
-  /* width: 30px; */
   height: 30px;
   cursor: pointer;
   display: flex;

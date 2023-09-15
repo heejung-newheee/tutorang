@@ -19,7 +19,7 @@ export const Title = styled.h2`
   font-size: 28px;
   margin: 0 0 98px 0;
   padding: 0 0 0 10px;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 1;
   border-left: 6px solid ${colors.primary};
   position: relative;
@@ -59,7 +59,7 @@ export const BannerContent = styled.div`
   position: absolute;
   bottom: 17%;
   color: #fff;
-  font-weight: bold;
+  font-weight: 700;
   @media screen and (max-width: 1024px) {
     bottom: 10%;
   }
@@ -125,7 +125,6 @@ export const ReviewItem = styled.div`
   margin-bottom: 30px;
   border-radius: 8px;
   border: solid 1px #ececec;
-  /* background: #f7f7f7; */
 `;
 
 export const ReviewAuth = styled.div`
@@ -141,10 +140,10 @@ export const Avarta = styled.img`
   margin-right: 15px;
 `;
 export const Name = styled.div`
-  font-weight: bold;
+  font-weight: 700;
   span {
     font-size: 0.8rem;
-    font-weight: normal;
+    font-weight: 500;
     color: #3a3a3a;
   }
 `;

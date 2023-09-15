@@ -54,7 +54,7 @@ export const SectionTitle = styled.h2`
   font-size: 28px;
   margin: 0 0 98px 0;
   padding: 0 0 0 10px;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 1;
   border-left: 6px solid ${colors.primary};
   @media screen and (max-width: 768px) {

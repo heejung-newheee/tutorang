@@ -111,14 +111,14 @@ const TutorInfo = ({ match }: pageProps) => {
                       <PriceItem>
                         <span>
                           <Dot />
-                          30분 화상 만남
+                          30분 화상 수업
                         </span>
                         <span>{tutorInfo.tuition_fee_online}</span>
                       </PriceItem>
                       <PriceItem>
                         <span>
                           <Dot />
-                          30분 직접 만남
+                          30분 직접 수업
                         </span>
                         <span>{tutorInfo.tuition_fee_offline}</span>
                       </PriceItem>

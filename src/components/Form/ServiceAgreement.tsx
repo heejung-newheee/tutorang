@@ -187,12 +187,8 @@ const SContainer = styled.section`
   width: 100%;
   max-width: 650px;
   min-width: 360;
-  /* height: 500px; */
   padding: 0px 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  /* @media screen and (max-width: 420px) {
-    height: 440px;
-  } */
 `;

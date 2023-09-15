@@ -26,7 +26,6 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
   const { data: tutor, isLoading: tutorLoading, isError: tutorError, error } = useQuery([TUTOR_QUERY_KEY, id], () => matchTutor(id));
   const matchingCount = useQuery([MATCHING_QUERY_KEY, id], () => tutorMatchedCount(id));
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log(loginUser);
   const navigate = useNavigate();
 
   const handleStartChat = async (tutorId: string) => {
@@ -140,14 +139,14 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
                 <S.PriceItem>
                   <span>
                     <S.Dot />
-                    30분 화상 만남
+                    30분 화상 수업
                   </span>
                   <span>{tutor.tuition_fee_online}</span>
                 </S.PriceItem>
                 <S.PriceItem>
                   <span>
                     <S.Dot />
-                    30분 직접 만남
+                    30분 직접 수업
                   </span>
                   <span>{tutor.tuition_fee_offline}</span>
                 </S.PriceItem>
@@ -159,7 +158,6 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
             <Button variant="solid" color="primary" size="Medium" onClick={() => handleStartChat(id)}>
               튜터랑 대화하기
             </Button>
-            <span>바로 상담가능</span>
           </S.ButtonWrapper>
         </S.Container>
       </section>

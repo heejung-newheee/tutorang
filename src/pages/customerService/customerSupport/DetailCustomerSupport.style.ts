@@ -5,19 +5,11 @@ export const DetailCustomerSupportContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  /* gap: 5px; */
 `;
-
-// 임시
 
 export const TableContainer = styled.div<{ $role: string }>`
   box-sizing: border-box;
   width: 100%;
-  /* height: 100%;
-  max-height: ${({ $role }) => {
-    if ($role === 'customer') return '80%';
-    else return '20%';
-  }}; */
   padding: 20px;
   @media screen and (max-width: 420px) {
     font-size: 15px;
@@ -55,7 +47,7 @@ export const Colgroup = styled.colgroup`
   display: table-column-group;
   & col:nth-child(1) {
     display: table-column;
-    width: 130px;
+    width: 100px;
   }
   & col:nth-child(2) {
     display: table-column;
@@ -63,7 +55,7 @@ export const Colgroup = styled.colgroup`
   }
   & col:nth-child(3) {
     display: table-column;
-    width: 130px;
+    width: 100px;
   }
   & col:nth-child(4) {
     display: table-column;
@@ -72,47 +64,27 @@ export const Colgroup = styled.colgroup`
   @media screen and (max-width: 420px) {
     & col:nth-child(1) {
       display: table-column;
-      width: 90px;
+      width: 55px;
     }
     & col:nth-child(3) {
       display: table-column;
-      width: 90px;
+      width: 55px;
     }
   }
   @media screen and (max-width: 300px) {
     & col:nth-child(1) {
       display: table-column;
-      width: 70px;
+      width: 50px;
     }
     & col:nth-child(3) {
       display: table-column;
-      width: 70px;
+      width: 50px;
     }
   }
 `;
 
-export const ContentArea = styled.div`
-  padding: 20px 10px;
-  & img {
-    width: 300px;
-  }
-  @media screen and (max-width: 420px) {
-    & img {
-      max-width: 240px;
-    }
-  }
-`;
-
-export const ButtonsWrapper = styled.div`
-  box-sizing: border-box;
-  padding: 20px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  & > div > button {
-    margin-left: 10px;
-  }
+export const Th = styled.th`
+  font-weight: 600;
 `;
 
 export const ReplacementContainer = styled.div`
@@ -120,3 +92,23 @@ export const ReplacementContainer = styled.div`
   width: 100%;
   padding: 10px 20px;
 `;
+
+export const ReplyWrap = styled.div``;
+
+export const Replier = styled.div`
+  display: flex;
+  div {
+    padding: 17px 0px;
+    border-bottom: solid 1px #eee;
+    &:first-child {
+      width: 100px;
+      text-align: center;
+      font-weight: 600;
+    }
+    &:last-child {
+      width: calc(100% - 100px);
+    }
+  }
+`;
+
+export const RpContents = styled.div``;

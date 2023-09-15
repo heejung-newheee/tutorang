@@ -72,7 +72,6 @@ const WritePost = () => {
     }),
     [],
   );
-
   const handleSubmit = async () => {
     if (!title) {
       return alert('제목을 입력해주세요');

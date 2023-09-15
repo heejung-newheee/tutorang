@@ -6,12 +6,11 @@ import { ENROLLMENT_STATUS } from '../../../constants/signup.constant';
 type TypeSelectEnrollmentStatus = {
   $setEnrollmentStatus: React.Dispatch<React.SetStateAction<string>>;
   $selectedOption: string;
-  //희정 추가
 };
 
 const SelectEnrollmentStatus: React.FC<TypeSelectEnrollmentStatus> = ({ $setEnrollmentStatus, $selectedOption }) => {
   const dropContainerRef = useRef<HTMLDivElement>(null);
-  const [selectedOption, setSelectedOption] = useState<string>($selectedOption); // 희정 추가
+  const [selectedOption, setSelectedOption] = useState<string>($selectedOption);
 
   const [isDropMenuOpen, setIsDropMenuOpen] = useState<boolean>(false);
   const handleOptionClick = async (option: string) => {

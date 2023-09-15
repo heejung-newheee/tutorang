@@ -1,18 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
-import * as S from './Dashboard.styled';
-import { RootState } from '../../../redux/config/configStore';
 import { useQuery } from '@tanstack/react-query';
-import { reportTutor } from '../../../api/report';
+import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '../..';
-import { REPORT_DETAIL_DASHBOARD_QUERY_KEY } from '../../../constants/query.constant';
+import { reportTutor } from '../../../api/report';
 import { close } from '../../../assets';
+import { REPORT_DETAIL_DASHBOARD_QUERY_KEY } from '../../../constants/query.constant';
+import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
+import * as S from './Dashboard.styled';
 
 const DashboardReport = () => {
   const dispatch = useDispatch();
   const reportData = useSelector((state: RootState) => state.modal);
-
-  console.log(reportData.targetId);
 
   const { data: reportInfo, isLoading, isError, error } = useQuery(REPORT_DETAIL_DASHBOARD_QUERY_KEY, () => reportTutor(reportData?.targetId as number));
 

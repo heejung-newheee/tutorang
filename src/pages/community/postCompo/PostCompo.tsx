@@ -74,7 +74,6 @@ const PostCompo = ({ item, lastElement }: Props) => {
         </S.ResponsiveImg>
         <S.Like>
           <span>좋아요 {item.like} </span>
-          {/* <span>{detailDate(new Date(item.created_at))}</span>{' '} */}
         </S.Like>
       </S.UserWrite>
       <S.UserImg>{mainImg !== null && mainImg.length !== 0 && <img src={mainImg[0]?.[1]} />}</S.UserImg>

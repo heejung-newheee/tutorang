@@ -16,7 +16,6 @@ const Community = () => {
     }
     navigate(`../write/${path}`);
   };
-
   return (
     <S.CommunityContainer>
       <S.CommunityTitle>
