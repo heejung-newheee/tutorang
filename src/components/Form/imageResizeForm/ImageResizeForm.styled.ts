@@ -41,6 +41,7 @@ export const HeaderTitle = styled.p`
   font-size: 18px;
   display: flex;
   align-items: center;
+  gap: 0.75rem;
 `;
 
 export const IconButton = styled.button`
@@ -56,4 +57,10 @@ export const IconButton = styled.button`
   }
 `;
 
-export const Body = styled.div``;
+export const Body = styled.div`
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+`;
