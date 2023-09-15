@@ -12,7 +12,6 @@ import { getOrCreatePrivateChatRoom } from '../../../api/chat';
 import { tutorMatchedCount } from '../../../api/match';
 import { matchReview } from '../../../api/review';
 import { AppDispatch, RootState } from '../../../redux/config/configStore';
-import { displayToastAsync } from '../../../redux/modules/ToastSlice';
 
 const TUTOR_QUERY_KEY = 'tutorDetail';
 const REVIEW_QUERY_KEY = 'reviewTutorDetail';
