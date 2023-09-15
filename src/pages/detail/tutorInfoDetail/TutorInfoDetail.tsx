@@ -86,7 +86,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
           <S.TutorProfile>
             <div>
               <S.Figure>
-                <img src={`${tutor.tutor_img}`} alt={`${tutor.tutor_name} 프로필 이미지`} />
+                <img src={`${tutor.tutor_card_img}`} alt={`${tutor.tutor_name} 프로필 이미지`} />
                 <BookMark />
               </S.Figure>
               <S.reportButton onClick={handleOpenReport}>

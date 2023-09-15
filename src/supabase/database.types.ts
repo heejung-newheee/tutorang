@@ -1409,8 +1409,8 @@ export interface Database {
           major: string | null;
           personality: string[] | null;
           review_count: number | null;
+          tutor_card_img: string | null;
           tutor_id: string | null;
-          tutor_img: string | null;
           tutor_name: string | null;
           university: string | null;
         };

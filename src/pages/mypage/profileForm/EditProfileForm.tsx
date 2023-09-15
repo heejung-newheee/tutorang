@@ -13,12 +13,11 @@ import { PartitionLine } from '../../../components/common/header/Header.styled';
 import { FORM_CONSTANT_TITLE_PROFILES_EDIT, PWD_REGEX } from '../../../constants/formConstant';
 import { USER_PROFILE_QUERY_KEY } from '../../../constants/query.constant';
 import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { displayToastAsync, openModal } from '../../../redux/modules';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import { Container, Section } from '../Mypage.styled';
 import * as S from './ProfileForm.styled';
-import { displayToastAsync } from '../../../redux/modules';
-import { openModal } from '../../../redux/modules';
 
 type sessionType = {
   provider: string | undefined;
