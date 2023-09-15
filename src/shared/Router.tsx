@@ -24,10 +24,10 @@ import LeaveInquiryForm from '../pages/customerService/customerSupport/LeaveInqu
 import MatchedReview from '../pages/matchingReview/MatchedReview';
 import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateAdditionalInformationForm';
 import EditProfileForm from '../pages/mypage/profileForm/EditProfileForm';
-import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
+// import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
+import ToastContainer from '../components/dialog/toast/ToastContainer';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
-import ToastContainer from '../components/dialog/toast/ToastContainer';
 
 //
 const Router = () => {
@@ -132,14 +132,14 @@ const Router = () => {
                 </AuthenticatedRoute>
               }
             />
-            <Route
+            {/* <Route
               path="/tutor-class"
               element={
                 <AuthenticatedRoute>
                   <EditTutorForm />
                 </AuthenticatedRoute>
               }
-            />
+            /> */}
             <Route
               path="/signin"
               element={
