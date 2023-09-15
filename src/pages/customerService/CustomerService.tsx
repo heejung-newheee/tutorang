@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import FormHeader from '../../components/Form/FormHeader';
+import { FORM_CONSTANT_TITLE_CUSTOMER } from '../../constants/formConstant';
 import { RootState } from '../../redux/config/configStore';
-import CSHeader from './CSHeader';
 import * as S from './CustomerService.styled';
 
 const CustomerService = () => {
@@ -28,8 +29,16 @@ const CustomerService = () => {
 
   return (
     <div>
-      <CSHeader headerType={'cs'} />
+      <FormHeader $keyword={FORM_CONSTANT_TITLE_CUSTOMER} />
       <S.CustomerServiceContainer>
+        <S.ResponsivMenu>
+          <S.ResponsivMenuItem $pathType={'announcements'} $path={path} onClick={handleAnnouncementsNav}>
+            공지사항
+          </S.ResponsivMenuItem>
+          <S.ResponsivMenuItem $pathType={'customer-support'} $path={path} onClick={handleCustomerSupportNav}>
+            1:1문의
+          </S.ResponsivMenuItem>
+        </S.ResponsivMenu>
         <S.Category>
           <S.CategoryItem $pathType={'announcements'} $path={path} onClick={handleAnnouncementsNav}>
             공지사항

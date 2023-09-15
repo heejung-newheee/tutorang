@@ -1,6 +1,6 @@
-import { Arrow } from '@egjs/flicking-plugins';
+import { AutoPlay } from '@egjs/flicking-plugins';
 import '@egjs/flicking-plugins/dist/arrow.css';
-import Flicking, { ViewportSlot } from '@egjs/react-flicking';
+import Flicking from '@egjs/react-flicking';
 import '@egjs/react-flicking/dist/flicking.css';
 import { useEffect, useState } from 'react';
 import { Views } from '../../../supabase/database.types';
@@ -14,7 +14,7 @@ interface pageProps {
 }
 
 const PopTutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
-  const _plugins = [new Arrow()];
+  const _plugins = [new AutoPlay({ duration: 2000, direction: 'NEXT', stopOnHover: false })];
 
   const calcAlign = () => {
     if (window.innerWidth >= 1600) {
@@ -49,10 +49,6 @@ const PopTutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
               </S.Tutor>
             );
           })}
-        <ViewportSlot>
-          <span className="flicking-arrow-prev is-circle"></span>
-          <span className="flicking-arrow-next is-circle"></span>
-        </ViewportSlot>
       </Flicking>
     </>
   );

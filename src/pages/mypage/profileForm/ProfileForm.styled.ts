@@ -76,7 +76,7 @@ export const ProfileImg = styled.img`
   height: 100%;
   object-fit: cover;
 `;
-export const EditPhotoBtn = styled.div`
+export const EditPhotoBtn = styled.button`
   width: 32px;
   height: 32px;
   position: absolute;

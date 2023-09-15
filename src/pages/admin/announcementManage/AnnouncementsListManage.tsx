@@ -38,7 +38,7 @@ const AnnouncementsListManage = () => {
           </S.TableHead>
           <S.TableBody>
             {data?.map((announcementItem) => (
-              <tr>
+              <tr key={announcementItem.id}>
                 <td>넘버</td>
                 <td>{announcementItem.created_at.slice(0, 10)}</td>
                 <td key={announcementItem.id}>

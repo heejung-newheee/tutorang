@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { styled } from 'styled-components';
 import EnterEmail from '../../../components/Form/EnterEmail';
 import FormHeader from '../../../components/Form/FormHeader';
 import GenderRadiobox from '../../../components/Form/GenderRadiobox';
@@ -11,7 +11,10 @@ import ServiceAgreement from '../../../components/Form/ServiceAgreement';
 import '../../../components/Form/icon.css';
 import '../../../components/Form/inputBackgroundSetting.css';
 import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNUP, PWD_REGEX, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../../../constants/formConstant';
+import { AppDispatch } from '../../../redux/config/configStore';
+import { displayToastAsync } from '../../../redux/modules';
 import supabase from '../../../supabase';
+import * as S from './SignUpForm.style';
 
 const SignUpForm = () => {
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
@@ -19,6 +22,7 @@ const SignUpForm = () => {
   const [isMatchPwHidden, setIsMatchPwHidden] = useState(true);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [email, setEmail] = useState('');
   const [validEmail, setValidEmail] = useState(false);
@@ -102,7 +106,8 @@ const SignUpForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validEmail || !validPwd || !validMatch || !validUsername || !validBirth || !validGender || !validLocation || !doneDuplicationCheck || duplicatedEmail || !isAllChecked) {
-      alert('모든 항목이 입력되었는지 다시 한 번 확인해주세요!');
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '모든 항목이 입력되었는지 다시 한 번 확인해주세요!' }));
+
       return false;
     }
 
@@ -140,7 +145,8 @@ const SignUpForm = () => {
       if (error) {
         console.error(error);
         console.warn(error);
-        alert('회원가입 실패');
+
+        dispatch(displayToastAsync({ id: Date.now(), type: 'danger', message: '회원가입 과정에서 문제가 발생했습니다. 고객센터로 문의주세요!' }));
       } else {
         navigate('/welcome-to-tutorang');
       }
@@ -153,13 +159,13 @@ const SignUpForm = () => {
     isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
   }
   return (
-    <SContainer>
+    <S.Container>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_SIGNUP} />
-      <SPartitionLine />
-      <SFormContainer>
-        <SForm onSubmit={handleSubmit}>
-          <SUnderForm>
-            <SFormItem>
+      <S.PartitionLine />
+      <S.FormContainer>
+        <S.Form onSubmit={handleSubmit}>
+          <S.UnderForm>
+            <S.FormItem>
               <EnterEmail
                 $setDuplicatedEmail={setDuplicatedEmail}
                 $setDoneDuplicationCheck={setDoneDuplicationCheck}
@@ -169,12 +175,12 @@ const SignUpForm = () => {
                 $duplicatedEmail={duplicatedEmail}
                 $doneDuplicationCheck={doneDuplicationCheck}
               />
-            </SFormItem>
+            </S.FormItem>
 
-            <SFormItem>
-              <SpasswordLabel htmlFor="password" style={{ position: 'relative' }}>
-                <SFormItemTitle>비밀번호</SFormItemTitle>
-                <SInput
+            <S.FormItem>
+              <S.passwordLabel htmlFor="password" style={{ position: 'relative' }}>
+                <S.FormItemTitle>비밀번호</S.FormItemTitle>
+                <S.Input
                   type={isPasswordHidden ? 'password' : 'text'}
                   id="password"
                   onChange={(e) => setPwd(e.target.value)}
@@ -187,22 +193,22 @@ const SignUpForm = () => {
                   autoComplete="off"
                 />
                 {isPasswordHidden ? (
-                  <PasswordEyeButton type="button" onClick={() => setIsPasswordHidden(false)}>
+                  <S.PasswordEyeButton type="button" onClick={() => setIsPasswordHidden(false)}>
                     <BsFillEyeSlashFill className="pw_button_hidden_color" />
-                  </PasswordEyeButton>
+                  </S.PasswordEyeButton>
                 ) : (
-                  <PasswordEyeButton type="button" onClick={() => setIsPasswordHidden(true)}>
+                  <S.PasswordEyeButton type="button" onClick={() => setIsPasswordHidden(true)}>
                     <BsFillEyeFill className="pw_button_shown_color" />
-                  </PasswordEyeButton>
+                  </S.PasswordEyeButton>
                 )}
-              </SpasswordLabel>
-              <SPGuideMessage>{!!pwd && !validPwd && '문자, 숫자, 특수문자(!@#$%) 포함, 6자 이상의 비밀번호'}</SPGuideMessage>
-            </SFormItem>
+              </S.passwordLabel>
+              <S.PGuideMessage>{!!pwd && !validPwd && '문자, 숫자, 특수문자(!@#$%) 포함, 6자 이상의 비밀번호'}</S.PGuideMessage>
+            </S.FormItem>
 
-            <SFormItem>
-              <SpasswordLabel htmlFor="confirm_pwd" style={{ position: 'relative' }}>
-                <SFormItemTitle>비밀번호 확인</SFormItemTitle>
-                <SInput
+            <S.FormItem>
+              <S.passwordLabel htmlFor="confirm_pwd" style={{ position: 'relative' }}>
+                <S.FormItemTitle>비밀번호 확인</S.FormItemTitle>
+                <S.Input
                   type={isMatchPwHidden ? 'password' : 'text'}
                   id="confirm_pwd"
                   onChange={(e) => setMatchPwd(e.target.value)}
@@ -215,24 +221,24 @@ const SignUpForm = () => {
                   autoComplete="off"
                 />
                 {isMatchPwHidden ? (
-                  <PasswordEyeButton type="button" onClick={() => setIsMatchPwHidden(false)}>
+                  <S.PasswordEyeButton type="button" onClick={() => setIsMatchPwHidden(false)}>
                     <BsFillEyeSlashFill className=" pw_button_hidden_color" />
-                  </PasswordEyeButton>
+                  </S.PasswordEyeButton>
                 ) : (
-                  <PasswordEyeButton type="button" onClick={() => setIsMatchPwHidden(true)}>
+                  <S.PasswordEyeButton type="button" onClick={() => setIsMatchPwHidden(true)}>
                     <BsFillEyeFill className=" pw_button_shown_color" />
-                  </PasswordEyeButton>
+                  </S.PasswordEyeButton>
                 )}
-              </SpasswordLabel>
+              </S.passwordLabel>
 
-              <SPGuideMessage>{!!matchPwd && !validMatch && '처음에 입력한 비밀번호와 동일해야합니다.'}</SPGuideMessage>
-            </SFormItem>
+              <S.PGuideMessage>{!!matchPwd && !validMatch && '처음에 입력한 비밀번호와 동일해야합니다.'}</S.PGuideMessage>
+            </S.FormItem>
 
-            <SFormItem>
+            <S.FormItem>
               <label htmlFor="username">
-                <SFormItemTitle>이름</SFormItemTitle>
+                <S.FormItemTitle>이름</S.FormItemTitle>
               </label>
-              <SInput
+              <S.Input
                 type="text"
                 id="username"
                 onChange={(e) => setUsername(e.target.value)}
@@ -244,253 +250,50 @@ const SignUpForm = () => {
                 placeholder="실명을 입력하세요"
                 autoComplete="off"
               />
-              <SPGuideMessage>{!!username && !validUsername && '2자 이상 6자 미만의 한국실명 / 2자이상 20자 미만의 영문실명'}</SPGuideMessage>
-            </SFormItem>
+              <S.PGuideMessage>{!!username && !validUsername && '2자 이상 6자 미만의 한국실명 / 2자이상 20자 미만의 영문실명'}</S.PGuideMessage>
+            </S.FormItem>
 
-            <SFormItem style={{ marginBottom: '23px' }}>
-              <SFormItemTitle>생년월일</SFormItemTitle>
+            <S.FormItem style={{ marginBottom: '23px' }}>
+              <S.FormItemTitle>생년월일</S.FormItemTitle>
               <SelectBirth $setBirth={setBirth} />
-            </SFormItem>
+            </S.FormItem>
 
-            <SFormItem style={{ marginBottom: '23px' }}>
-              <SFormItemTitle>성별</SFormItemTitle>
+            <S.FormItem style={{ marginBottom: '23px' }}>
+              <S.FormItemTitle>성별</S.FormItemTitle>
               <GenderRadiobox $checkedGender={checkedGender} $setCheckedGender={setCheckedGender} />
-            </SFormItem>
+            </S.FormItem>
 
-            <SFormItem>
-              <SFormItemHeader>
-                <SFormItemTitle>활동선호지역</SFormItemTitle>
-                <SPGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</SPGuideMessage>
-              </SFormItemHeader>
+            <S.FormItem>
+              <S.FormItemHeader>
+                <S.FormItemTitle>활동선호지역</S.FormItemTitle>
+                <S.PGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</S.PGuideMessage>
+              </S.FormItemHeader>
 
-              <SFormItemBody>
-                <SFormItemBodySection>
+              <S.FormItemBody>
+                <S.FormItemBodySection>
                   <span>지역1</span>
                   <SelectLocation $locationType={'locationType1'} $setLocation={setLoaction} />
-                </SFormItemBodySection>
-                <SFormItemBodySection>
+                </S.FormItemBodySection>
+                <S.FormItemBodySection>
                   <span>지역2</span>
                   <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} />
-                </SFormItemBodySection>
-              </SFormItemBody>
-            </SFormItem>
-          </SUnderForm>
+                </S.FormItemBodySection>
+              </S.FormItemBody>
+            </S.FormItem>
+          </S.UnderForm>
 
-          <SPartitionLine />
+          <S.PartitionLine />
 
           <ServiceAgreement $setIsAllChecked={setIsAllChecked} />
 
-          <SUnderFormSubmitButtonContainer>
-            <SButton type="submit" disabled={!validEmail || !validPwd || !validMatch || !validUsername || !validBirth || !validGender || !validLocation || !doneDuplicationCheck || duplicatedEmail || !isAllChecked ? true : false}>
+          <S.UnderFormSubmitButtonContainer>
+            <S.Button type="submit" disabled={!validEmail || !validPwd || !validMatch || !validUsername || !validBirth || !validGender || !validLocation || !doneDuplicationCheck || duplicatedEmail || !isAllChecked ? true : false}>
               가입완료
-            </SButton>
-          </SUnderFormSubmitButtonContainer>
-        </SForm>
-      </SFormContainer>
-    </SContainer>
+            </S.Button>
+          </S.UnderFormSubmitButtonContainer>
+        </S.Form>
+      </S.FormContainer>
+    </S.Container>
   );
 };
 export default SignUpForm;
-
-const SContainer = styled.div``;
-
-const SPartitionLine = styled.div`
-  position: relative;
-  width: 100%;
-  height: 1px;
-  background-color: #eaeaea;
-  & p {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: -10px;
-    & span {
-      background-color: #fff;
-    }
-  }
-`;
-
-const SFormContainer = styled.div``;
-
-const SForm = styled.form`
-  box-sizing: border-box;
-  padding: 40px 0px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  @media screen and (max-width: 420px) {
-    padding: 30px 0px;
-  }
-`;
-
-const SUnderForm = styled.div`
-  box-sizing: border-box;
-  padding: 0px 20px 80px;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 650px;
-  min-width: 360px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const SFormItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px 12px;
-`;
-
-const SpasswordLabel = styled.label`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const SInput = styled.input<{ $color: boolean; $noFocusedColor: boolean; id?: string }>`
-  box-sizing: border-box;
-  width: 100%;
-  min-width: ${({ id }) => {
-    if (id === 'email') {
-      return '220px';
-    } else {
-      return '320px';
-    }
-  }};
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  font-size: 16px;
-  vertical-align: middle;
-  border: 1px solid #696969;
-  border-radius: 3px;
-  color: #000;
-  padding: ${({ id }) => {
-    if (id === 'email' || id === 'confirm_pwd' || id === 'password') {
-      return '5px 50px 5px 12px';
-    } else {
-      return '5px 12px 5px 12px';
-    }
-  }};
-
-  &:focus {
-    outline: none;
-  }
-  @media screen and (max-width: 420px) {
-    height: 45px;
-    line-height: 45px;
-  }
-`;
-
-const SUnderFormSubmitButtonContainer = styled.div`
-  max-width: 650px;
-  width: 100%;
-  padding: 0 20px;
-`;
-
-const SButton = styled.button<{ disabled: boolean }>`
-  height: 50px;
-  line-height: 50px;
-  width: 100%;
-  margin: 30px 0 auto;
-  background-color: ${(props) => {
-    if (props.disabled === true) return '#e7e7e7';
-    else return '#FE902F';
-  }};
-
-  color: #fff;
-  cursor: ${(props) => {
-    if (props.disabled === true) return 'not-allowed';
-    else return 'pointer';
-  }};
-  border-radius: 3px;
-  font-size: 16px;
-`;
-
-const SFormItemHeader = styled.div`
-  display: flex;
-  align-items: center;
-  height: 30px;
-  gap: 10px;
-  & span {
-    vertical-align: bottom;
-  }
-`;
-
-const SPGuideMessage = styled.p<{ $guideMessageColor?: string }>`
-  min-width: 10px;
-  height: 18px;
-  display: flex;
-  font-size: 12px;
-  color: ${({ $guideMessageColor }) => {
-    if ($guideMessageColor === '확인') {
-      return '#1b7b18';
-    } else if ($guideMessageColor === '안내') {
-      return '#696969';
-    } else {
-      return '#d71f1f';
-    }
-  }};
-`;
-
-const SFormItemBody = styled.div`
-  border-radius: 3px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  width: 100%;
-  gap: 15px;
-`;
-
-const SFormItemBodySection = styled.section`
-  border-radius: 3px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const SFormItemTitle = styled.span``;
-
-const PasswordEyeButton = styled.button`
-  position: absolute;
-  right: 24px;
-  bottom: 14px;
-  z-index: 3;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20px;
-  height: 20px;
-  font-size: 20px;
-  cursor: pointer;
-  .pw_button_hidden_color {
-    fill: #cdcdcd;
-  }
-  .pw_button_shown_color {
-    fill: #696969;
-  }
-  &:hover {
-    cursor: pointer;
-    .reset_input_btn {
-      fill: #696969;
-    }
-  }
-  &:focus {
-    .reset_input_btn {
-      fill: #696969;
-    }
-  }
-  @media screen and (max-width: 420px) {
-    right: 20px;
-    bottom: 13px;
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
-  }
-`;

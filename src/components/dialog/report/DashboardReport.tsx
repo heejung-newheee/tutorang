@@ -36,7 +36,7 @@ const DashboardReport = () => {
     return <Loading />;
   }
   if (isError) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 
