@@ -17,6 +17,7 @@ import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import { Container, Section } from '../Mypage.styled';
 import * as S from './ProfileForm.styled';
+import { openModal } from '../../../redux/modules';
 
 type sessionType = {
   provider: string | undefined;
@@ -26,6 +27,7 @@ const EditProfileForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const loginUser = useSelector((state: RootState) => state.user.user);
+  const { file } = useSelector((state: RootState) => state.modal);
 
   const userData = useQuery([USER_PROFILE_QUERY_KEY], () => getUserById(loginUser!.id));
   const user = userData.data;
@@ -54,13 +56,17 @@ const EditProfileForm = () => {
     setConfirmPassword(event.target.value);
   };
 
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
-      setImgFile(selectedFile);
-      makeVisiblePreviewImg(selectedFile);
+  const openImageModal = () => {
+    dispatch(openModal({ type: 'imageResizeForm', targetId: user.id }));
+  };
+
+  const onFileChange = (file: File) => {
+    if (file) {
+      setImgFile(file);
+      makeVisiblePreviewImg(file);
     } else return false;
   };
+
   const makeVisiblePreviewImg = (selectedFile: File) => {
     if (selectedFile) {
       const reader = new FileReader();
@@ -91,8 +97,8 @@ const EditProfileForm = () => {
         dispatch(setUser({ ...user, location1_sido: location.sido1, location1_gugun: location.gugun1, location2_sido: location.sido2, location2_gugun: location.gugun2 }));
       }
       if (imgFile) {
-        const uploadProfile = await profileImgUpload({ id: user.id, img: imgFile });
-        dispatch(setUser({ ...user, avatar_url: uploadProfile }));
+        const { avatar_url, cardImage_url } = await profileImgUpload({ id: user.id, img: imgFile });
+        dispatch(setUser({ ...user, avatar_url: avatar_url, cardImage_url: cardImage_url }));
       }
       alert('프로필 수정이 완료되었습니다.');
       navigate('/mypage');
@@ -106,6 +112,10 @@ const EditProfileForm = () => {
   } else if (location.sido1 === '전체' || location.sido2 === '전체' || location.gugun1 === '전체' || location.gugun2 === '전체') {
     isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
   }
+
+  useEffect(() => {
+    if (file) onFileChange(file);
+  }, [file]);
 
   useEffect(() => {
     const result = PWD_REGEX.test(password);
@@ -145,8 +155,11 @@ const EditProfileForm = () => {
                 <S.EditPhotoBtn>
                   <img src={edit_photo} alt="이미지 교체 버튼" />
                 </S.EditPhotoBtn>
-                <S.EditInput className="edit-photo" type="file" id="fileInput" accept="image/*" onChange={onFileChange} />
+                {/* <S.EditInput className="edit-photo" type="file" id="fileInput" accept="image/*" onChange={onFileChange} /> */}
               </S.ProfileImgBox>
+              <button onClick={openImageModal} type="button">
+                이미지 선택
+              </button>
               <div>
                 <p>이름</p>
                 <S.UserData>{user?.username}</S.UserData>
