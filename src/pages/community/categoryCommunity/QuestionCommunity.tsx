@@ -8,7 +8,6 @@ import { getCommunityApi } from '../../../api/community';
 const QuestionCommunity = () => {
   const [query, _] = useSearchParams();
   const editPostNum = Number(query.get('q'));
-  // const [hasPageMore, setHasPageMore] = useState<boolean>(true);
   const [totalPageNum, setTotalPageNum] = useState<number | null>(null);
   const pageCount = 5;
 

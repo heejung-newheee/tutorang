@@ -65,6 +65,14 @@ export const ResponsivMenuColor = styled.div<{ $color: boolean }>`
   background-color: ${(props) => (props.$color === true ? `${colors.primary}` : 'white')};
   color: ${(props) => (props.$color === true ? `${colors.white}` : 'gray')};
   cursor: pointer;
+
+  & > a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export const PostContainer = styled.div`
@@ -99,6 +107,13 @@ export const CategoryColor = styled.div<{ $color: boolean }>`
   color: ${(props) => (props.$color === true ? `${colors.primary}` : 'gray')};
   position: relative;
   cursor: pointer;
+
+  & > a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
 
   & > span:last-child {
     font-size: 25px;

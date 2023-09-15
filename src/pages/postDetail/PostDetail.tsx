@@ -64,6 +64,7 @@ const PostDetail = () => {
       }
     }
   };
+
   const postApi = async (newInfo: any) => {
     const { error } = await supabase.from('post_comments').insert(newInfo);
 
@@ -139,6 +140,7 @@ const PostDetail = () => {
         <span>
           <Heart isClick={isLikeTrue !== undefined && isLikeTrue} onClick={handleLike} />
         </span>
+        <div>{data && data[0]?.like}</div>
       </S.LikeDiv>
       <S.Line />
 

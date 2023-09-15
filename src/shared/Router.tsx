@@ -26,10 +26,12 @@ import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
 import GlobalModal from '../components/modal/GlobalModal';
+import ScrollToTop from '../components/common/ScrollToTop';
 
 const Router = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <GlobalModal />
       <Routes>
         <Route path="/admin" element={<AdminLayout />}>
