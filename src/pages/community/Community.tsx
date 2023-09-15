@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import FormHeader from '../../components/Form/FormHeader';
@@ -22,9 +21,6 @@ const Community = () => {
     }
     navigate(`../write/${path}`);
   };
-  useEffect(() => {
-    navigate('../community/free/?q=1');
-  }, []);
   return (
     <S.CommunityContainer>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_COMMUNITY} />

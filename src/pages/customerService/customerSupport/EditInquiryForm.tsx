@@ -23,7 +23,7 @@ const EditInquiryForm = () => {
       queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY]);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
   const imageHandler = () => {
@@ -43,7 +43,7 @@ const EditInquiryForm = () => {
             upsert: true,
           });
 
-          console.log(data, error);
+          console.error(data, error);
 
           const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
 
@@ -60,7 +60,7 @@ const EditInquiryForm = () => {
             }
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
     };

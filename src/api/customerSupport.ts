@@ -32,15 +32,15 @@ export const getOneInquiry = async (inquiryId: string) => {
 
 export const insertNewInquiry = async (newInquiry: TypeNewInquiry) => {
   const { error } = await supabase.from(CUSTOMER_SUPPORT_TABLE).insert(newInquiry);
-  if (error) console.log(error);
+  if (error) console.error(error);
 };
 
 export const deleteInquiry = async (inquiryId: string) => {
   const { error } = await supabase.from(CUSTOMER_SUPPORT_TABLE).delete().eq('id', inquiryId);
-  if (error) console.log(error);
+  if (error) console.error(error);
 };
 
 export const editInquiry = async (inquiryId: string, updatedInquiry: TypeUpdatedInquiry) => {
   const { error } = await supabase.from(CUSTOMER_SUPPORT_TABLE).update(updatedInquiry).eq('id', inquiryId);
-  if (error) console.log(error);
+  if (error) console.error(error);
 };

@@ -16,9 +16,9 @@ import { AppDispatch, RootState } from '../../../redux/config/configStore';
 import { displayToastAsync, openModal } from '../../../redux/modules';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
+import { base64StringtoFile } from '../../../utils/File';
 import { Container, Section } from '../Mypage.styled';
 import * as S from './ProfileForm.styled';
-import { base64StringtoFile } from '../../../utils/File';
 
 type sessionType = {
   provider: string | undefined;
@@ -158,7 +158,6 @@ const EditProfileForm = () => {
                 <S.EditPhotoBtn onClick={openImageModal} type="button">
                   <img src={edit_photo} alt="이미지 교체 버튼" />
                 </S.EditPhotoBtn>
-                {/* <S.EditInput className="edit-photo" type="file" id="fileInput" accept="image/*" onChange={onFileChange} /> */}
               </S.ProfileImgBox>
               <div>
                 <p>이름</p>

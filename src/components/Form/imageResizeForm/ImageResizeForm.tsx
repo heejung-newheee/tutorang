@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import * as S from './ImageResizeForm.styled';
-import { MdOutlineCropFree } from 'react-icons/md';
-import { closeModal, successModal } from '../../../redux/modules';
-import { IoClose } from 'react-icons/io5';
-import { RootState } from '../../../redux/config/configStore';
-import Cropper, { ReactCropperElement } from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
+import { useEffect, useRef, useState } from 'react';
+import Cropper, { ReactCropperElement } from 'react-cropper';
+import { IoClose } from 'react-icons/io5';
+import { MdOutlineCropFree } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../..';
+import { RootState } from '../../../redux/config/configStore';
+import { closeModal, successModal } from '../../../redux/modules';
+import * as S from './ImageResizeForm.styled';
 
 const ImageResizeForm = () => {
   const { targetId } = useSelector((state: RootState) => state.modal);

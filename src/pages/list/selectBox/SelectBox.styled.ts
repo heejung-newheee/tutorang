@@ -47,7 +47,7 @@ export const FilterUl = styled.ul`
   display: flex;
   overflow-x: auto;
   &::-webkit-scrollbar-track {
-    display: none; /*겹쳐보임*/
+    display: none;
   }
 `;
 

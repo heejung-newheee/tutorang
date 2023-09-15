@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from '../../../style/theme/colors';
 
@@ -62,24 +62,6 @@ export const NavLogoImg = styled.img`
   margin-right: 10px;
 `;
 
-// [ ] 유진님이 작성하셨던 부분
-export const NavLinkSt = styled(NavLink)`
-  margin: 10px;
-  font-size: 15px;
-  opacity: 0.7;
-  &:link,
-  &:focus,
-  &:active,
-  &:visited,
-  &:hover {
-    color: black;
-  }
-  &.active {
-    color: #fe902f;
-  }
-`;
-
-// [ ] 대안으로 적은 부분Li
 export const NavTitle = styled.span<{ $pathKeyword: string; $parentPath: string }>`
   margin: 10px;
   font-size: 15px;
@@ -158,7 +140,6 @@ export const IconCover = styled.div`
   padding: 7.5px 0px 7.5px;
   margin-top: 3px;
   border-radius: 100%;
-  /* */
   margin-left: 5px;
 `;
 

@@ -7,22 +7,16 @@ import { tutorInfoJoin } from '../../../api/tutor';
 import { logo04, mobileNabBtn } from '../../../assets';
 import { MATCHING_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
 import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { displayToastAsync } from '../../../redux/modules';
 import { matchingList } from '../../../redux/modules/matching';
 import { tutorInfo } from '../../../redux/modules/tutorSlice';
 import supabase from '../../../supabase';
 import * as S from './Header.styled';
 import HeaderModal from './HeaderModal';
 import SigninUserNav from './SigninUserNav';
-import { displayToastAsync } from '../../../redux/modules';
 
 type HEADERMENU = { title: string; path: string; parentPath: string }[];
 
-// const HeaderMenu: HEADERMENU = [
-//   { title: '튜터찾기', path: '/list', parentPath: 'list' },
-//   { title: '매칭후기', path: '/review', parentPath: 'review' },
-//   { title: '커뮤니티', path: '/community/free/?q=1', parentPath: 'community' },
-//   { title: '고객센터', path: '/customer-service/announcements', parentPath: 'customer-service' },
-// ];
 const HeaderMenu: HEADERMENU = [
   { title: '튜터찾기', path: '/list', parentPath: 'list' },
   { title: '매칭후기', path: '/review', parentPath: 'review' },
@@ -31,10 +25,8 @@ const HeaderMenu: HEADERMENU = [
 ];
 
 const Header = () => {
-  // [ ] headernav 색 결정
   const parentPathHere = useLocation().pathname.split('/')[1];
   const [pathKeyword, setPathKeyword] = useState('/');
-  // [ ] headernav 색 결정
 
   const [sideNavOpen, setSideNavOpen] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -92,11 +84,6 @@ const Header = () => {
                   </S.NavTitle>
                 </Link>
               ))}
-              {/* {HeaderMenu.map((item, index) => (
-                <S.NavLinkSt key={index} to={item.path}>
-                  {item.title}
-                </S.NavLinkSt>
-              ))} */}
             </S.Gnb>
           </S.HeaderLeft>
 
