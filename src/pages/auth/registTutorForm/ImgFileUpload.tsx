@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 import { BsFileEarmarkImage } from 'react-icons/bs';
-import { styled } from 'styled-components';
+import * as S from './ImgFileUpload.style';
 
 type TypeImgFileUpload = {
   $fileType: string;
@@ -39,81 +39,17 @@ const ImgFileUpload: React.FC<TypeImgFileUpload> = ({ $fileType, $setCertificati
   if ($fileType === 'tutorCertificationImg') guideMessage = '튜터 자격 인증할 이미지 첨부!';
 
   return (
-    <SCertifiFilesArea>
-      <SFileInput type="file" id={$fileType} onChange={handleChangeImg} accept={'image/*'} />
-      <SCertifiIcon htmlFor={$fileType}>
+    <S.CertifiFilesArea>
+      <S.FileInput type="file" id={$fileType} onChange={handleChangeImg} accept={'image/*'} />
+      <S.CertifiIcon htmlFor={$fileType}>
         <BsFileEarmarkImage className="certification_icon" />
-      </SCertifiIcon>
-      <SLabel htmlFor={$fileType}>{imgFile === undefined ? <SCertifiFilesP $role={'guide'}>{guideMessage}</SCertifiFilesP> : <SCertifiFilesP>{imgFile.name}</SCertifiFilesP>}</SLabel>
-      <SIconFileDelete>
+      </S.CertifiIcon>
+      <S.Label htmlFor={$fileType}>{imgFile === undefined ? <S.CertifiFilesP $role={'guide'}>{guideMessage}</S.CertifiFilesP> : <S.CertifiFilesP>{imgFile.name}</S.CertifiFilesP>}</S.Label>
+      <S.IconFileDelete>
         <AiOutlineClose className="certification_delete_icon" onClick={() => cancelImg()} />
-      </SIconFileDelete>
-    </SCertifiFilesArea>
+      </S.IconFileDelete>
+    </S.CertifiFilesArea>
   );
 };
 
 export default ImgFileUpload;
-
-const SCertifiFilesArea = styled.div`
-  box-sizing: border-box;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 50px;
-  @media screen and (max-width: 420px) {
-    height: 45px;
-  }
-`;
-
-const SCertifiIcon = styled.label`
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 5px;
-  cursor: pointer;
-`;
-
-const SCertifiFilesP = styled.p<{ $role?: string }>`
-  box-sizing: border-box;
-  min-width: 245px;
-  width: 100%;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  padding: 10px 5px 10px 10px;
-  overflow: hidden;
-
-  border: ${({ $role }) => {
-    if ($role === 'guide') return '1px solid #696969';
-    else return '1px solid #FE902F';
-  }};
-  border-radius: 3px;
-  color: #aeaeae;
-  @media screen and (max-width: 420px) {
-    height: 45px;
-  }
-`;
-const SLabel = styled.label<{ id?: string }>`
-  background-color: #f7f7f7;
-  width: 100%;
-  height: 50px;
-  cursor: pointer;
-  @media screen and (max-width: 420px) {
-    height: 45px;
-  }
-`;
-
-const SIconFileDelete = styled.div`
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const SFileInput = styled.input`
-  display: none;
-`;

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
-import { styled } from 'styled-components';
+import * as S from './SelectBirth.style';
+import * as C from './SelectBoxCommon.style';
 
 type TypeSelectBirthType = {
   $setBirth: React.Dispatch<
@@ -92,123 +93,60 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
   }, [isDateOpen]);
 
   return (
-    <SDropdownField>
-      <SDropdownWrapper ref={yearDropContainerRef}>
-        <SDropDownHeader id="birthYearDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, year: !prev.year }))}>
+    <S.DropdownField>
+      <S.DropdownWrapper ref={yearDropContainerRef}>
+        <S.DropDownHeader id="birthYearDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, year: !prev.year }))}>
           <span>{birth.year || '년도'}</span>
-          {isDateOpen.year ? <FaAngleUp /> : <FaAngleDown />}
-        </SDropDownHeader>
+          <C.SvgAngleUpDownCover>{isDateOpen.year ? <FaAngleUp /> : <FaAngleDown />}</C.SvgAngleUpDownCover>
+        </S.DropDownHeader>
         {isDateOpen.year && (
-          <SOptionContainer>
-            <Select>
+          <S.OptionContainer>
+            <S.Select>
               {birthYearOptions.map((option) => (
-                <SOption key={option} $selectedOption={birth.year === option.toString()} onClick={() => selectDateOption(option.toString(), 'year')}>
+                <S.Option key={option} $selectedOption={birth.year === option.toString()} onClick={() => selectDateOption(option.toString(), 'year')}>
                   {option}
-                </SOption>
+                </S.Option>
               ))}
-            </Select>
-          </SOptionContainer>
+            </S.Select>
+          </S.OptionContainer>
         )}
-      </SDropdownWrapper>
-      <SDropdownWrapper ref={monthDropContainerRef}>
-        <SDropDownHeader id="birthMonthDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, month: !prev.month }))}>
+      </S.DropdownWrapper>
+      <S.DropdownWrapper ref={monthDropContainerRef}>
+        <S.DropDownHeader id="birthMonthDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, month: !prev.month }))}>
           <span>{birth.month || '월'}</span>
-          {isDateOpen.month ? <FaAngleUp /> : <FaAngleDown />}
-        </SDropDownHeader>
+          <C.SvgAngleUpDownCover>{isDateOpen.month ? <FaAngleUp /> : <FaAngleDown />}</C.SvgAngleUpDownCover>
+        </S.DropDownHeader>
         {isDateOpen.month && (
-          <SOptionContainer>
-            <Select>
+          <S.OptionContainer>
+            <S.Select>
               {birthMonthOptions.map((option) => (
-                <SOption key={option} $selectedOption={birth.month === option} onClick={() => selectDateOption(option, 'month')}>
+                <S.Option key={option} $selectedOption={birth.month === option} onClick={() => selectDateOption(option, 'month')}>
                   {option}
-                </SOption>
+                </S.Option>
               ))}
-            </Select>
-          </SOptionContainer>
+            </S.Select>
+          </S.OptionContainer>
         )}
-      </SDropdownWrapper>
-      <SDropdownWrapper ref={dayDropContainerRef}>
-        <SDropDownHeader id="birthDayDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, day: !prev.day }))}>
+      </S.DropdownWrapper>
+      <S.DropdownWrapper ref={dayDropContainerRef}>
+        <S.DropDownHeader id="birthDayDropdown" onClick={() => setIsDateOpen((prev) => ({ ...prev, day: !prev.day }))}>
           <span>{birth.day || '일'}</span>
-          {isDateOpen.day ? <FaAngleUp /> : <FaAngleDown />}
-        </SDropDownHeader>
+          <C.SvgAngleUpDownCover>{isDateOpen.day ? <FaAngleUp /> : <FaAngleDown />}</C.SvgAngleUpDownCover>
+        </S.DropDownHeader>
         {isDateOpen.day && (
-          <SOptionContainer>
-            <Select>
+          <S.OptionContainer>
+            <S.Select>
               {birthDayOptions.map((option) => (
-                <SOption key={option} $selectedOption={birth.day === option} onClick={() => selectDateOption(option, 'day')}>
+                <S.Option key={option} $selectedOption={birth.day === option} onClick={() => selectDateOption(option, 'day')}>
                   {option}
-                </SOption>
+                </S.Option>
               ))}
-            </Select>
-          </SOptionContainer>
+            </S.Select>
+          </S.OptionContainer>
         )}
-      </SDropdownWrapper>
-    </SDropdownField>
+      </S.DropdownWrapper>
+    </S.DropdownField>
   );
 };
 
 export default SelectBirth;
-
-const SDropdownField = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-`;
-
-const SDropdownWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  border: 1px solid #696969;
-  border-radius: 3px;
-`;
-
-const SDropDownHeader = styled.div`
-  box-sizing: border-box;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 3px;
-  cursor: pointer;
-  @media screen and (max-width: 420px) {
-    height: 45px;
-    line-height: 45px;
-  }
-`;
-
-const SOptionContainer = styled.div<{ $selectOptionsType?: string }>`
-  display: block;
-  position: absolute;
-  left: 0;
-  width: 100%;
-  max-height: 180px;
-  background-color: #fff;
-  border: 1px solid #696969;
-  overflow-y: scroll;
-  z-index: ${({ $selectOptionsType }) => {
-    if ($selectOptionsType === 'location1') return '3';
-    else return '1';
-  }};
-`;
-const Select = styled.ul``;
-
-const SOption = styled.li<{ $selectedOption: boolean }>`
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 10px;
-  background-color: ${(props) => {
-    if (props.$selectedOption === true) return '#eee';
-    else return '#fff';
-  }};
-  cursor: pointer;
-  @media screen and (max-width: 420px) {
-    height: 45px;
-    line-height: 45px;
-  }
-`;

@@ -22,7 +22,7 @@ export const getOneAnnouncement = async (announcementId: string) => {
 export const insertNewAnnouncement = async (newAnnouncement: UpdatingTables<'announcements'>) => {
   const { error } = await supabase.from(ANNOUNCEMENTS_TABLE).insert(newAnnouncement);
 
-  if (error) console.log(error);
+  if (error) console.error(error);
 };
 
 export const deleteAnnouncement = async (announcementId: string) => {

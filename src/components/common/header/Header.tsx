@@ -1,30 +1,33 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { getMatchData } from '../../../api/match';
 import { tutorInfoJoin } from '../../../api/tutor';
 import { logo04, mobileNabBtn } from '../../../assets';
 import { MATCHING_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
 import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { displayToastAsync } from '../../../redux/modules';
 import { matchingList } from '../../../redux/modules/matching';
 import { tutorInfo } from '../../../redux/modules/tutorSlice';
 import supabase from '../../../supabase';
 import * as S from './Header.styled';
 import HeaderModal from './HeaderModal';
 import SigninUserNav from './SigninUserNav';
-import { displayToastAsync } from '../../../redux/modules';
 
-type HEADERMENU = { title: string; path: string; path2?: string }[];
+type HEADERMENU = { title: string; path: string; parentPath: string }[];
 
 const HeaderMenu: HEADERMENU = [
-  { title: '튜터찾기', path: '/list' },
-  { title: '매칭후기', path: '/review' },
-  { title: '커뮤니티', path: '/community/free/?q=1' },
-  { title: '고객센터', path: '/customer-service/announcements' },
+  { title: '튜터찾기', path: '/list', parentPath: 'list' },
+  { title: '매칭후기', path: '/review', parentPath: 'review' },
+  { title: '커뮤니티', path: '/community/free', parentPath: 'community' },
+  { title: '고객센터', path: '/customer-service/announcements', parentPath: 'customer-service' },
 ];
 
 const Header = () => {
+  const parentPathHere = useLocation().pathname.split('/')[1];
+  const [pathKeyword, setPathKeyword] = useState('/');
+
   const [sideNavOpen, setSideNavOpen] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -61,6 +64,10 @@ const Header = () => {
     };
   }, [sideNavOpen]);
 
+  useEffect(() => {
+    setPathKeyword(parentPathHere);
+  }, [parentPathHere]);
+
   return (
     <>
       <S.NavContainer>
@@ -71,9 +78,11 @@ const Header = () => {
             </S.LogoWrap>
             <S.Gnb>
               {HeaderMenu.map((item, index) => (
-                <S.NavLinkSt key={index} to={item.path}>
-                  {item.title}
-                </S.NavLinkSt>
+                <Link key={index} to={item.path}>
+                  <S.NavTitle $pathKeyword={pathKeyword} $parentPath={item.parentPath}>
+                    {item.title}
+                  </S.NavTitle>
+                </Link>
               ))}
             </S.Gnb>
           </S.HeaderLeft>

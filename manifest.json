@@ -17,7 +17,6 @@
       "src": "/favicon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
-      "purpose": "any maskable",
       "purpose": "any maskable"
     },
     {
@@ -75,7 +74,7 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": "https://www.tutorang.site/",
+  "start_url": "www.tutorang.site",
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#ffffff",

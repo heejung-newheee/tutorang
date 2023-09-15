@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import { BsXCircleFill } from 'react-icons/bs';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { css, styled } from 'styled-components';
 import { googleicon, kakaotalk } from '../../../assets';
 import { SButton, SContainer, SForm, SFormContainer, SFormItem, SInput, SPGuideMessage, SPartitionLine } from '../../../components/Form/AuthForm.styled';
 import FormHeader from '../../../components/Form/FormHeader';
 import '../../../components/Form/icon.css';
 import '../../../components/Form/inputBackgroundSetting.css';
 import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNIN } from '../../../constants/formConstant';
-import supabase from '../../../supabase';
-import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../redux/config/configStore';
 import { displayToastAsync } from '../../../redux/modules';
+import supabase from '../../../supabase';
+import * as S from './SignInForm.style';
 
 const SignInForm = () => {
   const [email, setEmail] = useState('');
@@ -62,6 +62,7 @@ const SignInForm = () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
     });
+    if (error) console.error(error.message);
     if (error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message }));
   };
 
@@ -75,6 +76,7 @@ const SignInForm = () => {
         },
       },
     });
+    if (error) console.error(error.message);
     if (error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message }));
   };
 
@@ -105,9 +107,9 @@ const SignInForm = () => {
             <label htmlFor="email">이메일</label>
             <SInput type="text" id="email" placeholder="이메일을 입력하세요" name="email" value={email} onChange={handleInput} />
             {email && (
-              <SignInResetButton type="button" onClick={() => setEmail('')}>
+              <S.SignInResetButton type="button" onClick={() => setEmail('')}>
                 <BsXCircleFill className="reset_signin_input_btn" />
-              </SignInResetButton>
+              </S.SignInResetButton>
             )}
             <SPGuideMessage>{guideMessage.email && guideMessage.email}</SPGuideMessage>
           </SFormItem>
@@ -116,21 +118,21 @@ const SignInForm = () => {
             <label htmlFor="password">비밀번호</label>
             <SInput type="password" id="password" placeholder="비밀번호를 입력하세요" name="password" value={password} onChange={handleInput} />
             {password && (
-              <SignInResetButton type="button" onClick={() => setPassword('')}>
+              <S.SignInResetButton type="button" onClick={() => setPassword('')}>
                 <BsXCircleFill className="reset_signin_input_btn" />
-              </SignInResetButton>
+              </S.SignInResetButton>
             )}
             <SPGuideMessage>{guideMessage.password && guideMessage.password}</SPGuideMessage>
           </SFormItem>
 
-          <SButtonRelationArea>
+          <S.ButtonRelationArea>
             <SButton type="submit" disabled={!validationCheck}>
               로그인
             </SButton>
-            <SUnderFormButton>
+            <S.UnderFormButton>
               <span onClick={handleGoToSignup}>회원가입</span>
-            </SUnderFormButton>
-          </SButtonRelationArea>
+            </S.UnderFormButton>
+          </S.ButtonRelationArea>
         </SForm>
       </SFormContainer>
 
@@ -139,116 +141,14 @@ const SignInForm = () => {
           <span>간편로그인/회원가입으로 시작하기</span>
         </p>
       </SPartitionLine>
-      <SFooter>
-        <SsnsIconContainer>
-          <SsnsIcon src={kakaotalk} onClick={() => kakaoLogin()} alt="kakao login" />
-          <SsnsIcon src={googleicon} $iconType={'google'} onClick={() => googleLogin()} alt="google login" />
-        </SsnsIconContainer>
-      </SFooter>
+      <S.Footer>
+        <S.SnsIconContainer>
+          <S.SnsIcon src={kakaotalk} onClick={() => kakaoLogin()} alt="kakao login" />
+          <S.SnsIcon src={googleicon} $iconType={true} onClick={() => googleLogin()} alt="google login" />
+        </S.SnsIconContainer>
+      </S.Footer>
     </SContainer>
   );
 };
 
 export default SignInForm;
-
-const SsnsIcon = styled.img<{ $iconType?: string }>`
-  box-sizing: border-box;
-  ${({ $iconType }) => {
-    if ($iconType === 'google')
-      return css`
-        width: 57px;
-        height: 57px;
-        @media screen and (max-width: 420px) {
-          width: 50px;
-          height: 50px;
-        }
-      `;
-    else {
-      return css`
-        width: 58px;
-        height: 58px;
-        @media screen and (max-width: 420px) {
-          width: 51px;
-          height: 51px;
-        }
-      `;
-    }
-  }}
-
-  border-radius: 100%;
-  cursor: pointer;
-  ${({ $iconType }) => {
-    if ($iconType === 'google') return 'border: 1px solid #696969';
-  }}
-`;
-
-const SUnderFormButton = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: end;
-  & span {
-    margin-top: 14px;
-    height: 30px;
-    font-size: 16px;
-    color: #808080;
-    cursor: pointer;
-  }
-`;
-
-const SButtonRelationArea = styled.div`
-  position: relative;
-`;
-
-const SFooter = styled.footer`
-  width: 100%;
-  @media screen and (max-width: 420px) {
-    height: 100px;
-  }
-`;
-
-const SsnsIconContainer = styled.div`
-  padding: 45px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 45px;
-  @media screen and (max-width: 420px) {
-    gap: 35px;
-  }
-`;
-
-const SignInResetButton = styled.button`
-  position: absolute;
-  right: 22px;
-  bottom: 37px;
-  z-index: 3;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 16px;
-  height: 16px;
-  font-size: 16px;
-  cursor: pointer;
-  .reset_signin_input_btn {
-    fill: #cdcdcd;
-  }
-  &:hover {
-    cursor: pointer;
-    .reset_signin_input_btn {
-      fill: #696969;
-    }
-  }
-  &:focus {
-    .reset_signin_input_btn {
-      fill: #696969;
-    }
-  }
-  @media screen and (max-width: 420px) {
-    right: 18px;
-    bottom: 37px;
-    width: 15px;
-    height: 15px;
-    font-size: 15px;
-  }
-`;

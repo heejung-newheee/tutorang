@@ -16,6 +16,7 @@ import { AppDispatch, RootState } from '../../../redux/config/configStore';
 import { displayToastAsync, openModal } from '../../../redux/modules';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
+import { base64StringtoFile } from '../../../utils/File';
 import { Container, Section } from '../Mypage.styled';
 import * as S from './ProfileForm.styled';
 
@@ -114,7 +115,9 @@ const EditProfileForm = () => {
   }
 
   useEffect(() => {
-    if (file) onFileChange(file);
+    if (file && typeof file === 'string') {
+      onFileChange(base64StringtoFile(file, 'profile.jpg'));
+    }
   }, [file]);
 
   useEffect(() => {
@@ -152,14 +155,10 @@ const EditProfileForm = () => {
             <form onSubmit={updateProfilesInfo}>
               <S.ProfileImgBox>
                 <S.ProfileImg src={previewImg?.toString() || user?.avatar_url || undefined} alt="user profile" />
-                <S.EditPhotoBtn>
+                <S.EditPhotoBtn onClick={openImageModal} type="button">
                   <img src={edit_photo} alt="이미지 교체 버튼" />
                 </S.EditPhotoBtn>
-                {/* <S.EditInput className="edit-photo" type="file" id="fileInput" accept="image/*" onChange={onFileChange} /> */}
               </S.ProfileImgBox>
-              <button onClick={openImageModal} type="button">
-                이미지 선택
-              </button>
               <div>
                 <p>이름</p>
                 <S.UserData>{user?.username}</S.UserData>

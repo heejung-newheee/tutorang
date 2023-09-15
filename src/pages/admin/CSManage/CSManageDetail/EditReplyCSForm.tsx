@@ -17,7 +17,7 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
       queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY, replyInfo.cs_table_id]);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
 
@@ -26,7 +26,7 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
       queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY, replyInfo.cs_table_id]);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
 
@@ -52,7 +52,7 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
 
   return (
     <>
-      <button onClick={handleToggleEdit}>수정하기</button>
+      <button onClick={handleToggleEdit}>{isEditing ? '수정취소' : '수정하기'}</button>
       <form onSubmit={handleSubmit}>
         <input type="text" name="content" value={content} onChange={handleContentChange} disabled={!isEditing} />
         <button type="submit" disabled={!isEditing}>
