@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import Heart from 'react-animated-heart';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { deletePost, firstClickLikeApi, getWriteData, updateLike } from '../../api/postDetail';
 import { Loading } from '../../components';
-import { RootState } from '../../redux/config/configStore';
+import { AppDispatch, RootState } from '../../redux/config/configStore';
+import { displayToastAsync } from '../../redux/modules';
 import supabase from '../../supabase';
 import { detailDate } from '../community/utility';
 import * as S from './PostDetail.styled';
@@ -16,6 +17,7 @@ const PostDetail = () => {
   const [isThrottled, setIsThrottled] = useState(false);
   const loginUser = useSelector((state: RootState) => state.user.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const detail_user_id = loginUser?.id;
 
   let { postid } = useParams();
@@ -46,7 +48,7 @@ const PostDetail = () => {
 
   const handleLike = () => {
     if (!loginUser) {
-      return alert('로그인 후 이용해주세요');
+      return dispatch(displayToastAsync({ id: Date.now(), type: 'info', message: '로그인 후 이용해주세요' }));
     }
     if (isThrottled) {
       return;
@@ -90,7 +92,7 @@ const PostDetail = () => {
     e.preventDefault();
 
     if (!loginUser) {
-      return alert('로그인 후 이용해주세요');
+      return dispatch(displayToastAsync({ id: Date.now(), type: 'info', message: '로그인 후 이용해주세요' }));
     }
     postmutation.mutate({
       post_id: postid,

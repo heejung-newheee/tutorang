@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import FormHeader from '../../../components/Form/FormHeader';
@@ -8,12 +8,14 @@ import SelectBirth from '../../../components/Form/SelectBirth';
 import SelectLocation from '../../../components/Form/SelectLocation';
 import ServiceAgreement from '../../../components/Form/ServiceAgreement';
 import { FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../../../constants/formConstant';
-import { RootState } from '../../../redux/config/configStore';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
+import { displayToastAsync } from '../../../redux/modules';
 
 const CreateAdditionalInformationForm = () => {
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.user.user);
 
   const [email, setEmail] = useState('');
@@ -77,7 +79,7 @@ const CreateAdditionalInformationForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validUsername || !validBirth || !validGender || !validLocation || !isAllChecked) {
-      alert('모든 항목이 입력되었는지 다시 한 번 확인해주세요!');
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '모든 항목이 입력되었는지 다시 한 번 확인해주세요!' }));
       return false;
     }
 
@@ -108,9 +110,9 @@ const CreateAdditionalInformationForm = () => {
         console.error(ErrorOfUpdatingProfile, ErrorOfUpdatingProfile.message);
       } else if (ErrorOfUpdatingAuth) {
         console.error(ErrorOfUpdatingAuth, ErrorOfUpdatingAuth.message);
-        alert('회원가입 실패');
+        dispatch(displayToastAsync({ id: Date.now(), type: 'danger', message: '회원가입 실패' }));
       } else {
-        alert('추가정보 입력이 완료됐습니다. 더 다양한 기능을 이용해보세요~');
+        dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '추가정보 입력이 완료됐습니다. 더 다양한 기능을 이용해보세요~' }));
         navigate('/mypage');
       }
     }
