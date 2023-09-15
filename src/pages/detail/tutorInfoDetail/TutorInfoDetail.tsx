@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { getOrCreatePrivateChatRoom } from '../../../api/chat';
 import { tutorMatchedCount } from '../../../api/match';
 import { matchReview } from '../../../api/review';
-import { RootState } from '../../../redux/config/configStore';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
 
 const TUTOR_QUERY_KEY = 'tutorDetail';
 const REVIEW_QUERY_KEY = 'reviewTutorDetail';
@@ -22,7 +22,7 @@ type TutorDetailProps = {
 };
 
 const TutorInfoDetail = ({ id }: TutorDetailProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { data: tutor, isLoading: tutorLoading, isError: tutorError, error } = useQuery([TUTOR_QUERY_KEY, id], () => matchTutor(id));
   const matchingCount = useQuery([MATCHING_QUERY_KEY, id], () => tutorMatchedCount(id));
   const loginUser = useSelector((state: RootState) => state.user.user);
@@ -86,7 +86,7 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
           <S.TutorProfile>
             <div>
               <S.Figure>
-                <img src={`${tutor.tutor_img}`} alt={`${tutor.tutor_name} 프로필 이미지`} />
+                <img src={`${tutor.tutor_card_img}`} alt={`${tutor.tutor_name} 프로필 이미지`} />
                 <BookMark />
               </S.Figure>
               <S.reportButton onClick={handleOpenReport}>

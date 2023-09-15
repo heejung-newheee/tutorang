@@ -6,6 +6,7 @@ import * as S from './MyBoard.styled';
 type PROFILES = {
   id: string;
   username: string | null;
+  email: string | null;
   avatar_url: string | null;
 };
 type Props = {
@@ -14,6 +15,7 @@ type Props = {
     content: string | null;
     created_at: string;
     id: number;
+    like: number | null;
     title: string | null;
     user_id: string | null;
     profiles: PROFILES | null;
@@ -54,8 +56,7 @@ const BoardItem = ({ item }: Props) => {
         <S.Title>{item.title}</S.Title>
         <S.Text>{mainText}</S.Text>
         <S.Like>
-          <span>좋아요 3423 </span>
-          <span>댓글 2324</span>
+          <span>좋아요 {item.like} </span>
         </S.Like>
       </S.ContentsText>
 

@@ -27,6 +27,7 @@ import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
 import ScrollToTop from '../components/common/ScrollToTop';
+import ToastContainer from '../components/dialog/toast/ToastContainer';
 
 //
 const Router = () => {
@@ -34,6 +35,7 @@ const Router = () => {
     <BrowserRouter>
       <ScrollToTop />
       <GlobalModal />
+      <ToastContainer />
       <Routes>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />

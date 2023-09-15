@@ -9,6 +9,9 @@ import '../../../components/Form/icon.css';
 import '../../../components/Form/inputBackgroundSetting.css';
 import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNIN } from '../../../constants/formConstant';
 import supabase from '../../../supabase';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../redux/config/configStore';
+import { displayToastAsync } from '../../../redux/modules';
 
 const SignInForm = () => {
   const [email, setEmail] = useState('');
@@ -16,6 +19,7 @@ const SignInForm = () => {
   const [validationCheck, setValidationCheck] = useState(false);
   const [guideMessage, setGuideMessage] = useState({ email: '', password: '' });
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,7 +62,7 @@ const SignInForm = () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
     });
-    if (error) alert(error.message);
+    if (error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message }));
   };
 
   const googleLogin = async () => {
@@ -71,7 +75,7 @@ const SignInForm = () => {
         },
       },
     });
-    if (error) alert(error.message);
+    if (error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message }));
   };
 
   const emailCheckFromDB = async (enteredEmail: string) => {

@@ -49,7 +49,7 @@ export const getTopReviewer = async () => {
 };
 
 export const tutorInfoJoin = async () => {
-  const { data, error } = await supabase.from('tutor_info_join').select();
+  const { data, error } = await supabase.from('tutor_info_join').select().eq('role', 'tutor');
   if (error) throw error;
   return data;
 };

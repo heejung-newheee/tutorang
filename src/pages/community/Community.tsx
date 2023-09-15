@@ -1,10 +1,15 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import FormHeader from '../../components/Form/FormHeader';
+import { FORM_CONSTANT_TITLE_COMMUNITY } from '../../constants/formConstant';
+import { AppDispatch, RootState } from '../../redux/config/configStore';
+import { displayToastAsync } from '../../redux/modules';
 import * as S from './Community.styled';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/config/configStore';
 
 const Community = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
   const loginUser = useSelector((state: RootState) => state.user.user);
 
   const location = useLocation();
@@ -12,16 +17,13 @@ const Community = () => {
 
   const gotoWrite = () => {
     if (!loginUser) {
-      return alert('로그인 후 이용해주세요');
+      return dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '로그인 후 이용해주세요' }));
     }
     navigate(`../write/${path}`);
   };
   return (
     <S.CommunityContainer>
-      <S.CommunityTitle>
-        <h1>커뮤니티</h1>
-        <p>튜터링을 이용하는 사람들의 이야기를 들어보세요.</p>
-      </S.CommunityTitle>
+      <FormHeader $keyword={FORM_CONSTANT_TITLE_COMMUNITY} />
       <S.ResponsivMenu>
         <S.ResponsivMenuColor $color={path === 'free'}>
           {' '}

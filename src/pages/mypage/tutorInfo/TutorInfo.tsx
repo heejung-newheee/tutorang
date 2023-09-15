@@ -135,7 +135,7 @@ const TutorInfo = ({ match }: pageProps) => {
 
           <InfoSection>
             <Container>
-              <InfoTitle>매칭 내역</InfoTitle>
+              <InfoTitle>튜터링 매칭 내역</InfoTitle>
               {matchList.length > 0 ? <MatchingStudent matchList={matchList} /> : <InfoNull>매칭 내역이 없습니다</InfoNull>}
             </Container>
           </InfoSection>

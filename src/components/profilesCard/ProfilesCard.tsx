@@ -10,7 +10,7 @@ const ProfilesCard = ({ tutor }: pageProps) => {
     <>
       <div>
         <S.TutorImg>
-          <img src={tutor.tutor_img || undefined} alt="user profile" />
+          <img src={tutor.tutor_card_img || undefined} alt="user profile" />
         </S.TutorImg>
         <S.TutorInfo>
           <S.TutorTitle>{tutor.class_info}</S.TutorTitle>

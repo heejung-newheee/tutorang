@@ -18,8 +18,9 @@ const BookMark = () => {
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const { data: bookMarkList, isError, error } = useQuery(MATCH_BOOK_MARK_QUERY_KEY, () => matchBookMark(id));
+  const { data: bookMarkList, isError, error } = useQuery(MATCH_BOOK_MARK_QUERY_KEY, () => matchBookMark(id)); // () => matchBookMark(id, loginUser!.id)); 이렇게 넘겨주면 ?
   const [isBookMark, setIsBookMark] = useState(false);
+  const [isThrottled, setIsThrottled] = useState(false);
 
   const findBookMark = bookMarkList?.find((bookmark) => bookmark.user_id === loginUser?.id);
 
@@ -39,17 +40,24 @@ const BookMark = () => {
       dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
       return null;
     }
-
+    if (isThrottled) {
+      return;
+    }
     const newBookMark: BookMarkType = {
       liked_id: id || '',
       user_id: loginUser?.id || '',
     };
+    setIsThrottled(true);
 
     if (!isBookMark) {
       await bookMarkCreateMutation.mutate(newBookMark);
     } else {
       await bookMarkDeleteMutation.mutate(id);
     }
+
+    setTimeout(() => {
+      setIsThrottled(false);
+    }, 500);
   };
 
   if (isError) {
