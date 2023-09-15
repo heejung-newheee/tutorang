@@ -40,28 +40,6 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
   const [gugunOptions, setGugunOptions] = useState<string[]>([]);
   const [isDropMenuOpen, setIsDropMenuOpen] = useState({ sido: false, gugun: false });
 
-  const handleOptionClick = async (option: string, locationDomain: string) => {
-    if (locationDomain === 'sido') {
-      setGugunOptions([]);
-      setSelectedOption((prev) => ({ sido: option, gugun: prev.gugun }));
-      $locationType === 'locationType1' ? $setLocation((prev) => ({ ...prev, sido1: option })) : $setLocation((prev) => ({ ...prev, sido2: option }));
-
-      setIsDropMenuOpen(() => ({ sido: false, gugun: false }));
-
-      const options = cities[option];
-      setGugunOptions(options);
-
-      setSelectedOption((prev) => ({ sido: prev.sido, gugun: '구/군 선택' }));
-      $locationType === 'locationType1' ? $setLocation((prev) => ({ ...prev, gugun1: '구/군 선택' })) : $setLocation((prev) => ({ ...prev, gugun2: '구/군 선택' }));
-    }
-    if (locationDomain === 'gugun') {
-      setSelectedOption((prev) => ({ sido: prev.sido, gugun: option }));
-      $locationType === 'locationType1' ? $setLocation((prev) => ({ ...prev, gugun1: option })) : $setLocation((prev) => ({ ...prev, gugun2: option }));
-
-      setIsDropMenuOpen(() => ({ sido: false, gugun: false }));
-    }
-  };
-
   useEffect(() => {
     if (!!$prevValue && $locationType === 'locationType1') {
       setSelectedOption({
@@ -87,6 +65,28 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
     document.addEventListener('click', handleOutSideClose);
     return () => document.removeEventListener('click', handleOutSideClose);
   }, [isDropMenuOpen]);
+
+  const handleOptionClick = async (option: string, locationDomain: string) => {
+    if (locationDomain === 'sido') {
+      setGugunOptions([]);
+      setSelectedOption((prev) => ({ sido: option, gugun: prev.gugun }));
+      $locationType === 'locationType1' ? $setLocation((prev) => ({ ...prev, sido1: option })) : $setLocation((prev) => ({ ...prev, sido2: option }));
+
+      setIsDropMenuOpen(() => ({ sido: false, gugun: false }));
+
+      const options = cities[option];
+      setGugunOptions(options);
+
+      setSelectedOption((prev) => ({ sido: prev.sido, gugun: '구/군 선택' }));
+      $locationType === 'locationType1' ? $setLocation((prev) => ({ ...prev, gugun1: '구/군 선택' })) : $setLocation((prev) => ({ ...prev, gugun2: '구/군 선택' }));
+    }
+    if (locationDomain === 'gugun') {
+      setSelectedOption((prev) => ({ sido: prev.sido, gugun: option }));
+      $locationType === 'locationType1' ? $setLocation((prev) => ({ ...prev, gugun1: option })) : $setLocation((prev) => ({ ...prev, gugun2: option }));
+
+      setIsDropMenuOpen(() => ({ sido: false, gugun: false }));
+    }
+  };
 
   return (
     <SDropdownField>

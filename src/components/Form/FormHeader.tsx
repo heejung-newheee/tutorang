@@ -5,19 +5,23 @@ import { FORM_HEADER_TITLE } from '../../constants/formConstant';
 type TypeFormHeaderProps = {
   $keyword: string;
 };
-
 const FormHeader: React.FC<TypeFormHeaderProps> = ({ $keyword }) => {
   const [formHeaderTitle, setFormHeaderTitle] = useState('');
+  const [formHeaderSubTitle, setFormHeaderSubTitle] = useState('');
   useEffect(() => {
     for (let i = 0; i < FORM_HEADER_TITLE.length; i++) {
-      if (FORM_HEADER_TITLE[i].keyword === $keyword) return setFormHeaderTitle(FORM_HEADER_TITLE[i].title);
+      if (FORM_HEADER_TITLE[i].keyword === $keyword) {
+        setFormHeaderTitle(FORM_HEADER_TITLE[i].title);
+        setFormHeaderSubTitle(FORM_HEADER_TITLE[i].subTitle);
+      }
     }
   }, []);
+
   if (formHeaderTitle === '') return <></>;
   return (
     <SHeader>
       <h1>{formHeaderTitle}</h1>
-      <p>쉽고 빠르게 튜터를 만나보는 1:1 매칭 서비스 튜터랑</p>
+      <p>{formHeaderSubTitle}</p>
     </SHeader>
   );
 };
@@ -38,8 +42,8 @@ const SHeader = styled.header`
     font-weight: 600;
   }
   & p {
-    font-size: 17px;
-    color: #4a4a4a;
+    font-size: 15px;
+    color: #868686;
   }
   @media screen and (max-width: 420px) {
     height: 130px;

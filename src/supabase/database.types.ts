@@ -1462,26 +1462,6 @@ export interface Database {
           created_at: string;
         }[];
       };
-      getauthenticatedusersbymonth: {
-        Args: {
-          year: number;
-          month: number;
-        };
-        Returns: {
-          auth_date: string;
-          user_count: number;
-        }[];
-      };
-      gettutorcountbymonth: {
-        Args: {
-          year: number;
-          month: number;
-        };
-        Returns: {
-          auth_date: string;
-          user_count: number;
-        }[];
-      };
       is_room_participant: {
         Args: {
           room_id: string;

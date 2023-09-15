@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import FormHeader from '../../components/Form/FormHeader';
+import { FORM_CONSTANT_TITLE_COMMUNITY } from '../../constants/formConstant';
 import { RootState } from '../../redux/config/configStore';
 import * as S from './Community.styled';
 
@@ -22,10 +24,7 @@ const Community = () => {
   }, []);
   return (
     <S.CommunityContainer>
-      <S.CommunityTitle>
-        <h1>커뮤니티</h1>
-        <p>튜터링을 이용하는 사람들의 이야기를 들어보세요.</p>
-      </S.CommunityTitle>
+      <FormHeader $keyword={FORM_CONSTANT_TITLE_COMMUNITY} />
       <S.ResponsivMenu>
         <S.ResponsivMenuColor $color={path === 'free'} onClick={() => navigate('./free/?q=1')}>
           {' '}

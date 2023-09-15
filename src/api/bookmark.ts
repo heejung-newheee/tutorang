@@ -5,6 +5,8 @@ import { BookMarkType } from '../supabase/database.types';
 
 export const matchBookMark = async (tutorId: string) => {
   const { data } = await supabase.from(BOOK_MARK_TABLE).select().match({ liked_id: tutorId });
+  // 게시글 튜터아이디, 로그인유저 아이디 받아서 필터링
+  // const { data } = await supabase.from(BOOK_MARK_TABLE).select().match({ liked_id: tutorId }).eq('user_id', userId);
   return data;
 };
 

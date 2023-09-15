@@ -52,12 +52,12 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   };
   const HandleClickRegisterTutorIcon = () => {
     if (presentUrlPathname === '/additional-information') {
-      alert('추가 정보를 입력해야 튜터 등록이 가능합니다~ 작성하시던 추가정보를 먼저 제출해주세요~');
+      alert('추가 정보를 입력해야 튜터 등록이 가능합니다. 작성하시던 추가정보를 먼저 제출해주세요.');
       return false;
     }
 
     if (!$loginUser?.gender) {
-      const wannaAddMoreInfo = window.confirm('소셜로그인을 하셨는데 아직 추가정보를 입력하지 않았다구요? 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?');
+      const wannaAddMoreInfo = window.confirm('소셜로그인 사용자 추가정보 미입력 하셨습니다. 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?');
       if (wannaAddMoreInfo) {
         navigate('/additional-information');
       } else {
@@ -100,6 +100,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
       {$loginUser?.role === 'student' && (
         <S.RegisterTutorBtnContainer>
           <S.BtnWholeBody onClick={HandleClickRegisterTutorIcon}>
+            <div>튜터신청</div>
             <S.RightButton>
               <S.IconCover>
                 <RiUserStarLine className="right_icon register_tutor_icon" />

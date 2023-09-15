@@ -107,8 +107,6 @@ export const LoginBtnSignUp = styled.button`
 export const RegisterTutorBtnContainer = styled.div`
   box-sizing: border-box;
   padding: 5px 0;
-  width: 50px;
-  height: 50px;
 `;
 export const AvatarBtnContainer = styled.div`
   box-sizing: border-box;
@@ -128,22 +126,25 @@ export const BtnWholeBody = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 43px;
-  height: 43px;
-  border-radius: 100%;
-  &:hover {
+  border-radius: 5px;
+  padding: 15px 0 15px 5px;
+  color: ${colors.primary};
+  cursor: pointer;
+  &:hover > button > div {
     background-color: #eee;
   }
 `;
+
+export const RightButton = styled.button``;
+
 export const IconCover = styled.div`
   width: 40px;
   height: 40px;
   padding: 7.5px 0px 7.5px;
   margin-top: 3px;
-`;
-
-export const RightButton = styled.button`
   border-radius: 100%;
+  /* */
+  margin-left: 5px;
 `;
 
 export const AuthNavContainer = styled.div`
