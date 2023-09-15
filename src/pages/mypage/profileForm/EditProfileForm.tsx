@@ -12,18 +12,19 @@ import SelectLocation from '../../../components/Form/SelectLocation';
 import { PartitionLine } from '../../../components/common/header/Header.styled';
 import { FORM_CONSTANT_TITLE_PROFILES_EDIT, PWD_REGEX } from '../../../constants/formConstant';
 import { USER_PROFILE_QUERY_KEY } from '../../../constants/query.constant';
-import { RootState } from '../../../redux/config/configStore';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import { Container, Section } from '../Mypage.styled';
 import * as S from './ProfileForm.styled';
+import { displayToastAsync } from '../../../redux/modules';
 
 type sessionType = {
   provider: string | undefined;
   providers: string[];
 };
 const EditProfileForm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const loginUser = useSelector((state: RootState) => state.user.user);
 
@@ -94,10 +95,10 @@ const EditProfileForm = () => {
         const uploadProfile = await profileImgUpload({ id: user.id, img: imgFile });
         dispatch(setUser({ ...user, avatar_url: uploadProfile }));
       }
-      alert('프로필 수정이 완료되었습니다.');
+      dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '프로필 수정이 완료되었습니다.' }));
       navigate('/mypage');
     } catch (error) {
-      alert(`정보 수정 중 오류가 발생했습니다${error}`);
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: `정보 수정 중 오류가 발생했습니다${error}` }));
     }
   };
   let isHereguidemessage = '';

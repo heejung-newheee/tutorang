@@ -6,13 +6,14 @@ import { getMatchData } from '../../../api/match';
 import { tutorInfoJoin } from '../../../api/tutor';
 import { logo04, mobileNabBtn } from '../../../assets';
 import { MATCHING_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
-import { RootState } from '../../../redux/config/configStore';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
 import { matchingList } from '../../../redux/modules/matching';
 import { tutorInfo } from '../../../redux/modules/tutorSlice';
 import supabase from '../../../supabase';
 import * as S from './Header.styled';
 import HeaderModal from './HeaderModal';
 import SigninUserNav from './SigninUserNav';
+import { displayToastAsync } from '../../../redux/modules';
 
 type HEADERMENU = { title: string; path: string; path2?: string }[];
 
@@ -25,7 +26,7 @@ const HeaderMenu: HEADERMENU = [
 
 const Header = () => {
   const [sideNavOpen, setSideNavOpen] = useState<boolean>(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const loginUser = useSelector((state: RootState) => state.user.user);
   const { data: tutor } = useQuery(TUTOR_INFO_JOIN_QUERY_KEY, tutorInfoJoin);
@@ -42,8 +43,9 @@ const Header = () => {
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
-    if (error) alert(error.message);
-    alert('로그아웃 되었습니다');
+
+    if (error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message }));
+    dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '로그아웃 되었습니다' }));
   };
 
   const preventScroll = (e: Event) => {

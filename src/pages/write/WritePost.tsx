@@ -2,20 +2,22 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
 import { WriteInsertApi, editUpdateApi } from '../../api/writeCommunity';
-import { RootState } from '../../redux/config/configStore';
+import { AppDispatch, RootState } from '../../redux/config/configStore';
 import supabase from '../../supabase';
 import './write.css';
+import { displayToastAsync } from '../../redux/modules';
 
 const WritePost = () => {
   const [title, setTitle] = useState<string | null>('');
   const QuillRef = useRef<ReactQuill>();
   const [contents, setContents] = useState<string | null>('');
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const queryClient = useQueryClient();
 
   const loginUser = useSelector((state: RootState) => state.user.user);
@@ -74,11 +76,11 @@ const WritePost = () => {
   );
   const handleSubmit = async () => {
     if (!title) {
-      return alert('제목을 입력해주세요');
+      return dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '제목을 입력해주세요' }));
     }
 
     if (!contents) {
-      return alert('내용을 입력해주세요');
+      return dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '내용을 입력해주세요' }));
     }
 
     if (path === 'edit-community') {
