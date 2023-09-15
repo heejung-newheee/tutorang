@@ -23,12 +23,24 @@ const LikeTutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
       return '0%';
     }
   };
+  const calcPanels = () => {
+    if (window.innerWidth >= 1600) {
+      return 6;
+    } else if (window.innerWidth > 1200) {
+      return 4;
+    } else {
+      return 1;
+    }
+  };
   const [align, setAlign] = useState(calcAlign);
+  const [panelsNum, setPanelsNum] = useState(calcPanels);
 
   useEffect(() => {
     const handleResize = () => {
       const newAlign = calcAlign();
       setAlign(newAlign);
+      const newPanels = calcPanels();
+      setPanelsNum(newPanels);
     };
     window.addEventListener('resize', handleResize);
     return () => {
@@ -37,7 +49,7 @@ const LikeTutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
   }, []);
   return (
     <>
-      <Flicking key={uniqueKey} panelsPerView={panels} align={`${align}`} circular={true} plugins={_plugins}>
+      <Flicking key={uniqueKey} panelsPerView={panelsNum} align={`${align}`} circular={true} plugins={_plugins}>
         {tutorList &&
           tutorList.map((tutor: Views<'tutor_info_join'>) => {
             const key = `${uniqueKey}+${tutor.tutor_id!.split('-')[0]}`;

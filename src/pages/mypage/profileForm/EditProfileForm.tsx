@@ -154,7 +154,7 @@ const EditProfileForm = () => {
           <S.Inner>
             <form onSubmit={updateProfilesInfo}>
               <S.ProfileImgBox>
-                <S.ProfileImg src={previewImg?.toString() || user?.avatar_url || undefined} alt="user profile" />
+                <S.ProfileImg src={previewImg?.toString() || user?.cardImage_url || undefined} alt="user profile" />
                 <S.EditPhotoBtn onClick={openImageModal} type="button">
                   <img src={edit_photo} alt="이미지 교체 버튼" />
                 </S.EditPhotoBtn>
