@@ -12,7 +12,7 @@ type Props = {
 
 const Pagination = ({ totalPageNum, pageCount }: Props) => {
   const [query, _] = useSearchParams();
-  const currentQueryNum = Number(query.get('q'));
+  const currentQueryNum = Number(query.get('q')) || 1;
 
   const isNextPageTrue = (closeness: number) => {
     const closenessStep = currentQueryNum + closeness;

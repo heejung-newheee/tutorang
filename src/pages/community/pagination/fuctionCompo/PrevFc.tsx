@@ -15,7 +15,7 @@ const PrevFc = ({ currentQueryNum }: Props) => {
   const handlePrev = () => {
     if (currentQueryNum === 1) return;
     dispatch(setPageNum(currentPageNum - 1));
-    navigate(`./?q=${currentQueryNum - 1}`);
+    navigate(`.?q=${currentQueryNum - 1}`);
   };
 
   return (

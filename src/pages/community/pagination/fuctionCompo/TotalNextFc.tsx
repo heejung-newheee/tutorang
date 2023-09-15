@@ -12,7 +12,7 @@ const TotalNextFc = ({ totalPageNum, pageCount }: Props) => {
   const handleTotalNext = () => {
     if (totalPageNum && totalPageNum <= pageCount) return;
     const totalCurrent = totalPageNum && Math.ceil(totalPageNum / pageCount);
-    navigate(`./?q=${totalCurrent}`);
+    navigate(`.?q=${totalCurrent}`);
   };
 
   return (

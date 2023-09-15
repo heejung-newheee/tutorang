@@ -5,7 +5,7 @@ const TotalPrevFc = () => {
   const navigate = useNavigate();
 
   const handleCurrentOne = () => {
-    navigate(`./?q=${1}`);
+    navigate(`.?q=${1}`);
   };
 
   return (
