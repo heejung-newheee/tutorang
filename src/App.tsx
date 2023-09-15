@@ -1,7 +1,7 @@
 import { Session } from '@supabase/supabase-js';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getUser, userUpdateAndGet } from './api/user';
+import { getUser } from './api/user';
 import { Loading } from './components';
 import { logOutUser, setUser } from './redux/modules/user';
 import Router from './shared/Router';
@@ -13,29 +13,18 @@ function App() {
   const [isLoading, setLoading] = useState<boolean>(true);
 
   const handleAuth = useCallback(
-    (session: Session | null) => {
-      if (session) {
-        getUser(session.user.email)
-          .then((data) => {
-            if (data!.username === null) {
-              const userName = session.user.user_metadata.name;
-              const additionalData = {
-                username: userName,
-                role: 'student',
-              };
-              const renewalData = userUpdateAndGet(additionalData, session.user.id);
-              return renewalData;
-            } else {
-              return data;
-            }
-          })
-          .then((data) => {
-            if (data) dispatch(setUser(data));
-            else dispatch(logOutUser());
-            setLoading(false);
-          });
-      } else {
+    async (session: Session | null) => {
+      try {
+        if (session) {
+          const userData = await getUser(session.user.email);
+          if (userData) {
+            return dispatch(setUser(userData));
+          }
+        }
         dispatch(logOutUser());
+      } catch (error) {
+        console.error(error);
+      } finally {
         setLoading(false);
       }
     },
