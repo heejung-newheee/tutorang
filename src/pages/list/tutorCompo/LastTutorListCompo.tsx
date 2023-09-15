@@ -11,7 +11,7 @@ type Props = {
 const LastTutorListCompo = ({ LastelementRef, userInfo }: Props) => {
   return (
     <S.TutorContainer to={`/detail/${userInfo?.tutor_id}`} key={userInfo?.tutor_info_id}>
-      <img src={userInfo?.tutor_img || 'https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/advices/168628538809485777.png?gif=1&w=1440'} alt="" />
+      <img src={userInfo?.tutor_card_img || 'https://image.ohou.se/i/bucketplace-v2-development/uploads/cards/advices/168628538809485777.png?gif=1&w=1440'} alt="" />
       <S.InFoWrap ref={LastelementRef}>
         <S.Title>{userInfo.class_info}</S.Title>
         <S.TutorInfo>
