@@ -17,6 +17,7 @@ import SelectEnrollmentStatus from '../../auth/registTutorForm/SelectEnrollmentS
 import SelectTuitionFee from '../../auth/registTutorForm/SelectTuitionFee';
 import { classLevelEngTranslation, classLevelTranslation, personalityEngTranslation, personalityTranslation, speakingLanguageEngTranslation, speakingLanguageTranslation } from '../../auth/translation';
 import { Container } from '../Mypage.styled';
+
 const EditTutorForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();

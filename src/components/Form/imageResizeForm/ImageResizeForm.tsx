@@ -1,15 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import * as S from './ImageResizeForm.styled';
-import { MdOutlineCropFree } from 'react-icons/md';
-import { closeModal, successModal } from '../../../redux/modules';
-import { IoClose } from 'react-icons/io5';
-import { RootState } from '../../../redux/config/configStore';
-import Cropper, { ReactCropperElement } from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
+import { useEffect, useRef, useState } from 'react';
+import Cropper, { ReactCropperElement } from 'react-cropper';
+import { IoClose } from 'react-icons/io5';
+import { MdOutlineCropFree } from 'react-icons/md';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../redux/config/configStore';
+import { closeModal, successModal } from '../../../redux/modules';
+import * as S from './ImageResizeForm.styled';
 
 const base64StringtoFile = (base64String: string, filename: string): File => {
-  console.log(base64String);
   const arr = base64String.split(',');
   const mime = arr[0].match(/:(.*?);/)![1];
   const bstr = atob(arr[1]);
@@ -33,9 +32,6 @@ const ImageResizeForm = () => {
 
   const handleSubmit = async () => {
     if (!targetId || !imgFile) return;
-    console.log(imgFile);
-    // const uploadProfile = await profileImgUpload({ id: targetId as string, img: imgFile });
-    // dispatch(setUser({ ...user, avatar_url: uploadProfile }));
     dispatch(successModal({ file: imgFile }));
     dispatch(closeModal());
   };
@@ -65,9 +61,7 @@ const ImageResizeForm = () => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log('reload');
-  });
+  useEffect(() => {});
 
   return (
     <S.Container>

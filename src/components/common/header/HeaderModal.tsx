@@ -4,15 +4,7 @@ import { close } from '../../../assets';
 import { Tables } from '../../../supabase/database.types';
 import * as S from './Header.styled';
 
-// type HEADERMENUMOBILE = { title: string; path: string }[];
 type HEADERMENUMOBILE = { title: string; path: string; parentPath: string }[];
-
-// const HeaderMenuMobile: HEADERMENUMOBILE = [
-//   { title: '튜터찾기', path: '/list' },
-//   { title: '매칭후기', path: '/review' },
-//   { title: '커뮤니티', path: '/community/free/?q=1' },
-//   { title: '고객센터', path: '/customer-service/announcements' },
-// ];
 
 const HeaderMenuMobile: HEADERMENUMOBILE = [
   { title: '튜터찾기', path: '/list', parentPath: 'list' },
@@ -29,10 +21,8 @@ type Props = {
 };
 
 const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props) => {
-  // [ ] headernav 색 결정
   const parentPathHere = useLocation().pathname.split('/')[1];
   const [pathKeyword, setPathKeyword] = useState('/');
-  // [ ] headernav 색 결정
   const navigate = useNavigate();
   const closeModal = (page: string) => {
     navigate(page);
@@ -108,18 +98,6 @@ const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props)
                   </Link>
                 </S.GnbMobileItemList>
               ))}
-              {/* {HeaderMenuMobile.map((item, index) => (
-                <S.GnbMobileItemList key={index}>
-                  <S.NavLinkSt
-                    to={item.path}
-                    onClick={() => {
-                      closeModal(item.path);
-                    }}
-                  >
-                    {item.title}
-                  </S.NavLinkSt>
-                </S.GnbMobileItemList>
-              ))} */}
             </S.GnbMobile>
           </nav>
         </S.MobileMenuWrapper>

@@ -62,7 +62,7 @@ const SignInForm = () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
     });
-    if (error) console.log(error.message);
+    if (error) console.error(error.message);
     if (error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message }));
   };
 
@@ -76,7 +76,7 @@ const SignInForm = () => {
         },
       },
     });
-    if (error) console.log(error.message);
+    if (error) console.error(error.message);
     if (error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message }));
   };
 

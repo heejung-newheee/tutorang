@@ -29,7 +29,7 @@ const EditAnnouncementForm = () => {
       queryClient.invalidateQueries([ONE_ANNOUNCEMENT_QUERY_KEY]);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
 
@@ -49,7 +49,7 @@ const EditAnnouncementForm = () => {
             cacheControl: '3600',
             upsert: true,
           });
-          console.log(data, error);
+          console.error(data, error);
 
           const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
 
@@ -66,7 +66,7 @@ const EditAnnouncementForm = () => {
             }
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
     };

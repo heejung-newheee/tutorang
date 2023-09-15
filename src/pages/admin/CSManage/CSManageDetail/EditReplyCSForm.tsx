@@ -17,7 +17,7 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
       queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY, replyInfo.cs_table_id]);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
 
@@ -26,7 +26,7 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
       queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY, replyInfo.cs_table_id]);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
 
