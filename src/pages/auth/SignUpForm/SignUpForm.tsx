@@ -12,6 +12,9 @@ import '../../../components/Form/icon.css';
 import '../../../components/Form/inputBackgroundSetting.css';
 import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNUP, PWD_REGEX, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../../../constants/formConstant';
 import supabase from '../../../supabase';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../redux/config/configStore';
+import { displayToastAsync } from '../../../redux/modules';
 
 const SignUpForm = () => {
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
@@ -19,6 +22,7 @@ const SignUpForm = () => {
   const [isMatchPwHidden, setIsMatchPwHidden] = useState(true);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [email, setEmail] = useState('');
   const [validEmail, setValidEmail] = useState(false);
@@ -102,7 +106,8 @@ const SignUpForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validEmail || !validPwd || !validMatch || !validUsername || !validBirth || !validGender || !validLocation || !doneDuplicationCheck || duplicatedEmail || !isAllChecked) {
-      alert('모든 항목이 입력되었는지 다시 한 번 확인해주세요!');
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '모든 항목이 입력되었는지 다시 한 번 확인해주세요!' }));
+
       return false;
     }
 
@@ -140,7 +145,7 @@ const SignUpForm = () => {
       if (error) {
         console.error(error);
         console.warn(error);
-        alert('회원가입 실패');
+        dispatch(displayToastAsync({ id: Date.now(), type: 'danger', message: '회원가입 실패' }));
       } else {
         navigate('/welcome-to-tutorang');
       }

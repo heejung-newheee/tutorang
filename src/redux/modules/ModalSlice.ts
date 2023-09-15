@@ -31,10 +31,12 @@ const modalSlice = createSlice({
       state.matchingId = action.payload.matchingId;
       state.message = action.payload.message;
       state.isOpen = true;
+      document.body.style.overflow = 'hidden';
     },
 
     closeModal: (state) => {
       state.isOpen = false;
+      document.body.style.overflow = '';
     },
 
     successModal: (state, action: PayloadAction<Omit<ModalState, 'type'>>) => {

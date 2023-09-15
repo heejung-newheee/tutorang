@@ -11,8 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getOrCreatePrivateChatRoom, sendStudentMessage } from '../../../api/chat';
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
-import { RootState } from '../../../redux/config/configStore';
-import { openModal } from '../../../redux/modules';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { displayToastAsync, openModal } from '../../../redux/modules';
 import { ContentsDataBox } from '../Mypage.styled';
 
 interface pageProps {
@@ -30,7 +30,7 @@ const TabPanel = (props: any) => {
 };
 
 const MatchingTutor = ({ matchList }: pageProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -119,9 +119,9 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     try {
       await matchingRequest({ tutorId: tutor_id, userId: user_id });
     } catch (error) {
-      if (error instanceof Error) window.alert(error.message || error);
+      if (error instanceof Error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message || String(error) }));
     }
-    window.alert('성공적으로 튜터링을 요청했습니다.');
+    dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '성공적으로 튜터링을 요청했습니다.' }));
   };
 
   return (

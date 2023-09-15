@@ -1,14 +1,14 @@
 import { Button } from '../..';
 import * as S from './Report.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeModal } from '../../../redux/modules';
+import { closeModal, displayToastAsync } from '../../../redux/modules';
 import { useTutorReport } from '../../../api/tutor';
-import { RootState } from '../../../redux/config/configStore';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
 import { useInput } from '../../../hooks';
 import { TutorReport } from '../../../supabase/database.types';
 
 const Report = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const tutorReport = useTutorReport();
   const data = useSelector((state: RootState) => state.modal);
   const initialState = {
@@ -24,6 +24,8 @@ const Report = () => {
       content: content as string,
       state: 'pending',
     };
+
+    dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '신고가 완료되었습니다.' }));
 
     tutorReport(newReport);
     dispatch(closeModal());
