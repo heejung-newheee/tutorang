@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
-import { styled } from 'styled-components';
 import { AREA0, 강원, 경기, 경남, 경북, 광주, 대구, 대전, 부산, 서울, 울산, 인천, 전남, 전북, 제주, 충남, 충북 } from '../../constants/location.constant';
+import * as C from './SelectBoxCommon.style';
+import * as S from './SelectLocation.style';
 interface CityData {
   [key: string]: string[];
 }
@@ -89,119 +90,47 @@ const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $set
   };
 
   return (
-    <SDropdownField>
-      <SDropdownWrapper ref={sidoDropContainerRef}>
-        <SDropDownHeader onClick={() => setIsDropMenuOpen((prev) => ({ sido: !prev.sido, gugun: false }))}>
-          <SpanDefaultText $locationDomain={'sido'} $selectedOption={selectedOption.sido}>
+    <S.DropdownField>
+      <S.DropdownWrapper ref={sidoDropContainerRef}>
+        <S.DropDownHeader onClick={() => setIsDropMenuOpen((prev) => ({ sido: !prev.sido, gugun: false }))}>
+          <S.SpanDefaultText $locationDomain={'sido'} $selectedOption={selectedOption.sido}>
             {selectedOption.sido}
-          </SpanDefaultText>
-          {isDropMenuOpen.sido ? <FaAngleUp /> : <FaAngleDown />}
-        </SDropDownHeader>
+          </S.SpanDefaultText>
+          <C.SvgAngleUpDownCover>{isDropMenuOpen.sido ? <FaAngleUp /> : <FaAngleDown />}</C.SvgAngleUpDownCover>
+        </S.DropDownHeader>
         {isDropMenuOpen.sido && (
-          <SOptionContainer $locationType={$locationType}>
-            <Select>
+          <S.OptionContainer $locationType={$locationType}>
+            <S.Select>
               {cities.AREA0.map((option) => (
-                <SOption key={option} $optionValue={option} $selectedOption={selectedOption.sido} onClick={() => handleOptionClick(option, 'sido')}>
+                <S.Option key={option} $optionValue={option} $selectedOption={selectedOption.sido} onClick={() => handleOptionClick(option, 'sido')}>
                   {option}
-                </SOption>
+                </S.Option>
               ))}
-            </Select>
-          </SOptionContainer>
+            </S.Select>
+          </S.OptionContainer>
         )}
-      </SDropdownWrapper>
-      <SDropdownWrapper ref={gugunDropContainerRef}>
-        <SDropDownHeader onClick={() => setIsDropMenuOpen((prev) => ({ sido: false, gugun: !prev.gugun }))}>
-          <SpanDefaultText $locationDomain={'gugun'} $selectedOption={selectedOption.gugun}>
+      </S.DropdownWrapper>
+      <S.DropdownWrapper ref={gugunDropContainerRef}>
+        <S.DropDownHeader onClick={() => setIsDropMenuOpen((prev) => ({ sido: false, gugun: !prev.gugun }))}>
+          <S.SpanDefaultText $locationDomain={'gugun'} $selectedOption={selectedOption.gugun}>
             {selectedOption.gugun}
-          </SpanDefaultText>
-          {isDropMenuOpen.gugun ? <FaAngleUp /> : <FaAngleDown />}
-        </SDropDownHeader>
+          </S.SpanDefaultText>
+          <C.SvgAngleUpDownCover>{isDropMenuOpen.gugun ? <FaAngleUp /> : <FaAngleDown />}</C.SvgAngleUpDownCover>
+        </S.DropDownHeader>
         {isDropMenuOpen.gugun && (
-          <SOptionContainer $locationType={$locationType}>
-            <Select>
+          <S.OptionContainer $locationType={$locationType}>
+            <S.Select>
               {gugunOptions.map((option) => (
-                <SOption key={option} $optionValue={option} $selectedOption={selectedOption.gugun} onClick={() => handleOptionClick(option, 'gugun')}>
+                <S.Option key={option} $optionValue={option} $selectedOption={selectedOption.gugun} onClick={() => handleOptionClick(option, 'gugun')}>
                   {option}
-                </SOption>
+                </S.Option>
               ))}
-            </Select>
-          </SOptionContainer>
+            </S.Select>
+          </S.OptionContainer>
         )}
-      </SDropdownWrapper>
-    </SDropdownField>
+      </S.DropdownWrapper>
+    </S.DropdownField>
   );
 };
 
 export default SelectLocation;
-
-const SDropdownWrapper = styled.div`
-  background-color: #fff;
-  box-sizing: border-box;
-  width: 100%;
-  border: 1px solid #696969;
-  position: relative;
-  border-radius: 3px;
-`;
-
-const SDropDownHeader = styled.div`
-  box-sizing: border-box;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 10px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 3px;
-  cursor: pointer;
-  @media screen and (max-width: 420px) {
-    height: 45px;
-    line-height: 45px;
-  }
-`;
-const SpanDefaultText = styled.span<{ $locationDomain: string; $selectedOption: string }>`
-  width: 100%;
-`;
-const SOptionContainer = styled.div<{ $locationType: string }>`
-  background-color: #fff;
-  display: block;
-  position: absolute;
-  width: 100%;
-  max-height: 180px;
-  left: 0;
-  overflow-y: scroll;
-  opacity: 1;
-  z-index: ${({ $locationType }) => {
-    if ($locationType === 'locationType1') return '3';
-    if ($locationType === 'locationType2') return '1';
-  }};
-  border: 1px solid #696969;
-`;
-const Select = styled.ul``;
-
-const SOption = styled.li<{ $optionValue: string; $selectedOption: string }>`
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 10px;
-  cursor: pointer;
-  background-color: ${({ $optionValue, $selectedOption }) => {
-    if ($optionValue === $selectedOption) {
-      return '#eee';
-    } else {
-      return '#fff';
-    }
-  }};
-  @media screen and (max-width: 420px) {
-    height: 45px;
-    line-height: 45px;
-  }
-`;
-
-const SDropdownField = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-`;

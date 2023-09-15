@@ -35,7 +35,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
 
   const HandleClickChatNav = () => {
     if (presentUrlPathname === '/additional-information') {
-      dispatch(displayToastAsync({ id: Date.now(), type: 'info', message: '추가 정보를 입력해야 채팅이용이 가능합니다~ 작성하시던 추가정보를 먼저 제출해주세요~' }));
+      dispatch(displayToastAsync({ id: Date.now(), type: 'info', message: '추가 정보를 입력해야 채팅이용이 가능합니다! 작성하시던 추가정보를 먼저 제출해주세요!' }));
       return false;
     }
 

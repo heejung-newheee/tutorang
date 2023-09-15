@@ -3,19 +3,19 @@ import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import FormHeader from '../../../components/Form/FormHeader';
 import { FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE } from '../../../constants/formConstant';
 import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/signup.constant';
 import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { displayToastAsync } from '../../../redux/modules';
 import supabase from '../../../supabase';
+import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from '../translation';
 import Checkbox from './Checkbox';
 import ImgFileUpload from './ImgFileUpload';
+import * as S from './RegistTutorForm.styled';
 import SelectEnrollmentStatus from './SelectEnrollmentStatus';
 import SelectTuitionFee from './SelectTuitionFee';
-import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from './translation';
-import { displayToastAsync } from '../../../redux/modules';
 
 const RegistTutorForm = () => {
   const [tuitionFeeOnline, setTuitionFeeOnline] = useState(0);
@@ -122,8 +122,7 @@ const RegistTutorForm = () => {
     const { error } = await supabase.from('pending_tutor_registration').insert(formData);
     if (error) console.error(error.message);
     else {
-      dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '튜터신청이 완료되었습니다! 관리자의 승인을 기다려주세염' }));
-
+      dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '튜터신청이 완료되었습니다. 관리자의 승인을 기다려주세요!' }));
       navigate(-1);
     }
   };
@@ -144,255 +143,97 @@ const RegistTutorForm = () => {
   }, [user]);
 
   return (
-    <SContainer>
+    <S.Container>
       <FormHeader $keyword={FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE} />
-      <SPartitionLine />
-      <SForm onSubmit={handleSubmit}>
-        <SFormItem>
-          <SFormItemTitle>학위/자격 증명</SFormItemTitle>
-          <SFormCertificateItems>
-            <SCertificateItem>
+      <S.PartitionLine />
+      <S.Form onSubmit={handleSubmit}>
+        <S.FormItem>
+          <S.FormItemTitle>학위/자격 증명</S.FormItemTitle>
+          <S.FormCertificateItems>
+            <S.CertificateItem>
               <label htmlFor="university">대학교</label>
-              <SItemSchool>
-                <SInput type="text" id="university" name="university" value={university} onChange={onChangeInputHandler} />
+              <S.ItemSchool>
+                <S.Input type="text" id="university" name="university" value={university} onChange={onChangeInputHandler} />
                 <SelectEnrollmentStatus $setEnrollmentStatus={setEnrollmentStatus} $selectedOption={classInfo} />
-              </SItemSchool>
-            </SCertificateItem>
-            <SCertificateItem>
+              </S.ItemSchool>
+            </S.CertificateItem>
+            <S.CertificateItem>
               <label htmlFor="major">학과</label>
-              <SInput type="text" id="major" name="major" value={major} onChange={onChangeInputHandler}></SInput>
-            </SCertificateItem>
-            <SCertificateItem>
+              <S.Input type="text" id="major" name="major" value={major} onChange={onChangeInputHandler}></S.Input>
+            </S.CertificateItem>
+            <S.CertificateItem>
               <span>학생증, 증명가능서류 사진첨부</span>
               <ImgFileUpload $setCertificationImgFile={setCertificationImgFile} $fileType={'tutorCertificationImg'} />
-            </SCertificateItem>
-          </SFormCertificateItems>
-        </SFormItem>
+            </S.CertificateItem>
+          </S.FormCertificateItems>
+        </S.FormItem>
 
-        <SFormItem>
-          <SFormItemTitle>성격 (최대 3개 선택)</SFormItemTitle>
-          <SItems>
+        <S.FormItem>
+          <S.FormItemTitle>성격 (최대 3개 선택)</S.FormItemTitle>
+          <S.Items>
             {PERSONALITY_LIST.map((personality) => (
               <Checkbox key={personality.value} $checkboxType={'personality'} option={personality} handleCheckedItems={handleCheckedItems} checkItems={checkPersonalityItems} />
             ))}
-          </SItems>
-        </SFormItem>
+          </S.Items>
+        </S.FormItem>
 
-        <SFormItem>
-          <SFormItemTitle>가능언어</SFormItemTitle>
-          <SItems>
+        <S.FormItem>
+          <S.FormItemTitle>가능언어</S.FormItemTitle>
+          <S.Items>
             {AVAILABLE_LANGUAGE_LIST.map((language) => (
               <Checkbox key={language.value} $checkboxType={'language'} option={language} handleCheckedItems={handleCheckedItems} checkItems={checkLanguageItems} />
             ))}
-          </SItems>
-        </SFormItem>
+          </S.Items>
+        </S.FormItem>
 
-        <SFormItem>
-          <SFormItemTitle>수업 level</SFormItemTitle>
-          <SItems>
+        <S.FormItem>
+          <S.FormItemTitle>수업 level</S.FormItemTitle>
+          <S.Items>
             {CLASSLEVEL_LIST.map((classLevel) => (
               <Checkbox key={classLevel.value} $checkboxType={'classLevel'} option={classLevel} handleCheckedItems={handleCheckedItems} checkItems={checkClassLevelItems} />
             ))}
-          </SItems>
-          <SGuideBox>
+          </S.Items>
+          <S.GuideBox>
             <FaInfoCircle style={{ marginLeft: '5px', fill: '#696969' }} />
-            <SPGuideMessage>
+            <S.PGuideMessage>
               <li>{'초급 : 기본적인 일상 대화와 문법 학습'}</li>
               <li>{'중급 : 다양한 주제에 대한 의사소통과 간단한 토론'}</li>
               <li>{'고급 : 심도 있는 토론과 어려운 어휘, 문법 다룸'}</li>
-            </SPGuideMessage>
-          </SGuideBox>
-        </SFormItem>
+            </S.PGuideMessage>
+          </S.GuideBox>
+        </S.FormItem>
 
-        <SFormItem>
-          <SFormItemTitle>수업소개</SFormItemTitle>
-          <STextarea name="class_Info" id="class_Info" value={classInfo} onChange={(e) => setClassInfo(e.target.value)}></STextarea>
-        </SFormItem>
+        <S.FormItem>
+          <S.FormItemTitle>수업소개</S.FormItemTitle>
+          <S.Textarea name="class_Info" id="class_Info" value={classInfo} onChange={(e) => setClassInfo(e.target.value)}></S.Textarea>
+        </S.FormItem>
 
-        <SFormItem>
-          <SFormItemTitle>자세한 수업료 기준 (₩/30분)</SFormItemTitle>
-          <STuitionItems>
-            <STuitionItem>
-              <SItemHeader>
+        <S.FormItem>
+          <S.FormItemTitle>자세한 수업료 기준 (₩/30분)</S.FormItemTitle>
+          <S.TuitionItems>
+            <S.TuitionItem>
+              <S.ItemHeader>
                 <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
                 <span>화상 수업</span>
-              </SItemHeader>
+              </S.ItemHeader>
               <SelectTuitionFee $tuitionType={'online'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOnline} />
-            </STuitionItem>
-            <STuitionItem>
-              <SItemHeader>
+            </S.TuitionItem>
+            <S.TuitionItem>
+              <S.ItemHeader>
                 <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
                 <span>대면 수업</span>
-              </SItemHeader>
+              </S.ItemHeader>
               <SelectTuitionFee $tuitionType={'offline'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOffline} />
-            </STuitionItem>
-          </STuitionItems>
-        </SFormItem>
+            </S.TuitionItem>
+          </S.TuitionItems>
+        </S.FormItem>
 
-        <SButton type="submit" disabled={validationCheck}>
+        <S.Button type="submit" disabled={validationCheck}>
           튜터 신청 완료
-        </SButton>
-      </SForm>
-    </SContainer>
+        </S.Button>
+      </S.Form>
+    </S.Container>
   );
 };
 
 export default RegistTutorForm;
-
-const SContainer = styled.div``;
-
-const SForm = styled.form`
-  box-sizing: border-box;
-  padding: 40px 20px;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 650px;
-  min-width: 360px;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  @media screen and (max-width: 420px) {
-    padding: 30px 20px;
-  }
-`;
-
-const SFormItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const SFormItemTitle = styled.span`
-  font-weight: 500;
-`;
-const SItemSchool = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-`;
-const SFormCertificateItems = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 20px;
-  padding: 20px 10px;
-  border: 1px solid #696969;
-  border-radius: 3px;
-`;
-
-const SCertificateItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const SGuideBox = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  font-size: 14px;
-`;
-
-const SPGuideMessage = styled.ul`
-  color: #aeaeae;
-`;
-
-const SItems = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 10px 5px;
-  justify-content: space-between;
-`;
-
-const SInput = styled.input`
-  box-sizing: border-box;
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  border: 1px solid #696969;
-  border-radius: 3px;
-  outline: none;
-  padding: 8px 10px;
-  font-size: 16px;
-  @media screen and (max-width: 420px) {
-    height: 45px;
-    line-height: 45px;
-  }
-`;
-
-const STextarea = styled.textarea`
-  box-sizing: border-box;
-  width: 100%;
-  height: 80px;
-  border: 1px solid #696969;
-  border-radius: 3px;
-  resize: none;
-  outline: none;
-  padding: 8px;
-  font-size: 16px;
-`;
-
-const STuitionItems = styled.div`
-  border: 1px solid #696969;
-  border-radius: 3px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  padding: 20px 10px;
-  width: 100%;
-  gap: 25px;
-  @media screen and (min-width: 1024px) {
-    gap: 10px;
-  }
-`;
-
-const STuitionItem = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 5px;
-  @media screen and (min-width: 1024px) {
-    width: 48%;
-  }
-`;
-
-const SItemHeader = styled.div``;
-
-const SButton = styled.button<{ disabled: boolean }>`
-  height: 50px;
-  font-size: 16px;
-  background-color: ${(props) => {
-    if (props.disabled === true) return '#e7e7e7';
-    else return '#FE902F';
-  }};
-  color: #fff;
-  cursor: ${(props) => {
-    if (props.disabled === true) return 'not-allowed';
-    else return 'pointer';
-  }};
-  border-radius: 3px;
-  margin-top: 20px;
-`;
-
-const SPartitionLine = styled.div`
-  position: relative;
-  width: 100%;
-  height: 1px;
-  background-color: #eaeaea;
-  & p {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: -10px;
-    & span {
-      background-color: #fff;
-    }
-  }
-`;

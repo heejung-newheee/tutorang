@@ -62,6 +62,7 @@ export const NavLogoImg = styled.img`
   margin-right: 10px;
 `;
 
+// [ ] 유진님이 작성하셨던 부분
 export const NavLinkSt = styled(NavLink)`
   margin: 10px;
   font-size: 15px;
@@ -76,6 +77,20 @@ export const NavLinkSt = styled(NavLink)`
   &.active {
     color: #fe902f;
   }
+`;
+
+// [ ] 대안으로 적은 부분Li
+export const NavTitle = styled.span<{ $pathKeyword: string; $parentPath: string }>`
+  margin: 10px;
+  font-size: 15px;
+  opacity: 0.7;
+  color: ${({ $pathKeyword, $parentPath }) => {
+    if ($pathKeyword === $parentPath || ($parentPath === 'community' && $pathKeyword === 'post')) {
+      return '#fe902f';
+    } else {
+      return 'black';
+    }
+  }};
 `;
 
 export const LoginBtn = styled.span`

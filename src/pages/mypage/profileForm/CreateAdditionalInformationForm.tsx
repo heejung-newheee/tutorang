@@ -9,8 +9,8 @@ import SelectLocation from '../../../components/Form/SelectLocation';
 import ServiceAgreement from '../../../components/Form/ServiceAgreement';
 import { FORM_CONSTANT_TITLE_USER_ADDITIONAL_INFO, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../../../constants/formConstant';
 import { AppDispatch, RootState } from '../../../redux/config/configStore';
-import supabase from '../../../supabase';
 import { displayToastAsync } from '../../../redux/modules';
+import supabase from '../../../supabase';
 
 const CreateAdditionalInformationForm = () => {
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
@@ -110,7 +110,8 @@ const CreateAdditionalInformationForm = () => {
         console.error(ErrorOfUpdatingProfile, ErrorOfUpdatingProfile.message);
       } else if (ErrorOfUpdatingAuth) {
         console.error(ErrorOfUpdatingAuth, ErrorOfUpdatingAuth.message);
-        dispatch(displayToastAsync({ id: Date.now(), type: 'danger', message: '회원가입 실패' }));
+
+        dispatch(displayToastAsync({ id: Date.now(), type: 'danger', message: '입력한 정보를 저장하는데 문제가 발생했습니다! 고객센터로 문의주세요!' }));
       } else {
         dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '추가정보 입력이 완료됐습니다. 더 다양한 기능을 이용해보세요~' }));
         navigate('/mypage');

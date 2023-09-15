@@ -1,16 +1,24 @@
-import { Dispatch, SetStateAction } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { close } from '../../../assets';
 import { Tables } from '../../../supabase/database.types';
 import * as S from './Header.styled';
 
-type HEADERMENUMOBILE = { title: string; path: string }[];
+// type HEADERMENUMOBILE = { title: string; path: string }[];
+type HEADERMENUMOBILE = { title: string; path: string; parentPath: string }[];
+
+// const HeaderMenuMobile: HEADERMENUMOBILE = [
+//   { title: '튜터찾기', path: '/list' },
+//   { title: '매칭후기', path: '/review' },
+//   { title: '커뮤니티', path: '/community/free/?q=1' },
+//   { title: '고객센터', path: '/customer-service/announcements' },
+// ];
 
 const HeaderMenuMobile: HEADERMENUMOBILE = [
-  { title: '튜터찾기', path: '/list' },
-  { title: '매칭후기', path: '/review' },
-  { title: '커뮤니티', path: '/community/free/?q=1' },
-  { title: '고객센터', path: '/' },
+  { title: '튜터찾기', path: '/list', parentPath: 'list' },
+  { title: '매칭후기', path: '/review', parentPath: 'review' },
+  { title: '커뮤니티', path: '/community/free', parentPath: 'community' },
+  { title: '고객센터', path: '/customer-service/announcements', parentPath: 'customer-service' },
 ];
 
 type Props = {
@@ -21,11 +29,19 @@ type Props = {
 };
 
 const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props) => {
+  // [ ] headernav 색 결정
+  const parentPathHere = useLocation().pathname.split('/')[1];
+  const [pathKeyword, setPathKeyword] = useState('/');
+  // [ ] headernav 색 결정
   const navigate = useNavigate();
   const closeModal = (page: string) => {
     navigate(page);
     setSideNavOpen((pre) => !pre);
   };
+
+  useEffect(() => {
+    setPathKeyword(parentPathHere);
+  }, [parentPathHere]);
   return (
     <S.MobileContainer $sideNavOpen={sideNavOpen} onClick={(pre) => setSideNavOpen(!pre)}>
       <S.MobileInner
@@ -80,6 +96,20 @@ const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props)
             <S.GnbMobile>
               {HeaderMenuMobile.map((item, index) => (
                 <S.GnbMobileItemList key={index}>
+                  <Link
+                    to={item.path}
+                    onClick={() => {
+                      closeModal(item.path);
+                    }}
+                  >
+                    <S.NavTitle $pathKeyword={pathKeyword} $parentPath={item.parentPath}>
+                      {item.title}
+                    </S.NavTitle>
+                  </Link>
+                </S.GnbMobileItemList>
+              ))}
+              {/* {HeaderMenuMobile.map((item, index) => (
+                <S.GnbMobileItemList key={index}>
                   <S.NavLinkSt
                     to={item.path}
                     onClick={() => {
@@ -89,7 +119,7 @@ const HeaderModal = ({ sideNavOpen, setSideNavOpen, loginUser, signOut }: Props)
                     {item.title}
                   </S.NavLinkSt>
                 </S.GnbMobileItemList>
-              ))}
+              ))} */}
             </S.GnbMobile>
           </nav>
         </S.MobileMenuWrapper>
