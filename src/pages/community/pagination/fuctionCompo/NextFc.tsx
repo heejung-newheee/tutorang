@@ -20,12 +20,12 @@ const NextFc = ({ totalPageNum, pageCount, currentQueryNum }: Props) => {
     if (totalPageNum && totalPageNum < totalPostNum) return;
     if (totalPageNum && totalPageNum > totalPostNum) {
       dispatch(setPageNum(currentPageNum + 1));
-      navigate(`./?q=${currentQueryNum + 1}`);
+      navigate(`.?q=${currentQueryNum + 1}`);
     }
 
-    const nextCurrentNum = currentQueryNum + 1;
-    if (totalPageNum && totalPageNum <= nextCurrentNum * pageCount) {
-    }
+    // const nextCurrentNum = currentQueryNum + 1;
+    // if (totalPageNum && totalPageNum <= nextCurrentNum * pageCount) {
+    // }
   };
 
   return (

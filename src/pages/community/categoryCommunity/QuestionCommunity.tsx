@@ -7,7 +7,7 @@ import PostCompo from '../postCompo/PostCompo';
 
 const QuestionCommunity = () => {
   const [query, _] = useSearchParams();
-  const editPostNum = Number(query.get('q'));
+  const editPostNum = Number(query.get('q')) || 1;
   const [totalPageNum, setTotalPageNum] = useState<number | null>(null);
   const pageCount = 5;
 

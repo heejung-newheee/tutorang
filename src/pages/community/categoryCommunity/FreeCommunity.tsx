@@ -6,8 +6,9 @@ import Pagination from '../pagination/Pagination';
 import PostCompo from '../postCompo/PostCompo';
 
 const FreeCommunity = () => {
+  console.log('free');
   const [query, _] = useSearchParams();
-  const editPostNum = Number(query.get('q'));
+  const editPostNum = Number(query.get('q')) || 1;
 
   const [totalPageNum, setTotalPageNum] = useState<number | null>(null);
   const pageCount = 5;

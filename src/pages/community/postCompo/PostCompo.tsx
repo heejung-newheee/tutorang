@@ -37,7 +37,7 @@ const PostCompo = ({ item, lastElement }: Props) => {
       resultArr && setMainImg(resultArr);
     }
 
-    const textOnly = item.content?.replace(/<[^>]+>/g, ' ');
+    const textOnly = item.content?.replace(/<[^>]+>/g, ' ').replace(/&[a-zA-Z0-9]+;/g, '');
 
     const cleanText = textOnly?.replace(/\s+/g, ' ');
 
