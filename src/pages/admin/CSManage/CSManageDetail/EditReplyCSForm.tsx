@@ -52,7 +52,7 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
 
   return (
     <>
-      <button onClick={handleToggleEdit}>수정하기</button>
+      <button onClick={handleToggleEdit}>{isEditing ? '수정취소' : '수정하기'}</button>
       <form onSubmit={handleSubmit}>
         <input type="text" name="content" value={content} onChange={handleContentChange} disabled={!isEditing} />
         <button type="submit" disabled={!isEditing}>

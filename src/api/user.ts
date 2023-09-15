@@ -81,8 +81,3 @@ export const profileImgUpload = async ({ id, img }: { id: string; img: File }) =
 export const userUpdate = async (newData: UpdatingTables<'profiles'>, id: string) => {
   await supabase.from('profiles').update(newData).eq('id', id);
 };
-
-export const userUpdateAndGet = async (newData: UpdatingTables<'profiles'>, id: string) => {
-  const { data } = await supabase.from('profiles').update(newData).eq('id', id).select().single();
-  return data;
-};

@@ -6,11 +6,11 @@ import { RootState } from '../../../../redux/config/configStore';
 import { getTimeTextFromISODate } from '../../../../utils/Date';
 import { ButtonAnnouncement, ButtonWrap } from '../../announcementManage/ManageAnnouncementCommon.style';
 import { FilterContainer, Layout, Title } from '../../boardManage/BoardManage.styled';
-import * as S from './CSManageDetail.style';
 import CreateReplyCSForm from './CreateReplyCSForm';
+import * as S from './DetailCSManage.style';
 import EditReplyCSForm from './EditReplyCSForm';
 
-const CSManageDetail = () => {
+const DetailCSManage = () => {
   const locationData = useLocation();
   const inquiryId = locationData.state.id;
   const { data: oneInquiryInfo, isLoading, isError } = useQuery([ONE_CUSTOMER_INQUIRY_QUERY_KEY, inquiryId], () => getOneInquiry(inquiryId), { enabled: !!inquiryId });
@@ -27,7 +27,14 @@ const CSManageDetail = () => {
   return (
     <Layout>
       <FilterContainer>
-        <Title>1:1 문의 관리</Title>
+        <S.TitleHeader>
+          <Title>1:1 문의 관리</Title>
+          <ButtonWrap>
+            <ButtonAnnouncement>
+              <Link to="/admin/customer-support-manage">목록</Link>
+            </ButtonAnnouncement>
+          </ButtonWrap>
+        </S.TitleHeader>
         <S.CSContent>
           <S.ContentAuth>
             <p>{getTimeTextFromISODate(oneInquiryInfo.created_at)}</p>
@@ -42,12 +49,7 @@ const CSManageDetail = () => {
             <div dangerouslySetInnerHTML={{ __html: oneInquiryInfo.content || '' }}></div>
           </div>
         </S.CSContent>
-        <ButtonWrap>
-          <ButtonAnnouncement>
-            <Link to="/admin/customer-support-manage">목록</Link>
-          </ButtonAnnouncement>
-        </ButtonWrap>
-        {reply.length === 0 ? <div>관리자님~ 답변을 어서 등록해주세요!</div> : <div>{reply[0].content}</div>}
+        {reply.length === 0 && <div>관리자님~ 답변을 어서 등록해주세요!</div>}
 
         {reply.length === 0 ? (
           <div>{<CreateReplyCSForm loginUserId={loginUserId} csTableId={oneInquiryInfo.id} />}</div>
@@ -61,4 +63,4 @@ const CSManageDetail = () => {
   );
 };
 
-export default CSManageDetail;
+export default DetailCSManage;
