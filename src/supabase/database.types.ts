@@ -824,6 +824,7 @@ export interface Database {
           avatar_url: string | null;
           basic_authority: boolean;
           birth: string | null;
+          cardImage_url: string | null;
           created_at: string | null;
           deleted_at: string | null;
           email: string | null;
@@ -842,6 +843,7 @@ export interface Database {
           avatar_url?: string | null;
           basic_authority?: boolean;
           birth?: string | null;
+          cardImage_url?: string | null;
           created_at?: string | null;
           deleted_at?: string | null;
           email?: string | null;
@@ -860,6 +862,7 @@ export interface Database {
           avatar_url?: string | null;
           basic_authority?: boolean;
           birth?: string | null;
+          cardImage_url?: string | null;
           created_at?: string | null;
           deleted_at?: string | null;
           email?: string | null;
@@ -1379,6 +1382,7 @@ export interface Database {
           tuition_fee_offline: number | null;
           tuition_fee_online: number | null;
           tutor_age: number | null;
+          tutor_card_img: string | null;
           tutor_id: string | null;
           tutor_img: string | null;
           tutor_info_id: number | null;
@@ -1405,8 +1409,8 @@ export interface Database {
           major: string | null;
           personality: string[] | null;
           review_count: number | null;
+          tutor_card_img: string | null;
           tutor_id: string | null;
-          tutor_img: string | null;
           tutor_name: string | null;
           university: string | null;
         };
@@ -1460,26 +1464,6 @@ export interface Database {
           room_id: string;
           name: string;
           created_at: string;
-        }[];
-      };
-      getauthenticatedusersbymonth: {
-        Args: {
-          year: number;
-          month: number;
-        };
-        Returns: {
-          auth_date: string;
-          user_count: number;
-        }[];
-      };
-      gettutorcountbymonth: {
-        Args: {
-          year: number;
-          month: number;
-        };
-        Returns: {
-          auth_date: string;
-          user_count: number;
         }[];
       };
       is_room_participant: {

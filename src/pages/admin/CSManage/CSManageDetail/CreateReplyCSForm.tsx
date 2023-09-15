@@ -1,13 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { ONE_CUSTOMER_INQUIRY_QUERY_KEY } from '../../../../api/customerSupport';
 import { TypeNewReplyToInquiry, insertNewReplyToInquiry } from '../../../../api/customerSupportReply';
+import { AppDispatch } from '../../../../redux/config/configStore';
+import { displayToastAsync } from '../../../../redux/modules';
 import { ButtonAnnouncement, ButtonWrap } from '../../announcementManage/ManageAnnouncementCommon.style';
 import * as C from './CommonCS.style';
 
 const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; csTableId: string }) => {
   const queryClient = useQueryClient();
   const [content, setContent] = useState('');
+  const dispatch = useDispatch<AppDispatch>();
 
   const createCSReplyMutation = useMutation(async (newReply: TypeNewReplyToInquiry) => insertNewReplyToInquiry(newReply), {
     onSuccess: () => {
@@ -24,7 +28,7 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!content) {
-      alert('내용이 입력되지 않았습니다!');
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '내용이 입력되지 않았습니다!' }));
       return false;
     }
     const oneMoreReplyCheck = window.confirm('내용에 이상이 없습니까? 문의게시판 답변으로 등록하시겠습니까?');
@@ -39,10 +43,10 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
     try {
       await createCSReplyMutation.mutate(newReply);
     } catch (error) {
-      console.error('error submit cs reply', error);
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: `error submit cs reply, ${String(error)}` }));
     }
     setContent('');
-    alert('답변이 정상적으로 등록되었습니다!');
+    dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '답변이 정상적으로 등록되었습니다!' }));
   };
   return (
     <form onSubmit={handleSubmit}>

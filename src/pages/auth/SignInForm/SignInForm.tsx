@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BsXCircleFill } from 'react-icons/bs';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { googleicon, kakaotalk } from '../../../assets';
 import { SButton, SContainer, SForm, SFormContainer, SFormItem, SInput, SPGuideMessage, SPartitionLine } from '../../../components/Form/AuthForm.styled';
@@ -7,6 +8,8 @@ import FormHeader from '../../../components/Form/FormHeader';
 import '../../../components/Form/icon.css';
 import '../../../components/Form/inputBackgroundSetting.css';
 import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNIN } from '../../../constants/formConstant';
+import { AppDispatch } from '../../../redux/config/configStore';
+import { displayToastAsync } from '../../../redux/modules';
 import supabase from '../../../supabase';
 import * as S from './SignInForm.style';
 
@@ -16,6 +19,7 @@ const SignInForm = () => {
   const [validationCheck, setValidationCheck] = useState(false);
   const [guideMessage, setGuideMessage] = useState({ email: '', password: '' });
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,6 +63,7 @@ const SignInForm = () => {
       provider: 'kakao',
     });
     if (error) console.log(error.message);
+    if (error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message }));
   };
 
   const googleLogin = async () => {
@@ -72,6 +77,7 @@ const SignInForm = () => {
       },
     });
     if (error) console.log(error.message);
+    if (error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message }));
   };
 
   const emailCheckFromDB = async (enteredEmail: string) => {

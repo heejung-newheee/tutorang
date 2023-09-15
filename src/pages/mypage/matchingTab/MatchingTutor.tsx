@@ -7,12 +7,14 @@ import { Views } from '../../../supabase/database.types';
 import * as S from './Matching.styled';
 import './custom.css';
 
+import { FaUserCircle } from 'react-icons/fa';
+import { IoChatbubblesSharp } from 'react-icons/io5';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getOrCreatePrivateChatRoom, sendStudentMessage } from '../../../api/chat';
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
-import { RootState } from '../../../redux/config/configStore';
-import { openModal } from '../../../redux/modules';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { displayToastAsync, openModal } from '../../../redux/modules';
 import { ContentsDataBox } from '../Mypage.styled';
 
 interface pageProps {
@@ -30,7 +32,7 @@ const TabPanel = (props: any) => {
 };
 
 const MatchingTutor = ({ matchList }: pageProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -119,9 +121,9 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     try {
       await matchingRequest({ tutorId: tutor_id, userId: user_id });
     } catch (error) {
-      if (error instanceof Error) window.alert(error.message || error);
+      if (error instanceof Error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message || String(error) }));
     }
-    window.alert('성공적으로 튜터링을 요청했습니다.');
+    dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '성공적으로 튜터링을 요청했습니다.' }));
   };
 
   return (
@@ -152,7 +154,18 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                   <S.InfoList key={item.id}>
                     <S.InfoItem>
                       <div>
-                        <S.TutorChatLink onClick={() => handleStartChat(item.tutor_id!)}>{item.tutor_name}</S.TutorChatLink>
+                        <div>
+                          <S.UserAvatar src={item.tutor_img!} alt="tutor avatar" />
+                          <p>{item.tutor_name}</p>
+                        </div>
+                        <S.UserLinkWrap>
+                          <S.UserLink to={`/detail/${item.tutor_id}`}>
+                            <FaUserCircle />
+                          </S.UserLink>
+                          <S.ChatLink onClick={() => handleStartChat(item.tutor_id!)}>
+                            <IoChatbubblesSharp />
+                          </S.ChatLink>
+                        </S.UserLinkWrap>
                       </div>
                       <div>
                         {item.tutor_lc_1_gugun} <br /> {item.tutor_lc_2_gugun}
@@ -188,7 +201,18 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                   <S.InfoList key={item.id}>
                     <S.InfoItem>
                       <div>
-                        <S.TutorChatLink onClick={() => handleStartChat(item.tutor_id!)}>{item.tutor_name}</S.TutorChatLink>
+                        <div>
+                          <S.UserAvatar src={item.tutor_img!} alt="tutor avatar" />
+                          <p>{item.tutor_name}</p>
+                        </div>
+                        <S.UserLinkWrap>
+                          <S.UserLink to={`/detail/${item.tutor_id}`}>
+                            <FaUserCircle />
+                          </S.UserLink>
+                          <S.ChatLink onClick={() => handleStartChat(item.tutor_id!)}>
+                            <IoChatbubblesSharp />
+                          </S.ChatLink>
+                        </S.UserLinkWrap>
                       </div>
                       <div>
                         {item.tutor_lc_1_gugun} <br /> {item.tutor_lc_2_gugun}
@@ -236,7 +260,18 @@ const MatchingTutor = ({ matchList }: pageProps) => {
                   <S.InfoList key={item.id}>
                     <S.InfoItem>
                       <div>
-                        <S.TutorChatLink onClick={() => handleStartChat(item.tutor_id!)}>{item.tutor_name}</S.TutorChatLink>
+                        <div>
+                          <S.UserAvatar src={item.tutor_img!} alt="tutor avatar" />
+                          <p>{item.tutor_name}</p>
+                        </div>
+                        <S.UserLinkWrap>
+                          <S.UserLink to={`/detail/${item.tutor_id}`}>
+                            <FaUserCircle />
+                          </S.UserLink>
+                          <S.ChatLink onClick={() => handleStartChat(item.tutor_id!)}>
+                            <IoChatbubblesSharp />
+                          </S.ChatLink>
+                        </S.UserLinkWrap>
                       </div>
                       <div>
                         {item.tutor_lc_1_gugun} <br /> {item.tutor_lc_2_gugun}

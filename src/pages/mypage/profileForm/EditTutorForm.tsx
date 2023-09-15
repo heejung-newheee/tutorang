@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import FormHeader from '../../../components/Form/FormHeader';
 import SelectLocation from '../../../components/Form/SelectLocation';
 import { FORM_CONSTANT_TITLE_TUTOR_CLASS_EDIT } from '../../../constants/formConstant';
 import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/signup.constant';
-import { RootState } from '../../../redux/config/configStore';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
 import Checkbox from '../../auth/registTutorForm/Checkbox';
 import * as S from '../../auth/registTutorForm/RegistTutorForm.styled';
@@ -15,9 +15,11 @@ import SelectEnrollmentStatus from '../../auth/registTutorForm/SelectEnrollmentS
 import SelectTuitionFee from '../../auth/registTutorForm/SelectTuitionFee';
 import { classLevelEngTranslation, classLevelTranslation, personalityEngTranslation, personalityTranslation, speakingLanguageEngTranslation, speakingLanguageTranslation } from '../../auth/translation';
 import { Container } from '../Mypage.styled';
+import { displayToastAsync } from '../../../redux/modules';
 
 const EditTutorForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const { state } = useLocation();
   const tutorInfo = state.tutorInfo;
   const [location, setLoaction] = useState({
@@ -137,7 +139,8 @@ const EditTutorForm = () => {
     await supabase.from('profiles').update(locationUpdate).eq('id', user?.id);
     if (error) console.error(error.message);
     else {
-      alert('수업 정보 변경이 완료되었습니다');
+      dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '수업 정보 변경이 완료되었습니다' }));
+
       navigate(-1);
     }
   };

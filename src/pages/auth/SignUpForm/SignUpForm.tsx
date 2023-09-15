@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import EnterEmail from '../../../components/Form/EnterEmail';
 import FormHeader from '../../../components/Form/FormHeader';
@@ -10,6 +11,8 @@ import ServiceAgreement from '../../../components/Form/ServiceAgreement';
 import '../../../components/Form/icon.css';
 import '../../../components/Form/inputBackgroundSetting.css';
 import { EMAIL_REGEX, FORM_CONSTANT_TITLE_SIGNUP, PWD_REGEX, USERNAME_EN_REGEX, USERNAME_KR_REGEX } from '../../../constants/formConstant';
+import { AppDispatch } from '../../../redux/config/configStore';
+import { displayToastAsync } from '../../../redux/modules';
 import supabase from '../../../supabase';
 import * as S from './SignUpForm.style';
 
@@ -19,6 +22,7 @@ const SignUpForm = () => {
   const [isMatchPwHidden, setIsMatchPwHidden] = useState(true);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [email, setEmail] = useState('');
   const [validEmail, setValidEmail] = useState(false);
@@ -102,7 +106,8 @@ const SignUpForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validEmail || !validPwd || !validMatch || !validUsername || !validBirth || !validGender || !validLocation || !doneDuplicationCheck || duplicatedEmail || !isAllChecked) {
-      alert('모든 항목이 입력되었는지 다시 한 번 확인해주세요!');
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '모든 항목이 입력되었는지 다시 한 번 확인해주세요!' }));
+
       return false;
     }
 
@@ -140,7 +145,8 @@ const SignUpForm = () => {
       if (error) {
         console.error(error);
         console.warn(error);
-        alert('회원가입 과정에서 문제가 발생했습니다. 고객센터로 문의주세요!');
+
+        dispatch(displayToastAsync({ id: Date.now(), type: 'danger', message: '회원가입 과정에서 문제가 발생했습니다. 고객센터로 문의주세요!' }));
       } else {
         navigate('/welcome-to-tutorang');
       }

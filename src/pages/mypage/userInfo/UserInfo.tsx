@@ -50,7 +50,7 @@ const UserInfo = ({ match }: pageProps) => {
         <S.ProfileBox>
           <Container>
             <S.ProfileImg>
-              <S.UserImg src={user.avatar_url ?? ''} alt="user profile" />
+              <S.UserImg src={user.cardImage_url ?? ''} alt="user profile" />
               <S.EditBtn onClick={handleEditProfiles}>
                 <img src={icon_edit} alt="profile edit button" />
               </S.EditBtn>

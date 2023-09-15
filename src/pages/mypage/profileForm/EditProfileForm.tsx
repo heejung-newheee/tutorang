@@ -12,7 +12,8 @@ import SelectLocation from '../../../components/Form/SelectLocation';
 import { PartitionLine } from '../../../components/common/header/Header.styled';
 import { FORM_CONSTANT_TITLE_PROFILES_EDIT, PWD_REGEX } from '../../../constants/formConstant';
 import { USER_PROFILE_QUERY_KEY } from '../../../constants/query.constant';
-import { RootState } from '../../../redux/config/configStore';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { displayToastAsync, openModal } from '../../../redux/modules';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import { Container, Section } from '../Mypage.styled';
@@ -23,9 +24,10 @@ type sessionType = {
   providers: string[];
 };
 const EditProfileForm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const loginUser = useSelector((state: RootState) => state.user.user);
+  const { file } = useSelector((state: RootState) => state.modal);
 
   const userData = useQuery([USER_PROFILE_QUERY_KEY], () => getUserById(loginUser!.id));
   const user = userData.data;
@@ -54,13 +56,17 @@ const EditProfileForm = () => {
     setConfirmPassword(event.target.value);
   };
 
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
-      setImgFile(selectedFile);
-      makeVisiblePreviewImg(selectedFile);
+  const openImageModal = () => {
+    dispatch(openModal({ type: 'imageResizeForm', targetId: user.id }));
+  };
+
+  const onFileChange = (file: File) => {
+    if (file) {
+      setImgFile(file);
+      makeVisiblePreviewImg(file);
     } else return false;
   };
+
   const makeVisiblePreviewImg = (selectedFile: File) => {
     if (selectedFile) {
       const reader = new FileReader();
@@ -91,13 +97,13 @@ const EditProfileForm = () => {
         dispatch(setUser({ ...user, location1_sido: location.sido1, location1_gugun: location.gugun1, location2_sido: location.sido2, location2_gugun: location.gugun2 }));
       }
       if (imgFile) {
-        const uploadProfile = await profileImgUpload({ id: user.id, img: imgFile });
-        dispatch(setUser({ ...user, avatar_url: uploadProfile }));
+        const { avatar_url, cardImage_url } = await profileImgUpload({ id: user.id, img: imgFile });
+        dispatch(setUser({ ...user, avatar_url: avatar_url, cardImage_url: cardImage_url }));
       }
-      alert('프로필 수정이 완료되었습니다.');
+      dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '프로필 수정이 완료되었습니다.' }));
       navigate('/mypage');
     } catch (error) {
-      alert(`정보 수정 중 오류가 발생했습니다${error}`);
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: `정보 수정 중 오류가 발생했습니다${error}` }));
     }
   };
   let isHereguidemessage = '';
@@ -106,6 +112,10 @@ const EditProfileForm = () => {
   } else if (location.sido1 === '전체' || location.sido2 === '전체' || location.gugun1 === '전체' || location.gugun2 === '전체') {
     isHereguidemessage = '지역1, 지역2 모두 특정지역 선택 필수';
   }
+
+  useEffect(() => {
+    if (file) onFileChange(file);
+  }, [file]);
 
   useEffect(() => {
     const result = PWD_REGEX.test(password);
@@ -145,8 +155,11 @@ const EditProfileForm = () => {
                 <S.EditPhotoBtn>
                   <img src={edit_photo} alt="이미지 교체 버튼" />
                 </S.EditPhotoBtn>
-                <S.EditInput className="edit-photo" type="file" id="fileInput" accept="image/*" onChange={onFileChange} />
+                {/* <S.EditInput className="edit-photo" type="file" id="fileInput" accept="image/*" onChange={onFileChange} /> */}
               </S.ProfileImgBox>
+              <button onClick={openImageModal} type="button">
+                이미지 선택
+              </button>
               <div>
                 <p>이름</p>
                 <S.UserData>{user?.username}</S.UserData>

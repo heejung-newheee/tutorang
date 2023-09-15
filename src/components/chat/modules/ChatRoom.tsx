@@ -9,8 +9,8 @@ import { leaveChatRoom, sendImageMessage, sendStudentMessage } from '../../../ap
 import { matchingRequest } from '../../../api/match';
 import { useViewport } from '../../../hooks';
 import useChatContext from '../../../hooks/useChatContext';
-import { RootState } from '../../../redux/config/configStore';
-import { openModal } from '../../../redux/modules';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { displayToastAsync, openModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
 import { getDateTextFromISODate, isSameDate } from '../../../utils/Date';
 import ChatMessage from './ChatMessage';
@@ -24,7 +24,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
   const inputImageRef = useRef<HTMLInputElement>(null);
   const chatAreaRef = useRef<HTMLDivElement>(null);
   const [, setSearchParams] = useSearchParams();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const loginUser = useSelector((state: RootState) => state.user.user);
   const handleSubmitCreateMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,9 +49,9 @@ const ChatRoom = ({ userId }: { userId: string }) => {
     try {
       await matchingRequest({ tutorId: tutor[0].user_id, userId: userId });
       await sendStudentMessage(chatRoom.room_id, 'request');
-      window.alert('성공적으로 튜터링을 요청했습니다.');
+      dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '성공적으로 튜터링을 요청했습니다.' }));
     } catch (error) {
-      if (error instanceof Error) window.alert(error.message || error);
+      if (error instanceof Error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message || String(error) }));
     }
   };
 

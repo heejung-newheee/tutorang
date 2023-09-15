@@ -27,12 +27,14 @@ import EditProfileForm from '../pages/mypage/profileForm/EditProfileForm';
 import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
+import ToastContainer from '../components/dialog/toast/ToastContainer';
 
 //
 const Router = () => {
   return (
     <BrowserRouter>
       <GlobalModal />
+      <ToastContainer />
       <Routes>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
