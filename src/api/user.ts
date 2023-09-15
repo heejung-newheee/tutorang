@@ -1,6 +1,7 @@
 import { v4 } from 'uuid';
 import supabase from '../supabase';
 import { UpdatingTables } from '../supabase/database.types';
+import Resizer from 'react-image-file-resizer';
 
 export const fetchReview = async () => {
   const res = await supabase.from('review').select('*');
@@ -21,21 +22,56 @@ export const getUserById = async (id: string) => {
   return data;
 };
 
+const resizeFile = (file: File, size: number): Promise<File> =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file,
+      size,
+      size,
+      'WEBP',
+      90,
+      0,
+      (uri) => {
+        resolve(uri as File);
+      },
+      'file',
+    );
+  });
+
+// create two number function
+
 export const profileImgUpload = async ({ id, img }: { id: string; img: File }) => {
   try {
     const imgName = v4();
-    const imgUpload = await supabase.storage.from('avatars').upload(`profiles/${id}/${imgName}`, img, {
+    const avatarImg = await resizeFile(img, 40);
+    const imgUpload = await supabase.storage.from('avatars').upload(`profiles/${id}/${imgName}`, avatarImg, {
       contentType: 'image/webp',
       cacheControl: 'public, max-age=31536000',
     });
 
     if (imgUpload.error) throw new Error('프로필 이미지 업로드 실패');
 
-    const { data } = await supabase.storage.from('avatars').getPublicUrl(`profiles/${id}/${imgName}`);
+    const {
+      data: { publicUrl: avatar_url },
+    } = await supabase.storage.from('avatars').getPublicUrl(`profiles/${id}/${imgName}`);
 
-    await supabase.from('profiles').update({ avatar_url: data.publicUrl }).eq('id', id);
+    //
+    const cardImg = await resizeFile(img, 400);
+    const cardImageName = imgName + '_card';
+    const cardImgUpload = await supabase.storage.from('avatars').upload(`profiles/${id}/${cardImageName}`, cardImg, {
+      contentType: 'image/webp',
+      cacheControl: 'public, max-age=31536000',
+    });
 
-    return data.publicUrl;
+    if (cardImgUpload.error) throw new Error('카드 이미지 업로드 실패');
+
+    const {
+      data: { publicUrl: cardImageUrl },
+    } = await supabase.storage.from('avatars').getPublicUrl(`profiles/${id}/${cardImageName}`);
+
+    await supabase.from('profiles').update({ avatar_url: avatar_url, cardImage_url: cardImageUrl }).eq('id', id);
+
+    return { avatar_url: avatar_url, cardImage_url: cardImageUrl };
   } catch (error) {
     console.error('프로필 이미지 업로드 오류:', error);
     throw error;

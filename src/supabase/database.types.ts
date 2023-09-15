@@ -824,6 +824,7 @@ export interface Database {
           avatar_url: string | null;
           basic_authority: boolean;
           birth: string | null;
+          cardImage_url: string | null;
           created_at: string | null;
           deleted_at: string | null;
           email: string | null;
@@ -842,6 +843,7 @@ export interface Database {
           avatar_url?: string | null;
           basic_authority?: boolean;
           birth?: string | null;
+          cardImage_url?: string | null;
           created_at?: string | null;
           deleted_at?: string | null;
           email?: string | null;
@@ -860,6 +862,7 @@ export interface Database {
           avatar_url?: string | null;
           basic_authority?: boolean;
           birth?: string | null;
+          cardImage_url?: string | null;
           created_at?: string | null;
           deleted_at?: string | null;
           email?: string | null;
@@ -1379,6 +1382,7 @@ export interface Database {
           tuition_fee_offline: number | null;
           tuition_fee_online: number | null;
           tutor_age: number | null;
+          tutor_card_img: string | null;
           tutor_id: string | null;
           tutor_img: string | null;
           tutor_info_id: number | null;
