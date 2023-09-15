@@ -13,7 +13,7 @@ import Checkbox from '../../auth/registTutorForm/Checkbox';
 import * as S from '../../auth/registTutorForm/RegistTutorForm.styled';
 import SelectEnrollmentStatus from '../../auth/registTutorForm/SelectEnrollmentStatus';
 import SelectTuitionFee from '../../auth/registTutorForm/SelectTuitionFee';
-import { classLevelEngTranslation, classLevelTranslation, personalityEngTranslation, personalityTranslation, speakingLanguageEngTranslation, speakingLanguageTranslation } from '../../auth/registTutorForm/translation';
+import { classLevelEngTranslation, classLevelTranslation, personalityEngTranslation, personalityTranslation, speakingLanguageEngTranslation, speakingLanguageTranslation } from '../../auth/translation';
 import { Container } from '../Mypage.styled';
 
 const EditTutorForm = () => {
