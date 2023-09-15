@@ -39,7 +39,7 @@ const toastSlice = createSlice({
 
 export const displayToastAsync = createAsyncThunk<void, toastState>('toast/showToastAsync', async (message, { dispatch }) => {
   dispatch(toastSlice.actions.displayToast(message));
-  await new Promise((resolve) => setTimeout(resolve, 13000));
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   dispatch(toastSlice.actions.hideToast());
 });
 

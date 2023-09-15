@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react';
 import { BsFillRecordFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { v4 } from 'uuid';
 import FormHeader from '../../../components/Form/FormHeader';
 import { FORM_CONSTANT_TITLE_TUTOR_CERTIFICATE } from '../../../constants/formConstant';
 import { AVAILABLE_LANGUAGE_LIST, CLASSLEVEL_LIST, PERSONALITY_LIST } from '../../../constants/signup.constant';
-import { RootState } from '../../../redux/config/configStore';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
 import supabase from '../../../supabase';
 import Checkbox from './Checkbox';
 import ImgFileUpload from './ImgFileUpload';
 import SelectEnrollmentStatus from './SelectEnrollmentStatus';
 import SelectTuitionFee from './SelectTuitionFee';
 import { classLevelTranslation, personalityTranslation, speakingLanguageTranslation } from './translation';
+import { displayToastAsync } from '../../../redux/modules';
 
 const RegistTutorForm = () => {
   const [tuitionFeeOnline, setTuitionFeeOnline] = useState(0);
@@ -32,6 +33,7 @@ const RegistTutorForm = () => {
   const [enrollmentStatus, setEnrollmentStatus] = useState('');
   const user = useSelector((state: RootState) => state.user.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const onChangeInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.name === 'university') setUniversity(event.target.value);
@@ -120,7 +122,8 @@ const RegistTutorForm = () => {
     const { error } = await supabase.from('pending_tutor_registration').insert(formData);
     if (error) console.error(error.message);
     else {
-      alert('튜터신청이 완료되었습니다! 관리자의 승인을 기다려주세염');
+      dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '튜터신청이 완료되었습니다! 관리자의 승인을 기다려주세염' }));
+
       navigate(-1);
     }
   };

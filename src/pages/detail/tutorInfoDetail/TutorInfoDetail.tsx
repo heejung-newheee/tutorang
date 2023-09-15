@@ -68,7 +68,6 @@ const TutorInfoDetail = ({ id }: TutorDetailProps) => {
       dispatch(openModal({ type: 'report', userId: loginUser?.id, targetId: id }));
     } else {
       dispatch(openModal({ type: 'alert', message: '로그인 후 이용해주세요' }));
-      dispatch(displayToastAsync({ id: 1, type: 'warning', message: '하이' }));
     }
   };
 
