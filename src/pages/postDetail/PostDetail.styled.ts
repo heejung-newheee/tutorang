@@ -70,9 +70,14 @@ export const LikeDiv = styled.div`
   max-width: 1200px;
   margin: 150px auto 100px auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
+  & > div {
+    margin-top: 5px;
+    color: ${colors.gray_900};
+  }
   & > span {
     width: 60px;
     height: 60px;
