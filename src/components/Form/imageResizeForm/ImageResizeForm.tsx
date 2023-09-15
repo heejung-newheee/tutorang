@@ -4,6 +4,7 @@ import Cropper, { ReactCropperElement } from 'react-cropper';
 import { IoClose } from 'react-icons/io5';
 import { MdOutlineCropFree } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '../..';
 import { RootState } from '../../../redux/config/configStore';
 import { closeModal, successModal } from '../../../redux/modules';
 import * as S from './ImageResizeForm.styled';
@@ -25,7 +26,7 @@ const base64StringtoFile = (base64String: string, filename: string): File => {
 const ImageResizeForm = () => {
   const { targetId } = useSelector((state: RootState) => state.modal);
   const [image, setImage] = useState<string | null>(null);
-  const [imgFile, setImgFile] = useState<File | null>(null);
+  const [imgFile, setImgFile] = useState<string | null>(null);
   const dispatch = useDispatch();
 
   const cropperRef = useRef<ReactCropperElement>(null);
@@ -43,11 +44,10 @@ const ImageResizeForm = () => {
     setImage(URL.createObjectURL(files[0]));
   };
 
-  const onCrop = async () => {
+  const onCropEnd = async () => {
     const cropper = cropperRef.current?.cropper;
     if (!cropper) return;
-    const file = base64StringtoFile(cropper.getCroppedCanvas().toDataURL(), 'cropped.jpg');
-    setImgFile(file);
+    setImgFile(cropper.getCroppedCanvas().toDataURL());
   };
 
   const handleClose = () => {
@@ -60,8 +60,6 @@ const ImageResizeForm = () => {
       document.body.style.overflow = 'auto';
     };
   }, []);
-
-  useEffect(() => {});
 
   return (
     <S.Container>
@@ -77,19 +75,12 @@ const ImageResizeForm = () => {
         </S.Header>
         <S.Body>
           <input type="file" onChange={onChangeImage} />
-          <Cropper
-            src={image || ''}
-            style={{ height: 400, width: '100%' }}
-            // Cropper.js options
-            initialAspectRatio={1}
-            aspectRatio={1}
-            guides={false}
-            crop={onCrop}
-            ref={cropperRef}
-          />
-          <button type="button" onClick={handleSubmit}>
-            프로필 사진 저장
-          </button>
+          <Cropper src={image || ''} style={{ height: 400, width: '100%' }} initialAspectRatio={1} aspectRatio={1} guides={false} cropend={onCropEnd} ref={cropperRef} />
+          <div style={{ marginTop: 'auto' }}>
+            <Button variant="solid" color={'primary'} size="Large" onClick={handleSubmit}>
+              확인
+            </Button>
+          </div>
         </S.Body>
       </S.Inner>
     </S.Container>
