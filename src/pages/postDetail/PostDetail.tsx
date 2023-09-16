@@ -20,7 +20,7 @@ const PostDetail = () => {
   const dispatch = useDispatch<AppDispatch>();
   const detail_user_id = loginUser?.id;
 
-  let { postid } = useParams();
+  const { postid } = useParams();
 
   const queryClient = useQueryClient();
 
@@ -103,7 +103,7 @@ const PostDetail = () => {
   //댓글 생성
   const handleComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (!postid) return;
     if (!loginUser) {
       return dispatch(displayToastAsync({ id: Date.now(), type: 'info', message: '로그인 후 이용해주세요' }));
     }

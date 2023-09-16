@@ -1,5 +1,5 @@
 export type PostUpdate = {
-  post_id: number | undefined | null;
+  post_id: number;
   comment: string;
   user_id: string | null;
 };
