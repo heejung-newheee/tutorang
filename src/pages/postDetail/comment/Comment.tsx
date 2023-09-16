@@ -1,13 +1,12 @@
-import { useParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { detailDate } from '../../community/utility';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/config/configStore';
-import { deleteComment, updateComment } from '../../../api/postDetail';
 import { useState } from 'react';
-import { fetchComments } from '../../../api/postDetail';
-import * as S from './Comment.styled';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { DELETECOMMENT, EDITCOMMENT } from '../../../@types/PostDetail/PostDetailType';
+import { deleteComment, fetchComments, updateComment } from '../../../api/postDetail';
+import { RootState } from '../../../redux/config/configStore';
+import { detailDate } from '../../community/utility';
+import * as S from './Comment.styled';
 
 const Comment = () => {
   const loginUser = useSelector((state: RootState) => state.user.user);
@@ -55,7 +54,7 @@ const Comment = () => {
       </S.CommentLength>
       {data?.map((item) =>
         currentEditNum !== item.id ? (
-          <S.CommentContainer key={Math.random() * 22229999}>
+          <S.CommentContainer key={item.id}>
             <S.UserSection>
               <S.UserImg src={item.profiles?.avatar_url as string} />
               <div>

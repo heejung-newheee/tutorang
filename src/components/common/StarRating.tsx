@@ -1,4 +1,4 @@
-import { starEmpty, starFull } from '../assets';
+import { starEmpty, starFull } from '../../assets';
 
 const StarRating = (rating: number) => {
   const stars = [];

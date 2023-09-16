@@ -1,42 +1,37 @@
 import { useQuery } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getReceivedWriteReviewCount, getWriteReviewCount } from '../../../api/review';
-import { getUserById } from '../../../api/user';
 import { icon_edit, icon_location } from '../../../assets';
-import { Loading } from '../../../components';
-import { RECEIVED_REVIEW_COUNT, USER_PROFILE_QUERY_KEY, WRITE_REVIEW_COUNT } from '../../../constants/query.constant';
-import { RootState } from '../../../redux/config/configStore';
-import { Views } from '../../../supabase/database.types';
-import { Container } from '../Mypage.styled';
+import { RECEIVED_REVIEW_COUNT, WRITE_REVIEW_COUNT } from '../../../constants/query.constant';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { confirmModal } from '../../../redux/modules';
+import { Tables, Views } from '../../../supabase/database.types';
+import { Container } from '../MyPage.styled';
 import * as S from './UserInfo.styled';
 interface pageProps {
   match: Views<'matching_tutor_data'>[] | undefined;
+  user: Tables<'profiles'>;
 }
-const UserInfo = ({ match }: pageProps) => {
+// const UserInfo = ({match, user}) => {
+const UserInfo = ({ match, user }: pageProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+
   const loginUser = useSelector((state: RootState) => state.user.user!);
-  const { data: user, isLoading, isError } = useQuery([USER_PROFILE_QUERY_KEY], () => getUserById(loginUser.id));
+  const { isConfirm, modalId } = useSelector((state: RootState) => state.modal);
 
-  const writeReviewCount = useQuery([WRITE_REVIEW_COUNT, user], () => getWriteReviewCount(user!.id), { enabled: !!user });
-  const receivedReviewCount = useQuery([RECEIVED_REVIEW_COUNT], () => getReceivedWriteReviewCount(user!.id), { enabled: !!user });
-
-  if (isLoading) {
-    return <Loading />;
-  }
   if (!user) {
     return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
   }
-  if (isError) {
-    console.error('Error', isError);
-    return null;
-  }
+
+  const writeReviewCount = useQuery([WRITE_REVIEW_COUNT, user], () => getWriteReviewCount(user.id), { enabled: !!user });
+  const receivedReviewCount = useQuery([RECEIVED_REVIEW_COUNT], () => getReceivedWriteReviewCount(user.id), { enabled: !!user });
+
   const handleEditProfiles = () => {
     if (!loginUser?.gender) {
-      const wannaAddMoreInfo = window.confirm('소셜로그인을 하셨는데 아직 추가정보를 입력하지 않았다구요? 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?');
-      if (wannaAddMoreInfo) {
-        navigate('/additional-information');
-      } else return false;
+      dispatch(confirmModal({ type: 'confirm', message: '소셜로그인을 하셨는데 아직 추가정보를 입력하지 않았다구요? 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?', modalId: 'handleEditProfiles' }));
     } else {
       navigate('/edit-profiles');
     }
@@ -44,6 +39,13 @@ const UserInfo = ({ match }: pageProps) => {
 
   const studentMatch = match?.filter((item) => item.user_id === user.id);
   const tutorMatch = match?.filter((item) => item.tutor_id === user.id);
+
+  useEffect(() => {
+    if (isConfirm && modalId === 'handleEditProfiles') {
+      navigate('/additional-information');
+    }
+  }, [isConfirm]);
+
   return (
     <>
       <S.ProfileSection>
@@ -66,11 +68,11 @@ const UserInfo = ({ match }: pageProps) => {
               {user.role === 'tutor' ? (
                 <>
                   <S.SummaryItem>
-                    <p>{tutorMatch?.filter((a) => a.status === 'complete').length}개</p>
+                    <p>{tutorMatch?.filter((matchItem) => matchItem.status === 'complete').length}개</p>
                     <p>완료된 수업</p>
                   </S.SummaryItem>
                   <S.SummaryItem>
-                    <p>{tutorMatch?.filter((a) => a.status === 'request').length}개</p>
+                    <p>{tutorMatch?.filter((matchItem) => matchItem.status === 'request').length}개</p>
                     <p>대기 요청</p>
                   </S.SummaryItem>
                   <S.SummaryItem>
@@ -81,11 +83,11 @@ const UserInfo = ({ match }: pageProps) => {
               ) : user.role === 'student' ? (
                 <>
                   <S.SummaryItem>
-                    <p>{studentMatch?.filter((a) => a.status === 'complete').length}개</p>
+                    <p>{studentMatch?.filter((matchItem) => matchItem.status === 'complete').length}개</p>
                     <p>완료된 수업</p>
                   </S.SummaryItem>
                   <S.SummaryItem>
-                    <p>{studentMatch?.filter((a) => a.status === 'request').length}개</p>
+                    <p>{studentMatch?.filter((matchItem) => matchItem.status === 'request').length}개</p>
                     <p>대기 요청</p>
                   </S.SummaryItem>
                   <S.SummaryItem>

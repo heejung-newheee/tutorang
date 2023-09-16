@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
-import { updateWrite, updateEditedWrite } from '../../api/writeCommunity';
+import { EDITWRITE, POSTWRITE } from '../../@types/writeCommunity/WriteCommunity.type';
+import { updateEditedWrite, updateWrite } from '../../api/writeCommunity';
 import { AppDispatch, RootState } from '../../redux/config/configStore';
+import { displayToastAsync } from '../../redux/modules';
 import supabase from '../../supabase';
 import './write.css';
-import { displayToastAsync } from '../../redux/modules';
-import { EDITWRITE, POSTWRITE } from '../../@types/writeCommunity/WriteCommunity.type';
 
 const WritePost = () => {
   const [title, setTitle] = useState<string | null>('');
@@ -60,7 +60,7 @@ const WritePost = () => {
             }
           }
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
       }
     };
@@ -192,7 +192,7 @@ const SubmitBtn = styled.button`
   position: fixed;
   right: 20px;
   top: 15px;
-  z-index: 100000;
+  z-index: 10000;
   border: 1px solid gray;
   padding: 10px 20px;
 `;
@@ -201,7 +201,7 @@ const BackBtn = styled.button`
   position: fixed;
   left: 20px;
   top: 15px;
-  z-index: 100000;
+  z-index: 10000;
   border: 1px solid gray;
   padding: 10px 20px;
 `;

@@ -14,6 +14,10 @@ export const Inner = styled.div`
     margin: 0 auto;
   }
 `;
+
+export const UserReviewListWrapper = styled.div`
+  background-color: #f9f9f9;
+`;
 export const Title = styled.h2`
   display: inline-block;
   font-size: 28px;
@@ -92,6 +96,13 @@ export const ReasonImg = styled.img`
   &.mobile {
     display: none;
   }
+
+  &.matched_review {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0px);
+  }
+
   @media screen and (max-width: 768px) {
     padding: 0 25px 25px 20px;
     &.desk-top {

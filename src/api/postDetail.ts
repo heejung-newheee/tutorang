@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
-import supabase from '../supabase';
 import { COMMENT, DELETECOMMENT, EDITCOMMENT, LikeUpdatePost } from '../@types/PostDetail/PostDetailType';
+import supabase from '../supabase';
 
 export const fetchPostData = async (postid: number) => {
   const { data, error } = await supabase.from('write').select(`*, post_like(post_id, user_id),profiles(username,avatar_url)`).eq('id', postid);
@@ -10,7 +10,11 @@ export const fetchPostData = async (postid: number) => {
 };
 
 export const createLike = async (likePost: LikeUpdatePost) => {
-  const writeLikePromise = supabase.from('write').update({ like: likePost.like }).eq('id', likePost.postid).single();
+  // const writeLikePromise = supabase.from('write').update({ like: likePost.like }).eq('id', likePost.postid).single();
+  const writeLikePromise = supabase.rpc('increment_like', {
+    post_id: likePost.postid,
+  });
+
   const postLikePromise = supabase.from('post_like').insert({ user_id: likePost.detail_user_id, post_id: Number(likePost.postid) });
 
   const [writeResult, postLikeResult] = await Promise.all([writeLikePromise, postLikePromise]);
@@ -18,9 +22,17 @@ export const createLike = async (likePost: LikeUpdatePost) => {
   if (writeResult.error) throw writeResult.error;
   if (postLikeResult.error) throw postLikeResult.error;
 };
+// let { data, error } = await supabase
+//   .rpc('decrement_like', {
+//     post_id
+//   })
 
+// if (error) console.error(error)
+// else console.log(data)
 export const updateLike = async (likeUpdate: LikeUpdatePost) => {
-  const writeMinusLikePromise = supabase.from('write').update({ like: likeUpdate.like }).eq('id', likeUpdate.postid).single();
+  const writeMinusLikePromise = await supabase.rpc('decrement_like', {
+    post_id: likeUpdate.postid,
+  });
   const postDeletePromise = supabase.from('post_like').delete().eq('user_id', likeUpdate.detail_user_id).eq('post_id', likeUpdate.postid);
 
   const [writeResult, postLikeResult] = await Promise.all([writeMinusLikePromise, postDeletePromise]);

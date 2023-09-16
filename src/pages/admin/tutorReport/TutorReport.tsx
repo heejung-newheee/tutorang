@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import { icon_more_dashboard, icon_time_dashboard } from '../../../../assets';
-import * as S from './TutorReport.styled';
-import { reportList, useChangeStateTutorReport } from '../../../../api/report';
-import { Loading } from '../../..';
 import { useState } from 'react';
-import { REPORT_DASHBOARD_QUERY_KEY } from '../../../../constants/query.constant';
 import { useDispatch } from 'react-redux';
-import { openModal } from '../../../../redux/modules';
+import { reportList, useChangeStateTutorReport } from '../../../api/report';
+import { icon_more_dashboard, icon_time_dashboard } from '../../../assets';
+import { Loading } from '../../../components';
+import { REPORT_DASHBOARD_QUERY_KEY } from '../../../constants/query.constant';
+import { openModal } from '../../../redux/modules';
+import * as S from './TutorReport.styled';
 
 const TutorReport = () => {
   const dispatch = useDispatch();
@@ -36,21 +36,18 @@ const TutorReport = () => {
             <S.PendingDotState /> 확인중
           </>
         );
-        break;
       case 'success':
         return (
           <>
             <S.SuccessDotState /> 승인
           </>
         );
-        break;
       case 'reject':
         return (
           <>
             <S.RejectDotState /> 거절
           </>
         );
-        break;
     }
   };
 
@@ -84,6 +81,11 @@ const TutorReport = () => {
     return timeMessage;
   };
 
+  const solveReport = ({ state, id }: { state: 'success' | 'reject'; id: number }) => {
+    handleIsOpen(id);
+    chageStateTutorReport({ state, id });
+  };
+
   if (isLoading) {
     return <Loading />;
   }
@@ -96,9 +98,6 @@ const TutorReport = () => {
     <S.DashboardItem>
       <S.DashboardTopWrapper>
         <S.DashboardItemTitle>튜터 신고 현황</S.DashboardItemTitle>
-        <S.ButtonTime>
-          Week <S.IconMoreWeek src={icon_more_dashboard} />
-        </S.ButtonTime>
       </S.DashboardTopWrapper>
       <ul>
         {Array.isArray(tutorReportList) &&
@@ -123,16 +122,14 @@ const TutorReport = () => {
                   <S.moreMenu className={report.id === openMenuId ? 'active' : ''}>
                     <S.moreMenuItem
                       onClick={() => {
-                        handleIsOpen(report.id);
-                        chageStateTutorReport({ state: 'success', id: report.id });
+                        solveReport({ state: 'success', id: report.id });
                       }}
                     >
                       승인
                     </S.moreMenuItem>
                     <S.moreMenuItem
                       onClick={() => {
-                        handleIsOpen(report.id);
-                        chageStateTutorReport({ state: 'reject', id: report.id });
+                        solveReport({ state: 'reject', id: report.id });
                       }}
                     >
                       거절

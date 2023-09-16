@@ -141,3 +141,8 @@ export const BoardLink = styled(Link)`
     text-decoration: underline;
   }
 `;
+
+export const BoardLinkWrapper = styled.td`
+  width: 25%;
+  color: #393939;
+`;

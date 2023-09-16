@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import { TutorApply, TutorReport } from '../../../components/dashboard/modules';
+import { useState } from 'react';
 import { getYearAndMonth } from '../../../utils/Date';
+import TutorApply from '../tutorApply/TutorApply';
+import TutorReport from '../tutorReport/TutorReport';
 import * as S from './Dashboard.styled';
 import MatchingChart from './MatchingChart';
 import NewMemberChart from './NewMemberChart';
@@ -8,8 +9,6 @@ import NewMemberChart from './NewMemberChart';
 const Dashboard = () => {
   const [chartMonth, setChartMonth] = useState(getYearAndMonth());
   const [matchingChartMonth, setMatchingChartMonth] = useState(getYearAndMonth());
-
-  useEffect(() => {}, [chartMonth]);
 
   return (
     <div>

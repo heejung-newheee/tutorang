@@ -20,6 +20,12 @@ export const InfoItem = styled.li`
     width: 25%;
     padding: 5px;
   }
+
+  &.matching {
+    text-align: center;
+    height: 56px;
+    border-top: 0;
+  }
 `;
 export const UserAvatar = styled.img`
   width: 50px;

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { icon_home, icon_logout } from '../../../../assets';
+import { icon_home, icon_logout } from '../../../assets';
 import * as S from './AdminSidebar.styled';
 
 const AdminSidebar = () => {

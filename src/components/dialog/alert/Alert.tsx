@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { styled } from 'styled-components';
 import { RootState } from '../../../redux/config/configStore';
 import { closeModal } from '../../../redux/modules';
 import { Button } from '../../button/Button.styled';
@@ -21,7 +20,7 @@ const Alert = () => {
             e.stopPropagation();
           }}
         >
-          <Message>{message}</Message>
+          <S.Message>{message}</S.Message>
           <Button variant="text" color="gray" size="Large" onClick={handleClose}>
             닫기
           </Button>
@@ -32,10 +31,3 @@ const Alert = () => {
 };
 
 export default Alert;
-
-const Message = styled.div`
-  font-size: 24px;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 8px;
-`;

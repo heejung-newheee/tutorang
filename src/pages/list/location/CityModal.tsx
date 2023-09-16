@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from 'react';
-import { marker_location } from '../../../assets';
-import { AREA0, 강원, 경기, 경남, 경북, 광주, 대구, 대전, 부산, 서울, 울산, 인천, 전남, 전북, 제주, 충남, 충북 } from '../../../constants/location.constant';
-import * as S from './CityModal.styled';
-import CheckBoxCompo from '../../../components/list/location/CheckBoxCompo';
-import { handleCityModalFilter } from '../utility';
 import { SelectedFilters } from '../../../@types/list/listType';
+import { marker_location } from '../../../assets';
+import CheckBoxCompo from '../../../components/list/location/CheckBoxCompo';
+import { AREA0, 강원, 경기, 경남, 경북, 광주, 대구, 대전, 부산, 서울, 울산, 인천, 전남, 전북, 제주, 충남, 충북 } from '../../../constants/location.constant';
+import { handleCityModalFilter } from '../utility';
+import * as S from './CityModal.styled';
 
 interface CityData {
   [key: string]: string[];
@@ -73,7 +73,7 @@ const CityModal = ({ isDistrictDropdown, checkedcity, checkedGunGu, setisDistric
       <S.GunGuBox>
         {!isDistrictDropdown &&
           cities[checkedcity]?.map((item) => (
-            <div key={Math.random() * 22229999} onClick={() => setCheckedGunGu(item)}>
+            <div key={`${checkedcity}+${item}`} onClick={() => setCheckedGunGu(item)}>
               <CheckBoxCompo item={item} checkedGunGu={checkedGunGu} />
             </div>
           ))}

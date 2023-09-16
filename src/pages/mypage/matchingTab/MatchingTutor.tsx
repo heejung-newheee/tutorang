@@ -1,6 +1,6 @@
 import { Tab, Tabs } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { matchingCancel, matchingComplete, matchingRejectStudent, matchingRequest } from '../../../api/match';
 import { Views } from '../../../supabase/database.types';
@@ -14,8 +14,8 @@ import { useNavigate } from 'react-router-dom';
 import { getOrCreatePrivateChatRoom, sendStudentMessage } from '../../../api/chat';
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { AppDispatch, RootState } from '../../../redux/config/configStore';
-import { displayToastAsync, openModal } from '../../../redux/modules';
-import { ContentsDataBox } from '../Mypage.styled';
+import { clearModal, displayToastAsync, openModal } from '../../../redux/modules';
+import { ContentsDataBox } from '../MyPage.styled';
 
 interface pageProps {
   matchList: Views<'matching_tutor_data'>[];
@@ -32,6 +32,7 @@ const TabPanel = (props: any) => {
 };
 
 const MatchingTutor = ({ matchList }: pageProps) => {
+  const { isConfirm, targetId, modalId, userId } = useSelector((state: RootState) => state.modal);
   const dispatch = useDispatch<AppDispatch>();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -64,39 +65,54 @@ const MatchingTutor = ({ matchList }: pageProps) => {
   const handleCancelMatch = async (id: string, tutor_id: string | null) => {
     if (!tutor_id) return;
     if (!loginUser) return;
-    if (!window.confirm('요청을 취소 하시겠습니까?')) return;
+    dispatch(openModal({ type: 'confirm', message: '요청을 취소 하시겠습니까?', modalId: 'cancelMatch', userId: id, targetId: tutor_id }));
+  };
+
+  const cancelMatch = async (id: string, tutor_id: string | null) => {
+    if (!tutor_id) return;
+    if (!loginUser) return;
     cancelMatchMutation.mutate(id);
     try {
       const room = await getOrCreatePrivateChatRoom(tutor_id);
       await sendStudentMessage(room.room_id, 'reject');
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: String(error) }));
     }
   };
 
   const handleNotCompleteMatch = async (id: string, tutor_id: string | null) => {
     if (!tutor_id) return;
     if (!loginUser) return;
-    if (!window.confirm('수업 취소처리 하시겠습니까?')) return;
+    dispatch(openModal({ type: 'confirm', message: '수업 취소처리 하시겠습니까?', modalId: 'notCompleteMatch', userId: id, targetId: tutor_id }));
+  };
+
+  const notCompleteMatch = async (id: string, tutor_id: string | null) => {
+    if (!tutor_id) return;
+    if (!loginUser) return;
     notCompleteMatchMutation.mutate(id);
     try {
       const room = await getOrCreatePrivateChatRoom(tutor_id);
       await sendStudentMessage(room.room_id, 'reject');
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: String(error) }));
     }
   };
 
   const handleCompleteMatch = async (id: string, tutor_id: string | null) => {
     if (!tutor_id) return;
     if (!loginUser) return;
-    if (!window.confirm('수업 완료처리 하시겠습니까?')) return;
+    dispatch(openModal({ type: 'confirm', message: '수업 완료처리 하시겠습니까?', modalId: 'completeMatch', userId: id, targetId: tutor_id }));
+  };
+
+  const completeMatch = async (id: string, tutor_id: string | null) => {
+    if (!tutor_id) return;
+    if (!loginUser) return;
     completeMatchMutation.mutate(id);
     try {
       const room = await getOrCreatePrivateChatRoom(tutor_id);
       await sendStudentMessage(room.room_id, 'accept');
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: String(error) }));
     }
   };
 
@@ -108,7 +124,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
       const chatRoom = await getOrCreatePrivateChatRoom(tutorId);
       navigate(`/chat?room_id=${chatRoom.room_id}`);
     } catch (error) {
-      console.error(error);
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: String(error) }));
     }
   };
 
@@ -126,6 +142,15 @@ const MatchingTutor = ({ matchList }: pageProps) => {
     dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '성공적으로 튜터링을 요청했습니다.' }));
   };
 
+  useEffect(() => {
+    if (isConfirm && modalId && targetId && userId && typeof targetId === 'string') {
+      if (modalId === 'cancelMatch') cancelMatch(userId, targetId);
+      if (modalId === 'notCompleteMatch') notCompleteMatch(userId, targetId);
+      if (modalId === 'completeMatch') completeMatch(userId, targetId);
+      dispatch(clearModal());
+    }
+  }, [isConfirm, targetId]);
+
   return (
     <div>
       <Tabs value={activeTab} onChange={handleTabChange} aria-label="tab menu">
@@ -135,7 +160,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
       </Tabs>
       <TabPanel value={activeTab} index={0}>
         <S.InfoList>
-          <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
+          <S.InfoItem className="matching">
             <div>튜터 이름</div>
             <div>지역</div>
             <div>날짜</div>
@@ -182,7 +207,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
         <S.InfoList>
-          <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
+          <S.InfoItem className="matching">
             <div>튜터 이름</div>
             <div>지역</div>
             <div>날짜</div>
@@ -242,7 +267,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
       </TabPanel>
       <TabPanel value={activeTab} index={2}>
         <S.InfoList>
-          <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
+          <S.InfoItem className="matching">
             <div>튜터 이름</div>
             <div>지역</div>
             <div>날짜</div>

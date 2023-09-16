@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../redux/config/configStore';
-import { closeModal, openModal } from '../../../redux/modules';
-import { useEffect } from 'react';
-import { IoClose } from 'react-icons/io5';
 import { useQuery } from '@tanstack/react-query';
-import { getUserById } from '../../../api/user';
-import { Loading } from '../..';
+import { useEffect } from 'react';
 import { AiOutlineAlert } from 'react-icons/ai';
 import { HiOutlineAcademicCap } from 'react-icons/hi';
+import { IoClose } from 'react-icons/io5';
+import { useDispatch, useSelector } from 'react-redux';
+import { Loading } from '../..';
+import { getUserById } from '../../../api/user';
+import { RootState } from '../../../redux/config/configStore';
+import { closeModal, openModal } from '../../../redux/modules';
 import * as S from './ChatPlayerDetailModal.styled';
 
 export const ChatPlayerDetailModal = () => {
@@ -37,7 +37,8 @@ export const ChatPlayerDetailModal = () => {
     return <></>;
   }
 
-  const { id, age, username, role, location1_sido, location1_gugun, location2_gugun, location2_sido, avatar_url } = userInfo.data;
+  const { id, age, username, role, location1_sido, location1_gugun, location2_gugun, location2_sido, cardImage_url } = userInfo.data;
+
   return (
     <S.Container>
       <S.Inner>
@@ -56,7 +57,7 @@ export const ChatPlayerDetailModal = () => {
           </S.IconButtonWrapper>
         </S.ModalHeader>
         <div>
-          <S.ProfileImage src={avatar_url || ''} width={140} height={140} />
+          <S.ProfileImage src={cardImage_url || ''} width={140} height={140} />
           <S.ProfileInfo>
             <HiOutlineAcademicCap size={'1.5rem'} color={'#373737'} />
             <S.ProfileUserName>

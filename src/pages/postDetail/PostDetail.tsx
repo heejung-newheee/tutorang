@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import Heart from 'react-animated-heart';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { removePost, fetchPostData, createLike, createComment, updateLike } from '../../api/postDetail';
+import { COMMENT, LikeUpdatePost } from '../../@types/PostDetail/PostDetailType';
+import { createComment, createLike, fetchPostData, removePost, updateLike } from '../../api/postDetail';
 import { Loading } from '../../components';
 import { AppDispatch, RootState } from '../../redux/config/configStore';
 import { displayToastAsync } from '../../redux/modules';
 import { detailDate } from '../community/utility';
 import * as S from './PostDetail.styled';
 import Comment from './comment/Comment';
-import { COMMENT, LikeUpdatePost } from '../../@types/PostDetail/PostDetailType';
 
 const PostDetail = () => {
   const [comment, setComment] = useState<string>('');
