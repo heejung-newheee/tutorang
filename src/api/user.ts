@@ -1,7 +1,7 @@
+import Resizer from 'react-image-file-resizer';
 import { v4 } from 'uuid';
 import supabase from '../supabase';
 import { UpdatingTables } from '../supabase/database.types';
-import Resizer from 'react-image-file-resizer';
 
 export const fetchReview = async () => {
   const res = await supabase.from('review').select('*');
@@ -16,8 +16,6 @@ export const getUser = async (email: string | undefined) => {
 export const getUserById = async (id: string) => {
   const { data, error } = await supabase.from('profiles').select().eq('id', id).limit(1).single();
   if (error) throw error;
-  // console.log('api', data);
-  // console.log('api', error);
 
   return data;
 };

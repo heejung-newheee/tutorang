@@ -18,7 +18,7 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
       queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY, csTableId]);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
 

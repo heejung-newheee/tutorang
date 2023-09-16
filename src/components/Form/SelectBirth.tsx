@@ -77,9 +77,6 @@ const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
 
   useEffect(() => {
     const handleOutSideClose = (event: MouseEvent) => {
-      console.log('yearDropContainerRef.current', yearDropContainerRef.current);
-      console.log(event.target);
-      console.log(isDateOpen.year);
       if (
         (isDateOpen.year && !yearDropContainerRef.current?.contains(event.target as Node)) ||
         (isDateOpen.month && !monthDropContainerRef.current?.contains(event.target as Node)) ||

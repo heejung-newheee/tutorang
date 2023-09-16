@@ -58,7 +58,9 @@ const WritePost = () => {
               editor.setSelection(startIndex, endIndex);
             }
           }
-        } catch {}
+        } catch (err) {
+          console.log(err);
+        }
       }
     };
   };
@@ -119,8 +121,16 @@ const WritePost = () => {
       editCommunity();
     }
   }, []);
+
+  type NEWINFO = {
+    title: string;
+    content: string;
+    user_id?: string;
+    category: string;
+  };
+
   ///community-insert
-  const communityMutation = useMutation(async (newInfo: any) => WriteInsertApi(newInfo), {
+  const communityMutation = useMutation(async (newInfo: NEWINFO) => WriteInsertApi(newInfo), {
     onSuccess: () => {
       queryClient.invalidateQueries(['write']);
     },
@@ -129,8 +139,13 @@ const WritePost = () => {
     },
   });
 
+  type NEWINFOEDIT = {
+    title: string;
+    content: string;
+  };
+
   //community-edit
-  const editUpdateMutation = useMutation(async (newInfo: any) => editUpdateApi(newInfo, editPostNum), {
+  const editUpdateMutation = useMutation(async (newInfo: NEWINFOEDIT) => editUpdateApi(newInfo, editPostNum), {
     onSuccess: () => {
       queryClient.invalidateQueries(['write']);
     },

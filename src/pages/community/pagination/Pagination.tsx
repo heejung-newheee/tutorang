@@ -12,10 +12,10 @@ type Props = {
 
 const Pagination = ({ totalPageNum, pageCount }: Props) => {
   const [query, _] = useSearchParams();
-  const editPostNum = Number(query.get('q'));
+  const currentQueryNum = Number(query.get('q'));
 
   const isNextPageTrue = (closeness: number) => {
-    const closenessStep = editPostNum + closeness;
+    const closenessStep = currentQueryNum + closeness;
 
     if (totalPageNum && totalPageNum !== 0) {
       const isTrue = totalPageNum > pageCount && totalPageNum > closenessStep * pageCount;
@@ -27,17 +27,17 @@ const Pagination = ({ totalPageNum, pageCount }: Props) => {
   return (
     <S.PaginationDiv>
       <TotalPrevFc />
-      <PrevFc />
+      <PrevFc currentQueryNum={currentQueryNum} />
 
       <S.PageNmberDiv>
-        {editPostNum !== 1 && <div>{editPostNum - 1}</div>}
-        <S.CurrentNumberDiv> {editPostNum}</S.CurrentNumberDiv>
-        {isNextPageTrue(0) && <div>{editPostNum + 1}</div>}
+        {currentQueryNum !== 1 && <div>{currentQueryNum - 1}</div>}
+        <S.CurrentNumberDiv> {currentQueryNum}</S.CurrentNumberDiv>
+        {isNextPageTrue(0) && <div>{currentQueryNum + 1}</div>}
 
         {isNextPageTrue(0) && <S.TotalPageNum> &hellip; {totalPageNum && Math.ceil(totalPageNum / pageCount)}</S.TotalPageNum>}
       </S.PageNmberDiv>
 
-      <NextFc totalPageNum={totalPageNum} pageCount={pageCount} />
+      <NextFc totalPageNum={totalPageNum} pageCount={pageCount} currentQueryNum={currentQueryNum} />
       <TotalNext totalPageNum={totalPageNum} pageCount={pageCount} />
     </S.PaginationDiv>
   );

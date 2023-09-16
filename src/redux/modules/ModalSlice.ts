@@ -7,7 +7,7 @@ type ModalState = {
   matchingId?: string | null;
   userId?: string;
   message?: string | null;
-  file?: File | null;
+  file?: File | string | null;
 };
 
 const initialState: ModalState = {

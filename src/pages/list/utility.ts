@@ -110,7 +110,7 @@ export const handleLanguageFilter = (item: string, setSelectedFilters: Dispatch<
   return;
 };
 
-export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, _: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>, checkedcity: string, checkedGunGu: string) => {
+export const handleCityModalFilter = (setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, setSelectedArr: Dispatch<SetStateAction<string[][]>>, checkedcity: string, checkedGunGu: string) => {
   if (checkedcity === '전체') {
     setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location1: '', location2: '' });
     setSelectedArr((pre) => pre.filter((item) => item[0] !== 'location1'));

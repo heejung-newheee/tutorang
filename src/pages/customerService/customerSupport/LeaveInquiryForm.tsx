@@ -25,7 +25,7 @@ const LeaveInquiryForm = () => {
       queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
     },
     onError: (error) => {
-      console.log(error);
+      console.error(error);
     },
   });
 
@@ -46,7 +46,7 @@ const LeaveInquiryForm = () => {
             upsert: true,
           });
 
-          console.log(data, error);
+          console.error(data, error);
 
           const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
 
@@ -63,7 +63,7 @@ const LeaveInquiryForm = () => {
             }
           }
         } catch (error) {
-          console.log(error);
+          console.error(error);
         }
       }
     };

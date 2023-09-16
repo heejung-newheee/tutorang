@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AdminLayout, Layout, SignInForm, SignUpForm } from '../components';
+import ScrollToTop from '../components/common/ScrollToTop';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import ToastContainer from '../components/dialog/toast/ToastContainer';
 import GlobalModal from '../components/modal/GlobalModal';
 import { BoardManage, Community, Dashboard, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, UserManage, WritePost } from '../pages';
-import Test from '../pages/Test';
 import CSManage from '../pages/admin/CSManage/CSManage';
 import CSManageDetail from '../pages/admin/CSManage/CSManageDetail/DetailCSManage';
 import AdminRoute from '../pages/admin/announcementManage/AdminRoute';
@@ -23,16 +23,16 @@ import DetailCustomerSupport from '../pages/customerService/customerSupport/Deta
 import EditInquiryForm from '../pages/customerService/customerSupport/EditInquiryForm';
 import LeaveInquiryForm from '../pages/customerService/customerSupport/LeaveInquiryForm';
 import MatchedReview from '../pages/matchingReview/MatchedReview';
+import MyEditPage from '../pages/mypage/MyEditPage';
 import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateAdditionalInformationForm';
-import EditProfileForm from '../pages/mypage/profileForm/EditProfileForm';
 import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
 
-//
 const Router = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <GlobalModal />
       <ToastContainer />
       <Routes>
@@ -53,8 +53,6 @@ const Router = () => {
 
         <Route element={<GlobalLayout />}>
           <Route path="/" element={<Main />} />
-          <Route path="/test" element={<Test />} />
-
           <Route
             path="/mypage"
             element={
@@ -110,7 +108,6 @@ const Router = () => {
 
             <Route path="/community" element={<Community />}>
               <Route path="free" element={<FreeCommunity />} />
-
               <Route path="study" element={<StudyCommunity />} />
               <Route path="question" element={<QuestionCommunity />} />
               <Route path="region" element={<RegionCommunity />} />
@@ -176,7 +173,7 @@ const Router = () => {
               path="/edit-profiles"
               element={
                 <AuthenticatedRoute>
-                  <EditProfileForm />
+                  <MyEditPage />
                 </AuthenticatedRoute>
               }
             />

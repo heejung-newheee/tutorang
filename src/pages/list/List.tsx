@@ -9,7 +9,7 @@ import CityModal from './location/CityModal';
 import SelectBox from './selectBox/SelectBox';
 import LastTutorListCompo from './tutorCompo/LastTutorListCompo';
 import TutorListCompo from './tutorCompo/TutorListCompo';
-import { SearchDebounce, handleCityModalFilter } from './utility';
+import { SearchDebounce } from './utility';
 
 const List = () => {
   const { Modal, isOpen, openModal, closeModal } = useModal();
@@ -80,21 +80,6 @@ const List = () => {
 
   const debouncedOnChange = SearchDebounce<typeof onChange>(onChange, 500);
 
-  const handleDropAndSi = (item: string, version: string) => {
-    setCheckedCity(item);
-    setCheckedGunGu('');
-    version === 'pc' ? null : setisDistrictDropdown(!isDistrictDropdown);
-  };
-
-  const handelCloseModalAndSelect = () => {
-    handleCityModalFilter(setSelectedFilters, selectedFilters, setSelectedArr, checkedcity, checkedGunGu);
-    closeModal();
-  };
-
-  const handleCloseModal = () => {
-    closeModal();
-  };
-
   if (isLoading) {
     return <Loading />;
   }
@@ -125,13 +110,14 @@ const List = () => {
         >
           <CityModal
             isDistrictDropdown={isDistrictDropdown}
-            setisDistrictDropdown={setisDistrictDropdown}
             checkedcity={checkedcity}
-            handleDropAndSi={handleDropAndSi}
-            setCheckedGunGu={setCheckedGunGu}
             checkedGunGu={checkedGunGu}
-            handelCloseModalAndSelect={handelCloseModalAndSelect}
-            handleCloseModal={handleCloseModal}
+            setisDistrictDropdown={setisDistrictDropdown}
+            setCheckedCity={setCheckedCity}
+            setCheckedGunGu={setCheckedGunGu}
+            setSelectedFilters={setSelectedFilters}
+            setSelectedArr={setSelectedArr}
+            closeModal={closeModal}
           />
         </S.InnerModal>
       </Modal>

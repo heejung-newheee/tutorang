@@ -60,6 +60,7 @@ export const UserNameDate = styled.div`
   }
 `;
 export const EditSection = styled.div`
+  flex-shrink: 0;
   font-size: 13px;
   color: ${colors.gray_900};
   cursor: pointer;
