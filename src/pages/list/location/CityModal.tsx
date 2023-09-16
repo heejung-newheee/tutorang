@@ -1,7 +1,9 @@
-import Checkbox from '@mui/material/Checkbox';
 import { Dispatch, SetStateAction } from 'react';
+import { SelectedFilters } from '../../../@types/list/listType';
 import { marker_location } from '../../../assets';
+import CheckBoxCompo from '../../../components/list/location/CheckBoxCompo';
 import { AREA0, 강원, 경기, 경남, 경북, 광주, 대구, 대전, 부산, 서울, 울산, 인천, 전남, 전북, 제주, 충남, 충북 } from '../../../constants/location.constant';
+import { handleCityModalFilter } from '../utility';
 import * as S from './CityModal.styled';
 
 interface CityData {
@@ -11,16 +13,31 @@ const cities: CityData = { AREA0, 서울, 인천, 대전, 광주, 대구, 울산
 
 type Props = {
   isDistrictDropdown: boolean;
-  setisDistrictDropdown: (item: boolean) => void;
   checkedcity: string;
-  handleDropAndSi: (item: string, version: string) => void;
-  setCheckedGunGu: Dispatch<SetStateAction<string>>;
-  handelCloseModalAndSelect: () => void;
   checkedGunGu: string;
-  handleCloseModal: () => void;
+  setisDistrictDropdown: (item: boolean) => void;
+  setCheckedCity: Dispatch<SetStateAction<string>>;
+  setCheckedGunGu: Dispatch<SetStateAction<string>>;
+  setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>;
+  setSelectedArr: Dispatch<SetStateAction<string[][]>>;
+  closeModal: () => void;
 };
 
-const CityModal = ({ isDistrictDropdown, setisDistrictDropdown, checkedcity, handleDropAndSi, setCheckedGunGu, checkedGunGu, handelCloseModalAndSelect, handleCloseModal }: Props) => {
+const CityModal = ({ isDistrictDropdown, checkedcity, checkedGunGu, setisDistrictDropdown, setCheckedCity, setCheckedGunGu, setSelectedFilters, setSelectedArr, closeModal }: Props) => {
+  const handleDropAndSi = (item: string, version: string) => {
+    setCheckedCity(item);
+    setCheckedGunGu('전체');
+    version === 'pc' ? null : setisDistrictDropdown(!isDistrictDropdown);
+  };
+
+  const handelCloseModalAndSelect = () => {
+    handleCityModalFilter(setSelectedFilters, setSelectedArr, checkedcity, checkedGunGu);
+    closeModal();
+  };
+
+  const handleCloseModal = () => {
+    closeModal();
+  };
   return (
     <S.InnerModalBox>
       <S.Title>
@@ -42,25 +59,12 @@ const CityModal = ({ isDistrictDropdown, setisDistrictDropdown, checkedcity, han
           <S.ChevronSpan $isDistrictDropdown={isDistrictDropdown}></S.ChevronSpan>
         </div>
       </S.MobileSiWrap>
+
       {isDistrictDropdown ? (
         <S.HiddenDropMenu>
           {cities['AREA0'].map((item, index) => (
             <div key={index} onClick={() => handleDropAndSi(item, 'mobile')}>
-              <Checkbox
-                sx={{
-                  color: 'gray',
-                  padding: 0.5,
-
-                  '&.Mui-checked': {
-                    color: '#fe902f',
-                  },
-                }}
-                id={`check-${item}-si`}
-                checked={checkedcity === item}
-                inputProps={{ 'aria-label': 'controlled' }}
-              />
-
-              <label htmlFor={`check-${item}-si`}>{item}</label>
+              <CheckBoxCompo item={item} checkedGunGu={checkedGunGu} />
             </div>
           ))}
         </S.HiddenDropMenu>
@@ -69,22 +73,12 @@ const CityModal = ({ isDistrictDropdown, setisDistrictDropdown, checkedcity, han
       <S.GunGuBox>
         {!isDistrictDropdown &&
           cities[checkedcity]?.map((item) => (
-            <div key={Math.random() * 22229999} onClick={() => setCheckedGunGu(item)}>
-              <Checkbox
-                sx={{
-                  color: 'gray',
-                  '&.Mui-checked': {
-                    color: '#fe902f',
-                  },
-                }}
-                id={`check-${item}-gungu`}
-                checked={checkedGunGu === item}
-                inputProps={{ 'aria-label': 'controlled' }}
-              />
-              <label htmlFor={`check-${item}-gungu`}>{item}</label>
+            <div key={`${checkedcity}+${item}`} onClick={() => setCheckedGunGu(item)}>
+              <CheckBoxCompo item={item} checkedGunGu={checkedGunGu} />
             </div>
           ))}
       </S.GunGuBox>
+
       <S.Btn onClick={handelCloseModalAndSelect}>select</S.Btn>
 
       <S.PcBtn>

@@ -1,8 +1,8 @@
 import { useSearchParams } from 'react-router-dom';
-import { RoomWithLastMessageType } from '../../../supabase/database.types';
-import * as S from './ChatRoomPreview.styled';
 import defaultProfileImgUrl from '../../../assets/basic-user-profile-img.png';
+import { RoomWithLastMessageType } from '../../../supabase/database.types';
 import PreviewTime from '../../time/PreviewTime';
+import * as S from './ChatRoomPreview.styled';
 
 const ChatRoomPreview = ({ room, userId }: { room: RoomWithLastMessageType; userId: string }) => {
   const [searchParams] = useSearchParams();

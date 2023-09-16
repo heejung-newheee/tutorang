@@ -2,30 +2,28 @@ import { useQuery } from '@tanstack/react-query';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { matchReview } from '../../../api/review';
 import { tutorInfoJoin } from '../../../api/tutor';
 import { icon_check, icon_edit_wh, icon_location_gray, icon_school, icon_verify } from '../../../assets';
 import { Loading } from '../../../components';
-import StarRating from '../../../constants/func';
+import StarRating from '../../../components/common/StarRating';
 import { REVIEW_QUERY_KEY, TUTOR_INFO_JOIN_QUERY_KEY } from '../../../constants/query.constant';
-import { RootState } from '../../../redux/config/configStore';
-import { Views } from '../../../supabase/database.types';
+import { Tables, Views } from '../../../supabase/database.types';
 import { Age, ClassLevel, Dot, Icon, InfoItem, PriceItem, PriceList, TagList, TutorName } from '../../detail/tutorInfoDetail/TutorInfoDetail.styled';
-import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataTitle, InfoNull, InfoSection, InfoTitle, ReviewRating } from '../Mypage.styled';
+import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataTitle, InfoNull, InfoSection, InfoTitle, ReviewRating } from '../MyPage.styled';
 import MatchingStudent from '../matchingTab/MatchingStudent';
 import * as S from './TutorInfo.styled';
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
+  user: Tables<'profiles'>;
 }
-const TutorInfo = ({ match }: pageProps) => {
+const TutorInfo = ({ match, user }: pageProps) => {
   const navigate = useNavigate();
   useEffect(() => {
     AOS.init();
   }, []);
 
-  const user = useSelector((state: RootState) => state.user.user);
   if (!user) return null;
   const id = user.id;
 
@@ -52,7 +50,7 @@ const TutorInfo = ({ match }: pageProps) => {
     return null;
   }
 
-  const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user!.id === item.tutor_id) : null;
+  const tutorInfo = Array.isArray(tutor) ? tutor.find((item) => user.id === item.tutor_id) : null;
 
   return (
     <>

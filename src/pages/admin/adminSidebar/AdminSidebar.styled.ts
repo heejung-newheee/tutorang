@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import { colors } from '../../../../style/theme/colors';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { colors } from '../../../style/theme/colors';
 
 export const SideBar = styled.section`
   position: relative;

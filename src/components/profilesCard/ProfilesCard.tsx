@@ -28,7 +28,7 @@ const ProfilesCard = ({ tutor }: pageProps) => {
               })}
             </S.Tag>
           </S.TutorContent>
-        </S.TutorInfo>{' '}
+        </S.TutorInfo>
       </div>
     </>
   );

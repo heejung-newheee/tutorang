@@ -51,3 +51,4 @@ export { default as icon_more_dashboard } from './icon_more.svg';
 export { default as icon_time_dashboard } from './icon_time_dashboard.svg';
 
 export { default as icon_month } from './icon_month.svg';
+export { default as magnifier } from './magnifier.svg';

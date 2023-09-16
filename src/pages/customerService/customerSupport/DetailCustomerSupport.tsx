@@ -1,7 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { redirect, useLocation, useNavigate } from 'react-router-dom';
 import { CUSTOMER_SUPPORT_QUERY_KEY, ONE_CUSTOMER_INQUIRY_QUERY_KEY, deleteInquiry, getOneInquiry } from '../../../api/customerSupport';
 import { Button } from '../../../components';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { clearModal, displayToastAsync, openModal } from '../../../redux/modules';
 import * as C from '../CommonCustomerService.style';
 import * as S from './DetailCustomerSupport.style';
 
@@ -31,7 +35,8 @@ type InquiryDataProps = {
 const DetailCustomerSupport = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-
+  const { isConfirm, modalId } = useSelector((state: RootState) => state.modal);
+  const dispatch = useDispatch<AppDispatch>();
   const inquiryId = useLocation().pathname.split('/')[3];
 
   if (!inquiryId) redirect('/customer-service/customer-support');
@@ -40,28 +45,32 @@ const DetailCustomerSupport = () => {
   const deleteInquiryMutation = useMutation(async (inquiryId: string) => deleteInquiry(inquiryId), {
     onSuccess: () => {
       queryClient.invalidateQueries([CUSTOMER_SUPPORT_QUERY_KEY]);
+      navigate('/customer-service/customer-support');
     },
     onError: (error) => {
-      console.error(error);
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: String(error) }));
     },
   });
-  if (!data) return <div></div>;
 
-  const inquiryData: InquiryDataProps = data;
-  const replyData = data.customer_support_reply;
   const handleDeleteInquiry = async () => {
-    const wannaDelete = window.confirm('1:1문의를 삭제하시겠습니까?');
-    if (!wannaDelete) return false;
-    try {
-      await deleteInquiryMutation.mutate(inquiryData.id);
-    } catch (error) {
-      console.error(error);
-    }
-    navigate('/customer-service/customer-support');
+    dispatch(openModal({ type: 'confirm', message: '1:1문의를 삭제하시겠습니까?', modalId: 'handleDeleteInquiry' }));
   };
+
   const handleEditInquiry = () => {
     navigate(`/edit-inquiry/${inquiryData.id}`, { state: inquiryData });
   };
+
+  useEffect(() => {
+    if (isConfirm && modalId === 'handleDeleteInquiry') {
+      deleteInquiryMutation.mutate(inquiryData.id);
+      dispatch(clearModal());
+    }
+  }, [isConfirm]);
+
+  if (!data) return <div></div>;
+  const inquiryData: InquiryDataProps = data;
+  const replyData = data.customer_support_reply;
+
   return (
     <C.OutermostContainer>
       <C.TableContainer>
@@ -102,7 +111,6 @@ const DetailCustomerSupport = () => {
       <C.TableContainer>
         {replyData.length !== 0 ? (
           <>
-            <S.Caption>1:1 관리자 답변 등록 상세보기</S.Caption>
             <S.ReplyWrap>
               <S.Replier>
                 <div>답변자</div>

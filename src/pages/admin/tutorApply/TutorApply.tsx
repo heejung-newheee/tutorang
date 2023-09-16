@@ -1,12 +1,12 @@
-import * as S from './TutorApply.styled';
-import { icon_month, icon_more_dashboard, icon_time_dashboard } from '../../../../assets';
 import { useQuery } from '@tanstack/react-query';
-import { PENDING_TUTOR_REGISTRATION_DASHBOARD_QUERY_KEY } from '../../../../constants/query.constant';
-import { getTutorApplyInfo, useChangeStateTutorApply } from '../../../../api/dashboard';
-import { Loading } from '../../..';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { openModal } from '../../../../redux/modules';
+import { getTutorApplyInfo, useChangeStateTutorApply } from '../../../api/dashboard';
+import { icon_more_dashboard } from '../../../assets';
+import { Loading } from '../../../components';
+import { PENDING_TUTOR_REGISTRATION_DASHBOARD_QUERY_KEY } from '../../../constants/query.constant';
+import { openModal } from '../../../redux/modules';
+import * as S from './TutorApply.styled';
 
 const TutorApply = () => {
   const { data: tutorApplyList, isLoading, isError, error } = useQuery(PENDING_TUTOR_REGISTRATION_DASHBOARD_QUERY_KEY, getTutorApplyInfo);
@@ -36,22 +36,24 @@ const TutorApply = () => {
             <S.PendingDotState /> 진행중
           </>
         );
-        break;
       case 'success':
         return (
           <>
             <S.SuccessDotState /> 승인
           </>
         );
-        break;
       case 'reject':
         return (
           <>
             <S.RejectDotState /> 거절
           </>
         );
-        break;
     }
+  };
+
+  const solveApply = ({ state, id }: { state: 'success' | 'reject'; id: number }) => {
+    handleIsOpen(id);
+    handleChangeStateTutorApply({ state, id });
   };
 
   if (isLoading) {
@@ -67,11 +69,6 @@ const TutorApply = () => {
     <S.DashboardItem>
       <S.DashboardTopWrapper>
         <S.DashboardItemTitle>튜터 신청 현황</S.DashboardItemTitle>
-        <S.ButtonTimeWrapper>
-          <S.IconTime src={icon_time_dashboard} />
-          2023.9.9
-          <S.IconMonth src={icon_month} />
-        </S.ButtonTimeWrapper>
       </S.DashboardTopWrapper>
 
       <ul>
@@ -95,16 +92,14 @@ const TutorApply = () => {
                   <S.moreMenu className={tutor.id === openMenuId ? 'active' : ''}>
                     <S.moreMenuItem
                       onClick={() => {
-                        handleIsOpen(tutor.id);
-                        handleChangeStateTutorApply({ state: 'success', id: tutor.id });
+                        solveApply({ state: 'success', id: tutor.id });
                       }}
                     >
                       승인
                     </S.moreMenuItem>
                     <S.moreMenuItem
                       onClick={() => {
-                        handleIsOpen(tutor.id);
-                        handleChangeStateTutorApply({ state: 'reject', id: tutor.id });
+                        solveApply({ state: 'reject', id: tutor.id });
                       }}
                     >
                       거절

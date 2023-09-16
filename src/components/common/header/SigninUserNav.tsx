@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { RiUserStarLine } from 'react-icons/ri';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { getPendingTutorRegistInfo } from '../../../api/pendingTutorInfo';
 import { PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY } from '../../../constants/query.constant';
-import { AppDispatch } from '../../../redux/config/configStore';
-import { displayToastAsync, openModal } from '../../../redux/modules';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { clearModal, displayToastAsync, openModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
 import { Tables } from '../../../supabase/database.types';
 import * as S from './Header.styled';
@@ -18,9 +18,10 @@ type TypeSiginUserNavProps = {
 
 const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { targetId, isConfirm, modalId } = useSelector((state: RootState) => state.modal);
   const AuthNavInfoAreaRef = useRef<HTMLDivElement>(null);
   const [isOpenAuthNavInfoArea, setIsOpenAuthNavInfoArea] = useState(false);
-  const loginUserId: string | number = $loginUser!.id;
+  const loginUserId = $loginUser!.id;
   const { data: pendingTutorRegistInfo } = useQuery(PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY, () => getPendingTutorRegistInfo(loginUserId), { enabled: !!$loginUser });
 
   const presentUrlPathname = window.location.pathname;
@@ -34,36 +35,26 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   const navigate = useNavigate();
 
   const HandleClickChatNav = () => {
+    setIsOpenAuthNavInfoArea(false);
     if (presentUrlPathname === '/additional-information') {
       dispatch(displayToastAsync({ id: Date.now(), type: 'info', message: '추가 정보를 입력해야 채팅이용이 가능합니다! 작성하시던 추가정보를 먼저 제출해주세요!' }));
       return false;
     }
 
     if (!$loginUser?.gender) {
-      const wannaAddMoreInfo = window.confirm('소셜로그인을 하셨는데 아직 추가정보를 입력하지 않았다구요? 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?');
-      if (wannaAddMoreInfo) {
-        navigate('/additional-information');
-      } else {
-        return false;
-      }
+      dispatch(openModal({ type: 'confirm', message: '소셜로그인 사용자는 추가 정보를 입력해야 합니다. 더 많은 기능을 이용하기 위해 추가정보를 등록하러 가시겠습니까?', modalId: 'HandleClickChatNav' }));
     } else {
-      setIsOpenAuthNavInfoArea(false);
       moveToChatPage();
     }
   };
   const HandleClickRegisterTutorIcon = () => {
     if (presentUrlPathname === '/additional-information') {
-      alert('추가 정보를 입력해야 튜터 등록이 가능합니다. 작성하시던 추가정보를 먼저 제출해주세요.');
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '추가 정보를 입력해야 튜터 등록이 가능합니다. 작성하시던 추가정보를 먼저 제출해주세요.' }));
       return false;
     }
 
     if (!$loginUser?.gender) {
-      const wannaAddMoreInfo = window.confirm('소셜로그인 사용자 추가정보 미입력 하셨습니다. 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?');
-      if (wannaAddMoreInfo) {
-        navigate('/additional-information');
-      } else {
-        return false;
-      }
+      dispatch(openModal({ type: 'confirm', message: '소셜로그인 사용자는 추가 정보를 입력해야 합니다. 더 많은 기능을 이용하기 위해 추가정보를 등록하러 가시겠습니까?', modalId: 'HandleClickChatNav' }));
     } else {
       if ($loginUser?.role === 'student' && !!pendingTutorRegistInfo) {
         return dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '관리자가 귀하의 튜터신청서를  검토중입니다' }));
@@ -72,8 +63,10 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
       }
     }
   };
+
   const moveToMyPage = () => navigate('/mypage');
   const moveToChatPage = () => navigate('/chat');
+
   const handleUserSignOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -87,6 +80,14 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   const toggleAuthNavInfoArea = () => {
     setIsOpenAuthNavInfoArea((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (isConfirm && modalId === 'HandleClickChatNav') {
+      navigate('/additional-information');
+      dispatch(clearModal());
+    }
+  }, [isConfirm, targetId]);
+
   useEffect(() => {
     const handleOutsideClose = (event: MouseEvent) => {
       if (isOpenAuthNavInfoArea && !AuthNavInfoAreaRef.current?.contains(event.target as Node)) setIsOpenAuthNavInfoArea(false);

@@ -33,6 +33,9 @@ export const DataItem = styled.li`
   &:first-child {
     border-top: 0;
   }
+  &.studentInfo {
+    align-items: start;
+  }
   div:first-child {
     width: 70%;
     @media all and (max-width: 768px) {
@@ -106,9 +109,19 @@ export const InfoTitle = styled.h2`
 `;
 export const InfoNull = styled.p`
   color: #bebebe;
+
+  &.studentInfo {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &.like-tutor-slider {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 `;
 
-export const EmptyMypage = styled.div`
+export const EmptyMyPage = styled.div`
   height: 120px;
   @media screen and (max-width: 1024px) {
     height: 50px;

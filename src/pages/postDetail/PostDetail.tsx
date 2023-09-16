@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import Heart from 'react-animated-heart';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { deletePost, firstClickLikeApi, getWriteData, updateLike } from '../../api/postDetail';
+import { COMMENT, LikeUpdatePost } from '../../@types/PostDetail/PostDetailType';
+import { createComment, createLike, fetchPostData, removePost, updateLike } from '../../api/postDetail';
 import { Loading } from '../../components';
 import { AppDispatch, RootState } from '../../redux/config/configStore';
 import { displayToastAsync } from '../../redux/modules';
-import supabase from '../../supabase';
 import { detailDate } from '../community/utility';
 import * as S from './PostDetail.styled';
 import Comment from './comment/Comment';
@@ -20,14 +20,14 @@ const PostDetail = () => {
   const dispatch = useDispatch<AppDispatch>();
   const detail_user_id = loginUser?.id;
 
-  let { postid } = useParams();
+  const { postid } = useParams();
 
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery(['write'], () => getWriteData(Number(postid)));
+  const { data, isLoading } = useQuery(['write'], () => fetchPostData(Number(postid)));
 
   //좋아요 데이터가 없을때
-  const likemutation = useMutation(async (newInfo: any) => firstClickLikeApi(newInfo, Number(postid), detail_user_id), {
+  const likemutation = useMutation((likePost: LikeUpdatePost) => createLike(likePost), {
     onSuccess: () => {
       queryClient.invalidateQueries(['write']);
     },
@@ -36,8 +36,8 @@ const PostDetail = () => {
     },
   });
 
-  //업데이트
-  const updateLikemutation = useMutation(async (newInfo: any) => updateLike(newInfo, Number(postid), detail_user_id), {
+  //좋아요 데이터가 있을떄
+  const updateLikemutation = useMutation((likeUpdate: LikeUpdatePost) => updateLike(likeUpdate), {
     onSuccess: () => {
       queryClient.invalidateQueries(['write']);
     },
@@ -59,13 +59,15 @@ const PostDetail = () => {
     if (LikeUserSameLoginUser) {
       if (data?.[0].like !== null && data?.[0].like !== undefined) {
         const minusLike = data?.[0].like - 1;
-        updateLikemutation.mutate({ like: minusLike });
+        updateLikemutation.mutate({ like: minusLike, postid: Number(postid), detail_user_id: detail_user_id });
       }
     } else {
       if (data?.[0].like !== null && data?.[0].like !== undefined) {
         const plusLike = data?.[0].like + 1;
         likemutation.mutate({
           like: plusLike,
+          postid: Number(postid),
+          detail_user_id: detail_user_id,
         });
       }
     }
@@ -73,13 +75,25 @@ const PostDetail = () => {
       setIsThrottled(false);
     }, 500);
   };
-  const postApi = async (newInfo: any) => {
-    const { error } = await supabase.from('post_comments').insert(newInfo);
 
-    if (error) throw error;
+  //게시글 삭제
+  const deletePostAndNavi = () => {
+    deletePostMutation.mutate(Number(postid));
+    navigate(-1);
   };
 
-  const postmutation = useMutation(async (newInfo: any) => postApi(newInfo), {
+  //게시글 삭제
+  const deletePostMutation = useMutation((deleteIdNum: number) => removePost(deleteIdNum), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['write']);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  //댓글 생성
+  const CommentMutation = useMutation((postComment: COMMENT) => createComment(postComment), {
     onSuccess: () => {
       queryClient.invalidateQueries(['post_comments']);
     },
@@ -88,14 +102,15 @@ const PostDetail = () => {
     },
   });
 
+  //댓글 생성
   const handleComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (!postid) return;
     if (!loginUser) {
       return dispatch(displayToastAsync({ id: Date.now(), type: 'info', message: '로그인 후 이용해주세요' }));
     }
-    postmutation.mutate({
-      post_id: postid,
+    CommentMutation.mutate({
+      post_id: Number(postid),
       comment: comment,
       user_id: loginUser?.id,
     });
@@ -103,23 +118,9 @@ const PostDetail = () => {
     setComment('');
   };
 
-  const gotoWrite = () => {
+  const gotoEdit = () => {
     navigate(`../write/edit-community/?q=${postid}`);
   };
-
-  const deletePostAndNavi = () => {
-    deleteMutation.mutate(postid);
-    navigate(-1);
-  };
-
-  const deleteMutation = useMutation(async (newInfo: any) => deletePost(newInfo), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['write']);
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
 
   const isLikeTrue = data?.[0].post_like?.some((like) => like.user_id === loginUser?.id);
 
@@ -137,7 +138,7 @@ const PostDetail = () => {
           </S.PosrUserImg>
           <S.PostDate>
             {data && detailDate(new Date(data[0].created_at))}
-            {data && data[0].user_id === loginUser?.id ? <span onClick={gotoWrite}>edit</span> : null}
+            {data && data[0].user_id === loginUser?.id ? <span onClick={gotoEdit}>edit</span> : null}
             {data && data[0].user_id === loginUser?.id ? <span onClick={deletePostAndNavi}>delete</span> : null}
           </S.PostDate>
         </S.PostuserInfo>
@@ -148,6 +149,7 @@ const PostDetail = () => {
         <span>
           <Heart isClick={isLikeTrue !== undefined && isLikeTrue} onClick={handleLike} />
         </span>
+        <div>{data && data[0]?.like}</div>
       </S.LikeDiv>
       <S.Line />
 

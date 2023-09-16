@@ -14,6 +14,7 @@ export const Inner = styled.div`
 `;
 export const FooterWrap = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   font-size: 14px;
   color: #444;
@@ -34,6 +35,6 @@ export const FootLink = styled.div`
     margin-right: 10px;
   }
   @media screen and (max-width: 768px) {
-    display: none;
+    justify-content: center;
   }
 `;

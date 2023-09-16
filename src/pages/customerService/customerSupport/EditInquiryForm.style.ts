@@ -22,7 +22,7 @@ export const SubmitBtn = styled.button`
   position: fixed;
   right: 20px;
   top: 15px;
-  z-index: 100000;
+  z-index: 10000;
   border: 1px solid gray;
   padding: 10px 20px;
 `;
@@ -31,7 +31,7 @@ export const BackBtn = styled.button`
   position: fixed;
   left: 20px;
   top: 15px;
-  z-index: 100000;
+  z-index: 10000;
   border: 1px solid gray;
   padding: 10px 20px;
 `;

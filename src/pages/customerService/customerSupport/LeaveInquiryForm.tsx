@@ -41,14 +41,14 @@ const LeaveInquiryForm = () => {
 
         try {
           const imgName = v4();
-          const { data, error } = await supabase.storage.from('avatars').upload(`community/${imgName}`, file, {
+          const { data, error } = await supabase.storage.from('customer-service').upload(`customersupport/${imgName}`, file, {
             cacheControl: '3600',
             upsert: true,
           });
 
           console.error(data, error);
 
-          const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
+          const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/customer-service/${data?.path}`;
 
           if (QuillRef.current !== undefined) {
             const editor = QuillRef.current.getEditor();
@@ -144,7 +144,7 @@ const SubmitBtn = styled.button`
   position: fixed;
   right: 20px;
   top: 15px;
-  z-index: 100000;
+  z-index: 10000;
   border: 1px solid gray;
   padding: 10px 20px;
 `;
@@ -153,7 +153,7 @@ const BackBtn = styled.button`
   position: fixed;
   left: 20px;
   top: 15px;
-  z-index: 100000;
+  z-index: 10000;
   border: 1px solid gray;
   padding: 10px 20px;
 `;

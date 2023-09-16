@@ -7,8 +7,8 @@ import { useCreateReviewMutation } from '../../../api/review';
 import { close, starEmpty, starFull } from '../../../assets';
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { useInput } from '../../../hooks';
-import { RootState } from '../../../redux/config/configStore';
-import { closeModal } from '../../../redux/modules';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { closeModal, displayToastAsync } from '../../../redux/modules';
 import { reviews } from '../../../supabase/database.types';
 import * as S from './ReviewForm.styled';
 
@@ -18,7 +18,7 @@ type initialStateType = {
 };
 
 const MatchedReviewForm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const queryClient = useQueryClient();
   const loginUser = useSelector((state: RootState) => state.user.user);
   const { targetId: tutorId, matchingId } = useSelector((state: RootState) => state.modal);
@@ -84,7 +84,7 @@ const MatchedReviewForm = () => {
       await createReview.mutate(newReview);
       await matchedReviewMutation.mutate(matchingId);
     } catch (error) {
-      console.error('error submit review : ', error);
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: `error submit review : ${String(error)}` }));
     }
 
     dispatch(closeModal());

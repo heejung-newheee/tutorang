@@ -2,6 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { SelectedFilters } from '../../@types/list/listType';
 import { getTutorListPageData } from '../../api/list';
+import { magnifier } from '../../assets';
 import { Loading } from '../../components';
 import { useModal } from '../../hooks';
 import * as S from './List.styled';
@@ -9,7 +10,7 @@ import CityModal from './location/CityModal';
 import SelectBox from './selectBox/SelectBox';
 import LastTutorListCompo from './tutorCompo/LastTutorListCompo';
 import TutorListCompo from './tutorCompo/TutorListCompo';
-import { SearchDebounce, handleCityModalFilter } from './utility';
+import { SearchDebounce } from './utility';
 
 const List = () => {
   const { Modal, isOpen, openModal, closeModal } = useModal();
@@ -80,21 +81,6 @@ const List = () => {
 
   const debouncedOnChange = SearchDebounce<typeof onChange>(onChange, 500);
 
-  const handleDropAndSi = (item: string, version: string) => {
-    setCheckedCity(item);
-    setCheckedGunGu('');
-    version === 'pc' ? null : setisDistrictDropdown(!isDistrictDropdown);
-  };
-
-  const handelCloseModalAndSelect = () => {
-    handleCityModalFilter(setSelectedFilters, selectedFilters, setSelectedArr, checkedcity, checkedGunGu);
-    closeModal();
-  };
-
-  const handleCloseModal = () => {
-    closeModal();
-  };
-
   if (isLoading) {
     return <Loading />;
   }
@@ -102,9 +88,7 @@ const List = () => {
   return (
     <S.Container>
       <S.SearchWrap>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="#fe902f" height="1em" viewBox="0 0 512 512">
-          <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
-        </svg>
+        <img src={magnifier} alt="" />
         <input type="text" onChange={debouncedOnChange} />
       </S.SearchWrap>
 
@@ -125,13 +109,14 @@ const List = () => {
         >
           <CityModal
             isDistrictDropdown={isDistrictDropdown}
-            setisDistrictDropdown={setisDistrictDropdown}
             checkedcity={checkedcity}
-            handleDropAndSi={handleDropAndSi}
-            setCheckedGunGu={setCheckedGunGu}
             checkedGunGu={checkedGunGu}
-            handelCloseModalAndSelect={handelCloseModalAndSelect}
-            handleCloseModal={handleCloseModal}
+            setisDistrictDropdown={setisDistrictDropdown}
+            setCheckedCity={setCheckedCity}
+            setCheckedGunGu={setCheckedGunGu}
+            setSelectedFilters={setSelectedFilters}
+            setSelectedArr={setSelectedArr}
+            closeModal={closeModal}
           />
         </S.InnerModal>
       </Modal>

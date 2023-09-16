@@ -1,20 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux';
 import * as S from '../Pagination.styled';
 import { setPageNum } from '../../../../redux/modules/pageNumSlice';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const PrevFc = () => {
+type Props = {
+  currentQueryNum: number;
+};
+
+const PrevFc = ({ currentQueryNum }: Props) => {
   const dispatch = useDispatch();
   const { currentPageNum } = useSelector((state: any) => state.PageNum);
   const navigate = useNavigate();
 
-  const [query, _] = useSearchParams();
-  const editPostNum = Number(query.get('q'));
-
   const handlePrev = () => {
-    if (editPostNum === 1) return;
+    if (currentQueryNum === 1) return;
     dispatch(setPageNum(currentPageNum - 1));
-    navigate(`./?q=${editPostNum - 1}`);
+    navigate(`.?q=${currentQueryNum - 1}`);
   };
 
   return (

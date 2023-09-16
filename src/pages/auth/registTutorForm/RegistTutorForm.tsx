@@ -194,7 +194,7 @@ const RegistTutorForm = () => {
             ))}
           </S.Items>
           <S.GuideBox>
-            <FaInfoCircle style={{ marginLeft: '5px', fill: '#696969' }} />
+            <FaInfoCircle className="guidebox_info_icon" />
             <S.PGuideMessage>
               <li>{'초급 : 기본적인 일상 대화와 문법 학습'}</li>
               <li>{'중급 : 다양한 주제에 대한 의사소통과 간단한 토론'}</li>
@@ -213,14 +213,14 @@ const RegistTutorForm = () => {
           <S.TuitionItems>
             <S.TuitionItem>
               <S.ItemHeader>
-                <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
+                <BsFillRecordFill color="#FE902F" style={{ marginRight: '5px' }} />
                 <span>화상 수업</span>
               </S.ItemHeader>
               <SelectTuitionFee $tuitionType={'online'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOnline} />
             </S.TuitionItem>
             <S.TuitionItem>
               <S.ItemHeader>
-                <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} />
+                <BsFillRecordFill color="#FE902F" style={{ marginRight: '5px' }} />
                 <span>대면 수업</span>
               </S.ItemHeader>
               <SelectTuitionFee $tuitionType={'offline'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOffline} />
