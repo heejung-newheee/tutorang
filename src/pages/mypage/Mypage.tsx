@@ -9,6 +9,7 @@ import { EmptyMyPage } from './MyPage.styled';
 import MyBoard from './myBoard/MyBoard';
 import StudentInfo from './studentInfo/StudentInfo';
 import TutorInfo from './tutorInfo/TutorInfo';
+/**/
 const MyPage = () => {
   const loginUser = useSelector((state: RootState) => state.user.user!);
   const { data: matchList } = useQuery([MATCHING_TUTOR_DATA_QUERY_KEY], matchingTutorData);
