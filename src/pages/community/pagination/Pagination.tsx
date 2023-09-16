@@ -3,7 +3,7 @@ import NextFc from './fuctionCompo/NextFc';
 import PrevFc from './fuctionCompo/PrevFc';
 import TotalNext from './fuctionCompo/TotalNextFc';
 import TotalPrevFc from './fuctionCompo/TotalPrevFc';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 type Props = {
   totalPageNum: number | null;
@@ -24,15 +24,16 @@ const Pagination = ({ totalPageNum, pageCount }: Props) => {
 
     return null;
   };
+
   return (
     <S.PaginationDiv>
       <TotalPrevFc />
       <PrevFc currentQueryNum={currentQueryNum} />
 
       <S.PageNmberDiv>
-        {currentQueryNum !== 1 && <div>{currentQueryNum - 1}</div>}
+        {currentQueryNum !== 1 && <Link to={`.?q=${currentQueryNum - 1}`}>{currentQueryNum - 1}</Link>}
         <S.CurrentNumberDiv> {currentQueryNum}</S.CurrentNumberDiv>
-        {isNextPageTrue(0) && <div>{currentQueryNum + 1}</div>}
+        {isNextPageTrue(0) && <Link to={`.?q=${currentQueryNum + 1}`}>{currentQueryNum + 1}</Link>}
 
         {isNextPageTrue(0) && <S.TotalPageNum> &hellip; {totalPageNum && Math.ceil(totalPageNum / pageCount)}</S.TotalPageNum>}
       </S.PageNmberDiv>

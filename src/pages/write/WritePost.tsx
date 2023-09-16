@@ -6,11 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
-import { WriteInsertApi, editUpdateApi } from '../../api/writeCommunity';
+import { updateWrite, updateEditedWrite } from '../../api/writeCommunity';
 import { AppDispatch, RootState } from '../../redux/config/configStore';
 import supabase from '../../supabase';
 import './write.css';
 import { displayToastAsync } from '../../redux/modules';
+import { EDITWRITE, POSTWRITE } from '../../@types/writeCommunity/WriteCommunity.type';
 
 const WritePost = () => {
   const [title, setTitle] = useState<string | null>('');
@@ -76,6 +77,7 @@ const WritePost = () => {
     }),
     [],
   );
+
   const handleSubmit = async () => {
     if (!title) {
       return dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '제목을 입력해주세요' }));
@@ -106,7 +108,7 @@ const WritePost = () => {
     }
   };
 
-  const editCommunity = async () => {
+  const getEditPost = async () => {
     const { data } = await supabase
       .from('write')
       .select('*')
@@ -118,19 +120,12 @@ const WritePost = () => {
   ///community-edit
   useEffect(() => {
     if (path === 'edit-community') {
-      editCommunity();
+      getEditPost();
     }
   }, []);
 
-  type NEWINFO = {
-    title: string;
-    content: string;
-    user_id?: string;
-    category: string;
-  };
-
-  ///community-insert
-  const communityMutation = useMutation(async (newInfo: NEWINFO) => WriteInsertApi(newInfo), {
+  ///community-update
+  const communityMutation = useMutation((postWrite: POSTWRITE) => updateWrite(postWrite), {
     onSuccess: () => {
       queryClient.invalidateQueries(['write']);
     },
@@ -139,13 +134,8 @@ const WritePost = () => {
     },
   });
 
-  type NEWINFOEDIT = {
-    title: string;
-    content: string;
-  };
-
   //community-edit
-  const editUpdateMutation = useMutation(async (newInfo: NEWINFOEDIT) => editUpdateApi(newInfo, editPostNum), {
+  const editUpdateMutation = useMutation((editWrite: EDITWRITE) => updateEditedWrite(editWrite, editPostNum), {
     onSuccess: () => {
       queryClient.invalidateQueries(['write']);
     },
