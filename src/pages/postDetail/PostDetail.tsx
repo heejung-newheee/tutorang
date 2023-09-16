@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import Heart from 'react-animated-heart';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { deletePost, firstClickLikeApi, getPostData, putCommentApi, updateLike } from '../../api/postDetail';
+import { COMMENT, LikeUpdatePost } from '../../@types/PostDetail/PostDetailType';
+import { createComment, createLike, fetchPostData, removePost, updateLike } from '../../api/postDetail';
 import { Loading } from '../../components';
 import { AppDispatch, RootState } from '../../redux/config/configStore';
 import { displayToastAsync } from '../../redux/modules';
 import { detailDate } from '../community/utility';
 import * as S from './PostDetail.styled';
 import Comment from './comment/Comment';
-import { PostUpdate } from '../../@types/PostDetail/PostDetailType';
 
 const PostDetail = () => {
   const [comment, setComment] = useState<string>('');
@@ -20,14 +20,14 @@ const PostDetail = () => {
   const dispatch = useDispatch<AppDispatch>();
   const detail_user_id = loginUser?.id;
 
-  let { postid } = useParams();
+  const { postid } = useParams();
 
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery(['write'], () => getPostData(Number(postid)));
+  const { data, isLoading } = useQuery(['write'], () => fetchPostData(Number(postid)));
 
   //좋아요 데이터가 없을때
-  const likemutation = useMutation(async (newInfo: { like: number }) => firstClickLikeApi(newInfo, Number(postid), detail_user_id), {
+  const likemutation = useMutation((likePost: LikeUpdatePost) => createLike(likePost), {
     onSuccess: () => {
       queryClient.invalidateQueries(['write']);
     },
@@ -37,7 +37,7 @@ const PostDetail = () => {
   });
 
   //좋아요 데이터가 있을떄
-  const updateLikemutation = useMutation(async (newInfo: { like: number }) => updateLike(newInfo, Number(postid), detail_user_id), {
+  const updateLikemutation = useMutation((likeUpdate: LikeUpdatePost) => updateLike(likeUpdate), {
     onSuccess: () => {
       queryClient.invalidateQueries(['write']);
     },
@@ -59,13 +59,15 @@ const PostDetail = () => {
     if (LikeUserSameLoginUser) {
       if (data?.[0].like !== null && data?.[0].like !== undefined) {
         const minusLike = data?.[0].like - 1;
-        updateLikemutation.mutate({ like: minusLike });
+        updateLikemutation.mutate({ like: minusLike, postid: Number(postid), detail_user_id: detail_user_id });
       }
     } else {
       if (data?.[0].like !== null && data?.[0].like !== undefined) {
         const plusLike = data?.[0].like + 1;
         likemutation.mutate({
           like: plusLike,
+          postid: Number(postid),
+          detail_user_id: detail_user_id,
         });
       }
     }
@@ -74,24 +76,14 @@ const PostDetail = () => {
     }, 500);
   };
 
-  //댓글 생성
-  const postCommentMutation = useMutation(async (postInfo: PostUpdate) => putCommentApi(postInfo), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['post_comments']);
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
-
-  //댓글 삭제
+  //게시글 삭제
   const deletePostAndNavi = () => {
     deletePostMutation.mutate(Number(postid));
     navigate(-1);
   };
 
-  //댓글 삭제
-  const deletePostMutation = useMutation(async (deleteIdNum: number) => deletePost(deleteIdNum), {
+  //게시글 삭제
+  const deletePostMutation = useMutation((deleteIdNum: number) => removePost(deleteIdNum), {
     onSuccess: () => {
       queryClient.invalidateQueries(['write']);
     },
@@ -101,13 +93,23 @@ const PostDetail = () => {
   });
 
   //댓글 생성
+  const CommentMutation = useMutation((postComment: COMMENT) => createComment(postComment), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['post_comments']);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  //댓글 생성
   const handleComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (!postid) return;
     if (!loginUser) {
       return dispatch(displayToastAsync({ id: Date.now(), type: 'info', message: '로그인 후 이용해주세요' }));
     }
-    postCommentMutation.mutate({
+    CommentMutation.mutate({
       post_id: Number(postid),
       comment: comment,
       user_id: loginUser?.id,

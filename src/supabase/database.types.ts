@@ -58,61 +58,6 @@ export interface Database {
           },
         ];
       };
-      board: {
-        Row: {
-          content: string | null;
-          created_at: string;
-          id: number;
-          title: string | null;
-          user_id: string | null;
-        };
-        Insert: {
-          content?: string | null;
-          created_at?: string;
-          id?: number;
-          title?: string | null;
-          user_id?: string | null;
-        };
-        Update: {
-          content?: string | null;
-          created_at?: string;
-          id?: number;
-          title?: string | null;
-          user_id?: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'board_user_id_fkey';
-            columns: ['user_id'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'board_user_id_fkey';
-            columns: ['user_id'];
-            referencedRelation: 'matching_tutor_data';
-            referencedColumns: ['tutor_id'];
-          },
-          {
-            foreignKeyName: 'board_user_id_fkey';
-            columns: ['user_id'];
-            referencedRelation: 'most_review_tutor';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'board_user_id_fkey';
-            columns: ['user_id'];
-            referencedRelation: 'tutor_info_join';
-            referencedColumns: ['tutor_id'];
-          },
-          {
-            foreignKeyName: 'board_user_id_fkey';
-            columns: ['user_id'];
-            referencedRelation: 'tutor_top_reviewer';
-            referencedColumns: ['tutor_id'];
-          },
-        ];
-      };
       book_mark: {
         Row: {
           id: number;
@@ -341,39 +286,6 @@ export interface Database {
           created_at?: string | null;
           name?: string | null;
           room_id?: string;
-        };
-        Relationships: [];
-      };
-      city: {
-        Row: {
-          id: number;
-          sido: string;
-          sigungu: string | null;
-        };
-        Insert: {
-          id?: number;
-          sido: string;
-          sigungu?: string | null;
-        };
-        Update: {
-          id?: number;
-          sido?: string;
-          sigungu?: string | null;
-        };
-        Relationships: [];
-      };
-      city2: {
-        Row: {
-          city: Json | null;
-          id: number;
-        };
-        Insert: {
-          city?: Json | null;
-          id?: number;
-        };
-        Update: {
-          city?: Json | null;
-          id?: number;
         };
         Relationships: [];
       };
@@ -1425,6 +1337,12 @@ export interface Database {
       };
     };
     Functions: {
+      decrement_like: {
+        Args: {
+          post_id: number;
+        };
+        Returns: undefined;
+      };
       get_converted_tutor_count_by_month: {
         Args: {
           year: number;
@@ -1465,6 +1383,12 @@ export interface Database {
           name: string;
           created_at: string;
         }[];
+      };
+      increment_like: {
+        Args: {
+          post_id: number;
+        };
+        Returns: undefined;
       };
       is_room_participant: {
         Args: {

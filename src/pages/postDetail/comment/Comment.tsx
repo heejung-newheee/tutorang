@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { deleteCommentApi, getCommentsApi, handleCommentUpdate } from '../../../api/postDetail';
+import { DELETECOMMENT, EDITCOMMENT } from '../../../@types/PostDetail/PostDetailType';
+import { deleteComment, fetchComments, updateComment } from '../../../api/postDetail';
 import { RootState } from '../../../redux/config/configStore';
 import { detailDate } from '../../community/utility';
 import * as S from './Comment.styled';
@@ -14,15 +15,9 @@ const Comment = () => {
   let { postid } = useParams();
   const queryClient = useQueryClient();
 
-  const { data } = useQuery(['post_comments'], () => getCommentsApi(Number(postid)));
+  const { data } = useQuery(['post_comments'], () => fetchComments(Number(postid)));
 
-  type NEWINFO = {
-    comment_id: number;
-    user_id: string | null | undefined;
-    post_id: number | null;
-  };
-
-  const commentDeleteMutation = useMutation(async (newInfo: NEWINFO) => deleteCommentApi(newInfo), {
+  const commentDeleteMutation = useMutation((newInfo: DELETECOMMENT) => deleteComment(newInfo), {
     onSuccess: () => {
       queryClient.invalidateQueries(['post_comments']);
     },
@@ -31,17 +26,11 @@ const Comment = () => {
     },
   });
 
-  type EDITINFO = {
-    comment: string;
-    created_at: string;
-    id: number;
+  const handleDeleteComment = (comment_id: number) => {
+    commentDeleteMutation.mutate({ comment_id, user_id: loginUser?.id, postid: Number(postid) });
   };
 
-  const deleteComment = async (comment_id: number) => {
-    commentDeleteMutation.mutate({ comment_id, user_id: loginUser?.id, post_id: Number(postid) });
-  };
-
-  const commentEditMutation = useMutation(async (newInfo: EDITINFO) => handleCommentUpdate(newInfo, setCurrentEditNum), {
+  const commentEditMutation = useMutation((editInfo: EDITCOMMENT) => updateComment(editInfo, setCurrentEditNum), {
     onSuccess: () => {
       queryClient.invalidateQueries(['post_comments']);
     },
@@ -79,7 +68,7 @@ const Comment = () => {
 
             <S.EditSection>
               {item.user_id === loginUser?.id && currentEditNum !== item.id ? <span onClick={() => setCurrentEditNum(item.id)}>수정</span> : null}
-              {item.user_id === loginUser?.id && currentEditNum !== item.id ? <span onClick={() => deleteComment(item.id)}>삭제</span> : null}
+              {item.user_id === loginUser?.id && currentEditNum !== item.id ? <span onClick={() => handleDeleteComment(item.id)}>삭제</span> : null}
             </S.EditSection>
           </S.CommentContainer>
         ) : (

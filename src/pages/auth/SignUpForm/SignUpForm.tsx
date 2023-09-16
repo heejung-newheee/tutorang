@@ -262,7 +262,6 @@ const SignUpForm = () => {
             <S.FormItem>
               <S.FormItemHeader>
                 <S.FormItemTitle>활동선호지역</S.FormItemTitle>
-                <S.PGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</S.PGuideMessage>
               </S.FormItemHeader>
 
               <S.FormItemBody>
@@ -275,6 +274,7 @@ const SignUpForm = () => {
                   <SelectLocation $locationType={'locationType2'} $setLocation={setLoaction} />
                 </S.FormItemBodySection>
               </S.FormItemBody>
+              <S.PGuideMessage>{isHereguidemessage !== '' && isHereguidemessage}</S.PGuideMessage>
             </S.FormItem>
           </S.UnderForm>
 

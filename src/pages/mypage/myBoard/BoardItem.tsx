@@ -37,8 +37,8 @@ const BoardItem = ({ item }: Props) => {
       resultArr && setMainImg(resultArr);
     }
 
-    let textOnly = item.content?.replace(/<[^>]+>/g, ' ');
-    let cleanText = textOnly?.replace(/\s+/g, ' ');
+    const textOnly = item.content?.replace(/<[^>]+>/g, ' ');
+    const cleanText = textOnly?.replace(/\s+/g, ' ');
 
     if (cleanText) {
       setMainText(cleanText);

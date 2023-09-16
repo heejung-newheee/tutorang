@@ -58,9 +58,9 @@ export const GuideMessage = styled.div<{ $guideMessageColor?: string }>`
     }
   }};
   & .guide_span {
-    width: '18px';
-    height: '18px';
-    padding: '3px 0';
+    width: 18px;
+    height: 18px;
+    padding: 3px 0;
   }
 `;
 

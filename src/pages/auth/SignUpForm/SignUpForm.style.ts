@@ -50,13 +50,13 @@ export const FormItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px 12px;
-  & .mar23 {
+  &.mar23 {
     margin-bottom: 23px;
   }
 `;
 
 export const PasswordLabel = styled.label`
-  position: 'relative';
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -134,7 +134,8 @@ export const FormItemHeader = styled.div`
 
 export const PGuideMessage = styled.p<{ $guideMessageColor?: string }>`
   min-width: 10px;
-  height: 18px;
+  height: 30px;
+  line-height: 30px;
   display: flex;
   font-size: 12px;
   color: ${({ $guideMessageColor }) => {
