@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Loading } from '..';
 import { matchReview } from '../../api/review';
 import { icon_more } from '../../assets';
-import StarRating from '../../constants/func';
 import { REVIEW_QUERY_KEY } from '../../constants/query.constant';
-import { DataAuth, DataContent, DataItem, DataTitle, ReviewRating } from '../../pages/mypage/Mypage.styled';
+import { DataAuth, DataContent, DataItem, DataTitle, ReviewRating } from '../../pages/mypage/MyPage.styled';
 import { RootState } from '../../redux/config/configStore';
 import { openModal, setReview } from '../../redux/modules';
+import StarRating from '../common/StarRating';
 import * as S from './Review.styled';
 
 type ReviewProps = {

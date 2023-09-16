@@ -16,7 +16,7 @@ import * as S from '../../auth/registTutorForm/RegistTutorForm.styled';
 import SelectEnrollmentStatus from '../../auth/registTutorForm/SelectEnrollmentStatus';
 import SelectTuitionFee from '../../auth/registTutorForm/SelectTuitionFee';
 import { classLevelEngTranslation, classLevelTranslation, personalityEngTranslation, personalityTranslation, speakingLanguageEngTranslation, speakingLanguageTranslation } from '../../auth/translation';
-import { Container } from '../Mypage.styled';
+import { Container } from '../MyPage.styled';
 
 const EditTutorForm = () => {
   const navigate = useNavigate();
@@ -147,7 +147,7 @@ const EditTutorForm = () => {
             </FormItemBodySection>
           </FormItemBody>
           <FormItemHeader>
-            <S.PGuideMessage style={{ color: 'red', fontSize: '14px' }}>{isHereguidemessage !== '' && isHereguidemessage}</S.PGuideMessage>
+            <S.PGuideMessage className="edit_tutor_form">{isHereguidemessage !== '' && isHereguidemessage}</S.PGuideMessage>
           </FormItemHeader>
           <S.FormItemTitle>학위/자격 증명</S.FormItemTitle>
           <S.FormCertificateItems>
@@ -186,7 +186,7 @@ const EditTutorForm = () => {
             ))}
           </S.Items>
           <S.GuideBox>
-            <FaInfoCircle style={{ marginLeft: '5px', fill: '#696969' }} />
+            <FaInfoCircle className="guidebox_info_icon" />
             <S.PGuideMessage>
               <li>{'초급 : 기본적인 일상 대화와 문법 학습'}</li> <li>{'중급 : 다양한 주제에 대한 의사소통과 간단한 토론'}</li> <li>{'고급 : 심도 있는 토론과 어려운 어휘, 문법 다룸'}</li>
             </S.PGuideMessage>
@@ -200,13 +200,13 @@ const EditTutorForm = () => {
           <S.TuitionItems>
             <S.TuitionItem>
               <S.ItemHeader>
-                <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} /> <span>화상 수업</span>
+                <BsFillRecordFill color="FE902F" style={{ marginRight: '5px' }} /> <span>화상 수업</span>
               </S.ItemHeader>
               <SelectTuitionFee $tuitionType={'online'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOnline} />
             </S.TuitionItem>
             <S.TuitionItem>
               <S.ItemHeader>
-                <BsFillRecordFill style={{ marginRight: '5px', fill: '#FE902F' }} /> <span>대면 수업</span>
+                <BsFillRecordFill color="FE902F" style={{ marginRight: '5px' }} /> <span>대면 수업</span>
               </S.ItemHeader>
               <SelectTuitionFee $tuitionType={'offline'} $selectTuitionFee={selectTuitionFee} $prevValue={tuitionFeeOffline} />
             </S.TuitionItem>

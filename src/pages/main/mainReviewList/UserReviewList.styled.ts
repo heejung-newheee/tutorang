@@ -12,6 +12,11 @@ export const ReviewItem = styled.div`
   display: flex;
   gap: 10%;
   justify-content: space-between;
+
+  &.user_review {
+    flex-direction: row-reverse;
+  }
+
   @media screen and (max-width: 960px) {
     flex-wrap: wrap;
   }

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import * as S from './Confirm.styled';
-import { closeModal } from '../../../redux/modules';
 import { RootState } from '../../../redux/config/configStore';
+import { closeModal, successModal } from '../../../redux/modules';
+import * as S from './Confirm.styled';
 
 const Confirm = () => {
   const dispatch = useDispatch();
@@ -11,18 +11,25 @@ const Confirm = () => {
     dispatch(closeModal());
   };
 
+  const handleConfirm = () => {
+    dispatch(successModal({ isConfirm: true }));
+    dispatch(closeModal());
+  };
+
   return (
-    <S.Container>
-      <S.Inner
-        onClick={(e: React.MouseEvent<HTMLElement>) => {
-          e.stopPropagation();
-        }}
-      >
-        {message}
-        <button onClick={handleClose}>취소</button>
-        <button>확인</button>
-      </S.Inner>
-    </S.Container>
+    <>
+      <S.Container>
+        <S.Inner
+          onClick={(e: React.MouseEvent<HTMLElement>) => {
+            e.stopPropagation();
+          }}
+        >
+          {message}
+          <button onClick={handleClose}>취소</button>
+          <button onClick={handleConfirm}>확인</button>
+        </S.Inner>
+      </S.Container>
+    </>
   );
 };
 

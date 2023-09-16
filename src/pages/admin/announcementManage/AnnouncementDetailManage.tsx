@@ -1,6 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ANNOUNCEMENTS_QUERY_KEY, ONE_ANNOUNCEMENT_QUERY_KEY, deleteAnnouncement, getOneAnnouncement } from '../../../api/announcements';
+import { AppDispatch, RootState } from '../../../redux/config/configStore';
+import { clearModal, displayToastAsync, openModal } from '../../../redux/modules';
 import { FilterContainer, Layout, Title } from '../boardManage/BoardManage.styled';
 import * as S from './AnnouncementDetailManage.style';
 import * as C from './ManageAnnouncementCommon.style';
@@ -8,6 +12,8 @@ import * as C from './ManageAnnouncementCommon.style';
 const AnnouncementDetailManage = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { isConfirm } = useSelector((state: RootState) => state.modal);
+  const dispatch = useDispatch<AppDispatch>();
   const announcementId = useLocation().pathname.split('/')[3];
   const { data } = useQuery([ONE_ANNOUNCEMENT_QUERY_KEY, announcementId], () => getOneAnnouncement(announcementId), { enabled: !!announcementId });
 
@@ -15,9 +21,10 @@ const AnnouncementDetailManage = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([ANNOUNCEMENTS_QUERY_KEY]);
       queryClient.invalidateQueries([ONE_ANNOUNCEMENT_QUERY_KEY]);
+      navigate('/admin/announcements-manage');
     },
     onError: (error) => {
-      console.error(error);
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: String(error) }));
     },
   });
 
@@ -28,15 +35,16 @@ const AnnouncementDetailManage = () => {
   };
 
   const handleDeleteAnnouncement = async () => {
-    const wannaDelete = window.confirm('해당공지를 삭제하시겠습니까?');
-    if (!wannaDelete) return false;
-    try {
-      await deleteAnnouncementMutation.mutate(announcementId);
-    } catch (error) {
-      console.error(error);
-    }
-    navigate('/admin/announcements-manage');
+    dispatch(openModal({ type: 'confirm', message: '해당공지를 삭제하시겠습니까?' }));
   };
+
+  useEffect(() => {
+    if (isConfirm) {
+      deleteAnnouncementMutation.mutate(announcementId);
+      dispatch(clearModal());
+    }
+  }, [isConfirm]);
+
   if (!data) return <div></div>;
   return (
     <Layout>

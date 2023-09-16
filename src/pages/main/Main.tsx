@@ -45,6 +45,16 @@ export const Container = styled.div`
 export const Section = styled.section`
   padding: 100px 10px;
   box-sizing: border-box;
+  &.main {
+    background-color: #f8f8f8;
+  }
+
+  &.user_review {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0px);
+  }
+
   @media screen and (max-width: 768px) {
     padding: 50px 20px;
   }
@@ -57,6 +67,13 @@ export const SectionTitle = styled.h2`
   font-weight: 700;
   line-height: 1;
   border-left: 6px solid ${colors.primary};
+
+  &.matched_review {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0px);
+  }
+
   @media screen and (max-width: 768px) {
     font-size: 18px;
     margin: 0 0 50px 0;

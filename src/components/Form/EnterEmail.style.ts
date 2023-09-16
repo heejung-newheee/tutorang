@@ -44,7 +44,9 @@ export const Input = styled.input<{ id?: string }>`
 export const GuideMessage = styled.div<{ $guideMessageColor?: string }>`
   min-width: 10px;
   height: 18px;
+  line-height: 18px;
   display: flex;
+  align-content: center;
   font-size: 12px;
   color: ${({ $guideMessageColor }) => {
     if ($guideMessageColor === '확인') {
@@ -55,6 +57,11 @@ export const GuideMessage = styled.div<{ $guideMessageColor?: string }>`
       return '#d71f1f';
     }
   }};
+  & .guide_span {
+    width: '18px';
+    height: '18px';
+    padding: '3px 0';
+  }
 `;
 
 export const EmailInputWrapper = styled.div`

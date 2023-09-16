@@ -1,13 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ONE_CUSTOMER_INQUIRY_QUERY_KEY } from '../../../../api/customerSupport';
 import { TypeReply, deleteReplyToInquiry, editReplyToInquiry } from '../../../../api/customerSupportReply';
+import { AppDispatch, RootState } from '../../../../redux/config/configStore';
+import { clearModal, displayToastAsync, openModal } from '../../../../redux/modules';
 
 type EditReplyCSFormProps = {
   replyInfo: TypeReply;
 };
 
 const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
+  const { isConfirm } = useSelector((state: RootState) => state.modal);
+  const dispatch = useDispatch<AppDispatch>();
   const queryClient = useQueryClient();
   const [isEditing, setEditing] = useState(false);
   const [content, setContent] = useState(replyInfo.content || '');
@@ -17,7 +22,7 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
       queryClient.invalidateQueries([ONE_CUSTOMER_INQUIRY_QUERY_KEY, replyInfo.cs_table_id]);
     },
     onError: (error) => {
-      console.error(error);
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: String(error) }));
     },
   });
 
@@ -40,15 +45,20 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
   };
 
   const handleDeleteReply = () => {
-    const deleteCheck = window.confirm('정말로 삭제하시겠습니까?');
-    if (!deleteCheck) return;
-    deleteReplyMutation.mutate(replyInfo.id);
+    dispatch(openModal({ type: 'confirm', message: '정말로 삭제하시겠습니까?' }));
   };
 
   const handleToggleEdit = () => {
     if (isEditing) setContent(replyInfo.content || '');
     setEditing(!isEditing);
   };
+
+  useEffect(() => {
+    if (isConfirm) deleteReplyMutation.mutate(replyInfo.id);
+    return () => {
+      dispatch(clearModal());
+    };
+  }, [isConfirm]);
 
   return (
     <>

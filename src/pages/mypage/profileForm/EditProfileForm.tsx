@@ -17,7 +17,7 @@ import { displayToastAsync, openModal } from '../../../redux/modules';
 import { setUser } from '../../../redux/modules/user';
 import supabase from '../../../supabase';
 import { base64StringtoFile } from '../../../utils/File';
-import { Container, Section } from '../Mypage.styled';
+import { Container, Section } from '../MyPage.styled';
 import * as S from './ProfileForm.styled';
 
 type sessionType = {

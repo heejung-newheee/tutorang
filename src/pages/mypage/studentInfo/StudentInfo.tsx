@@ -5,29 +5,30 @@ import { fetchLBookMark } from '../../../api/like';
 import { getMyWritiedReview } from '../../../api/review';
 import { icon_more } from '../../../assets';
 import { Loading } from '../../../components';
+import StarRating from '../../../components/common/StarRating';
 import LikeTutorSlider from '../../../components/slider/tutorSlider/LikeTutorSlider';
-import StarRating from '../../../constants/func';
 import { BOOK_MARK_QUERY_KEY, REVIEW_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { openModal, setReview } from '../../../redux/modules';
 import { Tables, Views } from '../../../supabase/database.types';
-import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataStar, DataTitle, InfoNull, InfoSection, InfoTitle } from '../Mypage.styled';
+import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, DataStar, DataTitle, InfoNull, InfoSection, InfoTitle } from '../MyPage.styled';
 import MatchingTutor from '../matchingTab/MatchingTutor';
 import * as S from './StudentInfo.styled';
 
 interface pageProps {
   match: Views<'matching_tutor_data'>[];
+  user: Tables<'profiles'>;
 }
 
-const StudentInfo = ({ match }: pageProps) => {
+const StudentInfo = ({ match, user }: pageProps) => {
   const dispatch = useDispatch();
   const [openMenuId, setOpenMenuId] = useState<number>(0);
-  const user = useSelector((state: RootState) => state.user.user);
+  // const user = useSelector((state: RootState) => state.user.user);
   const tutors = useSelector((state: RootState) => state.tutor.tutor);
 
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery([BOOK_MARK_QUERY_KEY], fetchLBookMark);
 
-  const myReview = useQuery([REVIEW_QUERY_KEY], () => getMyWritiedReview(user!.id));
+  const myReview = useQuery([REVIEW_QUERY_KEY], () => getMyWritiedReview(user.id));
 
   if (likeLoading) {
     return <Loading />;
@@ -39,7 +40,7 @@ const StudentInfo = ({ match }: pageProps) => {
     return null;
   }
 
-  const likedList = like.filter((item: Tables<'book_mark'>) => item.user_id === user!.id).map((item) => item.liked_id);
+  const likedList = like.filter((item: Tables<'book_mark'>) => item.user_id === user.id).map((item) => item.liked_id);
   const likedUser = tutors!.filter((item: Views<'tutor_info_join'>) => likedList.includes(item.tutor_id ?? ''));
 
   const matchingData = Array.isArray(match) ? match : [match];
@@ -62,12 +63,12 @@ const StudentInfo = ({ match }: pageProps) => {
         <Container>
           <InfoTitle>찜한 강사 리스트</InfoTitle>
         </Container>
-        {likedUser.length > 0 ? <LikeTutorSlider uniqueKey="studentInfo" tutorList={likedUser} panels={6} /> : <InfoNull style={{ maxWidth: '1200px', margin: '0 auto' }}>찜한 강사가 없습니다</InfoNull>}
+        {likedUser.length > 0 ? <LikeTutorSlider uniqueKey="studentInfo" tutorList={likedUser} /> : <InfoNull className="like-tutor-slider studentInfo">찜한 강사가 없습니다</InfoNull>}
       </InfoSection>
       <InfoSection>
         <Container>
           <InfoTitle>튜터링 요청 내역</InfoTitle>
-          {matchList.length > 0 ? <MatchingTutor matchList={matchList} /> : <InfoNull>요청한 튜터링 내역이 없습니다</InfoNull>}
+          {matchList.length > 0 ? <MatchingTutor matchList={matchList} /> : <InfoNull className="like-tutor-slider">요청한 튜터링 내역이 없습니다</InfoNull>}
         </Container>
       </InfoSection>
 
@@ -80,7 +81,7 @@ const StudentInfo = ({ match }: pageProps) => {
                 {myReview.data.map((review: any) => {
                   const rating = review.rating || 0;
                   return (
-                    <DataItem key={review.id} style={{ alignItems: 'start' }}>
+                    <DataItem key={review.id} className="studentInfo">
                       <div>
                         <DataTitle>{review.title}</DataTitle>
                         <DataStar>{StarRating(rating)}</DataStar>

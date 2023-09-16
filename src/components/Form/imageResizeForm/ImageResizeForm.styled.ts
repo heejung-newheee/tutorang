@@ -64,3 +64,7 @@ export const Body = styled.div`
   gap: 1rem;
   height: 100%;
 `;
+
+export const ButtonWrap = styled.div`
+  margin-top: auto;
+`;

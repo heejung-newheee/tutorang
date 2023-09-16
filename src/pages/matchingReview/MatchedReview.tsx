@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getReviewAuth } from '../../api/review';
 import { reason, reasonMb } from '../../assets';
-import StarRating from '../../constants/func';
+import StarRating from '../../components/common/StarRating';
 import { Container, Section } from '../main/Main';
 import UserReviewList from '../main/mainReviewList/UserReviewList';
 import * as S from './MatchedReview.styled';
@@ -26,14 +26,14 @@ const MatchedReview = () => {
         <Container>
           <S.Title>튜터랑을 선택하는 이유는 무엇일까요?</S.Title>
           <S.Inner>
-            <S.ReasonImg className="desk-top" src={reason} alt="reason" style={{ position: 'relative', left: '50%', transform: 'translate(-50%, 0px)' }} />
-            <S.ReasonImg className="mobile" src={reasonMb} alt="reason" style={{ position: 'relative', left: '50%', transform: 'translate(-50%, 0px)' }} />
+            <S.ReasonImg className="desk-top matched_review" src={reason} alt="reason" />
+            <S.ReasonImg className="mobile matched_review" src={reasonMb} alt="reason" />
           </S.Inner>
         </Container>
       </Section>
-      <div style={{ background: '#f9f9f9' }}>
+      <S.UserReviewListWrapper>
         <UserReviewList />
-      </div>
+      </S.UserReviewListWrapper>
       <Section>
         <Container>
           <S.Title>남녀노소 튜터랑의 진실된 후기</S.Title>

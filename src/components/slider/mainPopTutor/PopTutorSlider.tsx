@@ -7,30 +7,36 @@ import { Views } from '../../../supabase/database.types';
 import ProfilesCard from '../../profilesCard/ProfilesCard';
 import * as S from '../TutorSlider.styled';
 import './custom.css';
-interface pageProps {
+type pageProps = {
   tutorList: Views<'tutor_top_reviewer'>[];
-  panels: number;
   uniqueKey: string;
-}
+};
 
-const PopTutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
+const PopTutorSlider = ({ tutorList, uniqueKey }: pageProps) => {
   const _plugins = [new AutoPlay({ duration: 2000, direction: 'NEXT', stopOnHover: false })];
 
   const calcAlign = () => {
-    if (window.innerWidth >= 1600) {
-      return '21%';
-    } else if (window.innerWidth > 1200) {
-      return '16%';
-    } else {
-      return '0%';
-    }
+    if (window.innerWidth >= 1600) return '21%';
+    else if (window.innerWidth > 1200) return '16%';
+    else return '0%';
+  };
+  const calcPanels = () => {
+    if (window.innerWidth < 480) return 1;
+    else if (window.innerWidth < 768) return 2;
+    else if (window.innerWidth < 960) return 3;
+    else if (window.innerWidth < 1200) return 4;
+    else if (window.innerWidth < 1600) return 5;
+    else return 6;
   };
   const [align, setAlign] = useState(calcAlign);
+  const [panelsNum, setPanelsNum] = useState(calcPanels);
 
   useEffect(() => {
     const handleResize = () => {
       const newAlign = calcAlign();
       setAlign(newAlign);
+      const newPanels = calcPanels();
+      setPanelsNum(newPanels);
     };
     window.addEventListener('resize', handleResize);
     return () => {
@@ -39,12 +45,12 @@ const PopTutorSlider = ({ tutorList, panels, uniqueKey }: pageProps) => {
   }, []);
   return (
     <>
-      <Flicking key={uniqueKey} panelsPerView={panels} align={`${align}`} circular={true} plugins={_plugins}>
+      <Flicking key={uniqueKey} panelsPerView={panelsNum} align={`${align}`} circular={true} plugins={_plugins}>
         {tutorList &&
           tutorList.map((tutor: Views<'tutor_top_reviewer'>) => {
             const key = `${uniqueKey}+${tutor.tutor_id!.split('-')[0]}`;
             return (
-              <S.Tutor to={`/detail/${tutor.tutor_id}`} key={key} style={{ minWidth: '280px' }}>
+              <S.Tutor to={`/detail/${tutor.tutor_id}`} key={key}>
                 <ProfilesCard tutor={tutor} />
               </S.Tutor>
             );

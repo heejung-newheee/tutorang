@@ -41,12 +41,12 @@ const CreateAnnouncementForm = () => {
 
         try {
           const imgName = v4();
-          const { data } = await supabase.storage.from('avatars').upload(`community/${imgName}`, file, {
+          const { data } = await supabase.storage.from('customer-service').upload(`announcement/${imgName}`, file, {
             cacheControl: '3600',
             upsert: true,
           });
 
-          const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/${data?.path}`;
+          const url = `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/customer-service/${data?.path}`;
 
           if (QuillRef.current !== undefined) {
             const editor = QuillRef.current.getEditor();

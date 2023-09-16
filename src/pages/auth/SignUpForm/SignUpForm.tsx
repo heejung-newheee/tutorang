@@ -41,7 +41,7 @@ const SignUpForm = () => {
   const [validUsername, setValidUsername] = useState(false);
   const [usernameFocus, setUsernameFocus] = useState(false);
 
-  const [checkedGender, setCheckedGender] = useState({ female: false, male: false });
+  const [checkedGender, setCheckedGender] = useState('');
   const [validGender, setValidGender] = useState(false);
 
   const [location, setLoaction] = useState({ sido1: '시/도 선택', gugun1: '구/군 선택', sido2: '시/도 선택', gugun2: '구/군 선택' });
@@ -78,8 +78,7 @@ const SignUpForm = () => {
   }, [birth]);
 
   useEffect(() => {
-    const checkedValidGender = checkedGender.female === true || checkedGender.male === true;
-    setValidGender(checkedValidGender);
+    setValidGender(!!checkedGender);
   }, [checkedGender]);
 
   useEffect(() => {
@@ -111,9 +110,6 @@ const SignUpForm = () => {
       return false;
     }
 
-    let gender = '';
-    if (checkedGender.male !== checkedGender.female && checkedGender.male === true) gender = '남성';
-    else if (checkedGender.male !== checkedGender.female && checkedGender.female === true) gender = '여성';
     const age = calculateAge();
     const trimmedBirth = birth.year + '-' + birth.month + '-' + birth.day;
 
@@ -121,7 +117,7 @@ const SignUpForm = () => {
       username,
       birth: trimmedBirth,
       age,
-      gender,
+      gender: checkedGender,
       location1_sido: location.sido1,
       location1_gugun: location.gugun1,
       location2_sido: location.sido2,
@@ -178,7 +174,7 @@ const SignUpForm = () => {
             </S.FormItem>
 
             <S.FormItem>
-              <S.passwordLabel htmlFor="password" style={{ position: 'relative' }}>
+              <S.PasswordLabel htmlFor="password">
                 <S.FormItemTitle>비밀번호</S.FormItemTitle>
                 <S.Input
                   type={isPasswordHidden ? 'password' : 'text'}
@@ -201,12 +197,12 @@ const SignUpForm = () => {
                     <BsFillEyeFill className="pw_button_shown_color" />
                   </S.PasswordEyeButton>
                 )}
-              </S.passwordLabel>
+              </S.PasswordLabel>
               <S.PGuideMessage>{!!pwd && !validPwd && '문자, 숫자, 특수문자(!@#$%) 포함, 6자 이상의 비밀번호'}</S.PGuideMessage>
             </S.FormItem>
 
             <S.FormItem>
-              <S.passwordLabel htmlFor="confirm_pwd" style={{ position: 'relative' }}>
+              <S.PasswordLabel htmlFor="confirm_pwd">
                 <S.FormItemTitle>비밀번호 확인</S.FormItemTitle>
                 <S.Input
                   type={isMatchPwHidden ? 'password' : 'text'}
@@ -229,7 +225,7 @@ const SignUpForm = () => {
                     <BsFillEyeFill className=" pw_button_shown_color" />
                   </S.PasswordEyeButton>
                 )}
-              </S.passwordLabel>
+              </S.PasswordLabel>
 
               <S.PGuideMessage>{!!matchPwd && !validMatch && '처음에 입력한 비밀번호와 동일해야합니다.'}</S.PGuideMessage>
             </S.FormItem>
@@ -253,12 +249,12 @@ const SignUpForm = () => {
               <S.PGuideMessage>{!!username && !validUsername && '2자 이상 6자 미만의 한국실명 / 2자이상 20자 미만의 영문실명'}</S.PGuideMessage>
             </S.FormItem>
 
-            <S.FormItem style={{ marginBottom: '23px' }}>
+            <S.FormItem className="mar23">
               <S.FormItemTitle>생년월일</S.FormItemTitle>
               <SelectBirth $setBirth={setBirth} />
             </S.FormItem>
 
-            <S.FormItem style={{ marginBottom: '23px' }}>
+            <S.FormItem className="mar23">
               <S.FormItemTitle>성별</S.FormItemTitle>
               <GenderRadiobox $checkedGender={checkedGender} $setCheckedGender={setCheckedGender} />
             </S.FormItem>

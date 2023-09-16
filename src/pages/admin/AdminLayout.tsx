@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import * as S from './AdminLayout.styled';
-import { AdminSidebar } from './modules';
+import AdminSidebar from './adminSidebar/AdminSidebar';
 
 const AdminLayout = () => {
   return (

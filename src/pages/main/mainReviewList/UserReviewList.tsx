@@ -12,7 +12,7 @@ const UserReviewList = () => {
   return (
     <Section>
       <Container>
-        <SectionTitle style={{ position: 'relative', left: '50%', transform: 'translate(-50%, 0px)' }}>생생한 후기를 들어보세요</SectionTitle>
+        <SectionTitle className="user_review">생생한 후기를 들어보세요</SectionTitle>
         <S.ReviewList>
           <S.ReviewItem>
             <S.ReviewItemContent>
@@ -25,7 +25,7 @@ const UserReviewList = () => {
               <S.PlayBtn src={play_button} alt="play button" />
             </S.ReviewVideoBox>
           </S.ReviewItem>
-          <S.ReviewItem style={{ flexDirection: 'row-reverse' }}>
+          <S.ReviewItem className="user_review">
             <S.ReviewItemContent>
               <S.ReviewItemTitle>육아맘에게 맞는 튜터님도 계시네요!</S.ReviewItemTitle>
               <S.ReviewItemText>육아중이라 아이와 관련된 생각밖에 없는데 1:1 매칭 서비스로 같은 상황에 있고, 성격도 잘맞는 튜터님을 만나게 되었어요! 관심 많은 내용에 대해서 영어로 대화할 수 있어서 넘 재미있고, 실력도 금방 올랐어요!</S.ReviewItemText>

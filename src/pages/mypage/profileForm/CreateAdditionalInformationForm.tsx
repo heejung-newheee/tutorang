@@ -23,7 +23,7 @@ const CreateAdditionalInformationForm = () => {
   const [username, setUsername] = useState(user?.username || '');
   const [validUsername, setValidUsername] = useState(false);
 
-  const [checkedGender, setCheckedGender] = useState({ female: false, male: false });
+  const [checkedGender, setCheckedGender] = useState('');
   const [validGender, setValidGender] = useState(false);
 
   const [location, setLoaction] = useState({ sido1: '시/도 선택', gugun1: '구/군 선택', sido2: '시/도 선택', gugun2: '구/군 선택' });
@@ -52,8 +52,7 @@ const CreateAdditionalInformationForm = () => {
   }, [birth]);
 
   useEffect(() => {
-    const checkedValidGender = checkedGender.female === true || checkedGender.male === true;
-    setValidGender(checkedValidGender);
+    setValidGender(!!checkedGender);
   }, [checkedGender]);
 
   useEffect(() => {
@@ -83,9 +82,6 @@ const CreateAdditionalInformationForm = () => {
       return false;
     }
 
-    let gender = '';
-    if (checkedGender.male !== checkedGender.female && checkedGender.male === true) gender = '남성';
-    else if (checkedGender.male !== checkedGender.female && checkedGender.female === true) gender = '여성';
     const age = calculateAge();
     const trimmedBirth = birth.year + '-' + birth.month + '-' + birth.day;
 
@@ -93,7 +89,7 @@ const CreateAdditionalInformationForm = () => {
       username,
       birth: trimmedBirth,
       age,
-      gender,
+      gender: checkedGender,
       location1_sido: location.sido1,
       location1_gugun: location.gugun1,
       location2_sido: location.sido2,
@@ -133,19 +129,19 @@ const CreateAdditionalInformationForm = () => {
       <SPartitionLine />
       <SForm onSubmit={handleSubmit}>
         <SUnderForm>
-          <SFormItem style={{ marginBottom: '23px' }}>
+          <SFormItem className="mar23">
             <label htmlFor="email">
               <SFormItemTitle>이메일</SFormItemTitle>
             </label>
             <SInput type="text" id="email" value={email} disabled={true} />
           </SFormItem>
 
-          <SFormItem style={{ marginBottom: '23px' }}>
+          <SFormItem className="mar23">
             <SFormItemTitle>생년월일</SFormItemTitle>
             <SelectBirth $setBirth={setBirth} />
           </SFormItem>
 
-          <SFormItem style={{ marginBottom: '23px' }}>
+          <SFormItem className="mar23">
             <SFormItemTitle>성별</SFormItemTitle>
             <GenderRadiobox $checkedGender={checkedGender} $setCheckedGender={setCheckedGender} />
           </SFormItem>
@@ -222,6 +218,9 @@ const SFormItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  & .mar23 {
+    margin-bottom: '23px';
+  }
 `;
 
 const SInput = styled.input<{ id?: string; disabled?: boolean }>`

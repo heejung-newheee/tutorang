@@ -50,9 +50,13 @@ export const FormItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px 12px;
+  & .mar23 {
+    margin-bottom: 23px;
+  }
 `;
 
-export const passwordLabel = styled.label`
+export const PasswordLabel = styled.label`
+  position: 'relative';
   display: flex;
   flex-direction: column;
   gap: 5px;

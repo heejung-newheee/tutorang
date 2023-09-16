@@ -10,7 +10,7 @@ import { matchingPending, matchingReject } from '../../../api/match';
 import { MATCHING_TUTOR_DATA_QUERY_KEY } from '../../../constants/query.constant';
 import { RootState } from '../../../redux/config/configStore';
 import { Views } from '../../../supabase/database.types';
-import { ContentsDataBox } from '../Mypage.styled';
+import { ContentsDataBox } from '../MyPage.styled';
 import * as S from './Matching.styled';
 import './custom.css';
 interface pageProps {
@@ -90,7 +90,7 @@ const MatchingStudent = ({ matchList }: pageProps) => {
       </Tabs>
       <TabPanel value={activeTab} index={0}>
         <S.InfoList>
-          <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
+          <S.InfoItem className="matching">
             <div>학생 이름</div>
             <div>지역</div>
             <div>날짜</div>
@@ -136,7 +136,7 @@ const MatchingStudent = ({ matchList }: pageProps) => {
       </TabPanel>
       <TabPanel value={activeTab} index={1}>
         <S.InfoList>
-          <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
+          <S.InfoItem className="matching">
             <div>학생 이름</div>
             <div>지역</div>
             <div>날짜</div>
@@ -179,7 +179,7 @@ const MatchingStudent = ({ matchList }: pageProps) => {
       </TabPanel>
       <TabPanel value={activeTab} index={2}>
         <S.InfoList>
-          <S.InfoItem style={{ textAlign: 'center', height: '56px', borderTop: '0' }}>
+          <S.InfoItem className="matching">
             <div>학생 이름</div>
             <div>지역</div>
             <div>날짜</div>
