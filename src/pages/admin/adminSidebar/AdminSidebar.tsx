@@ -14,12 +14,8 @@ const AdminSidebar = () => {
             <Link to={'/admin/dashboard'}>대시보드</Link>
           </S.NavItem>
           <S.NavItem>
-            <Link to={'/admin/user-manage'}>사용자관리</Link>
-          </S.NavItem>
-          <S.NavItem>
             <Link to={'/admin/board-manage'}>게시판</Link>
           </S.NavItem>
-          <S.NavItem>환불취소관리</S.NavItem>
           <S.NavItem>
             <Link to={'/admin/announcements-manage'}>공지사항 관리</Link>
           </S.NavItem>
