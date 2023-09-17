@@ -68,7 +68,7 @@ export const Description = styled.p`
 
 export const ButtonWrapper = styled.div`
   display: flex;
-
+  justify-content: center;
   & Button {
     height: 80px;
 

@@ -12,8 +12,15 @@ const toastFade = keyframes`
 export const ToastLayout = styled.div`
   position: fixed;
   z-index: 99;
-  right: 0;
+  right: 10px;
   top: 78px;
+  border-radius: 5px;
+  overflow: hidden;
+  @media screen and (max-width: 768px) {
+    width: 90%;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
 `;
 
 export const Toast = styled.div`
@@ -49,6 +56,7 @@ export const ButtonClose = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 15px;
 `;
 export const Message = styled.span`
   display: flex;
