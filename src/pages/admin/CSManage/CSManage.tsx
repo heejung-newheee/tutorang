@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { CS_MANAGE_QUERY_KEY, getAllCs } from '../../../api/customerSupportReply';
@@ -32,9 +33,15 @@ type TypeinquiryItem = {
 
 const CSManage = () => {
   const navigate = useNavigate();
-  const { data } = useQuery([CS_MANAGE_QUERY_KEY], getAllCs);
+  const [page, setPage] = useState(1);
+  const { data } = useQuery([CS_MANAGE_QUERY_KEY, page], () => getAllCs(page), { keepPreviousData: true, refetchOnWindowFocus: false });
 
   const moveTodetailCSQuiryPage = (inquiryId: string, inquiryitem: TypeinquiryItem) => navigate(`/admin/customer-support-manage/${inquiryId}`, { state: inquiryitem });
+
+  useEffect(() => {
+    console.log(page);
+  }, [page]);
+
   if (!data) return <div></div>;
   return (
     <Layout>
@@ -52,8 +59,8 @@ const CSManage = () => {
             </tr>
           </S.TableHead>
           <S.TableBody>
-            {data.map((inquiryitem) => (
-              <tr key={Math.random()}>
+            {data.cs.map((inquiryitem) => (
+              <S.TableRow key={inquiryitem.id} $isAnswered={inquiryitem.customer_support_reply.length === 0}>
                 <td>{inquiryitem.created_at.split('T')[0]}</td>
                 <td>
                   {inquiryitem.profiles?.avatar_url ? (
@@ -67,11 +74,21 @@ const CSManage = () => {
                 </td>
                 <S.TitleInquiryItem onClick={() => moveTodetailCSQuiryPage(inquiryitem.id, inquiryitem)}>{inquiryitem.title}</S.TitleInquiryItem>
                 <td>{inquiryitem.customer_support_reply.length === 0 ? 'X' : 'O'}</td>
-              </tr>
+              </S.TableRow>
             ))}
           </S.TableBody>
         </Table>
       </TableContainer>
+      <S.Navigation>
+        <div>{`${data.totalCount - (data.currentPage - 1) * data.rowsPerPage} - ${data.totalCount - (data.currentPage - 1) * data.rowsPerPage - data.count + 1} of ${data.totalCount}`}</div>
+        <button onClick={() => setPage((prev) => --prev)} disabled={!data.hasPreviousPage}>
+          이전페이지
+        </button>
+        <span>{page}</span>
+        <button onClick={() => setPage((prev) => ++prev)} disabled={!data.hasNextPage}>
+          다음페이지
+        </button>
+      </S.Navigation>
     </Layout>
   );
 };
