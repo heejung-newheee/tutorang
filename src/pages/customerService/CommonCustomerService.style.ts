@@ -139,7 +139,8 @@ export const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 15px & div > button {
+  margin-top: 15px;
+  & div > button {
     margin-left: 10px;
   }
 `;

@@ -50,7 +50,7 @@ const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDo
     <>
       <label htmlFor="email">이메일</label>
       <S.EmailInputWrapper>
-        <S.Input type="text" id="email" ref={emailRef} autoComplete="off" onChange={(e) => $setEmail(e.target.value)} required placeholder="이메일을 입력하세요" />
+        <S.Input type="email" id="email" ref={emailRef} autoComplete="off" onChange={(e) => $setEmail(e.target.value)} required placeholder="이메일을 입력하세요" />
         {$email && (
           <S.ResetButton type="button" onClick={deleteEmail}>
             <BsXCircleFill className="reset_input_btn" />

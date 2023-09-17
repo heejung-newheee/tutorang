@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { LiaArrowDownSolid, LiaArrowUpSolid } from 'react-icons/lia';
 import { Link, useNavigate } from 'react-router-dom';
 import { ANNOUNCEMENTS_QUERY_KEY, getAllAnnouncements } from '../../../api/announcements';
+import * as C from '../CommonCustomerServiceManagement.style';
 import { FilterContainer, Layout, SortButton, Table, TableContainer, Title } from '../boardManage/BoardManage.styled';
 import * as S from './AnnouncementsListManage.style';
-import * as C from './ManageAnnouncementCommon.style';
 const AnnouncementsListManage = () => {
   const navigate = useNavigate();
   const { data } = useQuery([ANNOUNCEMENTS_QUERY_KEY], getAllAnnouncements);
@@ -37,9 +37,9 @@ const AnnouncementsListManage = () => {
             </tr>
           </S.TableHead>
           <S.TableBody>
-            {data?.map((announcementItem) => (
+            {data?.map((announcementItem, index) => (
               <tr key={announcementItem.id}>
-                <td>넘버</td>
+                <td>{index + 1}</td>
                 <td>{announcementItem.created_at.slice(0, 10)}</td>
                 <td key={announcementItem.id}>
                   <Link to={`/admin/announcements-manage/${announcementItem.id}`}>{announcementItem.title}</Link>
