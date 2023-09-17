@@ -4,7 +4,6 @@ import supabase from '../supabase';
 
 export const fetchPostData = async (postid: number) => {
   const { data, error } = await supabase.from('write').select(`*, post_like(post_id, user_id),profiles(username,avatar_url)`).eq('id', postid);
-
   if (error) throw error;
   return data;
 };

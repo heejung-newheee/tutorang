@@ -52,3 +52,9 @@ export { default as icon_time_dashboard } from './icon_time_dashboard.svg';
 
 export { default as icon_month } from './icon_month.svg';
 export { default as magnifier } from './magnifier.svg';
+
+export { default as left_arrow } from './left_arrow.svg';
+export { default as select_refresh } from './select-refresh.svg';
+export { default as select_x } from './select_x.svg';
+export { default as select_reset } from './select_reset.svg';
+export { default as write } from './write.svg';

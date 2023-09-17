@@ -81,7 +81,7 @@ export const EditContainer = styled.div`
 
   & > button {
     font-size: 13px;
-
+    flex-shrink: 0;
     color: ${colors.gray_900};
   }
 
@@ -114,5 +114,6 @@ export const EditInputDiv = styled.div`
 
   & > button {
     margin-right: 10px;
+    flex-shrink: 0;
   }
 `;

@@ -8,7 +8,7 @@ export const PaginationDiv = styled.div`
   gap: 10px;
   left: 50%;
   position: absolute;
-  bottom: -50px;
+  bottom: -100px;
   transform: translate(-50%, 0);
 `;
 export const LessGreaterThan = styled.div`

@@ -6,6 +6,7 @@ import { FORM_CONSTANT_TITLE_COMMUNITY } from '../../constants/formConstant';
 import { AppDispatch, RootState } from '../../redux/config/configStore';
 import { displayToastAsync } from '../../redux/modules';
 import * as S from './Community.styled';
+import { write } from '../../assets';
 
 const Community = () => {
   const navigate = useNavigate();
@@ -73,7 +74,9 @@ const Community = () => {
           <Outlet />
         </S.PostsContainer>
       </S.PostContainer>
-      <S.PostBtn onClick={gotoWrite}>게시글 작성</S.PostBtn>
+      <S.PostBtn onClick={gotoWrite}>
+        <img src={write} alt="" />
+      </S.PostBtn>
     </S.CommunityContainer>
   );
 };
