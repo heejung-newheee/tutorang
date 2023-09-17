@@ -53,7 +53,7 @@ export const FlowPanel = styled.article`
 export const TabBubbleWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  &:hover {
+  &.active {
     > div.num {
       background-color: ${colors.primary};
     }

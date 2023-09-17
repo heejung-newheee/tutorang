@@ -72,10 +72,15 @@ export const SectionTitle = styled.h2`
     position: relative;
     left: 50%;
     transform: translate(-50%, 0px);
+    @media screen and (max-width: 768px) {
+      position: relative;
+      left: 0%;
+      transform: translate(0, 0);
+    }
   }
 
   @media screen and (max-width: 768px) {
     font-size: 18px;
-    margin: 0 0 50px 0;
+    margin: 0 0 20px 0;
   }
 `;

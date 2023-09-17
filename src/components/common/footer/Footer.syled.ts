@@ -24,6 +24,12 @@ export const FooterWrap = styled.div`
       width: 100%;
     }
   }
+  @media screen and (max-width: 768px) {
+    p {
+      text-align: center;
+      margin-bottom: 7px;
+    }
+  }
 `;
 export const FootLink = styled.div`
   display: flex;
@@ -31,7 +37,7 @@ export const FootLink = styled.div`
   .github {
     font-weight: bold;
   }
-  a {
+  a:not(:last-child) {
     margin-right: 10px;
   }
   @media screen and (max-width: 768px) {

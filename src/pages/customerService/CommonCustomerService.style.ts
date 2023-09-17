@@ -31,6 +31,7 @@ export const ButtonCS = styled(Link)`
 export const OutermostContainer = styled.div`
   width: 100%;
   height: 100%;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
