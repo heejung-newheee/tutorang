@@ -6,7 +6,7 @@ export const ANNOUNCEMENTS_QUERY_KEY = 'allAnnouncements';
 export const ONE_ANNOUNCEMENT_QUERY_KEY = 'oneTargetAnnouncement';
 
 export const getAllAnnouncements = async () => {
-  const { data, error } = await supabase.from(ANNOUNCEMENTS_TABLE).select();
+  const { data, error } = await supabase.from(ANNOUNCEMENTS_TABLE).select().order('created_at', { ascending: false });
 
   if (error) throw error;
   return data;
