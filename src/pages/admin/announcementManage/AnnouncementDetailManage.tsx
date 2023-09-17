@@ -54,18 +54,13 @@ const AnnouncementDetailManage = () => {
             <Link to="/admin/announcements-manage">목록</Link>
           </C.ButtonAnnouncement>
         </C.TitleHeader>
-        <C.CSContent className="border_bottom">
-          <C.ContentAuth>
-            <p>{getTimeTextFromISODate(data.created_at)}</p>
-          </C.ContentAuth>
-          <div>
-            <p>제목</p>
-            {data.title}
-          </div>
+        <C.CSContentContainer className="border_bottom">
+          <S.ContentTitle>{data.title}</S.ContentTitle>
           <S.NoticeContent>
             <div dangerouslySetInnerHTML={{ __html: data.content || '' }}></div>
           </S.NoticeContent>
-        </C.CSContent>
+          <S.TextNoticeDate>{getTimeTextFromISODate(data.created_at)}</S.TextNoticeDate>
+        </C.CSContentContainer>
         <C.ButtonWrap>
           <C.ButtonAnnouncement onClick={handleDeleteAnnouncement}>삭제</C.ButtonAnnouncement>
           <C.ButtonAnnouncement onClick={moveToPageForEditAnnouncementForm}>수정</C.ButtonAnnouncement>

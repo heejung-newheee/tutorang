@@ -23,7 +23,7 @@ export const TitleHeader = styled.div`
   justify-content: space-between;
 `;
 
-export const CSContent = styled.div`
+export const CSContentContainer = styled.div`
   margin: 0px 0px 30px;
   border-top: solid 1px #ddd;
   border-bottom: solid 1px #ddd;
@@ -40,7 +40,7 @@ export const CSContent = styled.div`
   }
 `;
 
-export const ContentAuth = styled.div`
-  display: flex;
-  justify-content: space-between;
+export const H2Title = styled.h2`
+  font-weight: 500;
+  font-size: 16px;
 `;

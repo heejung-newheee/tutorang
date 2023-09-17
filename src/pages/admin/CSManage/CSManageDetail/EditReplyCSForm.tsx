@@ -5,6 +5,8 @@ import { ONE_CUSTOMER_INQUIRY_QUERY_KEY } from '../../../../api/customerSupport'
 import { TypeReply, deleteReplyToInquiry, editReplyToInquiry } from '../../../../api/customerSupportReply';
 import { AppDispatch, RootState } from '../../../../redux/config/configStore';
 import { clearModal, displayToastAsync, openModal } from '../../../../redux/modules';
+import * as C from './../../CommonCustomerServiceManagement.style';
+import { InputReplyArea } from './CommonCS.style';
 
 type EditReplyCSFormProps = {
   replyInfo: TypeReply;
@@ -62,15 +64,21 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
 
   return (
     <>
-      <button onClick={handleToggleEdit}>{isEditing ? '수정취소' : '수정하기'}</button>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="content" value={content} onChange={handleContentChange} disabled={!isEditing} />
-        <button type="submit" disabled={!isEditing}>
-          수정완료
-        </button>
-        <button type="button" onClick={handleDeleteReply}>
-          삭제
-        </button>
+        <InputReplyArea type="text" name="content" value={content} onChange={handleContentChange} disabled={!isEditing} />
+        <C.ButtonWrap>
+          <C.ButtonAnnouncement type="button" onClick={handleToggleEdit}>
+            {isEditing ? '수정취소' : '수정하기'}
+          </C.ButtonAnnouncement>
+          {isEditing && (
+            <C.ButtonAnnouncement type="submit" disabled={!isEditing}>
+              수정완료
+            </C.ButtonAnnouncement>
+          )}
+          <C.ButtonAnnouncement type="button" onClick={handleDeleteReply}>
+            삭제
+          </C.ButtonAnnouncement>
+        </C.ButtonWrap>
       </form>
     </>
   );

@@ -11,3 +11,13 @@ export const NoticeContent = styled.div`
     width: 300px;
   }
 `;
+
+export const TextNoticeDate = styled.p`
+  text-align: end;
+`;
+
+export const ContentTitle = styled.h3`
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+`;

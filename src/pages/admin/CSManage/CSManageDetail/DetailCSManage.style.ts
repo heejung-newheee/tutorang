@@ -22,3 +22,23 @@ export const InquiryContent = styled.div`
     width: 300px;
   }
 `;
+
+export const ReplyContainer = styled.div`
+  padding: 0 15px;
+  font-size: 14px;
+`;
+
+export const ReplyContent = styled.div`
+  margin-top: 10px;
+`;
+
+export const InquiryHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const InquiryTitle = styled.h3`
+  font-size: 16px;
+  font-weight: 500;
+`;

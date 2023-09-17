@@ -45,11 +45,10 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
 
     try {
       await createCSReplyMutation.mutate(newReply);
+      dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '답변이 정상적으로 등록되었습니다!' }));
     } catch (error) {
       dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: `error submit cs reply, ${String(error)}` }));
     }
-    setContent('');
-    dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '답변이 정상적으로 등록되었습니다!' }));
   };
 
   useEffect(() => {
@@ -63,9 +62,9 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
   }, [isConfirm]);
   return (
     <form onSubmit={handleSubmit}>
-      <C.InputReplyArea type="text" name="content" value={content} onChange={handleContentChange} />
+      <C.InputReplyArea type="text" name="content" value={content} onChange={handleContentChange} placeholder="관리자님~ 답변을 어서 등록해주세요!" />
       <ButtonWrap>
-        <ButtonAnnouncement>등록완료</ButtonAnnouncement>
+        <ButtonAnnouncement type="submit">등록완료</ButtonAnnouncement>
       </ButtonWrap>
     </form>
   );
