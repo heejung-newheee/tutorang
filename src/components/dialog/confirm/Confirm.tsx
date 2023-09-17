@@ -24,9 +24,15 @@ const Confirm = () => {
             e.stopPropagation();
           }}
         >
-          {message}
-          <button onClick={handleClose}>취소</button>
-          <button onClick={handleConfirm}>확인</button>
+          <S.ContentWrapper>
+            <S.Description>{message}</S.Description>
+            <S.ButtonWrapper>
+              <S.Button onClick={handleClose}>취소</S.Button>
+              <S.Button className="confirm" onClick={handleConfirm}>
+                확인
+              </S.Button>
+            </S.ButtonWrapper>
+          </S.ContentWrapper>
         </S.Inner>
       </S.Container>
     </>
