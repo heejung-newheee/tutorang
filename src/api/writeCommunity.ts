@@ -1,24 +1,14 @@
+import { EDITWRITE, POSTWRITE } from '../@types/writeCommunity/WriteCommunity.type';
 import supabase from '../supabase';
 
-type Community = {
-  title: string;
-  content: string;
-  user_id?: string;
-  category: string;
-};
-
-type Edit = {
-  title: string;
-  content: string;
-};
-export const WriteInsertApi = async (newInfo: Community) => {
-  const { error } = await supabase.from('write').insert(newInfo);
+export const updateWrite = async (postWrite: POSTWRITE) => {
+  const { error } = await supabase.from('write').insert(postWrite);
 
   if (error) throw error;
 };
 
-export const editUpdateApi = async (newInfo: Edit, editPostNum: number) => {
-  const { error } = await supabase.from('write').update(newInfo).eq('id', editPostNum);
+export const updateEditedWrite = async (editWrite: EDITWRITE, editPostNum: number) => {
+  const { error } = await supabase.from('write').update(editWrite).eq('id', editPostNum);
 
   if (error) throw error;
 };

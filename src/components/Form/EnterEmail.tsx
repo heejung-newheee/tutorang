@@ -1,6 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { BsXCircleFill } from 'react-icons/bs';
 import { FaInfoCircle } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+
+import { AppDispatch } from '../../redux/config/configStore';
+import { displayToastAsync } from '../../redux/modules';
 import supabase from '../../supabase';
 import * as S from './EnterEmail.style';
 
@@ -16,20 +20,23 @@ type TypeEnterEmailProps = {
 
 const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDoneDuplicationCheck, $setEmail, $email, $validEmail, $duplicatedEmail, $doneDuplicationCheck }) => {
   const emailRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     emailRef.current!.focus();
   }, []);
 
   const duplicationCheck = async (unverifiedEmail: string) => {
-    const { data: profiles, error } = await supabase.from('profiles').select('email');
-    const myEmailFromDB = profiles?.find((profile) => {
-      return profile.email === unverifiedEmail;
-    });
-    const isMyEmailHere = myEmailFromDB === undefined ? false : true;
-    $setDuplicatedEmail(isMyEmailHere);
+    const { count, error } = await supabase.from('profiles').select('email', { count: 'exact', head: true }).eq('email', unverifiedEmail);
+    if (error) {
+      return dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: String(error?.message) }));
+    }
+    if (count) {
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '중복된 이메일 입니다.' }));
+    } else {
+      dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '사용할 수 있는 이메일 입니다.' }));
+    }
+    $setDuplicatedEmail(!!count);
     $setDoneDuplicationCheck(true);
-
-    console.error(error?.message);
   };
 
   const deleteEmail = () => {
@@ -53,8 +60,8 @@ const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDo
           중복확인
         </S.EmailButton>
       </S.EmailInputWrapper>
-      <S.GuideMessage $guideMessageColor={'안내'} style={{ display: 'flex', alignContent: 'center', height: '18px', lineHeight: '18px' }}>
-        <span style={{ width: '18px', height: '18px', padding: '3px 0' }}>
+      <S.GuideMessage $guideMessageColor={'안내'}>
+        <span className="guide_span">
           <FaInfoCircle className="info_icon" />
         </span>
         <p>해당 이메일로 회원가입 승인메일이 전송됩니다.</p>

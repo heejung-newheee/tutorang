@@ -10,7 +10,7 @@ import { matchingRequest } from '../../../api/match';
 import { useViewport } from '../../../hooks';
 import useChatContext from '../../../hooks/useChatContext';
 import { AppDispatch, RootState } from '../../../redux/config/configStore';
-import { displayToastAsync, openModal } from '../../../redux/modules';
+import { clearModal, displayToastAsync, openModal } from '../../../redux/modules';
 import supabase from '../../../supabase';
 import { getDateTextFromISODate, isSameDate } from '../../../utils/Date';
 import ChatMessage from './ChatMessage';
@@ -26,6 +26,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
   const [, setSearchParams] = useSearchParams();
   const dispatch = useDispatch<AppDispatch>();
   const loginUser = useSelector((state: RootState) => state.user.user);
+  const { isConfirm } = useSelector((state: RootState) => state.modal);
   const handleSubmitCreateMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -37,7 +38,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
       room_id: chatRoom.room_id,
       content: content,
     });
-    if (error) return console.error(error);
+    if (error) return dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: String(error) }));
 
     setInputMessage('');
   };
@@ -57,16 +58,19 @@ const ChatRoom = ({ userId }: { userId: string }) => {
 
   const handleLeaveRoom = async () => {
     if (!chatRoom) return;
-    const confirm = window.confirm('채팅방을 나가시겠습니까?');
-    if (!confirm) return;
+    dispatch(openModal({ type: 'confirm', message: '채팅방을 나가시겠습니까?' }));
+  };
+
+  const leaveRoom = async () => {
+    if (!chatRoom) return;
     try {
       await leaveChatRoom(chatRoom.room_id);
       setSearchParams((prev) => {
         prev.delete('room_id');
         return prev;
       });
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: String(error) }));
     }
   };
 
@@ -79,7 +83,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
     try {
       await sendImageMessage(chatRoom.room_id, file);
     } catch (error) {
-      console.error(error);
+      dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: String(error) }));
     }
   };
 
@@ -98,6 +102,13 @@ const ChatRoom = ({ userId }: { userId: string }) => {
   const handleOpenDetailModal = (id: string) => {
     dispatch(openModal({ type: 'chatPlayerDetailModal', targetId: id }));
   };
+
+  useEffect(() => {
+    if (isConfirm) leaveRoom();
+    return () => {
+      dispatch(clearModal());
+    };
+  }, [isConfirm]);
 
   useEffect(() => {
     if (!chatAreaRef.current) return;

@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { bubble, tabPanel_1, tabPanel_2, tabPanel_3, tabPanel_4 } from '../../../assets';
 import { Container, Section, SectionTitle } from '../Main';
 import * as S from './MatchingFlow.styled';
-interface TabViewProps {
+type TabViewProps = {
   index: number;
   name: JSX.Element;
   content: JSX.Element;
-}
+};
 
 const MatchingFlow = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -18,9 +18,9 @@ const MatchingFlow = () => {
   ];
 
   return (
-    <Section style={{ backgroundColor: '#f8f8f8' }}>
+    <Section className="main">
       <Container>
-        <SectionTitle style={{ position: 'relative', left: '50%', transform: 'translate(-50%, 0px)' }}>가까운 튜터와 대화 후, 매칭하고 만나기까지</SectionTitle>
+        <SectionTitle className="matched_review">가까운 튜터와 대화 후, 매칭하고 만나기까지</SectionTitle>
         <S.FlowTabWrap>
           <S.FlowTabList>
             {tabs.map((el, idx) => (

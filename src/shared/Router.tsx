@@ -1,31 +1,48 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AdminLayout, Layout, SignInForm, SignUpForm } from '../components';
+import { Layout, SignInForm, SignUpForm } from '../components';
 import ScrollToTop from '../components/common/ScrollToTop';
 import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
 import ToastContainer from '../components/dialog/toast/ToastContainer';
 import GlobalModal from '../components/modal/GlobalModal';
-import { BoardManage, Community, Dashboard, Detail, FreeCommunity, List, Main, Mypage, NotFound, PostDetail, QuestionCommunity, RegionCommunity, StudyCommunity, UserManage, WritePost } from '../pages';
-import CSManage from '../pages/admin/CSManage/CSManage';
-import CSManageDetail from '../pages/admin/CSManage/CSManageDetail/DetailCSManage';
-import AdminRoute from '../pages/admin/announcementManage/AdminRoute';
-import AnnouncementDetailManage from '../pages/admin/announcementManage/AnnouncementDetailManage';
-import AnnouncementsListManage from '../pages/admin/announcementManage/AnnouncementsListManage';
-import CreateAnnouncementForm from '../pages/admin/announcementManage/CreateAnnouncementForm';
-import EditAnnouncementForm from '../pages/admin/announcementManage/EditAnnouncementForm';
-import WelcomeMessagePage from '../pages/auth/SignUpForm/WelcomeMessagePage';
-import RegistTutorForm from '../pages/auth/registTutorForm/RegistTutorForm';
-import Chat from '../pages/chat/Chat';
-import CustomerService from '../pages/customerService/CustomerService';
-import Announcements from '../pages/customerService/announcements/Announcements';
-import DetailAnnouncement from '../pages/customerService/announcements/DetailAnnouncement';
-import CustomerSupport from '../pages/customerService/customerSupport/CustomerSupport';
-import DetailCustomerSupport from '../pages/customerService/customerSupport/DetailCustomerSupport';
-import EditInquiryForm from '../pages/customerService/customerSupport/EditInquiryForm';
-import LeaveInquiryForm from '../pages/customerService/customerSupport/LeaveInquiryForm';
-import MatchedReview from '../pages/matchingReview/MatchedReview';
-import MyEditPage from '../pages/mypage/MyEditPage';
-import CreateAdditionalInformationForm from '../pages/mypage/profileForm/CreateAdditionalInformationForm';
-import EditTutorForm from '../pages/mypage/profileForm/EditTutorForm';
+import {
+  AdminLayout,
+  AdminRoute,
+  AnnouncementDetailManage,
+  Announcements,
+  AnnouncementsListManage,
+  BoardManage,
+  CSManage,
+  CSManageDetail,
+  Chat,
+  Community,
+  CreateAdditionalInformationForm,
+  CreateAnnouncementForm,
+  CustomerService,
+  CustomerSupport,
+  Dashboard,
+  Detail,
+  DetailAnnouncement,
+  DetailCustomerSupport,
+  EditAnnouncementForm,
+  EditInquiryForm,
+  EditTutorForm,
+  FreeCommunity,
+  LeaveInquiryForm,
+  List,
+  Main,
+  MatchedReview,
+  MyEditPage,
+  MyPage,
+  NotFound,
+  PostDetail,
+  QuestionCommunity,
+  RegionCommunity,
+  RegistTutorForm,
+  StudyCommunity,
+  UserManage,
+  WelcomeMessagePage,
+  WritePost,
+} from '../pages';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
 
@@ -57,7 +74,7 @@ const Router = () => {
             path="/mypage"
             element={
               <AuthenticatedRoute>
-                <Mypage />
+                <MyPage />
               </AuthenticatedRoute>
             }
           />

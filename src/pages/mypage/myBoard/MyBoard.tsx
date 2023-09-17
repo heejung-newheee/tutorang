@@ -4,7 +4,7 @@ import { getMyBoardList } from '../../../api/write';
 import { Loading } from '../../../components';
 import { RootState } from '../../../redux/config/configStore';
 import { Container } from '../../main/Main';
-import { ContentsDataBox, InfoNull, InfoSection, InfoTitle } from '../Mypage.styled';
+import { ContentsDataBox, InfoNull, InfoSection, InfoTitle } from '../MyPage.styled';
 import BoardItem from './BoardItem';
 
 const MyBoard = () => {

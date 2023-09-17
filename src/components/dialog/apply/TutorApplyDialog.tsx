@@ -17,13 +17,10 @@ const TutorApplyDialog = () => {
     switch (_state) {
       case 'pending':
         return <>진행중</>;
-        break;
       case 'success':
         return <>승인</>;
-        break;
       case 'reject':
         return <>거절</>;
-        break;
     }
   };
 

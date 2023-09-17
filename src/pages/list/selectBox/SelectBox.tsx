@@ -1,13 +1,12 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { filterIcon, icon_location } from '../../../assets';
-import { filterMenuObj } from '../../../constants/signup.constant';
-import { price } from '../../../constants/signup.constant';
-import { handleAgeFilter, handleDeleteFilterBar, handleGenderFilter, handleLanguageFilter, handleLevelFilter } from '../utility';
-import FilterList from '../../../components/list/selectBox/FilterList';
-import * as S from './SelectBox.styled';
-import CheckBoxSelect from '../../../components/list/selectBox/CheckBoxSelect';
 import CheckBoxPrice from '../../../components/list/selectBox/CheckBoxPrice';
+import CheckBoxSelect from '../../../components/list/selectBox/CheckBoxSelect';
 import FilterBarCompo from '../../../components/list/selectBox/FilterBarCompo';
+import FilterList from '../../../components/list/selectBox/FilterList';
+import { filterMenuObj, price } from '../../../constants/signup.constant';
+import { handleAgeFilter, handleDeleteFilterBar, handleGenderFilter, handleLanguageFilter, handleLevelFilter } from '../utility';
+import * as S from './SelectBox.styled';
 
 import { Price, SelectedFilters } from '../../../@types/list/listType';
 
@@ -94,7 +93,7 @@ const SelectBox = ({ initialSelectedFilters, selectedArr, selectedFilters, setSe
         {filteredMenu !== 'price' && isChevronOpen ? (
           <S.InnerHidden key={filteredMenu} $isChevronOpen={isChevronOpen}>
             {filterMenuObj[filteredMenu]?.map((item: string) => (
-              <CheckBoxSelect item={item} filteredMenu={filteredMenu} handleFilterdObj={handleFilterdObj} isChecked={isChecked} />
+              <CheckBoxSelect key={`${filteredMenu}+${item}`} item={item} filteredMenu={filteredMenu} handleFilterdObj={handleFilterdObj} isChecked={isChecked} />
             ))}
           </S.InnerHidden>
         ) : null}
@@ -114,7 +113,7 @@ const SelectBox = ({ initialSelectedFilters, selectedArr, selectedFilters, setSe
             <div></div>
 
             {price.map((item: Price) => (
-              <CheckBoxPrice item={item} setSelectedFilters={setSelectedFilters} setSelectedArr={setSelectedArr} isChecked={isChecked} />
+              <CheckBoxPrice key={`${filteredMenu}+${item.optionPrice}`} item={item} setSelectedFilters={setSelectedFilters} setSelectedArr={setSelectedArr} isChecked={isChecked} />
             ))}
           </S.InnerHiddenPrice>
         ) : null}

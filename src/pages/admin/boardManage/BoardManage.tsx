@@ -141,9 +141,9 @@ const BoardManage = () => {
                 <td>{data.totalCount - (data.currentPage - 1) * data.rowsPerPage - index}</td>
                 <td>{item.created_at.slice(0, 10)}</td>
                 <td>{item.category && CATEGORY[item.category as CategoryType]}</td>
-                <td style={{ width: '25%', color: '#393939' }}>
+                <S.BoardLinkWrapper>
                   <S.BoardLink to="">{item.title}</S.BoardLink>
-                </td>
+                </S.BoardLinkWrapper>
 
                 <td>{item.profiles?.username}</td>
                 <td>

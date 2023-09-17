@@ -62,11 +62,11 @@ const ImageResizeForm = () => {
         <S.Body>
           <input type="file" onChange={onChangeImage} />
           <Cropper src={image || ''} style={{ height: 400, width: '100%' }} initialAspectRatio={1} aspectRatio={1} guides={false} cropend={onCropEnd} ref={cropperRef} />
-          <div style={{ marginTop: 'auto' }}>
+          <S.ButtonWrap>
             <Button variant="solid" color={'primary'} size="Large" onClick={handleSubmit}>
               확인
             </Button>
-          </div>
+          </S.ButtonWrap>
         </S.Body>
       </S.Inner>
     </S.Container>

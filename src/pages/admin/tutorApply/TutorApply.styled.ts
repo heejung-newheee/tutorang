@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors } from '../../../../style/theme/colors';
+import { colors } from '../../../style/theme/colors';
 
 export const DashboardItem = styled.div`
   background-color: ${colors.white};

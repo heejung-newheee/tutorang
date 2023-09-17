@@ -1,26 +1,39 @@
 import { Dispatch, SetStateAction } from 'react';
+import { COMMENT, DELETECOMMENT, EDITCOMMENT, LikeUpdatePost } from '../@types/PostDetail/PostDetailType';
 import supabase from '../supabase';
 
-export const getPostData = async (postid: number) => {
+export const fetchPostData = async (postid: number) => {
   const { data, error } = await supabase.from('write').select(`*, post_like(post_id, user_id),profiles(username,avatar_url)`).eq('id', postid);
 
   if (error) throw error;
   return data;
 };
 
-export const firstClickLikeApi = async (newInfo: { like: number }, postid: number, detail_user_id: string | undefined) => {
-  const writeLikePromise = supabase.from('write').update(newInfo).eq('id', postid).single();
-  const postLikePromise = supabase.from('post_like').insert({ user_id: detail_user_id, post_id: Number(postid) });
+export const createLike = async (likePost: LikeUpdatePost) => {
+  // const writeLikePromise = supabase.from('write').update({ like: likePost.like }).eq('id', likePost.postid).single();
+  const writeLikePromise = supabase.rpc('increment_like', {
+    post_id: likePost.postid,
+  });
+
+  const postLikePromise = supabase.from('post_like').insert({ user_id: likePost.detail_user_id, post_id: Number(likePost.postid) });
 
   const [writeResult, postLikeResult] = await Promise.all([writeLikePromise, postLikePromise]);
 
   if (writeResult.error) throw writeResult.error;
   if (postLikeResult.error) throw postLikeResult.error;
 };
+// let { data, error } = await supabase
+//   .rpc('decrement_like', {
+//     post_id
+//   })
 
-export const updateLike = async (newInfo: { like: number }, postid: number, detail_user_id: string | undefined) => {
-  const writeMinusLikePromise = supabase.from('write').update(newInfo).eq('id', postid).single();
-  const postDeletePromise = supabase.from('post_like').delete().eq('user_id', detail_user_id).eq('post_id', postid);
+// if (error) console.error(error)
+// else console.log(data)
+export const updateLike = async (likeUpdate: LikeUpdatePost) => {
+  const writeMinusLikePromise = await supabase.rpc('decrement_like', {
+    post_id: likeUpdate.postid,
+  });
+  const postDeletePromise = supabase.from('post_like').delete().eq('user_id', likeUpdate.detail_user_id).eq('post_id', likeUpdate.postid);
 
   const [writeResult, postLikeResult] = await Promise.all([writeMinusLikePromise, postDeletePromise]);
 
@@ -28,7 +41,7 @@ export const updateLike = async (newInfo: { like: number }, postid: number, deta
   if (postLikeResult.error) throw postLikeResult.error;
 };
 
-export const deletePost = async (postid: number) => {
+export const removePost = async (postid: number) => {
   const post_like_DeletePromise = supabase.from('post_like').delete().eq('post_id', postid);
   const post_comments_DeletePromise = supabase.from('post_comments').delete().eq('post_id', postid);
   const write_DeletePromise = supabase.from('write').delete().eq('id', postid);
@@ -40,8 +53,8 @@ export const deletePost = async (postid: number) => {
   if (write_Delete_DeleteResult.error) throw write_Delete_DeleteResult.error;
 };
 
-////community-comments
-export const getCommentsApi = async (postid: number) => {
+//comments
+export const fetchComments = async (postid: number) => {
   const { data, error } = await supabase
     .from('post_comments')
     .select(
@@ -55,37 +68,20 @@ export const getCommentsApi = async (postid: number) => {
   return data;
 };
 
-type NEWINFO = {
-  comment_id: number;
-  user_id: string | null | undefined;
-  post_id: number | null;
-};
-
-export const deleteCommentApi = async (newInfo: NEWINFO) => {
-  await supabase.from('post_comments').delete().eq('id', newInfo.comment_id).eq('user_id', newInfo.user_id).eq('post_id', newInfo.post_id);
-};
-
-type EDITINFO = {
-  comment: string;
-  created_at: string;
-  id: number;
-};
-
-type PostInfo = {
-  post_id: number;
-  comment: string;
-  user_id: string | null;
-};
-
 //댓글 생성
-export const putCommentApi = async (postInfo: PostInfo) => {
-  const { error } = await supabase.from('post_comments').insert(postInfo);
+export const createComment = async (postComment: COMMENT) => {
+  const { error } = await supabase.from('post_comments').insert(postComment);
 
   if (error) throw error;
 };
 
 //댓글 수정
-export const handleCommentUpdate = async (newInfo: EDITINFO, setisEdit: Dispatch<SetStateAction<number>>) => {
-  await supabase.from('post_comments').update({ comment: newInfo.comment, created_at: newInfo.created_at }).eq('id', newInfo.id).single();
+export const updateComment = async (editComment: EDITCOMMENT, setisEdit: Dispatch<SetStateAction<number>>) => {
+  await supabase.from('post_comments').update({ comment: editComment.comment, created_at: editComment.created_at }).eq('id', editComment.id).single();
   setisEdit(-1);
+};
+
+//댓글 삭제
+export const deleteComment = async (deleteComment: DELETECOMMENT) => {
+  await supabase.from('post_comments').delete().eq('id', deleteComment.comment_id).eq('user_id', deleteComment.user_id).eq('post_id', deleteComment.postid);
 };

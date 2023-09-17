@@ -38,3 +38,9 @@ export const Inner = styled.div`
     padding: 20px 10px 0;
   }
 `;
+export const Message = styled.div`
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+`;
