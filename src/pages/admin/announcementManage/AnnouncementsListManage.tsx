@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { LiaArrowDownSolid, LiaArrowUpSolid } from 'react-icons/lia';
 import { Link, useNavigate } from 'react-router-dom';
 import { ANNOUNCEMENTS_QUERY_KEY, getAllAnnouncements } from '../../../api/announcements';
+import * as C from '../CommonCustomerServiceManagement.style';
 import { FilterContainer, Layout, SortButton, Table, TableContainer, Title } from '../boardManage/BoardManage.styled';
 import * as S from './AnnouncementsListManage.style';
-import * as C from './ManageAnnouncementCommon.style';
 const AnnouncementsListManage = () => {
   const navigate = useNavigate();
   const { data } = useQuery([ANNOUNCEMENTS_QUERY_KEY], getAllAnnouncements);

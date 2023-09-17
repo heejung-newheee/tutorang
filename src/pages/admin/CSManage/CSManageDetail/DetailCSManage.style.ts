@@ -12,27 +12,13 @@ export const Button = styled.button`
   }
 `;
 
-export const CSContent = styled.div`
-  margin: 0px 0px 30px;
+export const InquiryContent = styled.div`
+  margin: 30px 0;
   border-top: solid 1px #ddd;
-  border-bottom: solid 1px #ddd;
   padding: 30px 15px;
   font-size: 14px;
-  > div {
-    margin-bottom: 20px;
-    > p {
-      margin-bottom: 5px;
-    }
+  text-align: center;
+  & img {
+    width: 300px;
   }
-`;
-
-export const ContentAuth = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const TitleHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 `;

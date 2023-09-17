@@ -6,4 +6,8 @@ export const NoticeContent = styled.div`
   border-bottom: solid 1px #ddd;
   padding: 30px 15px;
   font-size: 14px;
+  text-align: center;
+  & img {
+    width: 300px;
+  }
 `;

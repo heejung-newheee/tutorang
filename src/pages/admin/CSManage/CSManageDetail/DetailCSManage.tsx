@@ -4,8 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { ONE_CUSTOMER_INQUIRY_QUERY_KEY, getOneInquiry } from '../../../../api/customerSupport';
 import { RootState } from '../../../../redux/config/configStore';
 import { getTimeTextFromISODate } from '../../../../utils/Date';
-import { ButtonAnnouncement, ButtonWrap } from '../../announcementManage/ManageAnnouncementCommon.style';
 import { FilterContainer, Layout, Title } from '../../boardManage/BoardManage.styled';
+import * as C from './../../CommonCustomerServiceManagement.style';
 import CreateReplyCSForm from './CreateReplyCSForm';
 import * as S from './DetailCSManage.style';
 import EditReplyCSForm from './EditReplyCSForm';
@@ -27,28 +27,28 @@ const DetailCSManage = () => {
   return (
     <Layout>
       <FilterContainer>
-        <S.TitleHeader>
+        <C.TitleHeader>
           <Title>1:1 문의 관리</Title>
-          <ButtonWrap>
-            <ButtonAnnouncement>
+          <C.ButtonWrap>
+            <C.ButtonAnnouncement>
               <Link to="/admin/customer-support-manage">목록</Link>
-            </ButtonAnnouncement>
-          </ButtonWrap>
-        </S.TitleHeader>
-        <S.CSContent>
-          <S.ContentAuth>
+            </C.ButtonAnnouncement>
+          </C.ButtonWrap>
+        </C.TitleHeader>
+        <C.CSContent>
+          <C.ContentAuth>
             <p>{getTimeTextFromISODate(oneInquiryInfo.created_at)}</p>
             <p>작성자: {profiles?.inquiryUsername}</p>
-          </S.ContentAuth>
+          </C.ContentAuth>
           <div>
             <p>제목</p>
             {oneInquiryInfo.title}
           </div>
-          <div>
+          <S.InquiryContent>
             <p>내용</p>
             <div dangerouslySetInnerHTML={{ __html: oneInquiryInfo.content || '' }}></div>
-          </div>
-        </S.CSContent>
+          </S.InquiryContent>
+        </C.CSContent>
         {reply.length === 0 && <div>관리자님~ 답변을 어서 등록해주세요!</div>}
 
         {reply.length === 0 ? (

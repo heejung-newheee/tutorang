@@ -1,13 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ANNOUNCEMENTS_QUERY_KEY, ONE_ANNOUNCEMENT_QUERY_KEY, deleteAnnouncement, getOneAnnouncement } from '../../../api/announcements';
 import { AppDispatch, RootState } from '../../../redux/config/configStore';
 import { clearModal, displayToastAsync, openModal } from '../../../redux/modules';
+import { getTimeTextFromISODate } from '../../../utils/Date';
 import { FilterContainer, Layout, Title } from '../boardManage/BoardManage.styled';
+import * as C from './../CommonCustomerServiceManagement.style';
 import * as S from './AnnouncementDetailManage.style';
-import * as C from './ManageAnnouncementCommon.style';
 
 const AnnouncementDetailManage = () => {
   const queryClient = useQueryClient();
@@ -28,8 +29,6 @@ const AnnouncementDetailManage = () => {
     },
   });
 
-  const moveToPageForAnnouncementListManage = () => navigate('/admin/announcements-manage');
-
   const moveToPageForEditAnnouncementForm = () => {
     navigate(`/admin-form/edit-announcement/${announcementId}`, { state: data });
   };
@@ -49,12 +48,25 @@ const AnnouncementDetailManage = () => {
   return (
     <Layout>
       <FilterContainer>
-        <Title>공지사항 관리</Title>
-        <S.NoticeContent>
-          <div dangerouslySetInnerHTML={{ __html: data.content || '' }}></div>
-        </S.NoticeContent>
+        <C.TitleHeader>
+          <Title>공지사항 관리</Title>
+          <C.ButtonAnnouncement>
+            <Link to="/admin/announcements-manage">목록</Link>
+          </C.ButtonAnnouncement>
+        </C.TitleHeader>
+        <C.CSContent className="border_bottom">
+          <C.ContentAuth>
+            <p>{getTimeTextFromISODate(data.created_at)}</p>
+          </C.ContentAuth>
+          <div>
+            <p>제목</p>
+            {data.title}
+          </div>
+          <S.NoticeContent>
+            <div dangerouslySetInnerHTML={{ __html: data.content || '' }}></div>
+          </S.NoticeContent>
+        </C.CSContent>
         <C.ButtonWrap>
-          <C.ButtonAnnouncement onClick={moveToPageForAnnouncementListManage}>목록</C.ButtonAnnouncement>
           <C.ButtonAnnouncement onClick={handleDeleteAnnouncement}>삭제</C.ButtonAnnouncement>
           <C.ButtonAnnouncement onClick={moveToPageForEditAnnouncementForm}>수정</C.ButtonAnnouncement>
         </C.ButtonWrap>

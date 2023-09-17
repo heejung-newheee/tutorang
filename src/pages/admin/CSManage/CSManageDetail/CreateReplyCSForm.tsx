@@ -6,7 +6,7 @@ import { ONE_CUSTOMER_INQUIRY_QUERY_KEY } from '../../../../api/customerSupport'
 import { TypeNewReplyToInquiry, insertNewReplyToInquiry } from '../../../../api/customerSupportReply';
 import { AppDispatch, RootState } from '../../../../redux/config/configStore';
 import { closeModal, displayToastAsync, openModal } from '../../../../redux/modules';
-import { ButtonAnnouncement, ButtonWrap } from '../../announcementManage/ManageAnnouncementCommon.style';
+import { ButtonAnnouncement, ButtonWrap } from '../../CommonCustomerServiceManagement.style';
 import * as C from './CommonCS.style';
 
 const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; csTableId: string }) => {
