@@ -328,14 +328,6 @@ export const SignMobileWrapper = styled.div`
   button {
     white-space: nowrap;
   }
-  & button:first-child {
-    width: 110px;
-    padding: 15px 3px;
-    font-size: 14px;
-    border-radius: 5px;
-    background-color: ${colors.primary};
-    color: ${colors.white};
-  }
 
   & button:last-child {
     width: 110px;
@@ -346,7 +338,21 @@ export const SignMobileWrapper = styled.div`
     color: ${colors.primary};
   }
 `;
-
+export const ButtonMyPage = styled(Link)`
+  width: 110px;
+  padding: 15px 3px;
+  font-size: 14px;
+  border-radius: 5px;
+  background-color: ${colors.primary};
+  text-align: center;
+  &:link,
+  &:focus,
+  &:active,
+  &:visited,
+  &:hover {
+    color: ${colors.white};
+  }
+`;
 export const MobileMenuWrapper = styled.div`
   height: 100%;
   display: flex;
@@ -355,14 +361,20 @@ export const MobileMenuWrapper = styled.div`
   padding: 20px;
 `;
 
-export const GnbMobile = styled.ul`
+export const GnbMobileList = styled.ul`
   display: flex;
   align-items: center;
   flex-direction: column;
 `;
 
-export const GnbMobileItemList = styled.li`
+export const GnbMobileItem = styled.li`
   width: 100%;
   font-size: 15px;
   padding: 10px 0px;
+  > a {
+    margin: 10px;
+    font-size: 15px;
+    opacity: 0.7;
+    color: black;
+  }
 `;
