@@ -35,9 +35,6 @@
 
 @media screen and (max-width: 600px) {
   .ql-toolbar.ql-snow {
-    /* margin-top: 50px; */
-    /* height: 100px; */
-    /* display: none; */
     padding-top: 50px;
     top: 0px;
   }
@@ -112,11 +109,8 @@ em {
 
 @media screen and (max-width: 600px) {
   .ql-formats {
-    /* margin-top: 50px; */
-    /* height: 100px; */
     display: none !important;
     visibility: hidden;
-    /* margin-top: 60px; */
   }
 }
 
