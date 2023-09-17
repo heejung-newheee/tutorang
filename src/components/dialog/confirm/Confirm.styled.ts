@@ -95,6 +95,12 @@ export const Button = styled.button`
   transition: all 0.3 ease;
   line-height: 1;
   text-align: center;
+  color: #999;
+
+  &.confirm {
+    color: #c50404;
+  }
+
   @media screen and (max-width: 1024px) {
     height: 60px;
   }

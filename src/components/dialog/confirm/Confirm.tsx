@@ -28,7 +28,9 @@ const Confirm = () => {
             <S.Description>{message}</S.Description>
             <S.ButtonWrapper>
               <S.Button onClick={handleClose}>취소</S.Button>
-              <S.Button onClick={handleConfirm}>확인</S.Button>
+              <S.Button className="confirm" onClick={handleConfirm}>
+                확인
+              </S.Button>
             </S.ButtonWrapper>
           </S.ContentWrapper>
         </S.Inner>
