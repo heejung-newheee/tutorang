@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CS_MANAGE_QUERY_KEY, getAllCs } from '../../../api/customerSupportReply';
 import { FilterContainer, Layout, Table, TableContainer, Title } from '../boardManage/BoardManage.styled';
@@ -38,9 +38,7 @@ const CSManage = () => {
 
   const moveTodetailCSQuiryPage = (inquiryId: string, inquiryitem: TypeinquiryItem) => navigate(`/admin/customer-support-manage/${inquiryId}`, { state: inquiryitem });
 
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
+  useEffect(() => {}, [page]);
 
   if (!data) return <div></div>;
   return (

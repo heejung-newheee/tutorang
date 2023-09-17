@@ -6,7 +6,6 @@ import { RootState } from '../../../redux/config/configStore';
 const AdminRoute = () => {
   const navigate = useNavigate();
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log('loginUser', loginUser);
   useEffect(() => {
     if (loginUser === null || (!!loginUser && loginUser.role !== 'administrator')) {
       navigate('/');

@@ -40,23 +40,19 @@ const MatchingTutor = ({ matchList }: pageProps) => {
   const loginUser = useSelector((state: RootState) => state.user.user);
 
   const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
-    console.log('1 : ', _, '2 : ', newValue);
     setActiveTab(newValue);
   };
 
-  // 요청중 취소
   const cancelMatchMutation = useMutation(matchingCancel, {
     onSuccess: () => {
       queryClient.invalidateQueries([MATCHING_TUTOR_DATA_QUERY_KEY]);
     },
   });
-  // 매칭완료 : 수업중 취소
   const notCompleteMatchMutation = useMutation(matchingRejectStudent, {
     onSuccess: () => {
       queryClient.invalidateQueries([MATCHING_TUTOR_DATA_QUERY_KEY]);
     },
   });
-  // 매칭완료 : 수업 완료
   const completeMatchMutation = useMutation(matchingComplete, {
     onSuccess: () => {
       queryClient.invalidateQueries([MATCHING_TUTOR_DATA_QUERY_KEY]);

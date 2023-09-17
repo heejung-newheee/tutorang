@@ -8,7 +8,6 @@ import AdminSidebar from './adminSidebar/AdminSidebar';
 const AdminLayout = () => {
   const navigate = useNavigate();
   const loginUser = useSelector((state: RootState) => state.user.user);
-  console.log('loginUser', loginUser);
   useEffect(() => {
     if (loginUser === null || (!!loginUser && loginUser.role !== 'administrator')) {
       navigate('/');

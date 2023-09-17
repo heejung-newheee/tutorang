@@ -44,7 +44,6 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
     };
 
     try {
-      console.log('newReply', newReply);
       await createCSReplyMutation.mutate(newReply);
       dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '답변이 정상적으로 등록되었습니다!' }));
     } catch (error) {
