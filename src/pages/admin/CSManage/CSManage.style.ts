@@ -34,10 +34,7 @@ export const TableHead = styled.thead`
     width: 100px;
   }
   & > tr > th:nth-child(2) {
-    width: 100px;
-  }
-  & > tr > th:nth-child(4) {
-    width: 100px;
+    width: 150px;
   }
 `;
 
@@ -48,9 +45,7 @@ export const TableBody = styled.tbody`
     padding: 1em;
     border-bottom: 1px solid #f1f3f4;
     white-space: nowrap;
-    width: 150px;
     overflow: hidden;
-    gap: 4px;
     &:not(:nth-child(3)) {
       text-align: center;
     }
@@ -71,11 +66,13 @@ export const TableBody = styled.tbody`
 export const ProfileImgFigure = styled.figure`
   width: 30px;
   height: 30px;
+  margin-right: 10px;
   overflow: hidden;
 `;
 export const ProfileImgSize = styled.img`
   width: 100%;
   height: 100%;
+  border-radius: 50%;
   object-fit: cover;
 `;
 

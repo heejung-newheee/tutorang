@@ -37,13 +37,13 @@ const YoutubeModal = () => {
   };
 
   return (
-    <Container>
-      <div>
+    <Container onClick={handleClose}>
+      <YoutubeWrap>
         <CloseBtn onClick={handleClose}>
           <img src={close} alt="close button" />
         </CloseBtn>
         <YouTube videoId={id as string} opts={opts} onReady={onPlayerReady} />
-      </div>
+      </YoutubeWrap>
     </Container>
   );
 };
@@ -61,5 +61,15 @@ const CloseBtn = styled.button`
   transform: translate(-50%, 0);
   img {
     height: 100%;
+  }
+`;
+
+const YoutubeWrap = styled.div`
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    iframe {
+      width: 100%;
+      height: 300px;
+    }
   }
 `;

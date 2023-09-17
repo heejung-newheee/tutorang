@@ -54,7 +54,7 @@ const Comment = () => {
       </S.CommentLength>
       {data?.map((item) =>
         currentEditNum !== item.id ? (
-          <S.CommentContainer key={item.id}>
+          <S.CommentContainer key={`${item.post_id}+${item.id}`}>
             <S.UserSection>
               <S.UserImg src={item.profiles?.avatar_url as string} />
               <div>
