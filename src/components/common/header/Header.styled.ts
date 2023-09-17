@@ -242,6 +242,7 @@ export const MobileContainer = styled.div<{ $sideNavOpen: boolean }>`
   overflow: hidden;
   z-index: 9999;
   visibility: ${(props) => (props.$sideNavOpen ? 'visible' : 'hidden')};
+  transition: all 0.5s ease-in-out;
 `;
 
 export const MobileInner = styled.div<{ $sideNavOpen: boolean }>`
@@ -328,6 +329,14 @@ export const SignMobileWrapper = styled.div`
   button {
     white-space: nowrap;
   }
+  & button:first-child {
+    width: 110px;
+    padding: 15px 3px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: ${colors.primary};
+    color: ${colors.white};
+  }
 
   & button:last-child {
     width: 110px;
@@ -338,21 +347,7 @@ export const SignMobileWrapper = styled.div`
     color: ${colors.primary};
   }
 `;
-export const ButtonMyPage = styled(Link)`
-  width: 110px;
-  padding: 15px 3px;
-  font-size: 14px;
-  border-radius: 5px;
-  background-color: ${colors.primary};
-  text-align: center;
-  &:link,
-  &:focus,
-  &:active,
-  &:visited,
-  &:hover {
-    color: ${colors.white};
-  }
-`;
+
 export const MobileMenuWrapper = styled.div`
   height: 100%;
   display: flex;
@@ -361,20 +356,14 @@ export const MobileMenuWrapper = styled.div`
   padding: 20px;
 `;
 
-export const GnbMobileList = styled.ul`
+export const GnbMobile = styled.ul`
   display: flex;
   align-items: center;
   flex-direction: column;
 `;
 
-export const GnbMobileItem = styled.li`
+export const GnbMobileItemList = styled.li`
   width: 100%;
   font-size: 15px;
-  padding: 10px 0px;
-  > a {
-    margin: 10px;
-    font-size: 15px;
-    opacity: 0.7;
-    color: black;
-  }
+  padding: 10px 10px;
 `;
