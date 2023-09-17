@@ -40,7 +40,6 @@ const MatchingTutor = ({ matchList }: pageProps) => {
   const loginUser = useSelector((state: RootState) => state.user.user);
 
   const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
-    console.log('1 : ', _, '2 : ', newValue);
     setActiveTab(newValue);
   };
 
