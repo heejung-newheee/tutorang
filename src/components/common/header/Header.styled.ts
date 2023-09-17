@@ -242,7 +242,6 @@ export const MobileContainer = styled.div<{ $sideNavOpen: boolean }>`
   overflow: hidden;
   z-index: 9999;
   visibility: ${(props) => (props.$sideNavOpen ? 'visible' : 'hidden')};
-  transition: all 0.5s ease-in-out;
 `;
 
 export const MobileInner = styled.div<{ $sideNavOpen: boolean }>`
@@ -365,5 +364,5 @@ export const GnbMobile = styled.ul`
 export const GnbMobileItemList = styled.li`
   width: 100%;
   font-size: 15px;
-  padding: 10px 10px;
+  padding: 10px 0px;
 `;

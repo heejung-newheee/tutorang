@@ -98,7 +98,7 @@ export const EditDiv = styled.div`
 
 export const EditInputDiv = styled.div`
   width: 100%;
-  height: 60px;
+  height: 47px;
   border: 1px solid ${colors.gray_900};
   border-radius: 5px;
   display: flex;

@@ -52,7 +52,7 @@ const UserInfo = ({ match, user }: pageProps) => {
         <S.ProfileBox>
           <Container>
             <S.ProfileImg>
-              <S.UserImg src={user.cardImage_url ?? ''} alt="user profile" />
+              <S.UserImg src={user.cardImage_url || `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/default_profile.png`} alt="user profile" />
               <S.EditBtn onClick={handleEditProfiles}>
                 <img src={icon_edit} alt="profile edit button" />
               </S.EditBtn>

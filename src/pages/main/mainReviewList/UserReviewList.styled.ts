@@ -19,6 +19,7 @@ export const ReviewItem = styled.div`
 
   @media screen and (max-width: 960px) {
     flex-wrap: wrap;
+    width: 100%;
   }
 `;
 
