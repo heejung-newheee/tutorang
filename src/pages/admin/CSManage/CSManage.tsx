@@ -56,7 +56,13 @@ const CSManage = () => {
               <tr key={Math.random()}>
                 <td>{inquiryitem.created_at.split('T')[0]}</td>
                 <td>
-                  {inquiryitem.profiles?.avatar_url ? <S.ProfileImgSize src={inquiryitem.profiles?.avatar_url} alt="" /> : <p>'기본이미지'</p>}
+                  {inquiryitem.profiles?.avatar_url ? (
+                    <S.ProfileImgFigure>
+                      <S.ProfileImgSize src={inquiryitem.profiles?.avatar_url} alt="" />
+                    </S.ProfileImgFigure>
+                  ) : (
+                    <p>'기본이미지'</p>
+                  )}
                   {inquiryitem.profiles?.username || '이름 미등록'}
                 </td>
                 <S.TitleInquiryItem onClick={() => moveTodetailCSQuiryPage(inquiryitem.id, inquiryitem)}>{inquiryitem.title}</S.TitleInquiryItem>
