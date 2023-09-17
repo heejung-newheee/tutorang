@@ -7,14 +7,14 @@ const AdminRoute = () => {
   const navigate = useNavigate();
   const loginUser = useSelector((state: RootState) => state.user.user);
   useEffect(() => {
-    if (!!loginUser && loginUser.role !== 'administrator') {
+    if (loginUser === null || (!!loginUser && loginUser.role !== 'administrator')) {
       navigate('/');
     }
   });
   if (!loginUser)
     return (
       <>
-        <div></div>;
+        <div></div>
       </>
     );
   return (

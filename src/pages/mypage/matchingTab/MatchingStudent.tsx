@@ -17,7 +17,13 @@ interface pageProps {
   matchList: Views<'matching_tutor_data'>[];
 }
 
-const TabPanel = (props: any) => {
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -67,7 +73,7 @@ const MatchingStudent = ({ matchList }: pageProps) => {
   };
 
   const [activeTab, setActiveTab] = useState<number>(0);
-  const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
   // 튜터와의 채팅창 이동

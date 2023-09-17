@@ -33,6 +33,13 @@
   z-index: 10000;
 }
 
+@media screen and (max-width: 600px) {
+  .ql-toolbar.ql-snow {
+    padding-top: 50px;
+    top: 0px;
+  }
+}
+
 .ql-toolbar.ql-snow .ql-formats {
   border-right: 1px solid black;
   margin: 5px;
@@ -68,7 +75,6 @@
 
 /* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
 
-
 .ql-color-picker {
   margin-right: 15px;
 }
@@ -99,4 +105,17 @@ em {
 
 .ql-snow .ql-editor img {
   max-width: 80%;
+}
+
+@media screen and (max-width: 600px) {
+  .ql-formats {
+    display: none !important;
+    visibility: hidden;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .ql-toolbar.ql-snow {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
 }

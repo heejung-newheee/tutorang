@@ -8,8 +8,9 @@ import styled from 'styled-components';
 import { v4 } from 'uuid';
 import { EDITWRITE, POSTWRITE } from '../../@types/writeCommunity/WriteCommunity.type';
 import { updateEditedWrite, updateWrite } from '../../api/writeCommunity';
+import { left_arrow } from '../../assets';
 import { AppDispatch, RootState } from '../../redux/config/configStore';
-import { displayToastAsync } from '../../redux/modules';
+import { displayToastAsync, openModal } from '../../redux/modules';
 import supabase from '../../supabase';
 import './write.css';
 
@@ -17,6 +18,7 @@ const WritePost = () => {
   const [title, setTitle] = useState<string | null>('');
   const QuillRef = useRef<ReactQuill>();
   const [contents, setContents] = useState<string | null>('');
+  const contentsLimit = 1000;
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const queryClient = useQueryClient();
@@ -64,6 +66,25 @@ const WritePost = () => {
         }
       }
     };
+  };
+
+  const handleChange = (content: string) => {
+    if (QuillRef.current) {
+      const quillEditor = QuillRef.current.getEditor();
+
+      if (quillEditor.getLength() > contentsLimit) {
+        const limitedText = quillEditor.getText().slice(0, contentsLimit);
+        quillEditor.setText(limitedText);
+        quillEditor.setSelection({
+          index: contentsLimit,
+          length: 0,
+        });
+
+        return dispatch(openModal({ type: 'alert', message: '글자수 1000자를 초과하였습니다.' }));
+      } else {
+        setContents(content);
+      }
+    }
   };
 
   const modules = useMemo(
@@ -147,7 +168,7 @@ const WritePost = () => {
   return (
     <WriteContainer>
       <Title>
-        <input value={title as string} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="제목을 입력해주세요" />
+        <input value={title as string} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="제목을 입력해주세요" maxLength={30} />
       </Title>
       <ReactQuill
         ref={(element) => {
@@ -156,14 +177,17 @@ const WritePost = () => {
           }
         }}
         value={contents as string}
-        onChange={setContents}
+        onChange={handleChange}
         modules={modules}
         className="quill"
         theme="snow"
         placeholder="내용을 입력해주세요."
       />
       <SubmitBtn onClick={handleSubmit}>저장</SubmitBtn>
-      <BackBtn onClick={() => navigate(-1)}>뒤로가기</BackBtn>
+
+      <BackBtn onClick={() => navigate(-1)}>
+        <img src={left_arrow} alt="" />
+      </BackBtn>
     </WriteContainer>
   );
 };
@@ -193,8 +217,17 @@ const SubmitBtn = styled.button`
   right: 20px;
   top: 15px;
   z-index: 10000;
-  border: 1px solid gray;
+  color: #feb22d;
+  font-weight: 700;
   padding: 10px 20px;
+  @media screen and (max-width: 600px) {
+    & {
+      border: none;
+      color: #feb22d;
+      font-weight: 700;
+      top: 9px;
+    }
+  }
 `;
 
 const BackBtn = styled.button`
@@ -202,6 +235,14 @@ const BackBtn = styled.button`
   left: 20px;
   top: 15px;
   z-index: 10000;
-  border: 1px solid gray;
   padding: 10px 20px;
+
+  @media screen and (max-width: 600px) {
+    & {
+      border: none;
+      color: #feb22d;
+      font-weight: 700;
+      top: 12px;
+    }
+  }
 `;

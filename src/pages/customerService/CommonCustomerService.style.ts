@@ -31,6 +31,7 @@ export const ButtonCS = styled(Link)`
 export const OutermostContainer = styled.div`
   width: 100%;
   height: 100%;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -139,7 +140,8 @@ export const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 15px & div > button {
+  margin-top: 15px;
+  & div > button {
     margin-left: 10px;
   }
 `;

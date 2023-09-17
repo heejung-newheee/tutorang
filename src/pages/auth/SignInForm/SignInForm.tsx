@@ -29,7 +29,13 @@ const SignInForm = () => {
       return false;
     }
 
-    const isAuthenticated = await emailCheckFromDB(email);
+    const doesDBHaveMyEmail = async (enteredEmail: string) => {
+      const { count } = await supabase.from('profiles').select('email', { count: 'exact', head: true }).eq('email', enteredEmail);
+      return !!count;
+    };
+
+    const isAuthenticated = await doesDBHaveMyEmail(email);
+
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       if (error.message === 'Email not confirmed') {
@@ -80,16 +86,6 @@ const SignInForm = () => {
     if (error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message }));
   };
 
-  const emailCheckFromDB = async (enteredEmail: string) => {
-    const { data: profiles } = await supabase.from('profiles').select('email');
-
-    const myEmailFromDB = profiles?.find((profile) => {
-      return profile.email === enteredEmail;
-    });
-    const isMyEmailHere = myEmailFromDB === undefined ? false : true;
-    return isMyEmailHere;
-  };
-
   useEffect(() => {
     if (email === '' || password === '') {
       setValidationCheck(false);
@@ -105,7 +101,7 @@ const SignInForm = () => {
         <SForm onSubmit={handleLogin}>
           <SFormItem>
             <label htmlFor="email">이메일</label>
-            <SInput type="text" id="email" placeholder="이메일을 입력하세요" name="email" value={email} onChange={handleInput} />
+            <SInput type="email" id="email" placeholder="이메일을 입력하세요" name="email" value={email} onChange={handleInput} />
             {email && (
               <S.SignInResetButton type="button" onClick={() => setEmail('')}>
                 <BsXCircleFill className="reset_signin_input_btn" />

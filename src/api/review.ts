@@ -40,8 +40,8 @@ export const getMyWritiedReview = async (id: string) => {
     .from(REVIEW_TABLE)
     .select(
       `*,
-      reviewed_id (profiles: id, username)
-    `,
+      user: user_id(*),
+      reviewed: reviewed_id(*)`,
     )
     .eq('user_id', id);
   if (error) throw error;
@@ -73,7 +73,7 @@ export const useCreateReviewMutation = () => {
       await queryClient.cancelQueries(REVIEW_QUERY_KEY);
 
       const previousReview = queryClient.getQueryData(REVIEW_QUERY_KEY);
-      queryClient.setQueriesData(REVIEW_QUERY_KEY, (old: any) => [...old, newReviewData]);
+      queryClient.setQueriesData(REVIEW_QUERY_KEY, (old: reviews[] | undefined) => (old ? [...old, newReviewData] : [newReviewData]));
 
       return { previousReview };
     },

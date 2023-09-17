@@ -4,8 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { ONE_CUSTOMER_INQUIRY_QUERY_KEY, getOneInquiry } from '../../../../api/customerSupport';
 import { RootState } from '../../../../redux/config/configStore';
 import { getTimeTextFromISODate } from '../../../../utils/Date';
-import { ButtonAnnouncement, ButtonWrap } from '../../announcementManage/ManageAnnouncementCommon.style';
 import { FilterContainer, Layout, Title } from '../../boardManage/BoardManage.styled';
+import * as C from './../../CommonCustomerServiceManagement.style';
 import CreateReplyCSForm from './CreateReplyCSForm';
 import * as S from './DetailCSManage.style';
 import EditReplyCSForm from './EditReplyCSForm';
@@ -27,37 +27,41 @@ const DetailCSManage = () => {
   return (
     <Layout>
       <FilterContainer>
-        <S.TitleHeader>
+        <C.TitleHeader>
           <Title>1:1 문의 관리</Title>
-          <ButtonWrap>
-            <ButtonAnnouncement>
+          <C.ButtonWrap>
+            <C.ButtonAnnouncement>
               <Link to="/admin/customer-support-manage">목록</Link>
-            </ButtonAnnouncement>
-          </ButtonWrap>
-        </S.TitleHeader>
-        <S.CSContent>
-          <S.ContentAuth>
-            <p>{getTimeTextFromISODate(oneInquiryInfo.created_at)}</p>
-            <p>작성자: {profiles?.inquiryUsername}</p>
-          </S.ContentAuth>
-          <div>
-            <p>제목</p>
-            {oneInquiryInfo.title}
-          </div>
-          <div>
-            <p>내용</p>
+            </C.ButtonAnnouncement>
+          </C.ButtonWrap>
+        </C.TitleHeader>
+        <C.CSContentContainer>
+          <S.InquiryHeader>
+            <S.InquiryTitle>
+              <span>[고객문의]</span>
+              <span>{oneInquiryInfo.title}</span>
+            </S.InquiryTitle>
+            <div>
+              <p>{getTimeTextFromISODate(oneInquiryInfo.created_at)}</p>
+              <p>작성자: {profiles?.inquiryUsername}</p>
+            </div>
+          </S.InquiryHeader>
+          <S.InquiryContent>
             <div dangerouslySetInnerHTML={{ __html: oneInquiryInfo.content || '' }}></div>
-          </div>
-        </S.CSContent>
-        {reply.length === 0 && <div>관리자님~ 답변을 어서 등록해주세요!</div>}
-
-        {reply.length === 0 ? (
-          <div>{<CreateReplyCSForm loginUserId={loginUserId} csTableId={oneInquiryInfo.id} />}</div>
-        ) : (
-          <div>
-            <EditReplyCSForm replyInfo={reply[0]} />
-          </div>
-        )}
+          </S.InquiryContent>
+        </C.CSContentContainer>
+        <S.ReplyContainer>
+          <C.H2Title>관리자 답변</C.H2Title>
+          <S.ReplyContent>
+            {reply.length === 0 ? (
+              <div>{<CreateReplyCSForm loginUserId={loginUserId} csTableId={oneInquiryInfo.id} />}</div>
+            ) : (
+              <div>
+                <EditReplyCSForm replyInfo={reply[0]} />
+              </div>
+            )}
+          </S.ReplyContent>
+        </S.ReplyContainer>
       </FilterContainer>
     </Layout>
   );

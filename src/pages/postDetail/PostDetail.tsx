@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Heart from 'react-animated-heart';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -78,8 +78,10 @@ const PostDetail = () => {
 
   //게시글 삭제
   const deletePostAndNavi = () => {
-    deletePostMutation.mutate(Number(postid));
-    navigate(-1);
+    if (confirm('삭제하시겠습니까?')) {
+      deletePostMutation.mutate(Number(postid));
+      navigate(-1);
+    }
   };
 
   //게시글 삭제
@@ -124,9 +126,16 @@ const PostDetail = () => {
 
   const isLikeTrue = data?.[0].post_like?.some((like) => like.user_id === loginUser?.id);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (data?.length === 0 || data === undefined) {
+      navigate(-1);
+    }
+  }, [data]);
+
+  if (isLoading || data?.length === undefined) {
     return <Loading />;
   }
+
   return (
     <S.Container>
       <S.TitleWrap>
@@ -158,7 +167,7 @@ const PostDetail = () => {
           <S.ImgInputFlexDiv>
             <img src={loginUser?.avatar_url as string} />
             <S.InputDiv>
-              <input type="text" value={comment} onChange={(e) => setComment(e.target.value)} />
+              <input type="text" value={comment} onChange={(e) => setComment(e.target.value)} autoFocus maxLength={300} />
               <button disabled={comment ? false : true}>입력</button>
             </S.InputDiv>
           </S.ImgInputFlexDiv>

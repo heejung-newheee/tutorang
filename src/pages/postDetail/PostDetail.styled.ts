@@ -125,7 +125,7 @@ export const ImgInputFlexDiv = styled.div`
 
 export const InputDiv = styled.div`
   width: 100%;
-  height: 60px;
+  height: 47px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,5 +137,10 @@ export const InputDiv = styled.div`
     height: 90%;
     border: none;
     outline: none;
+  }
+
+  & > button {
+    flex-shrink: 0;
+    margin-right: 5px;
   }
 `;

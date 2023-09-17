@@ -27,7 +27,9 @@ const Comment = () => {
   });
 
   const handleDeleteComment = (comment_id: number) => {
-    commentDeleteMutation.mutate({ comment_id, user_id: loginUser?.id, postid: Number(postid) });
+    if (confirm('삭제하시겠습니까?')) {
+      commentDeleteMutation.mutate({ comment_id, user_id: loginUser?.id, postid: Number(postid) });
+    }
   };
 
   const commentEditMutation = useMutation((editInfo: EDITCOMMENT) => updateComment(editInfo, setCurrentEditNum), {
@@ -45,6 +47,7 @@ const Comment = () => {
     const isoFormattedDateTime = currentDateTime.toISOString();
 
     commentEditMutation.mutate({ comment: editComment, created_at: isoFormattedDateTime, id: commentId });
+    setEditComment('');
   };
   return (
     <>
@@ -54,7 +57,7 @@ const Comment = () => {
       </S.CommentLength>
       {data?.map((item) =>
         currentEditNum !== item.id ? (
-          <S.CommentContainer key={item.id}>
+          <S.CommentContainer key={`${item.post_id}+${item.id}`}>
             <S.UserSection>
               <S.UserImg src={item.profiles?.avatar_url as string} />
               <div>
@@ -78,7 +81,7 @@ const Comment = () => {
             <S.EditDiv>
               <form onSubmit={(e) => handleEditSubmit(e, item.id)}>
                 <S.EditInputDiv>
-                  <input type="text" value={editComment} onChange={(e) => setEditComment(e.target.value)} autoFocus />
+                  <input type="text" value={editComment} onChange={(e) => setEditComment(e.target.value)} autoFocus maxLength={300} />
                   <button type="submit" disabled={editComment ? false : true}>
                     완료
                   </button>

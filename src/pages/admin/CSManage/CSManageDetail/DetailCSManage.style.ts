@@ -12,27 +12,36 @@ export const Button = styled.button`
   }
 `;
 
-export const CSContent = styled.div`
-  margin: 0px 0px 30px;
+export const InquiryContent = styled.div`
+  margin: 30px 0;
   border-top: solid 1px #ddd;
-  border-bottom: solid 1px #ddd;
   padding: 30px 15px;
   font-size: 14px;
-  > div {
-    margin-bottom: 20px;
-    > p {
-      margin-bottom: 5px;
-    }
+  text-align: center;
+  & img {
+    width: 300px;
   }
 `;
 
-export const ContentAuth = styled.div`
-  display: flex;
-  justify-content: space-between;
+export const ReplyContainer = styled.div`
+  padding: 0 15px;
+  font-size: 14px;
 `;
 
-export const TitleHeader = styled.div`
+export const ReplyContent = styled.div`
+  margin-top: 10px;
+`;
+
+export const InquiryHeader = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+`;
+
+export const InquiryTitle = styled.h3`
+  font-size: 16px;
+  font-weight: 500;
+  & span:nth-child(1) {
+    margin-right: 10px;
+  }
 `;

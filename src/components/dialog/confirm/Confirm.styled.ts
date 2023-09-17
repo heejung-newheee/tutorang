@@ -20,6 +20,7 @@ export const Inner = styled.div`
   width: 100%;
   max-width: 600px;
   margin: 0 32px;
+  padding: 30px;
   background-color: ${colors.white};
   border-radius: 18px;
   @media screen and (max-width: 1024px) {
@@ -35,12 +36,14 @@ export const Inner = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  padding: 48px 60px 0 60px;
   @media screen and (max-width: 1024px) {
     margin: 0 10px;
   }
   @media screen and (max-width: 768px) {
+    padding: 48px 30px;
     margin: 0;
+    position: relative;
+    top: 30%;
   }
 `;
 
@@ -74,12 +77,34 @@ export const Description = styled.p`
   font-size: 18px;
   color: ${colors.gray};
   text-align: center;
+  padding-bottom: 30px;
+  border-bottom: solid 1px #efefef;
 `;
 
 export const ButtonWrapper = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
-  & Button {
-    height: 80px;
+export const Button = styled.button`
+  width: 50%;
+  padding: 20px 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3 ease;
+  line-height: 1;
+  text-align: center;
+  color: #999;
+
+  &.confirm {
+    color: #c50404;
+  }
+
+  @media screen and (max-width: 1024px) {
+    height: 60px;
+  }
+  @media screen and (max-width: 768px) {
+    height: 50px;
   }
 `;

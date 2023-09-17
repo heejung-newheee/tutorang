@@ -5,8 +5,6 @@ import { BookMarkType } from '../supabase/database.types';
 
 export const matchBookMark = async (tutorId: string) => {
   const { data } = await supabase.from(BOOK_MARK_TABLE).select().match({ liked_id: tutorId });
-  // 게시글 튜터아이디, 로그인유저 아이디 받아서 필터링
-  // const { data } = await supabase.from(BOOK_MARK_TABLE).select().match({ liked_id: tutorId }).eq('user_id', userId);
   return data;
 };
 
@@ -26,7 +24,7 @@ export const useCreateBookMarkMutation = () => {
       await queryClient.cancelQueries(BOOKMARK_QUERY_KEY);
 
       const previousBookMark = queryClient.getQueryData(BOOKMARK_QUERY_KEY);
-      queryClient.setQueriesData(BOOKMARK_QUERY_KEY, (old: any) => [...old, newBookMark]);
+      queryClient.setQueriesData(BOOKMARK_QUERY_KEY, (old: BookMarkType[] | undefined) => (old ? [...old, newBookMark] : [newBookMark]));
 
       return { previousBookMark };
     },
@@ -51,7 +49,7 @@ export const useDeleteBookMarkMutation = () => {
     onMutate: async (newBookMark) => {
       await queryClient.cancelQueries(BOOKMARK_QUERY_KEY);
       const previousBookMark = queryClient.getQueryData(BOOKMARK_QUERY_KEY);
-      queryClient.setQueriesData(BOOKMARK_QUERY_KEY, (old: any) => [...old, newBookMark]);
+      queryClient.setQueriesData(BOOKMARK_QUERY_KEY, (old: BookMarkType[] | undefined) => (old ? old.filter((item) => item.liked_id !== newBookMark) : old));
 
       return { previousBookMark };
     },

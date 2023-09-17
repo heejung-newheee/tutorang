@@ -4,13 +4,11 @@ import supabase from '../supabase';
 
 export const fetchPostData = async (postid: number) => {
   const { data, error } = await supabase.from('write').select(`*, post_like(post_id, user_id),profiles(username,avatar_url)`).eq('id', postid);
-
   if (error) throw error;
   return data;
 };
 
 export const createLike = async (likePost: LikeUpdatePost) => {
-  // const writeLikePromise = supabase.from('write').update({ like: likePost.like }).eq('id', likePost.postid).single();
   const writeLikePromise = supabase.rpc('increment_like', {
     post_id: likePost.postid,
   });
@@ -22,13 +20,7 @@ export const createLike = async (likePost: LikeUpdatePost) => {
   if (writeResult.error) throw writeResult.error;
   if (postLikeResult.error) throw postLikeResult.error;
 };
-// let { data, error } = await supabase
-//   .rpc('decrement_like', {
-//     post_id
-//   })
 
-// if (error) console.error(error)
-// else console.log(data)
 export const updateLike = async (likeUpdate: LikeUpdatePost) => {
   const writeMinusLikePromise = await supabase.rpc('decrement_like', {
     post_id: likeUpdate.postid,

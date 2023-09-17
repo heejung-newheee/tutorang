@@ -34,10 +34,7 @@ export const TableHead = styled.thead`
     width: 100px;
   }
   & > tr > th:nth-child(2) {
-    width: 100px;
-  }
-  & > tr > th:nth-child(4) {
-    width: 100px;
+    width: 150px;
   }
 `;
 
@@ -48,7 +45,7 @@ export const TableBody = styled.tbody`
     padding: 1em;
     border-bottom: 1px solid #f1f3f4;
     white-space: nowrap;
-    max-width: 250px;
+    overflow: hidden;
     &:not(:nth-child(3)) {
       text-align: center;
     }
@@ -62,16 +59,37 @@ export const TableBody = styled.tbody`
   & > tr > td:nth-child(3) {
     overflow: hidden;
     text-overflow: ellipsis;
+    padding-left: 36px;
   }
 `;
 
-export const ProfileImgSize = styled.img`
+export const ProfileImgFigure = styled.figure`
   width: 30px;
   height: 30px;
+  margin-right: 10px;
+  overflow: hidden;
+`;
+export const ProfileImgSize = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const TitleInquiryItem = styled.td`
   &:hover {
     cursor: pointer;
   }
+`;
+
+export const Navigation = styled.nav`
+  padding: 1em;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+`;
+
+export const TableRow = styled.tr<{ $isAnswered: boolean }>`
+  background-color: ${({ $isAnswered }) => ($isAnswered ? '#fff' : '#f9f9f9')};
+  color: ${({ $isAnswered }) => ($isAnswered ? '#000' : '#848484')};
 `;

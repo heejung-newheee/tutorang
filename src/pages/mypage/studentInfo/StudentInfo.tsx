@@ -15,11 +15,10 @@ import { Container, ContentsDataBox, DataAuth, DataContent, DataItem, DataList, 
 import MatchingTutor from '../matchingTab/MatchingTutor';
 import * as S from './StudentInfo.styled';
 
-interface pageProps {
+type pageProps = {
   match: Views<'matching_tutor_data'>[];
   user: Tables<'profiles'>;
-}
-
+};
 const StudentInfo = ({ match, user }: pageProps) => {
   const dispatch = useDispatch();
   const [openMenuId, setOpenMenuId] = useState<number>(0);
@@ -78,7 +77,8 @@ const StudentInfo = ({ match, user }: pageProps) => {
           {myReview.data.length > 0 ? (
             <ContentsDataBox>
               <DataList>
-                {myReview.data.map((review: any) => {
+                {myReview.data.map((review) => {
+                  const reviewed = review.reviewed as unknown as Tables<'profiles'> | null;
                   const rating = review.rating || 0;
                   return (
                     <DataItem key={review.id} className="studentInfo">
@@ -86,7 +86,7 @@ const StudentInfo = ({ match, user }: pageProps) => {
                         <DataTitle>{review.title}</DataTitle>
                         <DataStar>{StarRating(rating)}</DataStar>
                         <DataContent>{review.content}</DataContent>
-                        <DataAuth>{review.reviewed_id.username!}</DataAuth>
+                        <DataAuth>{reviewed?.username}</DataAuth>
                       </div>
                       <S.ReviewEditBtn>
                         <button onClick={() => handleIsOpen(review.id)}>

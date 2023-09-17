@@ -14,7 +14,6 @@ interface pageProps {
   match: Views<'matching_tutor_data'>[] | undefined;
   user: Tables<'profiles'>;
 }
-// const UserInfo = ({match, user}) => {
 const UserInfo = ({ match, user }: pageProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -22,16 +21,12 @@ const UserInfo = ({ match, user }: pageProps) => {
   const loginUser = useSelector((state: RootState) => state.user.user!);
   const { isConfirm, modalId } = useSelector((state: RootState) => state.modal);
 
-  if (!user) {
-    return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
-  }
-
   const writeReviewCount = useQuery([WRITE_REVIEW_COUNT, user], () => getWriteReviewCount(user.id), { enabled: !!user });
   const receivedReviewCount = useQuery([RECEIVED_REVIEW_COUNT], () => getReceivedWriteReviewCount(user.id), { enabled: !!user });
 
   const handleEditProfiles = () => {
     if (!loginUser?.gender) {
-      dispatch(confirmModal({ type: 'confirm', message: '소셜로그인을 하셨는데 아직 추가정보를 입력하지 않았다구요? 더 많은 기능을 이용하기 위해 추가정보등록이 필요합니다. 등록하시러 가시겠습니까?', modalId: 'handleEditProfiles' }));
+      dispatch(confirmModal({ type: 'confirm', message: `소셜로그인 사용자는 추가 정보를 입력해야 합니다. 더 많은 기능을 이용하기 위해 추가정보를 등록하러 가시겠습니까?`, modalId: 'handleEditProfiles' }));
     } else {
       navigate('/edit-profiles');
     }
@@ -52,7 +47,7 @@ const UserInfo = ({ match, user }: pageProps) => {
         <S.ProfileBox>
           <Container>
             <S.ProfileImg>
-              <S.UserImg src={user.cardImage_url ?? ''} alt="user profile" />
+              <S.UserImg src={user.cardImage_url || `https://rkirhzqybhsglryysdso.supabase.co/storage/v1/object/public/avatars/default_profile.png`} alt="user profile" />
               <S.EditBtn onClick={handleEditProfiles}>
                 <img src={icon_edit} alt="profile edit button" />
               </S.EditBtn>
