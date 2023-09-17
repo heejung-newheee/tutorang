@@ -41,4 +41,7 @@ export const InquiryHeader = styled.div`
 export const InquiryTitle = styled.h3`
   font-size: 16px;
   font-weight: 500;
+  & span:nth-child(1) {
+    margin-right: 10px;
+  }
 `;

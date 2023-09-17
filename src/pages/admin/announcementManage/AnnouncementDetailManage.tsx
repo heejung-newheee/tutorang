@@ -13,7 +13,7 @@ import * as S from './AnnouncementDetailManage.style';
 const AnnouncementDetailManage = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { isConfirm } = useSelector((state: RootState) => state.modal);
+  const { isConfirm, modalId } = useSelector((state: RootState) => state.modal);
   const dispatch = useDispatch<AppDispatch>();
   const announcementId = useLocation().pathname.split('/')[3];
   const { data } = useQuery([ONE_ANNOUNCEMENT_QUERY_KEY, announcementId], () => getOneAnnouncement(announcementId), { enabled: !!announcementId });
@@ -34,11 +34,11 @@ const AnnouncementDetailManage = () => {
   };
 
   const handleDeleteAnnouncement = async () => {
-    dispatch(openModal({ type: 'confirm', message: '해당공지를 삭제하시겠습니까?' }));
+    dispatch(openModal({ type: 'confirm', message: '해당공지를 삭제하시겠습니까?', modalId: 'handleDeleteAnnouncement' }));
   };
 
   useEffect(() => {
-    if (isConfirm) {
+    if (isConfirm && modalId === 'handleDeleteAnnouncement') {
       deleteAnnouncementMutation.mutate(announcementId);
       dispatch(clearModal());
     }

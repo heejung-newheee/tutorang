@@ -28,6 +28,7 @@ export const handleAgeNum = (item: string) => {
   }
 };
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const SearchDebounce = <T extends (...args: any[]) => any>(fn: T, delay: number) => {
   let timeout: ReturnType<typeof setTimeout>;
 
@@ -40,6 +41,7 @@ export const SearchDebounce = <T extends (...args: any[]) => any>(fn: T, delay: 
     return result;
   };
 };
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 export const handleGenderFilter = (item: string, setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
   if (item === '전체') {
@@ -77,7 +79,7 @@ export const handleLevelFilter = (item: string, setSelectedFilters: Dispatch<Set
 };
 
 export const handleAgeFilter = (item: string, setSelectedFilters: Dispatch<SetStateAction<SelectedFilters>>, selectedFilters: SelectedFilters, setSelectedArr: Dispatch<SetStateAction<string[][]>>) => {
-  let ageNum = handleAgeNum(item);
+  const ageNum = handleAgeNum(item);
 
   if (item === '전체') {
     setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: [] });
@@ -156,12 +158,13 @@ export const handleDeleteFilterBar = (item: string[], setSelectedFilters: Dispat
       setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
       break;
 
-    case 'age':
-      let ageNum = handleAgeNum(item[1]);
+    case 'age': {
+      const ageNum = handleAgeNum(item[1]);
 
       setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, age: pre.age.filter((i: number) => i !== ageNum) });
       setSelectedArr((pre) => pre.filter((i) => i[1] !== item[1]));
       break;
+    }
 
     case 'location1':
       setSelectedFilters((pre: SelectedFilters) => pre && { ...pre, location1: '', location2: '' });

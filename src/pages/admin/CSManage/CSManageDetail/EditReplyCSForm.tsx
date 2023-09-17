@@ -13,7 +13,7 @@ type EditReplyCSFormProps = {
 };
 
 const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
-  const { isConfirm } = useSelector((state: RootState) => state.modal);
+  const { isConfirm, modalId } = useSelector((state: RootState) => state.modal);
   const dispatch = useDispatch<AppDispatch>();
   const queryClient = useQueryClient();
   const [isEditing, setEditing] = useState(false);
@@ -47,7 +47,7 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
   };
 
   const handleDeleteReply = () => {
-    dispatch(openModal({ type: 'confirm', message: '정말로 삭제하시겠습니까?' }));
+    dispatch(openModal({ type: 'confirm', message: '정말로 삭제하시겠습니까?', modalId: 'deleteReplyMutation' }));
   };
 
   const handleToggleEdit = () => {
@@ -56,7 +56,7 @@ const EditReplyCSForm = ({ replyInfo }: EditReplyCSFormProps) => {
   };
 
   useEffect(() => {
-    if (isConfirm) deleteReplyMutation.mutate(replyInfo.id);
+    if (isConfirm && modalId === 'deleteReplyMutation') deleteReplyMutation.mutate(replyInfo.id);
     return () => {
       dispatch(clearModal());
     };

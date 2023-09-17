@@ -22,10 +22,6 @@ const UserInfo = ({ match, user }: pageProps) => {
   const loginUser = useSelector((state: RootState) => state.user.user!);
   const { isConfirm, modalId } = useSelector((state: RootState) => state.modal);
 
-  if (!user) {
-    return <div>데이터를 불러오는 중에 오류가 발생했습니다.</div>;
-  }
-
   const writeReviewCount = useQuery([WRITE_REVIEW_COUNT, user], () => getWriteReviewCount(user.id), { enabled: !!user });
   const receivedReviewCount = useQuery([RECEIVED_REVIEW_COUNT], () => getReceivedWriteReviewCount(user.id), { enabled: !!user });
 

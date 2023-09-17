@@ -26,7 +26,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
   const [, setSearchParams] = useSearchParams();
   const dispatch = useDispatch<AppDispatch>();
   const loginUser = useSelector((state: RootState) => state.user.user);
-  const { isConfirm } = useSelector((state: RootState) => state.modal);
+  const { isConfirm, modalId } = useSelector((state: RootState) => state.modal);
   const handleSubmitCreateMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -58,7 +58,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
 
   const handleLeaveRoom = async () => {
     if (!chatRoom) return;
-    dispatch(openModal({ type: 'confirm', message: '채팅방을 나가시겠습니까?' }));
+    dispatch(openModal({ type: 'confirm', message: '채팅방을 나가시겠습니까?', modalId: 'ChatRoom' }));
   };
 
   const leaveRoom = async () => {
@@ -104,7 +104,7 @@ const ChatRoom = ({ userId }: { userId: string }) => {
   };
 
   useEffect(() => {
-    if (isConfirm) leaveRoom();
+    if (isConfirm && modalId === 'ChatRoom') leaveRoom();
     return () => {
       dispatch(clearModal());
     };

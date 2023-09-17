@@ -35,18 +35,63 @@ export const matchReview = async (tutorId: string) => {
   return data;
 };
 
+// export const getMyWritiedReview = async (id: string) => {
+//   const { data, error } = await supabase
+//     .from(REVIEW_TABLE)
+//     .select(
+//       `*,
+//       reviewed_id (profiles: id, username)
+//     `,
+//     )
+//     .eq('user_id', id);
+//   if (error) throw error;
+//   return data;
+// };
+
 export const getMyWritiedReview = async (id: string) => {
   const { data, error } = await supabase
     .from(REVIEW_TABLE)
     .select(
       `*,
-      reviewed_id (profiles: id, username)
-    `,
+      user: user_id(*),
+      reviewed: reviewed_id(*)`,
     )
     .eq('user_id', id);
   if (error) throw error;
   return data;
 };
+
+//  const { data, error } = await supabase.from(PENDING_TUTOR_REGISTRATION_TABLE).select(
+//   `*,
+//   profiles (id, avatar_url, username)
+//   `,
+// );
+
+// export const getMyWritiedReview = async (id: string) => {
+//   const { data, error } = await supabase
+//     .from(REVIEW_TABLE)
+//     .select(
+//       `*,
+//       reviewed_id (profiles: id, username)
+//     `,
+//     )
+//     .eq('user_id', id);
+//   if (error) throw error;
+//   return data;
+// };
+
+// export const getMyWritiedReview = async (id: string) => {
+//   const { data, error } = await supabase
+//     .from(REVIEW_TABLE)
+//     .select(
+//       `*,
+//       profiles (id, username)
+//     `,
+//     )
+//     .eq('user_id', id);
+//   if (error) throw error;
+//   return data;
+// };
 
 export const reviewRequest = async (newReview: reviews) => {
   const { error } = await supabase.from(REVIEW_TABLE).insert(newReview).select();
@@ -73,7 +118,7 @@ export const useCreateReviewMutation = () => {
       await queryClient.cancelQueries(REVIEW_QUERY_KEY);
 
       const previousReview = queryClient.getQueryData(REVIEW_QUERY_KEY);
-      queryClient.setQueriesData(REVIEW_QUERY_KEY, (old: any) => [...old, newReviewData]);
+      queryClient.setQueriesData(REVIEW_QUERY_KEY, (old: reviews[] | undefined) => (old ? [...old, newReviewData] : [newReviewData]));
 
       return { previousReview };
     },
