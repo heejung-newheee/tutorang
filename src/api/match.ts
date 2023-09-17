@@ -83,7 +83,7 @@ export const matchingRejectStudent = async (id: string) => {
     .update({
       status: 'reject',
       matched: true,
-      refund: 'refundRequest', // null,refundRequest,refundConfirm
+      refund: 'refundRequest',
     })
     .eq('id', id);
   if (error) throw error;

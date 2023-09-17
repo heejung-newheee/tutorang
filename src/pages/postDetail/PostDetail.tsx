@@ -78,7 +78,6 @@ const PostDetail = () => {
 
   //게시글 삭제
   const deletePostAndNavi = () => {
-    //  dispatch(openModal({ type: 'confirm', message: '정말로 삭제하시겠습니까?' }))
     if (confirm('삭제하시겠습니까?')) {
       deletePostMutation.mutate(Number(postid));
       navigate(-1);
