@@ -42,7 +42,7 @@ const CustomerSupport = () => {
             ) : (
               data.map((item, index) => (
                 <tr key={item.id}>
-                  <td>{index + 1}</td>
+                  <td>{data.length - index}</td>
                   <td>
                     <Link to={`/customer-service/customer-support/${item.id}`}>{item.title}</Link>
                   </td>

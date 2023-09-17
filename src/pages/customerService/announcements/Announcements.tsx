@@ -35,7 +35,7 @@ const Announcements = () => {
             ) : (
               data.map((announcementItem, index) => (
                 <tr key={announcementItem.id}>
-                  <td>{index + 1}</td>
+                  <td>{data.length - index}</td>
                   <td>
                     <Link to={`/customer-service/announcements/${announcementItem.id}`}>{announcementItem.title}</Link>
                   </td>
