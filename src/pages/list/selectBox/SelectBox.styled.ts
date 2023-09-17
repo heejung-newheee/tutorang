@@ -147,6 +147,11 @@ export const PriceClassType = styled.div`
     padding-left: 5px;
     cursor: pointer;
   }
+
+  & > div > img {
+    margin-left: 5px;
+    cursor: pointer;
+  }
 `;
 
 export const FilterBar = styled.div`
