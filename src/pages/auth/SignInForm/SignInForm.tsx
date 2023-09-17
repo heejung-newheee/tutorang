@@ -101,7 +101,7 @@ const SignInForm = () => {
         <SForm onSubmit={handleLogin}>
           <SFormItem>
             <label htmlFor="email">이메일</label>
-            <SInput type="text" id="email" placeholder="이메일을 입력하세요" name="email" value={email} onChange={handleInput} />
+            <SInput type="email" id="email" placeholder="이메일을 입력하세요" name="email" value={email} onChange={handleInput} />
             {email && (
               <S.SignInResetButton type="button" onClick={() => setEmail('')}>
                 <BsXCircleFill className="reset_signin_input_btn" />
