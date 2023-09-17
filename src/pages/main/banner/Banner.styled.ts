@@ -8,11 +8,13 @@ export const BannerSection = styled.section`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  margin-top: 70px;
   @media screen and (max-width: 1300px) {
     height: 500px;
     padding: 50px;
   }
   @media screen and (max-width: 768px) {
+    margin-top: 50px;
     height: 400px;
     padding: 50px 30px;
     text-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
@@ -20,7 +22,7 @@ export const BannerSection = styled.section`
 `;
 export const BannerContainer = styled.div`
   max-width: 1200px;
-  height: 551px;
+  height: 570px;
   margin: 0 auto;
   display: flex;
   align-items: center;

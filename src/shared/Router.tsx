@@ -1,5 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { GlobalLayout, GlobalModal, Layout, ScrollToTop, SignInForm, SignUpForm, ToastContainer } from '../components';
+import { Layout, SignInForm, SignUpForm } from '../components';
+import ScrollToTop from '../components/common/ScrollToTop';
+import GlobalLayout from '../components/common/globalLayout/GlobalLayout';
+import ToastContainer from '../components/dialog/toast/ToastContainer';
+import GlobalModal from '../components/modal/GlobalModal';
 import {
   AdminLayout,
   AdminRoute,

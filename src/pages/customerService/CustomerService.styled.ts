@@ -36,7 +36,6 @@ export const ResponsivMenu = styled.div`
   }
 
   @media screen and (max-width: 420px) {
-    margin-top: 25px;
     display: grid;
   }
 `;

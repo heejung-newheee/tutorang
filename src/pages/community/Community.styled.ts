@@ -80,7 +80,7 @@ export const PostContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  border: 1px solid ${colors.gray_900};
+  border: 1px solid ${colors.gray_200};
 
   @media all and (max-width: 768px) {
     justify-content: center;
@@ -103,7 +103,7 @@ export const CategoryColor = styled.div<{ $color: boolean }>`
   padding-left: 10px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid ${colors.gray_900};
+  border-bottom: 1px solid ${colors.gray_200};
   font-size: 15px;
   color: ${(props) => (props.$color === true ? `${colors.primary}` : 'gray')};
   position: relative;

@@ -6,8 +6,8 @@ export const Post = styled.div<{ $lastElement: boolean }>`
   height: 280px;
   padding: 20px;
   display: flex;
-  border-left: 1px solid ${colors.gray_900};
-  border-bottom: ${(props) => (props.$lastElement === true ? 'none' : `1px solid ${colors.gray_900}`)};
+  border-left: 1px solid ${colors.gray_200};
+  border-bottom: ${(props) => (props.$lastElement === true ? 'none' : `1px solid ${colors.gray_200}`)};
   position: relative;
   cursor: pointer;
 
