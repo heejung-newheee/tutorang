@@ -138,4 +138,9 @@ export const InputDiv = styled.div`
     border: none;
     outline: none;
   }
+
+  & > button {
+    flex-shrink: 0;
+    margin-right: 5px;
+  }
 `;

@@ -3,6 +3,7 @@ import { colors } from '../../style/theme/colors';
 
 export const CommunityContainer = styled.div`
   margin: 20px;
+  margin-bottom: 150px;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -10,7 +11,7 @@ export const CommunityContainer = styled.div`
 
   @media all and (max-width: 768px) {
     margin: 0;
-    margin-bottom: 350px;
+    margin-bottom: 150px;
   }
 `;
 
@@ -136,20 +137,16 @@ export const Pagination = styled.div`
 `;
 
 export const PostBtn = styled.button`
-  padding: 10px 15px;
+  width: 40px;
+  height: 40px;
   background-color: ${colors.primary};
   color: ${colors.white};
   border: 1px solid ${colors.primary};
-  border-radius: 3px;
+  border-radius: 50%;
   position: absolute;
   right: 0;
   bottom: -50px;
-
-  &:hover {
-    border: 1px solid ${colors.primary};
-    color: ${colors.black_200};
-    background-color: ${colors.white};
-  }
+  cursor: pointer;
 
   @media all and (max-width: 768px) {
     margin-right: 10px;
