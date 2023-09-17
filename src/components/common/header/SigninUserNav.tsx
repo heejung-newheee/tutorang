@@ -22,6 +22,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
   const AuthNavInfoAreaRef = useRef<HTMLDivElement>(null);
   const [isOpenAuthNavInfoArea, setIsOpenAuthNavInfoArea] = useState(false);
   const loginUserId = $loginUser!.id;
+  const loginUserRole = $loginUser!.role;
   const { data: pendingTutorRegistInfo } = useQuery(PENDING_TUTOR_REGISTRATION_INFO_QUERY_KEY, () => getPendingTutorRegistInfo(loginUserId), { enabled: !!$loginUser });
 
   const presentUrlPathname = window.location.pathname;
@@ -66,6 +67,7 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
 
   const moveToMyPage = () => navigate('/mypage');
   const moveToChatPage = () => navigate('/chat');
+  const moveToManagerPage = () => navigate('admin/dashboard');
 
   const handleUserSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -133,6 +135,16 @@ const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
               </S.AuthInfoSection>
               <S.PartitionLine />
               <S.AuthNavSection>
+                {loginUserRole === 'administrator' && (
+                  <S.AuthNavItem
+                    onClick={() => {
+                      setIsOpenAuthNavInfoArea(false);
+                      moveToManagerPage();
+                    }}
+                  >
+                    <Link to="#">관리자페이지</Link>
+                  </S.AuthNavItem>
+                )}
                 <S.AuthNavItem
                   onClick={() => {
                     setIsOpenAuthNavInfoArea(false);

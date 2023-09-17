@@ -138,6 +138,7 @@ const SignUpForm = () => {
     });
     if (data && data.user) {
       const { error } = await supabase.from('profiles').update(formData).eq('id', data.user.id);
+
       if (error) {
         console.error(error);
         console.warn(error);

@@ -29,7 +29,13 @@ const SignInForm = () => {
       return false;
     }
 
-    const isAuthenticated = await emailCheckFromDB(email);
+    const doesDBHaveMyEmail = async (enteredEmail: string) => {
+      const { count } = await supabase.from('profiles').select('email', { count: 'exact', head: true }).eq('email', enteredEmail);
+      return !!count;
+    };
+
+    const isAuthenticated = await doesDBHaveMyEmail(email);
+
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       if (error.message === 'Email not confirmed') {
@@ -78,16 +84,6 @@ const SignInForm = () => {
     });
     if (error) console.error(error.message);
     if (error) dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: error.message }));
-  };
-
-  const emailCheckFromDB = async (enteredEmail: string) => {
-    const { data: profiles } = await supabase.from('profiles').select('email');
-
-    const myEmailFromDB = profiles?.find((profile) => {
-      return profile.email === enteredEmail;
-    });
-    const isMyEmailHere = myEmailFromDB === undefined ? false : true;
-    return isMyEmailHere;
   };
 
   useEffect(() => {

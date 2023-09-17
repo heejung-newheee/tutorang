@@ -37,9 +37,9 @@ const AnnouncementsListManage = () => {
             </tr>
           </S.TableHead>
           <S.TableBody>
-            {data?.map((announcementItem) => (
+            {data?.map((announcementItem, index) => (
               <tr key={announcementItem.id}>
-                <td>넘버</td>
+                <td>{index + 1}</td>
                 <td>{announcementItem.created_at.slice(0, 10)}</td>
                 <td key={announcementItem.id}>
                   <Link to={`/admin/announcements-manage/${announcementItem.id}`}>{announcementItem.title}</Link>
