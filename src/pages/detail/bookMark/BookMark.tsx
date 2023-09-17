@@ -14,11 +14,10 @@ const BookMark = () => {
   const dispatch = useDispatch();
 
   const { id } = useParams();
-  if (!id) return;
 
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const { data: bookMarkList, isError, error } = useQuery(MATCH_BOOK_MARK_QUERY_KEY, () => matchBookMark(id)); // () => matchBookMark(id, loginUser!.id)); 이렇게 넘겨주면 ?
+  const { data: bookMarkList, isError, error } = useQuery(MATCH_BOOK_MARK_QUERY_KEY, () => matchBookMark(id || ''), { enabled: !!id }); // () => matchBookMark(id, loginUser!.id)); 이렇게 넘겨주면 ?
   const [isBookMark, setIsBookMark] = useState(false);
   const [isThrottled, setIsThrottled] = useState(false);
 
@@ -64,6 +63,8 @@ const BookMark = () => {
     console.error('supabase Error', error);
     return null;
   }
+
+  if (!id) return;
 
   return <button onClick={() => handleToggleBookMark()}> {isBookMark ? <S.Icon src={icon_bookMark_full} /> : <S.Icon src={icon_bookMark_empty} />} </button>;
 };

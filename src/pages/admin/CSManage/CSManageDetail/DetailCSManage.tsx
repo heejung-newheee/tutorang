@@ -35,29 +35,33 @@ const DetailCSManage = () => {
             </C.ButtonAnnouncement>
           </C.ButtonWrap>
         </C.TitleHeader>
-        <C.CSContent>
-          <C.ContentAuth>
-            <p>{getTimeTextFromISODate(oneInquiryInfo.created_at)}</p>
-            <p>작성자: {profiles?.inquiryUsername}</p>
-          </C.ContentAuth>
-          <div>
-            <p>제목</p>
-            {oneInquiryInfo.title}
-          </div>
+        <C.CSContentContainer>
+          <S.InquiryHeader>
+            <S.InquiryTitle>
+              <span>[고객문의]</span>
+              <span>{oneInquiryInfo.title}</span>
+            </S.InquiryTitle>
+            <div>
+              <p>{getTimeTextFromISODate(oneInquiryInfo.created_at)}</p>
+              <p>작성자: {profiles?.inquiryUsername}</p>
+            </div>
+          </S.InquiryHeader>
           <S.InquiryContent>
-            <p>내용</p>
             <div dangerouslySetInnerHTML={{ __html: oneInquiryInfo.content || '' }}></div>
           </S.InquiryContent>
-        </C.CSContent>
-        {reply.length === 0 && <div>관리자님~ 답변을 어서 등록해주세요!</div>}
-
-        {reply.length === 0 ? (
-          <div>{<CreateReplyCSForm loginUserId={loginUserId} csTableId={oneInquiryInfo.id} />}</div>
-        ) : (
-          <div>
-            <EditReplyCSForm replyInfo={reply[0]} />
-          </div>
-        )}
+        </C.CSContentContainer>
+        <S.ReplyContainer>
+          <C.H2Title>관리자 답변</C.H2Title>
+          <S.ReplyContent>
+            {reply.length === 0 ? (
+              <div>{<CreateReplyCSForm loginUserId={loginUserId} csTableId={oneInquiryInfo.id} />}</div>
+            ) : (
+              <div>
+                <EditReplyCSForm replyInfo={reply[0]} />
+              </div>
+            )}
+          </S.ReplyContent>
+        </S.ReplyContainer>
       </FilterContainer>
     </Layout>
   );

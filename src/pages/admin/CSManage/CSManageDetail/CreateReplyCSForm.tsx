@@ -13,7 +13,7 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
   const queryClient = useQueryClient();
   const [content, setContent] = useState('');
   const dispatch = useDispatch<AppDispatch>();
-  const { isConfirm } = useSelector((state: RootState) => state.modal);
+  const { isConfirm, modalId } = useSelector((state: RootState) => state.modal);
 
   const createCSReplyMutation = useMutation(async (newReply: TypeNewReplyToInquiry) => insertNewReplyToInquiry(newReply), {
     onSuccess: () => {
@@ -33,7 +33,7 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
       dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: '내용이 입력되지 않았습니다!' }));
       return false;
     }
-    dispatch(openModal({ type: 'confirm', message: '내용에 이상이 없습니까? 문의게시판 답변으로 등록하시겠습니까?' }));
+    dispatch(openModal({ type: 'confirm', message: '내용에 이상이 없습니까? 문의게시판 답변으로 등록하시겠습니까?', modalId: 'CreateReplyCSForm' }));
   };
 
   const handleCreateReply = async () => {
@@ -44,16 +44,16 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
     };
 
     try {
+      console.log('newReply', newReply);
       await createCSReplyMutation.mutate(newReply);
+      dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '답변이 정상적으로 등록되었습니다!' }));
     } catch (error) {
       dispatch(displayToastAsync({ id: Date.now(), type: 'warning', message: `error submit cs reply, ${String(error)}` }));
     }
-    setContent('');
-    dispatch(displayToastAsync({ id: Date.now(), type: 'success', message: '답변이 정상적으로 등록되었습니다!' }));
   };
 
   useEffect(() => {
-    if (isConfirm) {
+    if (isConfirm && modalId === 'CreateReplyCSForm') {
       handleCreateReply();
       dispatch(closeModal());
     }
@@ -61,11 +61,12 @@ const CreateReplyCSForm = ({ loginUserId, csTableId }: { loginUserId: string; cs
       dispatch(closeModal());
     };
   }, [isConfirm]);
+
   return (
     <form onSubmit={handleSubmit}>
-      <C.InputReplyArea type="text" name="content" value={content} onChange={handleContentChange} />
+      <C.InputReplyArea type="text" name="content" value={content} onChange={handleContentChange} placeholder="관리자님~ 답변을 어서 등록해주세요!" />
       <ButtonWrap>
-        <ButtonAnnouncement>등록완료</ButtonAnnouncement>
+        <ButtonAnnouncement type="submit">등록완료</ButtonAnnouncement>
       </ButtonWrap>
     </form>
   );

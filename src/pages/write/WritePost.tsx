@@ -8,11 +8,11 @@ import styled from 'styled-components';
 import { v4 } from 'uuid';
 import { EDITWRITE, POSTWRITE } from '../../@types/writeCommunity/WriteCommunity.type';
 import { updateEditedWrite, updateWrite } from '../../api/writeCommunity';
+import { left_arrow } from '../../assets';
 import { AppDispatch, RootState } from '../../redux/config/configStore';
-import { displayToastAsync } from '../../redux/modules';
+import { displayToastAsync, openModal } from '../../redux/modules';
 import supabase from '../../supabase';
 import './write.css';
-import { left_arrow } from '../../assets';
 
 const WritePost = () => {
   const [title, setTitle] = useState<string | null>('');
@@ -79,7 +79,8 @@ const WritePost = () => {
           index: contentsLimit,
           length: 0,
         });
-        return alert('글자수 1000자를 초과하였습니다.');
+
+        return dispatch(openModal({ type: 'alert', message: '글자수 1000자를 초과하였습니다.' }));
       } else {
         setContents(content);
       }

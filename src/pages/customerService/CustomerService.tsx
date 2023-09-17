@@ -8,7 +8,7 @@ import { clearModal, openModal } from '../../redux/modules';
 import * as S from './CustomerService.styled';
 
 const CustomerService = () => {
-  const { isConfirm } = useSelector((state: RootState) => state.modal);
+  const { isConfirm, modalId } = useSelector((state: RootState) => state.modal);
   const dispatch = useDispatch<AppDispatch>();
   const loginUser = useSelector((state: RootState) => state.user.user);
   const location = useLocation();
@@ -17,7 +17,7 @@ const CustomerService = () => {
 
   const handleCustomerSupportNav = () => {
     if (loginUser) return navigate('customer-support');
-    dispatch(openModal({ type: 'confirm', message: '로그인이 필요한 서비스입니다. 로그인하시겠습니까?' }));
+    dispatch(openModal({ type: 'confirm', message: '로그인이 필요한 서비스입니다. 로그인하시겠습니까?', modalId: 'handleCustomerSupportNav' }));
   };
 
   const handleAnnouncementsNav = () => {
@@ -25,7 +25,7 @@ const CustomerService = () => {
   };
 
   useEffect(() => {
-    if (isConfirm) navigate('/signin');
+    if (isConfirm && modalId === 'handleCustomerSupportNav') navigate('/signin');
     return () => {
       dispatch(clearModal());
     };
