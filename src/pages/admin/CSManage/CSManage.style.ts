@@ -84,3 +84,15 @@ export const TitleInquiryItem = styled.td`
     cursor: pointer;
   }
 `;
+
+export const Navigation = styled.nav`
+  padding: 1em;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+`;
+
+export const TableRow = styled.tr<{ $isAnswered: boolean }>`
+  background-color: ${({ $isAnswered }) => ($isAnswered ? '#fff' : '#f9f9f9')};
+  color: ${({ $isAnswered }) => ($isAnswered ? '#000' : '#848484')};
+`;
