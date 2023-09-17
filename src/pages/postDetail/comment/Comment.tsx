@@ -7,19 +7,16 @@ import { deleteComment, fetchComments, updateComment } from '../../../api/postDe
 import { RootState } from '../../../redux/config/configStore';
 import { detailDate } from '../../community/utility';
 import * as S from './Comment.styled';
-// import { openModal } from '../../../redux/modules'
 
 const Comment = () => {
   const loginUser = useSelector((state: RootState) => state.user.user);
   const [currentEditNum, setCurrentEditNum] = useState(-1);
   const [editComment, setEditComment] = useState<string>('');
-  // const dispatch = useDispatch<AppDispatch>();
   let { postid } = useParams();
   const queryClient = useQueryClient();
 
   const { data } = useQuery(['post_comments'], () => fetchComments(Number(postid)));
 
-  // console.log(error);
   const commentDeleteMutation = useMutation((newInfo: DELETECOMMENT) => deleteComment(newInfo), {
     onSuccess: () => {
       queryClient.invalidateQueries(['post_comments']);
@@ -30,7 +27,6 @@ const Comment = () => {
   });
 
   const handleDeleteComment = (comment_id: number) => {
-    // dispatch(openModal({ type: 'confirm', message: '정말로 삭제하시겠습니까?' }));
     if (confirm('삭제하시겠습니까?')) {
       commentDeleteMutation.mutate({ comment_id, user_id: loginUser?.id, postid: Number(postid) });
     }

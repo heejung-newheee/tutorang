@@ -4,18 +4,10 @@ import { Container, Section, SectionTitle } from '../Main';
 import * as S from './MatchingFlow.styled';
 type TabViewProps = {
   index: number;
-  // name: JSX.Element;
   name: string;
   img: string;
   content: string;
 };
-
-// const tabs: TabViewProps[] = [
-//   { index: 1, name: <TabTitle1 />, content: <img src={tabPanel_1} alt="flow 01" /> },
-//   { index: 2, name: <TabTitle2 />, content: <img src={tabPanel_2} alt="flow 02" /> },
-//   { index: 3, name: <TabTitle3 />, content: <img src={tabPanel_3} alt="flow 03" /> },
-//   { index: 4, name: <TabTitle4 />, content: <img src={tabPanel_4} alt="flow 04" /> },
-// ];
 
 const tabs: TabViewProps[] = [
   { index: 1, name: '지역설정 하기', content: '나의 위치 설정 또는 내가 원하는 지역을 선택하여 그 주변에 있는 튜터를 찾아보세요.', img: tabPanel_1 },

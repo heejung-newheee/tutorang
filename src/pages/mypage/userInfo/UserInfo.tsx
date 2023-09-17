@@ -14,7 +14,6 @@ interface pageProps {
   match: Views<'matching_tutor_data'>[] | undefined;
   user: Tables<'profiles'>;
 }
-// const UserInfo = ({match, user}) => {
 const UserInfo = ({ match, user }: pageProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
