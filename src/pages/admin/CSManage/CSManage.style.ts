@@ -48,7 +48,9 @@ export const TableBody = styled.tbody`
     padding: 1em;
     border-bottom: 1px solid #f1f3f4;
     white-space: nowrap;
-    max-width: 250px;
+    width: 150px;
+    overflow: hidden;
+    gap: 4px;
     &:not(:nth-child(3)) {
       text-align: center;
     }
@@ -62,12 +64,19 @@ export const TableBody = styled.tbody`
   & > tr > td:nth-child(3) {
     overflow: hidden;
     text-overflow: ellipsis;
+    padding-left: 36px;
   }
 `;
 
-export const ProfileImgSize = styled.img`
+export const ProfileImgFigure = styled.figure`
   width: 30px;
   height: 30px;
+  overflow: hidden;
+`;
+export const ProfileImgSize = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 export const TitleInquiryItem = styled.td`
