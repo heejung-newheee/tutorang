@@ -9,7 +9,7 @@ type TypeSelectEnrollmentStatus = {
   $selectedOption: string;
 };
 
-const SelectEnrollmentStatus: React.FC<TypeSelectEnrollmentStatus> = ({ $setEnrollmentStatus, $selectedOption }) => {
+const SelectEnrollmentStatus = ({ $setEnrollmentStatus, $selectedOption }: TypeSelectEnrollmentStatus) => {
   const dropContainerRef = useRef<HTMLDivElement>(null);
   const [selectedOption, setSelectedOption] = useState<string>($selectedOption);
 

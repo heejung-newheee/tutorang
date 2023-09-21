@@ -13,7 +13,7 @@ type TypeImgFileUpload = {
  * @param fileType : tutorCertificationImg, tutorCertificationDoc
  * @returns
  */
-const ImgFileUpload: React.FC<TypeImgFileUpload> = ({ $fileType, $setCertificationImgFile }) => {
+const ImgFileUpload = ({ $fileType, $setCertificationImgFile }: TypeImgFileUpload) => {
   const [imgFile, setImgFile] = useState<File>();
 
   /**
