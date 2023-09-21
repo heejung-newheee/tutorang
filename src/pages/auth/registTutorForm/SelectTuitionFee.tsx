@@ -12,7 +12,7 @@ type SelectTuitionFeeType = {
   $prevValue: number;
 };
 
-const SelectTuitionFee: React.FC<SelectTuitionFeeType> = ({ $tuitionType, $selectTuitionFee, $prevValue }) => {
+const SelectTuitionFee = ({ $tuitionType, $selectTuitionFee, $prevValue }: SelectTuitionFeeType) => {
   const dropContainerRef = useRef<HTMLDivElement>(null);
   const [selectedOption, setSelectedOption] = useState($prevValue || 0);
 

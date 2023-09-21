@@ -9,7 +9,7 @@ type CheckboxType = {
   checkItems: string[];
 };
 
-const Checkbox: React.FC<CheckboxType> = ({ $checkboxType, option, handleCheckedItems, checkItems }) => {
+const Checkbox = ({ $checkboxType, option, handleCheckedItems, checkItems }: CheckboxType) => {
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {

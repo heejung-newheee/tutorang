@@ -34,7 +34,7 @@ for (let i = 0; i < preCityKeys.length; i++) {
   cities[key] = preCityValues[i].slice(1);
 }
 
-const SelectLocation: React.FC<TypeSelectLocationProps> = ({ $locationType, $setLocation, $prevValue }) => {
+const SelectLocation = ({ $locationType, $setLocation, $prevValue }: TypeSelectLocationProps) => {
   const sidoDropContainerRef = useRef<HTMLDivElement>(null);
   const gugunDropContainerRef = useRef<HTMLDivElement>(null);
   const [selectedOption, setSelectedOption] = useState({ sido: '시/도 선택', gugun: '구/군 선택' });

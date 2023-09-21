@@ -5,7 +5,7 @@ type TypeGenderRadioboxProps = {
   $setCheckedGender: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const GenderRadiobox: React.FC<TypeGenderRadioboxProps> = ({ $checkedGender, $setCheckedGender }) => {
+const GenderRadiobox = ({ $checkedGender, $setCheckedGender }: TypeGenderRadioboxProps) => {
   const genderChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     $setCheckedGender(event.target.value);
   };
