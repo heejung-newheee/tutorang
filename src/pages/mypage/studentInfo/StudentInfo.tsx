@@ -22,7 +22,6 @@ type pageProps = {
 const StudentInfo = ({ match, user }: pageProps) => {
   const dispatch = useDispatch();
   const [openMenuId, setOpenMenuId] = useState<number>(0);
-  // const user = useSelector((state: RootState) => state.user.user);
   const tutors = useSelector((state: RootState) => state.tutor.tutor);
 
   const { data: like, isLoading: likeLoading, isError: likeError } = useQuery([BOOK_MARK_QUERY_KEY], fetchLBookMark);

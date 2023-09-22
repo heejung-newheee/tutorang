@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { modalSlice, userSlice, matchSlice, reviewSlice, PageNumSlice, toastSlice } from '../modules';
+import { PageNumSlice, matchSlice, modalSlice, reviewSlice, toastSlice, userSlice } from '../modules';
 import tutorSlice from '../modules/tutorSlice';
 
 const store = configureStore({

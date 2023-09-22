@@ -3,13 +3,13 @@ import { Alert, Confirm, RemoveConfirm, Report, ReviewForm, ReviewUpdateForm, Tu
 import RetrievePendingTutorRegistration from '../../pages/auth/registTutorForm/RetrievePendingTutorRegistration';
 import YoutubeModal from '../../pages/main/youtube/YoutubeModal';
 import { RootState } from '../../redux/config/configStore';
+import ImageResizeForm from '../Form/imageResizeForm/ImageResizeForm';
 import ChatLocationModal from '../chat/modules/ChatLocationModal';
+import ChatPlayerDetailModal from '../chat/modules/ChatPlayerDetailModal';
+import DashboardReport from '../dialog/report/DashboardReport';
 import MatchedReviewForm from '../review/reviewForm/MatchedReviewForm';
 import * as S from './Modal.styled';
 import ModalPortal from './ModalPortal';
-import ChatPlayerDetailModal from '../chat/modules/ChatPlayerDetailModal';
-import DashboardReport from '../dialog/report/DashboardReport';
-import ImageResizeForm from '../Form/imageResizeForm/ImageResizeForm';
 
 const GlobalModal = () => {
   const { type, isOpen } = useSelector((state: RootState) => state.modal);

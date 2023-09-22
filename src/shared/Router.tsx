@@ -43,6 +43,7 @@ import {
   WelcomeMessagePage,
   WritePost,
 } from '../pages';
+import Test from '../pages/test/Test';
 import AuthenticatedRoute from './AuthenticatedRoute';
 import NonAuthenticatedRoute from './NonAuthenticatedRoute';
 
@@ -53,6 +54,7 @@ const Router = () => {
       <GlobalModal />
       <ToastContainer />
       <Routes>
+        <Route path="/test" element={<Test />}></Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="user-manage" element={<UserManage />} />

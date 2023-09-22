@@ -3,20 +3,20 @@
 튜터링 중개 플랫폼 [Responsive Website]
 
 지역/관심사 등으로 필터링 & 튜터와 간편 1:1 매칭으로
-다양한 언어교류와 회화를 실력을 향상시키는 서비스
+다양한 언어교류와 회화를 실력을 향상시키는 서비스  
 [2023.08.16 ~ 2023.09.17]
 
-[튜터랑 서비스 보러가기] [www.tutorang.site](https://www.tutorang.site/)
-[튜터랑 서비스 시연영상 보러가기] [튜터랑 시연 영상](https://youtu.be/M0mreUXyuhw?si=3JRguyqkhkk4KRYj)
+[튜터랑 서비스 보러가기] [www.tutorang.site](https://www.tutorang.site/)  
+[튜터랑 서비스 시연영상 보러가기] [튜터랑 시연 영상](https://youtu.be/M0mreUXyuhw?si=3JRguyqkhkk4KRYj)  
 [튜터랑 PT 브로셔] [PDF](https://drive.google.com/file/d/1pNks3Grjeozl493aonUx8cvc1lu48tYb/view?usp=drive_link)
 
-\*서비스 테스트 특이사항
+\*서비스 테스트 특이사항  
 [튜터랑] 서비스는 상호 작용이 있는 서비스로 튜터 페이지가 이용가능하시도록
-튜터 목록중 '대표튜터' 아이디를 전달드립니다.
+튜터 목록중 '대표튜터' 아이디를 전달드립니다.  
 회원 가입시 학생으로 튜터에게 채팅, 튜터링 요청 가능하고 '대표튜터' 아이디 로그인시 수락,거절 가능합니다.
 
-대표튜터 계정
-ID: tutor-test@test.com
+대표튜터 계정  
+ID: tutor-test@test.com  
 PW: tutorang1234!!
 
 ---
@@ -57,7 +57,7 @@ PW: tutorang1234!!
 
 1.  로그인, 회원가입, 회원 정보, 수업정보 수정(이메일/SNS)
 2.  튜터 찾기(지역/성격/성별 필터링)
-3.  실시간 채팅 (튜터링 신청/약속장소 위치 공유/이미치 전송)
+3.  실시간 채팅 (튜터링 신청/약속장소 위치 공유/이미지 전송)
 4.  튜터링(신청/응답) 및 후기
 5.  커뮤니티, 고객센터 CRUD
 6.  학생->튜터 Role 변환 신청/인증

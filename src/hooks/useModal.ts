@@ -1,23 +1,25 @@
-import { useState } from 'react';
-import { Modal, ModalProps } from '../components';
+import { useContext, useId } from 'react';
+import { GlobalModalContext } from '../context/GlobalModalContext';
 
-type UseModalReutnType = {
-  Modal: ({ children, isOpen, closeModal }: ModalProps) => JSX.Element;
-  isOpen: boolean;
-  openModal: () => void;
-  closeModal: () => void;
-};
+export type ModalElement = ({ close }: { close: () => void }) => React.ReactNode;
 
-const useModal = (): UseModalReutnType => {
-  const [isOpen, setIsOpen] = useState(false);
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+const useModal = () => {
+  const { addModal, removeModal } = useContext(GlobalModalContext);
+  const modalId = useId();
+
+  const open = (ModalComponent: ModalElement) => {
+    setTimeout(() => {
+      addModal({ id: modalId, modal: ModalComponent({ close: () => removeModal({ id: modalId }) }) });
+    }, 0);
+  };
+
+  const close = () => {
+    removeModal({ id: modalId });
+  };
 
   return {
-    Modal,
-    isOpen,
-    openModal,
-    closeModal,
+    open,
+    close,
   };
 };
 

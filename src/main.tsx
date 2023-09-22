@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import App from './App.tsx';
+import { GlobalModalProvider } from './context/GlobalModalContext.tsx';
 import store from './redux/config/configStore.ts';
 import { theme } from './style/theme/index.ts';
 
@@ -20,7 +21,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <QueryClientProvider client={queryClient}>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <App />
+        <GlobalModalProvider>
+          <App />
+        </GlobalModalProvider>
       </Provider>
     </ThemeProvider>
   </QueryClientProvider>,
