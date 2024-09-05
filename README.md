@@ -6,8 +6,8 @@
 다양한 언어교류와 회화를 실력을 향상시키는 서비스
 [2023.08.16 ~ 2023.09.17]
 
-[튜터랑 서비스 보러가기] [www.tutorang.site](https://tutorang-dev.vercel.app/)
-[튜터랑 서비스 시연영상 보러가기] [튜터랑 시연 영상](https://youtu.be/M0mreUXyuhw?si=3JRguyqkhkk4KRYj)
+[튜터랑 서비스 보러가기] [www.tutorang.site](https://tutorang-dev.vercel.app/)\
+[튜터랑 서비스 시연영상 보러가기] [튜터랑 시연 영상](https://youtu.be/M0mreUXyuhw?si=3JRguyqkhkk4KRYj)\
 [튜터랑 PT 브로셔] [PDF](https://drive.google.com/file/d/1pNks3Grjeozl493aonUx8cvc1lu48tYb/view?usp=drive_link)
 
 \*서비스 테스트 특이사항
