@@ -20,8 +20,13 @@ import { ContentsDataBox } from '../MyPage.styled';
 interface pageProps {
   matchList: Views<'matching_tutor_data'>[];
 }
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 
-const TabPanel = (props: any) => {
+const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -39,7 +44,7 @@ const MatchingTutor = ({ matchList }: pageProps) => {
   const [activeTab, setActiveTab] = useState<number>(0);
   const loginUser = useSelector((state: RootState) => state.user.user);
 
-  const handleTabChange = (_: React.ChangeEvent<{}>, newValue: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
   };
 

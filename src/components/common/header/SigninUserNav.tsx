@@ -16,7 +16,7 @@ type TypeSiginUserNavProps = {
   $loginUser: Tables<'profiles'> | null;
 };
 
-const SigninUserNav: React.FC<TypeSiginUserNavProps> = ({ $loginUser }) => {
+const SigninUserNav = ({ $loginUser }: TypeSiginUserNavProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { targetId, isConfirm, modalId } = useSelector((state: RootState) => state.modal);
   const AuthNavInfoAreaRef = useRef<HTMLDivElement>(null);

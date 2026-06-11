@@ -5,7 +5,7 @@ import { FORM_HEADER_TITLE } from '../../constants/formConstant';
 type TypeFormHeaderProps = {
   $keyword: string;
 };
-const FormHeader: React.FC<TypeFormHeaderProps> = ({ $keyword }) => {
+const FormHeader = ({ $keyword }: TypeFormHeaderProps) => {
   const [formHeaderTitle, setFormHeaderTitle] = useState('');
   const [formHeaderSubTitle, setFormHeaderSubTitle] = useState('');
   useEffect(() => {
@@ -15,7 +15,7 @@ const FormHeader: React.FC<TypeFormHeaderProps> = ({ $keyword }) => {
         setFormHeaderSubTitle(FORM_HEADER_TITLE[i].subTitle);
       }
     }
-  }, []);
+  }, [$keyword]);
 
   if (formHeaderTitle === '') return <></>;
   return (

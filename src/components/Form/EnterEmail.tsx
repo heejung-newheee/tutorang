@@ -18,7 +18,7 @@ type TypeEnterEmailProps = {
   $doneDuplicationCheck: boolean;
 };
 
-const EnterEmail: React.FC<TypeEnterEmailProps> = ({ $setDuplicatedEmail, $setDoneDuplicationCheck, $setEmail, $email, $validEmail, $duplicatedEmail, $doneDuplicationCheck }) => {
+const EnterEmail = ({ $setDuplicatedEmail, $setDoneDuplicationCheck, $setEmail, $email, $validEmail, $duplicatedEmail, $doneDuplicationCheck }: TypeEnterEmailProps) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {

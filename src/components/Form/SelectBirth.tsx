@@ -13,7 +13,7 @@ type TypeSelectBirthType = {
   >;
 };
 
-const SelectBirth: React.FC<TypeSelectBirthType> = ({ $setBirth }) => {
+const SelectBirth = ({ $setBirth }: TypeSelectBirthType) => {
   const yearDropContainerRef = useRef<HTMLDivElement>(null);
   const monthDropContainerRef = useRef<HTMLDivElement>(null);
   const dayDropContainerRef = useRef<HTMLDivElement>(null);

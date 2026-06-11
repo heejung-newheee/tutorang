@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Modal, ModalProps } from '../components';
 
 type UseModalReutnType = {
-  Modal: React.FC<ModalProps>;
+  Modal: ({ children, isOpen, closeModal }: ModalProps) => JSX.Element;
   isOpen: boolean;
   openModal: () => void;
   closeModal: () => void;

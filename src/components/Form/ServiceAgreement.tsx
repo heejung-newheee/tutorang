@@ -6,7 +6,7 @@ import { CheckTeramsAndConditions, Label, SCheckBox, SCheckLabel, SCheckboxConta
 
 type TypeServiceAgreement = { $setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>> };
 
-const ServiceAgreement: React.FC<TypeServiceAgreement> = ({ $setIsAllChecked }) => {
+const ServiceAgreement = ({ $setIsAllChecked }: TypeServiceAgreement) => {
   const [checkList, setCheckList] = useState<string[]>([]);
   const [conditionOne, setConditionOne] = useState(false);
   const [conditionTwo, setConditionTwo] = useState(false);
